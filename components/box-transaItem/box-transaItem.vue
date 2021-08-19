@@ -4,7 +4,7 @@
 			<u-col span="3.5" >
 				<image @click="showtoasts" :src="item.game_icon||item.game_new_icon||item.icon||item.new_icon" mode="widthFix" v-if="status==1&&item.back_status==2"   style="width: 160rpx;height: 160rpx;"></image>
 				<image :src="item.game_icon||item.game_new_icon" mode="widthFix" v-else-if="status==3||status==0"   style="width: 160rpx;height: 160rpx;" @click="handleRouter('/pages/transaction/children/buynumber/children/commodityDetail?goods_id='+item.goods_id)"></image>
-				<image :src="item.game_icon||item.game_new_icon||item.icon||item.new_icon" mode="widthFix" v-else-if="status==1"   style="width: 160rpx;height: 160rpx;" @click="handleRouter(`/pages/transaction/children/recovery/children/recoveryCommit/recoveryCommit?game_name=${item.game_name}&nickname=${item.nickname}&server_name=${item.server_name}&role_name=${item.role_name}&amount=${item.amount}&role_id=${item.role_id}&mg_mem_id=${item.mg_mem_id}&sum_money=${item.sum_money}&active=${active}`)"></image>
+				<image :src="item.game_icon||item.game_new_icon||item.icon||item.new_icon" mode="widthFix" v-else-if="status==1"   style="width: 160rpx;height: 160rpx;" @click="handleRouter(`/pages/transaction/children/recovery/children/recoveryCommit/recoveryCommit?id=${item.id}&game_name=${item.game_name}&nickname=${item.nickname}&server_name=${item.server_name}&role_name=${item.role_name}&amount=${item.amount}&role_id=${item.role_id}&mg_mem_id=${item.mg_mem_id}&sum_money=${item.sum_money}&active=${active}`)"></image>
 				<image :src="item.game_icon||item.game_new_icon||item.icon||item.new_icon" mode="widthFix" v-else-if="status==2"   style="width: 160rpx;height: 160rpx;"></image>
 			</u-col>
 			<u-col span="8.5" style="border-bottom: 1rpx solid #EFEFEF;">
@@ -15,7 +15,7 @@
 						<text class="text">当前区服：{{item.server_name}}</text>
 						<text class="text" style="margin-bottom: 36rpx;">充值小号：{{item.role_name}}</text>
 					</view>
-					<view class="detail" v-else-if="status==1" @click="handleRouter(`/pages/transaction/children/recovery/children/recoveryCommit/recoveryCommit?id=${item.id}&game_name=${item.game_name}&nickname=${item.nickname}&server_name=${item.server_name}&role_name=${item.role_name}&amount=${item.amount}&role_id=${item.role_id}&mg_mem_id=${item.mg_mem_id}&sum_money=${item.sum_money}&active=${active}`	)">
+					<view class="detail" v-else-if="status==1" @click="handleRouter(`/pages/transaction/children/recovery/children/recoveryCommit/recoveryCommit?id=${item.id}&game_name=${item.game_name}&nickname=${item.nickname}&server_name=${item.server_name}&role_name=${item.role_name}&amount=${item.amount}&role_id=${item.role_id}&mg_mem_id=${item.mg_mem_id}&sum_money=${item.sum_money}&active=${active}`)">
 						<text class="gamename">{{item.game_name}}</text>
 						<text class="text">上架时间：{{item.create_time|dateFormat('yyyy-MM-dd')}}</text>
 						<text class="text">当前区服：{{item.server_name}}</text>

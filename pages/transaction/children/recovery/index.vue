@@ -39,6 +39,9 @@
 		props: {
 			actives: {
 				type: Number
+			},
+			activs:{
+				type: Number
 			}
 		},
 		methods: {
@@ -78,6 +81,10 @@
 				if (val == 2) {
 					this.getData()
 				}
+			},
+			activs(val) {
+			  console.log(val,';sssssssssssssss')
+			  this.active = 0
 			}
 		},
 	}

@@ -1,3 +1,4 @@
+<!-- 交易 -->
 <template>
 	<view class="transaction">
 		<view :style="{height:$store.state.statusBarHeight+'px',width:'100%'}" />
@@ -34,7 +35,7 @@
 				<swiper-item>
 					<!-- 回收 -->
 					<view class="swiper-item">
-						<recovery :actives='active'></recovery>
+						<recovery  ref='recovery' :actives='active' :activs="activ1"></recovery>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -64,6 +65,7 @@
 				],
 				active: 0,
 				myinput: '',
+				activ1:-1,
 				
 			}
 		},
@@ -90,6 +92,14 @@
 				})
 			},
 
+		},
+		onShow() {
+			if(this.active==2){
+				this.$refs.recovery.getData()
+			      this.activ1--
+				  console.log(   this.activ1,'   this.activ1   this.activ1   this.activ1')
+			}
+			
 		},
 		mounted() {
 			this.$refs.buynumber.getData()

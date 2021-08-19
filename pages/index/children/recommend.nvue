@@ -82,7 +82,7 @@
 					
 
 			</list>
-			<view v-if="!pageData" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;" >
+			<view v-if="pageData.length==0" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;" >
 				<myloading :isrefre='isrefre' @Refresh='Refresh'></myloading>
 			</view>
 		</view>
