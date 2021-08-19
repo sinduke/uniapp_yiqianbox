@@ -1,0 +1,67 @@
+<template>
+	<view class="box" :style="{height:myHeight-1+'rpx'}">
+		<view class="lineShowdow"></view>
+		<view class="container" >
+			<gamecell left="通用设置"  type="1"></gamecell>
+			<gamecell left="清除缓存" right="11.23Mb"></gamecell>
+			<gamecell left="当前版本" right="12314"></gamecell>
+			<gamecell left="设备码" right="123" type="1"></gamecell>
+			<view class="button" :style="{width:myWidth+'px'}">
+				<text class="button_text isActive" >退出登录</text>
+			</view>
+			<popup></popup>
+		</view>
+		
+	</view>
+	
+</template>
+
+<script>
+	import gamecell from '@/components/nvue-cell/nvue-cell.nvue'
+	import popup from '@/components/nvue-popup/nvue-popup.nvue'
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight(){
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			} 
+		},
+		components: {
+			gamecell,
+			
+		},
+		methods: {
+			
+		},
+	}
+</script>
+
+<style scoped >
+	@import '@/common/css/nvue-whith.css';
+	.box{
+		background-color: #fff;
+	}
+	.container{
+		
+	}
+	.button{
+		flex-direction: row;
+		justify-content: center;
+		margin-left: -16rpx;
+	}
+	.button_text{
+		margin-top:112rpx ;
+		font-size:32rpx ;
+		border-radius:80rpx ;
+		border:1rpx solid #E1E1E1;
+		text-align: center;
+		padding:24rpx 112rpx;
+	}
+</style>

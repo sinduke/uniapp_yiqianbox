@@ -1,0 +1,7 @@
+/unpackage/cache
+/unpackage/dist
+/node_modules
+/unpackage/release
+unpackage/debug/android_debug.apk
+unpackage/debug/.roid.ins
+/unpackage/resources

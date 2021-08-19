@@ -1,0 +1,101 @@
+<template>
+	<view class="card">
+		<view>
+			<video :direction="direction" :src="item.mp4_url" :loop="loop" @click="handleClick(index)"
+				:id="'video'+index" :controls='false' muted :poster='item.hot_image' :show-center-play-btn='false'
+				ref="chunleiVideo" class="video" objectFit="fill" v-if="item.mp4_url"></video>
+			<image class="images" :src="item.hot_image" v-else></image>
+		</view>
+		<view class="tags">
+			<!-- <text class="tag" v-for="(v,i) in item.selling_point.split(',')" :key="i">#{{v}}</text> -->
+			<text class="tag">{{item.one_word.length>26?item.one_word.slice(0,24)+'..':item.one_word}}</text>
+		</view>
+		<view class="gameDetail">
+			<text class="gamename">{{item.gamename}}</text>
+			<view class="star_cnt">
+				<text class="star_cntText">{{item.star_cnt}}</text>
+			</view>
+		</view>
+		<view class="listBottom">
+			<text class="text"> 开服 |</text>
+			<text class="type text" v-for="(v,i) in item.type" :key="i">{{v}}</text>
+			<text class="user_cnt text">| {{item.user_cnt}}在玩</text>
+
+		</view>
+
+	</view>
+</template>
+
+<script>
+	export default {
+		props: ['item'],
+	}
+</script>
+
+<style scoped>
+	.card {
+		margin: 20rpx 0rpx;
+		border-radius: 20rpx;
+		border: 5rpx solid #eee;
+		overflow: hidden
+	}
+
+	.images {
+		/* width: 500rpx; */
+		height: 400rpx;
+		border-top-left-radius: 20rpx;
+		border-top-right-radius: 20rpx;
+	}
+
+	.tags {
+		margin-top: 20rpx;
+		flex-direction: row;
+		align-items: center;
+		margin-left: 30rpx;
+	}
+
+	.tag {
+		color: #666666;
+		font-weight: 300;
+		font-size: 24rpx;
+		lines: 1;
+		padding: 4rpx 20rpx;
+		border-radius: 20rpx;
+		background-color: #e1e1e1;
+
+	}
+
+	.gameDetail {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10rpx 30rpx;
+	}
+
+	.gamename {
+		color: #1C1C1C;
+		font-weight: 900;
+		font-size: 40rpx;
+	}
+
+	.star_cntText {
+		color: #FF5927;
+		font-weight: 900;
+		font-size: 42rpx;
+	}
+
+	.listBottom {
+		flex-direction: row;
+		align-items: center;
+		padding: 0 30rpx 20rpx 30rpx;
+	}
+
+	.type {
+		margin: 0 6rpx;
+	}
+
+	.text {
+		color: #666666;
+		font-size: 26rpx;
+	}
+</style>

@@ -1,0 +1,70 @@
+<template>
+	<view >
+		<view class="cell" :style="{width:myWidth+'px'}">
+			<text class="left_text isTheme">{{left}}</text>
+			<view class="right">
+				<text class="right_text noTheme">{{right}}</text>
+				<image v-if="type==1" class="right_icon" src="@/static/images/left.png"></image>
+			</view>
+			
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
+		props: {
+			left: {
+				type: String
+			},
+			right: {
+				type: String
+			},
+			type: {
+				type: Number
+			},
+		},
+		methods: {
+			
+		},
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+.cell{
+	padding:44rpx 32rpx;
+	flex-direction: row;
+	justify-content: space-between;
+	border-bottom: 1rpx solid #ECECEC;
+}
+.right{
+	flex-direction: row;
+}
+.left_text{
+	font-weight:400 ;
+	font-size:32rpx ;
+}
+.right_text{
+	font-weight:400 ;
+	font-size:28rpx ;	
+}
+.right_icon{
+	transform: rotate(180deg);
+	margin-left:20rpx ;
+	margin-top:5rpx ;
+	width:28rpx ;
+	height:28rpx ;
+}
+</style>
+

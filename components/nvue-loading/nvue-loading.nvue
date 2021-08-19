@@ -1,0 +1,104 @@
+<template>
+	<!-- #ifdef APP-NVUE -->
+	<view class="loading" :style="{width:$store.state.myWidth+'px'}">
+	<!-- #endif -->
+	<!-- #ifdef APP-VUE -->
+	<view class="loading">
+	<!-- #endif -->
+		<view class="refreshmore">
+			<image v-if="isShow" src="@/static/images/Refreshmore.gif" style="width: 300rpx;height: 300rpx;"/>
+			<view class="nodata" v-else>
+				<image src="@/static/images/loading-noData.png" mode="widthFix" style="width: 500rpx;height: 500rpx;"/>
+				<view class="dataitem">
+					<text class="text" style="margin-bottom: 24rpx;">暂时找不到，去看看别的~</text>
+				</view>
+			</view>
+			<view  v-if="false">
+				<image src="@/static/images/loading-noData.png" mode="widthFix" style="width: 500rpx;height: 500rpx;"/>
+				<view class="dataitem">
+					<text class="text" style="margin-bottom: 24rpx;">页面加载失败</text>
+					<text style="color: #9B9B9B;font-size: 24rpx;margin-bottom: 24rpx;">页面加载失败，请刷新重试</text>
+					<text class="btn" @click="handleRefresh">刷 新</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				isShow: true,
+				mytimes: ''
+			}
+		},
+		props: {
+			isrefre: {
+				type: Boolean,
+				default: false,
+			},
+		},
+		mounted() {
+			this.timer()
+
+		},
+
+		methods: {
+			handleRefresh() {
+				this.$emit('Refresh', true)
+			},
+			timer() {
+				this.mytimes = setTimeout(() => {
+					this.isShow = false
+				}, 3000)
+			}
+		},
+		watch: {
+			isrefre(val) {
+				if (val) {
+					this.isShow = true
+					clearTimeout(this.mytimes)
+					this.timer()
+				}
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+	.loading {
+		/* #ifdef APP-VUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		margin-top: 120rpx;
+	}
+
+	.nodata {
+		position: relative;
+		padding-bottom: 100rpx;
+
+	}
+	.refreshmore{
+		/* #ifdef APP-VUE */
+		display: flex;
+		/* #endif */
+		justify-content: center;
+	}
+
+	.dataitem {
+		/* #ifdef APP-VUE */
+		display: flex;
+		/* #endif */
+		position: absolute;
+		flex-direction: column;
+		align-items: center;
+		bottom: 0;
+		left: 100rpx;
+	}
+</style>

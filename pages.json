@@ -1,0 +1,1099 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		/* 引导页 */
+		{
+			"path": "pages/index/guidePage",
+			// 用于设置每个页面的状态栏、导航条、标题、窗口背景色等。
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none" //关闭窗口回弹效果
+				}
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"subNVues": [{
+						"id": "popup",
+						"path": "components/nvue-subNvue/index",
+						"type": "popup",
+						"style": {
+							"position": "absolute",
+							"margin": "auto",
+							"width": "100%",
+							"height": "100%",
+							"background": "transparent",
+							"mask": "rgba(0,0,0,0.3)",
+							"popGesture": "none"
+
+						}
+					}]
+				}
+			}
+		},
+		//视频详情
+
+		{
+			"path": "pages/index/children/videoDetail",
+			"style": {
+				// 取消默认的原生导航栏
+				// "navigationStyle": "custom"
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"softinputNavBar": "none",
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": ""
+					}
+				}
+			}
+		},
+		/* 游戏*/
+		{
+			"path": "pages/game/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+					// "subNVues": [{
+					// 	"id": "navigationBar",
+					// 	"path": "pages/game/subNvue/homeTitleNvue",
+					// 	"type": "navigationBar",
+					// 	"style": {
+
+
+					// 	}
+					// }]
+				}
+			}
+		},
+
+		/* 专题 */
+		{
+			"path": "pages/game/children/special",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"bounce": "none" //关闭窗口回弹效果
+			}
+		},
+
+
+		/* 游戏列表 */
+		{
+			"path": "pages/game/children/gameList",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"bounce": "none" //关闭窗口回弹效果
+			}
+		},
+
+
+		//客服中心
+		{
+			"path": "pages/customerService/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					
+					"bounce": "none"
+				}
+			}
+		}
+		/* 常见问题 */
+		, {
+			"path": "pages/customerService/children/problem/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					// "softinputMode": "adjustResize",
+					"bounce": "none"
+				}
+			}
+		},
+		//返利申请
+		{
+			"path": "pages/customerService/children/rechargeRebate/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		},
+		//返利指南
+		{
+			"path": "pages/customerService/children/rechargeRebate/children/guide",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "返利指南"
+
+					}
+				}
+			}
+
+		},
+		//申请填写
+		{
+			"path": "pages/customerService/children/rechargeRebate/children/applicationform",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		},
+		//申请记录
+		{
+			"path": "pages/customerService/children/rechargeRebate/children/applicatRecord",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "申请记录"
+					}
+				}
+			}
+
+		},
+
+		//交易
+		{
+			"path": "pages/transaction/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		//添加小号
+
+		{
+			"path": "pages/transaction/children/Sellingnumber/addGame/addGame",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "选择游戏"
+					}
+				}
+			}
+
+		},
+		//选择小号
+
+		{
+			"path": "pages/transaction/children/Sellingnumber/someNumber/someNumber",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "选择小号"
+					}
+				}
+			}
+
+		},
+
+
+		//交易详情
+		{
+			"path": "pages/transaction/children/buynumber/children/commodityDetail",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "商品详情"
+					}
+				}
+			}
+		},
+		//交易须知
+		{
+			"path": "pages/transaction/children/tradeNotes/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "交易须知"
+					}
+				}
+			}
+		},
+		//回收确认
+		{
+			"path": "pages/transaction/children/recovery/children/recoveryCommit/recoveryCommit",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+
+
+
+
+
+		// 我的
+		{
+			"path": "pages/my/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				 // "enablePullDownRefresh": true,
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+
+		// 登录
+		{
+			"path": "pages/my/children/login",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		//消息
+		{
+			"path": "pages/my/myMessage/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		//消息-客服通知
+		{
+		    "path" : "pages/my/myMessage/children/customerNotice/index",
+			"style": {
+		   	// 取消默认的原生导航栏
+		   	"navigationStyle": "custom",
+		   	"app-plus": {
+		   		"bounce": "none"
+				}
+		   }
+		},
+		//消息-互动消息
+		{
+		    "path" : "pages/my/myMessage/children/activeMessage/activeMessage",
+			"style": {
+		   	// 取消默认的原生导航栏
+		   	"navigationStyle": "custom",
+		   	"app-plus": {
+		   		"bounce": "none"
+				}
+		   }
+		},
+	
+		//消息-我的赞
+		{
+		    "path" : "pages/my/myMessage/children/activeMessage/Myzan",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    				}
+		    }
+		    
+		},
+		//官方通知
+		{
+			"path": "pages/my/myMessage/children/officialMess/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		// 官方通知-消息详情
+		{
+			"path": "pages/my/myMessage/children/officialMess/detail",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "详情",
+						"titleAlign": "left",
+						"fontWeight": "bold"
+
+					}
+				}
+			}
+
+		},
+
+
+		// 账号管理
+		{
+			"path": "pages/my/myAdministration/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "账号管理",
+						"titleAlign": "left",
+						"fontWeight": "bold"
+
+					}
+				}
+			}
+		},
+		// 幸运大转盘
+		{
+			"path": "pages/my/children/bigTurntable/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		// 领券中心
+		{
+			"path": "pages/my/children/couponsCore/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		},
+		// 积分商城
+		{
+			"path": "pages/my/children/pointMall/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		},
+		//全民推广
+		{
+			"path": "pages/my/children/share/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		//获取记录
+		{
+			"path": "pages/my/children/withdrawalRecord/index",
+			"style": {
+				// "enablePullDownRefresh": true,
+				"onReachBottomDistance": 20,
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "领取记录",
+						"titleAlign": "left"
+					}
+				}
+			}
+		},
+		/* 设置*/
+		{
+			"path": "pages/my/mySetting/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "设置中心",
+						"titleAlign": "left"
+					}
+				}
+			}
+		},
+		//通用设置
+		{
+			"path": "pages/my/mySetting/tySetting",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "通用设置",
+						"titleAlign": "left"
+					}
+				}
+			}
+		},
+
+
+		// 修改手机号
+		{
+			"path": "pages/view/changeMobile/changeMobile",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "绑定手机号",
+						"titleAlign": "left"
+					}
+				}
+			}
+		},
+		// 修改密码
+		{
+			"path": "pages/my/myAdministration/children/changePassword/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "修改密码",
+						"titleAlign": "left"
+					}
+				}
+			}
+		},
+		// 实名认证
+		{
+			"path": "pages/my/myAdministration/children/changeRealname/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "实名认证",
+						"titleAlign": "left"
+					}
+				}
+			}
+		},
+		// 提现信息
+		{
+			"path": "pages/my/myAdministration/children/withdrawal/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C"
+						// "titleText": "提现信息"
+					}
+				}
+			}
+		},
+		// 提现信息
+		{
+			"path": "pages/my/myAdministration/children/withdrawalList/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "提现信息",
+						"titleAlign": "left"
+					}
+				}
+			}
+		},
+
+
+		// 扫码登录
+		{
+			"path": "pages/my/children/scanCode/index",
+			"style": {
+				"app-plus": {
+					
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleText": "扫码登录",
+						"titleAlign": "left"
+
+					}
+				}
+			}
+		},
+
+
+		//搜索
+		{
+			"path": "pages/view/search/search",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		},
+		//详情页
+		{
+			"path": "pages/view/gamedetail/gamedetail",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		//游戏详情-全部评论
+		{
+		    "path" : "pages/view/gamedetail/comment1234",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "全部评论"
+		    		}
+		    	}
+		    }  
+		},
+		//评论详情
+		{
+			"path": "pages/view/gamedetail/commentDetail",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		{
+			// 写评论
+			"path": "pages/view/gamedetail/children/WrComment",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "写评论"
+					}
+				}
+			}
+
+		},
+		{
+			"path": "components/nvue-propup/nvue-propup",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}
+		//详情页
+		, {
+			"path": "pages/view/gamedetail/children/introduce",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "简介"
+					}
+				}
+			}
+
+		}
+		//我的优惠券
+		, {
+			"path": "pages/my/coupons/coupons",
+			"style": {
+				"onReachBottomDistance": 20,
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "我的优惠券"
+					}
+				}
+			}
+
+		}
+		//游戏详情下面的优惠券
+		, {
+			"path": "pages/view/gamedetail/children/youhui",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "优惠券"
+					}
+				}
+			}
+
+		}, {
+			"path": "pages/my/integral/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		},
+		//积分记录
+		{
+			"path": "pages/my/integral/integral",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "积分记录"
+					}
+				}
+			}
+
+		},
+		//任务中心
+		{
+			"path": "pages/my/children/taskCenter/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		}
+
+
+		//签到规则
+		, {
+			"path": "pages/my/children/taskCenter/signRule/signRule",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "签到规则"
+					}
+				}
+			}
+
+		}, {
+			"path": "components/nvue-tabs/nvue-tabs",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		//详情页 福利
+		{
+			"path": "pages/view/gamedetail/children/welfare/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		},
+
+		//试玩游戏
+		{
+			"path": "pages/my/children/demoGame/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		},
+		{ //平台币
+			"path": "pages/my/FlatGoldCoins/FlatGoldCoins",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		},
+		// 支付方式
+		{
+			"path": "pages/view/payMethods/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "支付方式"
+					}
+				}
+			}
+		},
+		{ //平台币-充值中心
+			"path": "pages/my/FlatGoldCoins/topUp/topUp",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "充值中心"
+					}
+				}
+			}
+
+		}
+
+		, { //平台币-账号记录
+			"path": "pages/my/FlatGoldCoins/record/record",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "账号记录"
+					}
+				}
+			}
+		},
+		// h5游戏开玩
+		{
+			"path": "pages/view/h5play/index",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none" //关闭窗口回弹效果
+
+				}
+			}
+		}
+		/* 下载 */
+		, {
+			"path": "pages/view/downLoad/downLoad",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+
+		},
+		// 注册
+		{
+			"path": "pages/view/register/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": ""
+					}
+				}
+			}
+		},
+		/* 交易记录 */
+		{
+			"path": "pages/transaction/children/transactionRecords/index",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "交易记录"
+					}
+				}
+			}
+		},
+
+		// 综合功能-意见反馈
+		{
+			"path": "pages/my/comprehensive/feedback/feedback",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		}
+		// 综合功能-游戏礼包
+		, {
+			"path": "pages/my/comprehensive/gameGiftBag/gameGiftBag",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		}
+
+		//综合功能-游戏资讯
+		, {
+			"path": "pages/my/comprehensive/gameConsulting/gameConsulting",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "游戏资讯"
+					}
+				}
+			}
+
+		},
+
+		{ //游戏资讯-详情页面
+			"path": "pages/my/comprehensive/gameConsulting/gameDetail/gameDetail",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		}
+		//忘记密码
+		, {
+			"path": "pages/my/children/forgetPwd",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": ""
+					}
+				}
+			}
+		}
+		//资讯攻略
+		, {
+			"path": "pages/view/gamedetail/children/zxDetail",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "资讯攻略"
+					}
+				}
+			}
+
+		}
+
+		, {
+			"path": "pages/my/children/bindingPssword/bindingPssword",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "绑定密码"
+					}
+				}
+			}
+
+		}, {
+			"path": "pages/transaction/children/recovery/children/payRedeem/payRedeem",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "赎回支付"
+					}
+				}
+			}
+		}
+        
+       
+        ,{
+            "path" : "pages/my/integral/dhptb",
+            "style": {
+            	"app-plus": {
+            		"bounce": "none", //关闭窗口回弹效果
+            		"titleNView": {
+            			"backgroundColor": "#fff",
+            			"titleColor": "#1C1C1C",
+            			"titleAlign": "left",
+            			"titleText": "兑换平台币"
+            		}
+            	}
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/mySetting/Setting",
+            "style": {
+            	"app-plus": {
+            		"bounce": "none", //关闭窗口回弹效果
+            		"titleNView": {
+            			"backgroundColor": "#fff",
+            			"titleColor": "#1C1C1C",
+            			"titleAlign": "left",
+            			"titleText": "设置中心"
+            		}
+            	}
+            }
+            
+        }
+    ],
+
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"tabBar": {
+		"borderStyle": "white",
+		"color": "#8a8a8a",
+		"selectedColor": "#ff5927",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/images/tabbar/index1.png",
+				"selectedIconPath": "static/images/tabbar/index2.gif",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/game/index",
+				"iconPath": "static/images/tabbar/guanli1.png",
+				"selectedIconPath": "static/images/tabbar/guanli2.gif",
+				"text": "游戏"
+			},
+			{
+				"pagePath": "pages/transaction/index",
+				"iconPath": "static/images/tabbar/jiaoyi1.png",
+				"selectedIconPath": "static/images/tabbar/jiaoyi2.gif",
+				"text": "交易"
+			},
+			{
+				"pagePath": "pages/customerService/index",
+				"iconPath": "static/images/tabbar/kefu1.png",
+				"selectedIconPath": "static/images/tabbar/kefu2.gif",
+				"text": "客服"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"iconPath": "static/images/tabbar/wode1.png",
+				"selectedIconPath": "static/images/tabbar/wode2.gif",
+				"text": "我的"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}

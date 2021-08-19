@@ -1,0 +1,185 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url('~@/static/fonts/iconfont.ttf?t=1624964171560') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-queren:before {
+  content: "\e611";
+}
+
+.icon-shizhong:before {
+  content: "\e74f";
+}
+
+.icon-sousuo:before {
+  content: "\e636";
+}
+
+.icon-gengduo:before {
+  content: "\e670";
+}
+
+.icon-jiufuqianbaoicon08:before {
+  content: "\e695";
+}
+
+.icon-bofang5:before {
+  content: "\e655";
+}
+
+.icon-wendangzhongxin:before {
+  content: "\e645";
+}
+
+.icon-wodebaobeiye_genghuan:before {
+  content: "\e650";
+}
+
+.icon-dianzan:before {
+  content: "\e607";
+}
+
+.icon-saoma:before {
+  content: "\e712";
+}
+
+.icon-jiaohuan:before {
+  content: "\e7b2";
+}
+
+.icon-chakanyan:before {
+  content: "\e630";
+}
+
+.icon-QQ:before {
+  content: "\e882";
+}
+
+.icon-pinglun-tianchong:before {
+  content: "\e7f6";
+}
+
+.icon-zhinanzhenfaxiandaohangdizhiweizhi:before {
+  content: "\e786";
+}
+
+.icon-zanting:before {
+  content: "\e693";
+}
+
+.icon-fenxiang:before {
+  content: "\e72f";
+}
+
+.icon-chakanmima:before {
+  content: "\e663";
+}
+
+.icon-yijianfankui:before {
+  content: "\e724";
+}
+
+.icon-liwu:before {
+  content: "\e646";
+}
+
+.icon-xiepinglun:before {
+  content: "\e7d3";
+}
+
+.icon-weibo-fill:before {
+  content: "\e647";
+}
+
+.icon-gengduo1:before {
+  content: "\e620";
+}
+
+.icon-gengduo2:before {
+  content: "\e633";
+}
+
+.icon-qingli:before {
+  content: "\e666";
+}
+
+.icon-xiazai_huaban:before {
+  content: "\e61f";
+}
+
+.icon-zan:before {
+  content: "\e621";
+}
+
+.icon-shoucang2:before {
+  content: "\e68c";
+}
+
+.icon-question-mark:before {
+  content: "\e788";
+}
+
+.icon-GamePadyouxishoubing:before {
+  content: "\e72a";
+}
+
+.icon-gengduo3:before {
+  content: "\e66a";
+}
+
+.icon-lipinquan:before {
+  content: "\e622";
+}
+
+.icon-fabu:before {
+  content: "\e60f";
+}
+
+.icon-xingxing-bian:before {
+  content: "\e628";
+}
+
+.icon-wechat-fill:before {
+  content: "\eb05";
+}
+
+.icon-pinglun:before {
+  content: "\f35f";
+}
+
+.icon-bianji:before {
+  content: "\e8b0";
+}
+
+.icon-quxiao:before {
+  content: "\e608";
+}
+
+.icon-biyanjing:before {
+  content: "\e601";
+}
+
+.icon-fullscreen:before {
+  content: "\e623";
+}
+
+.icon-suoxiao:before {
+  content: "\e67e";
+}
+
+.icon-jingyin:before {
+  content: "\e613";
+}
+
+.icon-shengyin:before {
+  content: "\e615";
+}
+

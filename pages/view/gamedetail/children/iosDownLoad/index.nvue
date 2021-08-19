@@ -1,0 +1,264 @@
+<template>
+	<view class="">
+		<!-- @click='handleClose' -->
+		<view :style="{width: myWidth+'px',height:myHeight+'rpx'}"   class="backIos">
+
+				<view class="backBody" :style="{width:myWidth-80+'px',height:'600rpx'}">
+					<image src="@/static/images/view/iosOpen.png" :style="{width:myWidth-40+'px',height:'860rpx'}" style="margin-left: 40rpx;margin-top: 120rpx;"></image>
+					<view class="packageTitle" :style="{width:myWidth-80+'px',left:'32px'}">
+						       
+						<!-- 正在签名 -->
+						<view class="" style="flex-direction: row;align-items: center;" :style="{width:myWidth-80+'px'}">
+						<view class="packageTlist">
+							<view class="imageBack" :style="{backgroundColor:'#FFD014'}">
+								<image class="images"  src="@/static/images/view/zzqm.png" />
+							</view>
+							  <text class="text">开始签名</text>
+						</view>
+						<view class="line">
+							<view class="types" v-if="type==0">
+								<text class="lineText" v-for="(item,index) in 7" :key='index' :class="{active:index==isShow}"></text>
+							</view>
+							<view class="types" v-else>
+								<text  v-for="(item,index) in 7" :key='index' class="active lineText"></text>
+							</view>
+							
+						</view>
+						<!-- 签名完成开始打包 -->
+						<view class="packageTlist">
+							<view class="imageBack" :style="{backgroundColor:type==2||type==3?'#FFD014':'#DCDCDC'}">
+								<image class="images" src="@/static/images/view/zzqm_active.png" />
+							</view>
+							<text class="text">{{type==2||type==3?'签名成功':'正在签名'}}</text>
+						</view>
+
+						<view class="line">
+							<view class="types" v-if="type==2">
+								<text class="lineText" v-for="(item,index) in 7" :class="{active:index==isShow}"></text>
+							</view>
+							<view class="types" v-else>
+								<text class="lineText" v-for="(item,index) in 7" :class="{active:type==3?true:false}"></text>
+							</view>
+						</view>
+						<view class="packageTlist">
+							<view class="imageBack" :style="{backgroundColor:type==3?'#FFD014':'#DCDCDC'}">
+								<image   :src="type==3?'../../../static/images/view/dbwc_active.png' : '../../../static/images/view/zzdb_active.png'" style="width: 50rpx;height: 50rpx;" />
+							</view>
+							<text class="text">{{ type==3?'打包完成':'开始打包'}}</text>
+						</view>
+					</view>
+
+					<view class="packageButton" @click="handleClose" >
+						<text class="button">取消下载</text>
+					</view>
+					<!-- @click="handleClose" -->
+					<view class="packageExplain" >
+						<text class="packText">当前游戏正在打包中，请耐心等待</text>
+						<view style="flex-direction: row;align-items: center;">							
+						<text class="packText">打包完成</text> <text class="packText" style='color: #FFD014;'>安 装</text><text class="packText">按钮进行安装</text>
+						</view>
+						<!-- <text class="packText" style="color: #FC6F7C;">可关闭此界面，稍后回来直接安装游戏</text> -->
+					</view>
+				</view>
+		  </view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {$api} from '@/config/api.js';
+	export default {
+		props: {
+
+			iosStatus: {
+				type: Number,
+				default: 0
+			},
+			game_id: {
+				default: 0,
+			
+			}
+		},
+		data() {
+			return {
+				isShow: 0,
+				timer: '',
+				shows: false,
+				type: 0,
+				status: 0,
+			}
+		},
+		computed: {
+			
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+
+			},
+			userInfo(){
+				return this.$store.state.userInfo
+			}
+		},
+		methods: {
+			//打开
+			handleOpen() {
+				if (this.status == 1) {
+					this.getTimer()
+				}
+			},
+			//关闭
+			handleClose() {
+				this.status = 0
+				this.$emit('newStatus', this.status)
+				this.$emit('close', false)
+                this.clearTimer()
+			},
+			getTimer() {
+				this.timer = setInterval(() => {
+					this.isShow++
+					this.isShow > 7 ? this.isShow = 0 : this.isShow
+					$api.get('game/installipa',{
+							game_id: this.game_id,
+							udid: this.$store.state.udid,
+							client_id:this.$store.state.client_id
+					}).then(res => {
+						console.log(res,'resresresresresres')
+						switch (res.data.data.code) {
+							case 0:
+								this.type = 0
+								uni.showToast({
+									icon: 'none',
+									title: res.data.data.msg
+								})
+								this.clearTimer()
+								break;
+							case 100:
+								this.type = 1
+								break;
+							case 101:
+								this.type = 1
+								break;
+							case 150:
+								this.type = 2
+								break;
+							case 200:
+								this.type = 3
+								this.$emit('close', false)
+								this.$emit('openurl', res.data.data.data.openurl)
+								this.$emit('newStatus',3)
+								this.clearTimer()
+								break;
+						}
+					})
+
+				}, 1000)
+			},
+
+			clearTimer() {
+				clearInterval(this.timer)
+			}
+		},
+		watch: {
+			iosStatus: {
+				handler(val){
+					console.log(val,'this.statusthis.status')
+					this.status = val
+					if(val==1){
+					this.handleOpen()
+						
+					}
+				},	
+                 immediate: true	
+			}
+		}
+
+	}
+</script>
+
+<style scoped>
+	.active {
+		background-color: #FF5927 !important;
+	}
+
+	.backIos {
+		position: relative;
+		overflow: hidden;
+		background-color: rgba(0,0,0,.3);
+   }
+		.packageTitle {
+			position: absolute;
+			padding: 0rpx 30rpx;
+			height: 600rpx;
+			top: 540rpx;
+		}
+
+		.packageExplain {
+			align-items: flex-start;
+			margin-top: 24rpx;
+			/* padding: 10rpx 30rpx; */
+		}
+		.imageBack {
+			width: 90rpx;
+			height: 90rpx;
+			line-height: 100rpx;
+			border-radius: 90rpx;
+			flex-direction: row;
+           align-items: center;
+		   justify-content: center;
+		}
+		.images {
+			width: 60rpx;
+			height: 54rpx;
+		}
+      .line {
+		  /* width: 100rpx; */
+          margin-bottom: 50rpx;
+      	
+      }
+		  .types{
+			flex-direction: row;
+			align-items: center;
+		  }
+   
+		.text {
+			margin-top: 10rpx;
+			color: #1c1c1c;
+			font-size: 28rpx;
+			font-weight: 700;
+		}
+		.lineText {
+			background-color: #1C1C1C;
+			height: 4rpx;
+			width: 8rpx;
+			margin: 0 4rpx;			
+	  	}
+		.packageButton{
+			flex-direction: row;
+			justify-content: center;
+		}
+		.button{
+			margin-top: 24rpx;
+			padding: 12rpx 200rpx;
+			background-color: #FF5927;
+			color: #fff;
+			border-radius: 40rpx;
+		}
+		.packText{
+			margin-bottom: 9rpx;
+			color: #1c1c1c;
+			font-size: 26rpx;
+			font-weight: 300;
+		}
+		.packageTlist {
+			align-items: center;
+
+		}
+
+
+
+</style>

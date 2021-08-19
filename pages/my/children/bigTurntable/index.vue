@@ -1,0 +1,466 @@
+<template>
+	<view class="">
+		<u-navbar title="" :border-bottom='false' class="u-navbar">
+			<slot>
+				<view class="title">
+					<view class="slot-wrap">
+						<text class="customer" style="font-weight: 400;margin-left: -20rpx;font-size: 32rpx;">幸运转盘</text>
+					</view>
+					<view class="slot-right">
+						<view class="radius">
+							<text class="iconfont" style="font-weight: 400;font-size: 34rpx;"	@click="handleRouter('/pages/my/integral/integral')">&#xe645;</text>
+						</view>
+					</view>
+				</view>
+			</slot>
+		</u-navbar>
+		<view class="bg123">
+			<view class="bigTitle" >
+				<view  class="dzpjh" v-if="is_free==1">您有一次免费抽奖机会</view>
+				<view class="dzpjh" v-else>您今天免费次数已用完</view>
+
+			</view>
+			<view class="my_integrals">
+				<view class="my_integral">我的积分：{{userInfo.my_integral}}</view>
+			</view>
+
+			<view class="bigTrb" :style="{margin:'0 auto',marginTop:myHeight-750+'rpx'}">
+
+				<!-- 组件 -->
+				<view class="bigzhuanp">
+					<LotteryDraw class="trans" @click='handleShowClick' :grid_info_arr='grid_info_arr' :type='type' :order='order' style="transform: scale(1.2);" @get_winingIndex='get_winingIndex'
+						@luck_draw_finish='luck_draw_finish'></LotteryDraw>
+				</view>
+
+
+
+			</view>
+			<xw-popup v-model="show" mode="center" border-radius="20" width="80%" :mask-close-able='false'>
+				<!-- 兑换抽奖机会 -->
+				<view class="dzp-tc" v-if="handleShow"
+					style="background: url(../../../../static/images/my/dzp-tck.png) no-repeat center;">
+					<view class="dzp-tc-content" style="top: 30%;">
+						<image src="@/static/images/my/dzp-jf.png" mode="widthFix" style="width:100rpx;" />
+						<view class="dzp-tc-content-text1" v-if="is_free==2">幸运大转盘一次抽奖</view>
+						<view class="dzp-tc-content-text1" v-else>幸运大转盘免费一次抽奖</view>
+						<view class="dzp-tc-content-text2" v-if="is_free==2">您将消耗50积分</view>
+						<view class="dzp-tc-content-text2" v-else>您本次不消耗积分</view>
+						<view class="dzp-tc-content-text3" v-if="userInfo.my_integral<50&&is_free==2">
+							<u-icon name="info-circle-fill" color="#ff5927" size="28"></u-icon>
+							<text>您的积分不足，快去完成任务赚钱吧</text>
+						</view>
+						<view class="dzp-tc-content-text4">
+							<button style="background-color: #a1a1a1;" @click="show=false;">我再想想</button>
+							<button :style="{backgroundColor:userInfo.my_integral<50&&is_free==2?'#a1a1a1':'#ff5927'}"
+								@click="handleClick" :disabled="userInfo.my_integral<50&&is_free==2">确认兑换</button>
+						</view>
+					</view>
+				</view>
+				<!-- 未中奖 -->
+				<view class="dzp-tc1" v-else-if="order.is_win==2"
+					style="background: url(../../../../static/images/my/dzp-wzj.png) no-repeat center;">
+					<view class="dzp-tc-content">
+						<image src="@/static/images/0.png" mode="widthFix" style="width:280rpx;" />
+						<view class="dzp-tc-content-xx" style="color: #999;font-size: 36rpx;margin-top: -25rpx;">{{order.prize_name}}
+						</view>
+						<view class="" style="display: flex; justify-content: center;">
+							<view class="buttons" @click="handleNo" style="margin-bottom: 5rpx;">再来一次</view>
+						</view>
+
+					</view>
+				</view>
+				<!-- 中奖 -->
+				<view class="dzp-tc1" v-else
+					style="background: url(../../../../static/images/my/dzp-zj.png) no-repeat center;">
+					<view class="dzp-tc-content">
+						<image :src="order.prize_img" mode="widthFix" style="width:260rpx;" />
+						<view style="margin:10rpx 0;color: #ff5927;font-size: 36rpx;">{{order.prize_name}}</view>
+						<view class="" style="display: flex; justify-content: center;">
+							<view class="buttons" @click="handleReceive">立即领取</view>
+						</view>
+					</view>
+				</view>
+			</xw-popup>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		mapState
+	} from 'vuex'
+	import LotteryDraw from '@/components/SJ-LotteryDraw/SJ-LotteryDraw.vue';
+	export default {
+		components: {
+			LotteryDraw
+		},
+		data() {
+			return {
+				is_free: '',
+				bigShow: true,
+				show: false,
+				handleShow: true,
+				order: "",
+				type: 1,
+				youHeight: 0,
+				//转盘数据	
+				grid_info_arr: [],
+				lottery_draw_param: {
+					startIndex: 0, //开始抽奖位置，从0开始
+					totalCount: 4, //一共要转的圈数
+					winingIndex: 0, //中奖的位置，从0开始
+					speed: 100, //抽奖动画的速度 [数字越大越慢,默认100]
+					domData: [] //长度为九的数组
+
+				}
+			};
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			...mapState({
+				userInfo: 'userInfo'
+			})
+		},
+		// onReady() {
+		// 	uni.setNavigationBarTitle({
+		// 		title: this.$t('wheelfortune')
+		// 	})
+		// },
+		onLoad() {
+			this.youHeight = uni.getSystemInfoSync().screenHeight
+			console.log(this.youHeight)
+			this.getPrizeList()
+		},
+		methods: {
+			handleRouter(url) {
+				uni.navigateTo({
+					url
+				})
+			},
+			getPrizeList() {
+				//请求奖品列表
+				this.$api.get("app/shop/big_wheel_list", {
+					mg_mem_id: this.userInfo.mem_id,
+				}).then((res) => {
+					this.is_free = res.data.data.is_free;
+					this.grid_info_arr = res.data.data.list.sort((a, b) => {
+						return a.prize_order - b.prize_order;
+					});
+					this.grid_info_arr.push({
+						prize_img: require('@/static/images/cjbutton.png'),
+						prize_name: '抽奖'
+					})
+					this.lottery_draw_param.domData = this.grid_info_arr
+
+				})
+			},
+			//未中奖
+			handleNo() {
+				this.show = false
+				this.grid_info_arr = []
+				this.type = 1
+				this.bigShow = true
+				this.getPrizeList()
+
+			},
+			//确认兑换
+			handleClick() {
+				this.type = 2
+				this.show = false;
+				if (this.is_free == 2) {
+					this.userInfo.my_integral = this.userInfo.my_integral - 50;
+				}
+
+				let timer = setTimeout(() => {
+					this.show = true;
+				}, 6000);
+				this.is_free = 2
+			},
+			//领取 
+			handleReceive() {
+				uni.showToast({
+					icon: "none",
+					title: "领取成功！",
+					success: () => {
+						setTimeout(() => {
+							this.$common.getuserInfo();
+							this.grid_info_arr = []
+							this.type = 1
+							this.getPrizeList()
+							this.show = false;
+							this.bigShow = true
+							setTimeout(() => {
+								this.handleShow = true;
+							}, 100);
+						}, 200);
+					},
+				});
+			},
+			//确认抽奖显示
+			handleShowClick() {
+				if (this.bigShow) {
+					this.show = true;
+					this.handleShow = true;
+				}
+
+			},
+			// 修改获奖位置（可以在这里获取后台的数据
+			get_winingIndex(callback) {
+				if (this.bigShow) {
+					this.show = false;
+					this.$api.get(
+						"app/shop/lucky_draw", {
+							is_free: this.is_free,
+							mem_id: this.userInfo.mem_id,
+						},
+					).then((res) => {
+						this.order = res.data.data;
+						this.handleShow = false;
+						this.lottery_draw_param.winingIndex = this.order.prize_order - 1;
+						callback(this.lottery_draw_param);
+						this.bigShow = false
+
+					});
+				}
+
+			},
+			// 抽奖完成
+			luck_draw_finish(param) {
+
+			}
+
+		},
+		//监听导航栏事件
+		onNavigationBarButtonTap() {
+			this.common.routerTo({
+				name: "integralRecord",
+			});
+		}
+	};
+</script>
+
+<style lang="scss" scoped>
+	.u-navbar {
+
+		.title {
+			flex: 1;
+			padding: 0 $xw-padding;
+			@include flex;
+		}
+
+		.customer {
+			color: $xw-black-dark;
+			font-size: $xw-h1-font;
+			
+		}
+
+		.radius {
+			width: 64rpx;
+			height: 64rpx;
+			border-radius: 50%;
+			box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+			@include flex;
+			justify-content: center;
+		}
+
+	}
+
+	.bg123 {
+		background: url("~@/static/images/my/bigturntablebgi1.png") center no-repeat;
+		background-size: 100%;
+		background-position: 10 0;
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		background-color: #f7a085;
+		position: relative;
+
+		.bigTrb {
+			width: 100%;
+			@include flex;
+			justify-content: center;
+
+			.bigzhuanp {
+				position: absolute;
+				top: 660rpx;
+				// margin-bottom: 460rpx;
+			}
+
+
+
+
+		}
+
+	}
+	.bigTitle {
+		@include flex;
+		flex-direction: column;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		
+
+		.dzpjh {
+			color: #BF4137;
+			font-size: $xw-h3-font;
+			letter-spacing: 4rpx;
+			font-weight: 700;
+			white-space: nowrap;
+		}
+
+
+
+	}
+
+	.my_integrals {
+		@include flex;
+		flex-direction: column;
+		position: absolute;
+		left: 50%;
+		bottom: 62.5%;
+		transform: translateX(-50%);
+
+		.my_integral {
+			color: #fff;
+			letter-spacing: 2rpx;
+			font-size: $xw-font;
+			margin: 6rpx auto;
+		}
+	}
+
+	.dzp-tc {
+		height: 800rpx !important;
+		width: 100% !important;
+		background-size: 120% !important;
+
+
+	}
+
+	.dzp-tc1 {
+		height: 900rpx !important;
+		width: 100% !important;
+		background-size: 110% !important;
+	}
+
+
+	.dzp-tc,
+	.dzp-tc1,
+	.dzp-tc2 {
+		position: relative;
+		overflow: hidden;
+
+		.dzp-tc-content {
+			position: absolute;
+			width: 80%;
+			height: 60%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-top: 100rpx;
+			top: 28%;
+			left: 50%;
+			z-index: 10;
+			transform: translateX(-50%);
+
+			.dzp-tc-content-text1 {
+				margin-top: 10rpx;
+			}
+
+			.dzp-tc-content-text2 {
+				color: red;
+			}
+
+			.dzp-tc-content-text3 {
+				margin-top: 10rpx;
+
+				text {
+					color: #ff8500;
+				}
+			}
+
+			.dzp-tc-content-text4 {
+				margin-top: 40rpx;
+				width: 80%;
+				display: flex;
+				justify-content: space-between;
+
+				button {
+					padding: 10rpx 40rpx;
+					line-height: 40rpx;
+					font-size: 24rpx;
+					color: #fff;
+					border: none;
+					border-radius: 10rpx;
+				}
+			}
+		}
+	}
+
+	.dzp-tc-content-xx {
+		margin: 0 auto;
+		color: #FFD014;
+	}
+
+	@media screen and (max-height: 750px) {
+		.bigTrb {
+			top: 45% !important;
+		}
+	}
+	@media screen and (max-height: 667px) {
+	    .bigTitle {
+	        top:23%;
+	    }
+		.dzp-tc-content{
+			top: 10%;
+		}
+		.my_integrals{
+			bottom: 64%;
+		}	
+		.bigzhuanp{
+			top:560rpx !important;
+		}	
+		.trans{
+			transform: scale(1.14) !important;
+		}		
+	}
+	@media screen and (min-height:668px) and(max-height: 804px) {
+	    .bigTitle {
+	        top:26.5%;
+	    }
+		.dzp-tc-content{
+			top: 28%;
+		}
+		.my_integrals{
+			bottom: 62.5%;
+		}				
+	}
+	@media screen and (min-height:805px) and (max-height:900px) {
+	    .bigTitle {
+	        top:27.5%;
+	    }
+	    .dzp-tc-content{
+	    	top: 29%;
+	    }
+	    .my_integrals{
+	    	bottom: 62%;
+	    }
+		.trans{
+			transform: scale(1.17) !important;
+		}
+		.bigzhuanp{
+			top:680rpx !important;
+		}
+	}
+
+	.buttons {
+		margin-top: 20rpx;
+		@include button(60rpx, 12rpx, 80rpx);
+		font-size: 32rpx;
+		font-weight: 400;
+		display: inline-block;
+
+
+	}
+</style>

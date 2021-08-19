@@ -1,0 +1,20 @@
+{
+    "name": "GetXWID",
+    "id": "ZSY_GetXWID",
+    "version": "1.0",
+    "description": "获取app包中的id信息",
+    "_dp_type":"nativeplugin",
+    "_dp_nativeplugin":{
+        "android": {
+            "plugins": [
+                {
+                    "type": "module",
+                    "name": "GetXWID",
+                    "class": "com.zsy.unixwplugin_id.GetXWID"
+                }
+            ],
+            "integrateType": "aar",            
+	    "minSdkVersion" : 16
+        }
+    }
+}

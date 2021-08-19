@@ -1,0 +1,658 @@
+<template> 
+	<view class="nvuelist" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
+		<view class="TitleBar" :style="{height:statusBarHeight+'px',width:myWidth+'px'}"/>
+
+		<view class="Title" style="position: fixed;top: 32rpx;" :style="{width:myWidth+'px'}">
+			<view class="TitleLeft" style="flex-direction: row;align-items: center;">
+				<view ref="handleBack" style="margin:0rpx 24rpx 0 0rpx;" @click="handleBack">
+					<image src="@/static/images/left.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+				</view>
+				<view  style="flex-direction: row;align-items: center;" v-if="formData.is_h5name||formData.tagsname||formData.catesname">
+					<text class="titlename h1">{{formData.is_h5name||'手游'}}</text>
+					<text class="titlename h1" v-if="formData.tagsname&&formData.tagsname!='全部'">·{{formData.tagsname}}</text>
+					<text class="titlename h1"	v-if="formData.catesname&&formData.catesname!='全部'">·{{formData.catesname}}</text>
+				</view>
+				<text v-else class="titlename h1"> 全部游戏</text>
+			</view>
+			<view class="TitleRight" style="flex-direction: row;align-items: center;">
+				<view class="titleRadius" ref="titleRadius1" @click="handleDwon">
+					<image src="@/static/images/down.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+				</view>
+				<view class="titleRadius" style="margin-left:24rpx;" ref="titleRadius2" @click="handleSelete" >
+					<image src="@/static/images/selete.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+				</view>
+			</view>
+		</view>
+		<view  style="height:48px;" :style="{width:myWidth+'px'}">
+		
+		</view>
+ 
+		<!-- 分类 -->
+		<view :style="{height:myHeight-160+'rpx'}" class="slideBar" ref='slideBarref'>
+			<view class="list-left" ref='slideLeft'>
+				<list class="slide-left" :style="{height:myHeight-160+'rpx'}" :show-scrollbar='false' :scrollTop='scrollTop'>
+					<cell v-for="(item, index) in pageList" :key="index">
+						<view class="listItem" :class="{active1: item.id == activeIndex}"	@click="changeCate(item, index)">
+							<text class="lines" :class="{actives: item.id == activeIndex}"></text>
+							<text class="textList" :class="{active: item.id == activeIndex}">{{item.name}}</text>
+						</view>
+					</cell>
+				</list> 
+			</view>
+			<!-- 分类 组件 -->
+			<view class="listright" :style="{height:myHeight-160+'rpx'}">
+				<list class="slide-right" ref="list" loadmoreoffset='10' :show-scrollbar='false' :style="{height:myHeight-160+'rpx'}" @loadmore='loadmore'>
+					<refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'"
+						:viewHeight='120'>
+						<view class="refreshImages" :style="{width:isShowSelet?myWidth+'px':myWidth-87+'px'}">
+							<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
+						</view>
+					</refresh>
+					<cell v-if="Object.keys(serverData).length > 0">
+						<view style="margin:72rpx 0 48rpx 0;">
+							<text class="h2">今日新服</text>
+						</view>
+					</cell>
+					<cell >
+						<view v-for="(item,index) in serverlist[getmonth]" :key='index'>
+							<gameItem :item='item' style="margin-bottom:32rpx;" :type='isShowSelet?3:2'></gameItem>
+						</view> 
+					</cell>
+					<cell v-if="list.length>0">
+						<view style="margin:32rpx 0 48rpx 0;">
+							<text class="h2">所有游戏</text>
+						</view>
+					</cell>
+					<cell v-for="(item,index) in list" :key="i" v-if="list.length>0">
+						<gameItem :item='item' style="margin-bottom:32rpx;" :type='isShowSelet?3:2'></gameItem>
+					</cell> 
+					<cell v-if="loadinging">
+						<view class="" style="margin-bottom: 60rpx;flex-direction: row;justify-content: center;" :style="{width:isShowSelet?myWidth+'px':myWidth-87+'px',height:'220rpx'}">
+							<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+						</view>
+					</cell>
+					
+					<!-- <loading class="loadList" @loading="onloading"  :display="loadinging ? 'show' : 'hide'" :style="{width:isShowSelet?myWidth+'px':myWidth-87+'px',height:'220rpx'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</loading> -->
+
+				</list>
+				
+				<view v-if="list.length==0&&serverData.length==0" :style="{width:isShowSelet?myWidth+'px':myWidth-60+'px'}" style="position: absolute;top: 300rpx;left: 50%;margin-left: -50rpx;">
+					<myloading :isrefre='isrefre' @Refresh='Refresh' :class="{middle_left:isShowSelet==true}"></myloading>
+				</view>
+			</view>
+
+		</view>
+	<view class="" style="position: absolute;">
+		<listcontent @submit='submit' :isShowSelet='isShowSelet' :tagsList='tagsList' :mycates='params.cates' :pageList='pageList' :type='popdown'></listcontent>
+	</view>
+	</view>
+	
+
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	import gameItem from '@/components/nvue-gameItem/nvue-gameItem'
+	import myloading from '@/components/nvue-loading/nvue-loading'
+	import listcontent from './listcontent'
+
+
+
+
+	export default {
+		components: {
+			gameItem,
+			listcontent,
+			myloading
+		},
+		data() {
+			return {
+				left_middle:false,
+				//下拉刷新
+				refreshing: false,
+				scrollTop:0,
+				active: 0,
+				active4: 0,
+				isShowTags: false,
+				isShowSelet: false,
+				isbigShow: true,
+				popdown: false,
+				// 游戏标签列表
+				tagsList: [],
+				serverData: [],
+				loadinging: false,
+				isrefre: false,
+				//新服数据
+				serverlist: [],
+				// 第二页和第三页参数
+				params: {
+					page: 1,
+					offset: 15,
+					is_h5: 0,
+					tags: 0,
+					is_mp4: 0,
+					cates: 0,
+				},
+				//标签
+				formData: {
+					is_h5name: '',
+					tagsname: '',
+					catesname: ''
+				},
+				count: 0,
+				pageList: [],
+				activeIndex: 0,
+				list: []
+			}
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			},
+			getmonth() {
+				return (((new Date().getMonth() + 1)<10?'0' :'') + (new Date().getMonth() + 1) + '-' + ( new Date().getDate()<10?'0':'') + new Date().getDate())
+					
+				}
+
+		},
+		methods: {
+			// 初始化顶部下拉列表
+			getInitData() {
+				$api.get('/game/getcategorynew', {client_id:this.$store.state.client_id}).then(res => {
+					this.pageList = res.data.data.cate;
+					this.tagsList = res.data.data.tags;
+					this.pageList.unshift({
+						name: '全部',
+						id: 0,
+					})
+					this.tagsList.unshift({
+						name: '全部',
+						id: 0,
+					})
+				})
+
+			},
+			//上拉加载
+			 onloading(){
+			   this.loadinging = true
+			   if(this.count>this.list.length){
+				      this.getPageData()
+			   }
+			    setTimeout(() => {
+						this.resetLoadMore()
+						this.loadinging = false;
+					}, 1000)
+					
+				},
+			//下拉刷新
+			onpullingdown(e) {
+
+			},
+			//刷新
+			Refresh(data) {
+				if (data) {
+					this.isrefre = true
+					this.reset()
+					this.getPageData()
+					this.getServerList()
+				}
+			},
+			onrefresh() {
+				// this.reset()
+				this.refreshing = true
+				setTimeout(() => {
+					this.resetLoadMore()
+					this.refreshing = false;
+				}, 1000)
+			},
+			//选择框
+			submit(data) {
+				this.reset()
+				this.params.tags = data.tags
+				this.params.is_h5 = data.is_h5
+				this.params.cates = data.cates
+				this.activeIndex = this.params.cates;
+				this.formData = {
+					...data
+				}
+				this.handleDwon()
+				this.getPageData()
+				this.getServerList()
+			},
+
+			// 重置 loadmore
+			resetLoadMore() {
+				this.$refs.list.resetLoadmore();
+				this.loadinging = false
+			},
+			//上拉加载
+			loadmore() {
+				if (this.list.length < this.count) {
+					this.loadinging = true
+					this.params.page++;
+					this.getPageData();
+
+				}
+			},
+			//后退
+			handleBack() {
+				this.bin()
+			},
+			//下拉
+			handleDwon() {
+				console.log(11111111111111,'2222222222222222')
+				if (this.isShowTags) {
+					this.bin1(common.getEl(this.$refs.titleRadius1), 'transform.rotateZ', `linear(t,180,-180,600)`)
+					this.isShowTags = false
+					this.popdown = false
+					this.bin1(common.getEl(this.$refs.titleRadius1), 'transform.translateX', `linear(t,45,-45,600)`)
+				
+					this.bin1(common.getEl(this.$refs.titleRadius2), 'opacity', `linear(t,0,1,600)`)
+					setTimeout(() => {
+						this.bin1(common.getEl(this.$refs.titleRadius2), 'transform.translateX',
+							`linear(t,40,-40,10)`)
+					}, 300)
+				} else {
+					this.bin1(common.getEl(this.$refs.titleRadius1), 'transform.rotate', `linear(t,0,180,600)`)
+
+					this.bin1(common.getEl(this.$refs.titleRadius1), 'transform.translateX', `linear(t,0,45,600)`)
+				
+					
+					this.bin1(common.getEl(this.$refs.titleRadius2), 'opacity', `linear(t,.6,-1,600)`)
+					setTimeout(() => {
+						this.bin1(common.getEl(this.$refs.titleRadius2), 'transform.translateX',
+							`linear(t,0,40,10)`)
+					}, 300)
+					this.isShowTags = true
+					if (this.isShowSelet) {
+						this.popdown = true
+					} else {
+						this.popdown = true
+					}
+				}
+			},
+			//筛选
+			handleSelete() {
+				if (this.isShowSelet) {
+					this.bin1(common.getEl(this.$refs.titleRadius2), 'transform.rotateY', `easeOutBounce(t,180,-180,600)`)
+					this.bin2(common.getEl(this.$refs.slideLeft), `easeInOutBack(t,0,67,500)`)
+					this.isShowSelet = false
+					// uni.setStorageSync('gameSelete',0)
+				} else {
+					this.bin1(common.getEl(this.$refs.titleRadius2), 'transform.rotateY', `easeOutBounce(t,0,180,600)`)
+					this.bin2(common.getEl(this.$refs.slideLeft), `easeInOutBack(t,67,-67,500)`)
+					this.isShowSelet = true
+					// uni.setStorageSync('gameSelete',1)
+
+				}
+			},
+			//动画
+			bin() {
+				let handleBack = common.getEl(this.$refs.handleBack)
+				let binx = BindingX.bind({
+						eventType: 'timing',
+						exitExpression: 't>300',
+						props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+							{
+								element: handleBack, //动画元素
+								property: 'transform.scale', //动画属性
+								expression: `linear(t,.8,.2,300)`
+							},
+							{
+								element: handleBack, //动画元素
+								property: 'opacity', //动画属性
+								expression: `linear(t,.6,.1,300)`
+							}
+
+						]
+					}, e => {
+						if (e.state == 'exit') {
+							setTimeout(() => {
+								uni.navigateBack({
+									delta: 1
+								})
+							}, 100)
+						}
+					}
+
+				);
+
+			},
+			bin1(ref, property, expression, type) {
+				let rotatebin = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>600',
+					props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+						{
+							element: ref, //动画元素
+							property: property, //动画属性
+							expression: expression
+						}
+
+					]
+				}, e => {
+					if (e.state === 'exit') {
+						// BindingX.unbind({
+						// 	token: rotatebin.token,
+						// 	eventType: 'timing'
+						// })
+					}
+				});
+			},
+
+			//分类动画
+			bin2(ref, expression) {
+				let slibarBind = BindingX.bind({
+						eventType: 'timing',
+						exitExpression: 't>500',
+						props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+							{
+								element: ref, //动画元素
+								property: 'width', //动画属性
+								expression: expression
+							}
+						]
+					}, e => {
+						if (e.state === 'exit') {
+							BindingX.unbind({
+								token: slibarBind.token,
+								eventType: 'timing'
+							})
+						}
+					}
+
+				);
+
+			},
+			changeCate(cates, index) {
+				this.reset()
+				this.params.cates = cates.id;
+				this.activeIndex = cates.id;
+				this.formData.catesname = cates.name
+				this.getPageData();
+				this.getServerList()
+				if(index>6){
+					this.scrollTop = 30*(index)
+					
+				}
+				
+				
+				
+			},
+			// 重置
+			reset() {
+				this.list = []
+				// this.serverlist = []
+				this.params.page = 1;
+				this.params.offset = 15;
+                this.scrollTop = 0
+			},
+
+			// 根据筛选条件获取游戏列表数据
+			getPageData() {
+				$api.get('/game/multilistnew', {
+					...this.params,
+					client_id:this.$store.state.client_id
+				}).then(res => {
+					this.list = this.list.concat(res.data.data.list);
+					this.count = res.data.data.count
+                    setTimeout(()=>{
+						this.loadinging = false
+					},100)
+				})
+
+			},
+			//新服
+			getServerList() {
+				$api.get('/gameserver/newlist', {
+					days: 'one',
+					...this.params,
+					client_id:this.$store.state.client_id
+				}).then(res => {
+					 this.serverData = res.data.data.list
+					if (Object.keys(res.data.data.list).length > 0) {
+						this.serverlist = res.data.data.list
+						// console.log(this.serverlist,'this.serverlistthis.serverlistthis.serverlist')
+						
+					} else {
+						this.serverlist = []
+					}
+				})
+			},
+			//去重
+			// duplicate(data) {
+			// 	let i = 0
+			// 	for (let key in data) {
+			// 		if (data.hasOwnProperty(key)) {
+			// 			this.serverlist.push({
+			// 				timer: key,
+			// 				arrlist: []
+			// 			})
+			// 			for (let v in data[key]) {
+			// 				if (data[key].hasOwnProperty(v)) {
+			// 					data[key].sort((a, b) => {
+			// 						return a.app_id - b.app_id
+			// 					})
+			// 					for (var z = parseInt(v) + 1; z < data[key].length; z++) {
+			// 						if (data[key][v].app_id == data[key][z].app_id) {
+			// 							data[key][v].game_ser_name.push(data[key][v].ser_name)
+			// 							data[key][v].game_ser_name.push(data[key][z].ser_name)
+			// 							data[key][v].game_start_time.push(data[key][v].start_time)
+			// 							data[key][v].game_start_time.push(data[key][z].start_time)
+			// 							data[key].splice(z, 1)
+			// 						}
+			// 					}
+			// 				}
+			// 				this.serverlist[i].arrlist.push(data[key][v])
+			// 			}
+			// 			i++
+			// 		}
+			// 	}
+
+			// },
+
+
+		},
+		onLoad(option) {
+			if(Object.keys(option).length>0){
+			// console.log(option)
+			if(option.type =='tags'){
+				this.params.tags = option.id;
+				this.formData.tagsname = option.name
+			}else{
+				this.params.cates = option.id;
+				this.activeIndex = option.id;
+				this.formData.catesname = option.name
+			}
+				
+			}
+			// this.reset();
+			this.getInitData();
+			this.getPageData();
+			this.getServerList()
+		},
+
+	}
+</script>
+
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+	.Title {
+		flex-direction: row;
+		margin-top: 44rpx;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0rpx 32rpx 16rpx 32rpx;
+		background-color: #fff;
+	}
+	.TitleBar{
+		background-color: #fff;
+	}
+
+	.titleRadius {
+		align-items: center;
+		justify-content: center;
+		padding: 20rpx 20rpx;
+		width: 64rpx;
+		height: 64rpx;
+		border-radius: 64rpx;
+		background-color: #fff;
+		/* border: 2rpx solid #E3E3E3; */
+		box-shadow: 0px 0px 8px rgba(111, 111, 111, 0.16);
+	}
+
+	.loadingimage {
+		width: 600rpx;
+		height: 200rpx;
+
+	}
+
+	.nvuelist {
+		background-color: #fff;
+		overflow: hidden;
+		flex: 1;
+
+	}
+
+
+	.tagsName {
+		font-size: 28rpx;
+		font-weight: 700;
+
+
+	}
+
+
+	.text {
+		line-height: 65rpx;
+		font-size: 28rpx;
+		font-weight: 700;
+		width: 120rpx;
+		text-align: center;
+		border-radius: 42rpx;
+
+
+	}
+
+	.loadmore {
+		margin-top: 20rpx;
+		flex: 1;
+
+	}
+
+	.loadmoreText {
+		font-size: 22rpx;
+		font-weight: 400;
+		text-align: center;
+		color: #C1C1C1;
+		margin: 10rpx 0;
+	}
+
+
+
+	.icon {
+		width: 30rpx;
+		height: 30rpx;
+	}
+
+
+	.listItem {
+		width: 68rx;
+		height: 100rpx;
+		flex-direction: row;
+		align-items: center;
+		padding: 0 2rpx;
+		
+	}
+
+	.lines {
+		width: 8rpx;
+		height: 50rpx;
+		background-color: transparent;
+		margin-right: 20rpx;
+		border-radius: 10rpx;
+	}
+
+	.active1 {
+		background-color: #fff;
+		/* border-radius: 0 20rpx  20rpx 0 ; */
+		/* border-radius: 20rpx; */
+		/* border-radius:0 0  0 0 ; */
+	}
+
+	.actives {
+		background-color: #FF5927;
+
+	}
+
+
+	.list-left {
+		/* width: 67px; */
+	}
+
+
+	.slideBar {
+		flex-direction: row !important;
+	}
+
+
+	.slide-left {
+		/* width: 150rpx; */
+		flex-direction: column;
+		background-color: #f2f2f2;
+		overflow: hidden;
+
+	}
+
+	.textList {
+		font-size: 28rpx;
+		color: #666666;
+	}
+
+	.slide-right {
+		padding: 0rpx 0rpx 0rpx 24rpx;
+	}
+
+
+	.active {
+		background-color: #fff;
+		color: #1C1C1C;
+		font-weight: 700;
+
+	}
+
+	.name {
+		text-align: center;
+	}
+
+	.slide-left::-webkit-scrollbar {
+		opacity: 0;
+	}
+
+	.listright {
+		position: relative;
+	}
+	.titlename{
+		color: #1C1C1C;
+	}
+	.middle_left{
+		margin-left: 50rpx;
+	}
+</style>

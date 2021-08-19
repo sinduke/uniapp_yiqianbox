@@ -1,0 +1,100 @@
+<template>
+	<view class="gameicon" @click="topage(iconData.game_id)">
+		<image :src="iconData.new_icon||iconData.icon" class="icon"></image>
+		<view v-if="discount==1" style="position: absolute;top: 0;">
+			<image src="@/static/images/yy-icon.png" mode="widthFix" style="width: 100rpx;height: 100rpx;"></image>
+			<text style="position: absolute;font-size: 20rpx;color: #fff;left: 20rpx;top: 2rpx;">预 约</text>
+		</view>
+		<view v-else-if="iconData.rate<1" style="position: absolute;top: 0;left: 0rpx;">
+			<image src="@/static/images/icon-rate.png" mode="widthFix" style="width: 100rpx;height: 100rpx;"></image>
+			<text style="position: absolute;font-size: 20rpx;color: #fff;left: 20rpx;top: 2rpx;">{{(iconData.rate*10).toFixed(1)}}折</text>
+		</view>
+		<view v-else-if="iconData.has_coupons" style="position: absolute;top: 0;left: 0rpx;">
+			<image src="@/static/images/yhq-rate1.png" mode="widthFix" style="width: 100rpx;height: 100rpx;">
+				<text style="position: absolute;font-size: 20rpx;color: #fff;left: 20rpx;top: 2rpx;">优惠券</text>
+			</image>
+		</view>
+		<text class="gametitle">{{iconData.game_name}}</text>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		props: {
+			srcurl: {
+				type: String
+			},
+			/**
+			 * 1-代码预约的
+			 * 2-代表折扣
+			 * 3-代码优惠券
+			 * 不传则不显示
+			 * **/
+			discount: {
+				type: Number
+			},
+			iconData:{
+				type:Object,
+				default:()=>{
+					return {};
+				}
+			}
+		},
+		methods: {
+			topage(id){
+				uni.navigateTo({
+					 
+				    url:`/pages/view/gamedetail/gamedetail?gameid=${id}`,
+				});
+			},
+			
+		}
+	}
+</script>
+
+<style scoped>
+	.gameicon {
+		position: relative;
+		/* margin: 20rpx; */
+		margin-bottom: 30rpx;
+		/* display: flex; */
+		flex-direction: column;
+		/* align-items: flex-start; */
+		/* #ifndef APP-PLUS-VUE */
+/* 		width: 160rpx;
+		height: 160rpx; */
+	    /* #endif*/
+	   width: 170rpx;
+	   /* height: 170rpx; */
+	   /* border-radius:40px; */
+	}
+	.icon{
+		width: 170rpx;
+		height: 170rpx;
+		border-radius:40rpx;
+		/* #ifndef APP-PLUS-VUE */
+		/* position: absolute; */
+/* 		top: 0;
+		left: 0; */
+		/* #endif */
+	}
+	.gametitle{
+		width: 170rpx;
+		font-size: 24rpx;
+		margin-top: 8rpx;
+		lines: 2;
+		text-overflow: ellipsis;
+		font-weight: 500;
+	/* #ifndef APP-PLUS-VUE */
+/* 		position: absolute;
+		top: 160rpx;
+		left: 0;
+		text-align: left; */
+		/* #endif */
+	}
+</style>

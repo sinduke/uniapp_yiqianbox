@@ -1,0 +1,255 @@
+<template>
+	<view class="popup" @click.stop="doThis">
+		<view class="popupSub" v-if="pageData">
+			<image src="@/static/images/updataBg.png" style="width: 620rpx;height: 560rpx;"></image>
+			<view class="detail">
+				<view style="width: 620rpx;flex-direction: row;justify-content:center; align-items: center;">
+					<text class="popup_head">{{pageData.title}}</text>
+				</view>
+				<text class="popup_body">{{nodes}}</text>
+				<progress :percent="progress" v-if="pageData.app_url&&progress" activeColor="#FF5927" active stroke-width="10" border-radius='20' :duration='durationNumber' />
+
+				<view class="But">
+					<view class="buttons" :style="{	backgroundColor:pageData.show_type==1?'#F0F0F0':'#fff',justifyContent:pageData.show_type==1?'':'center'}">
+						<text class="button1" v-if="pageData.show_type==1"  @click="Clickclose">下次一定</text>
+						<text class="button" v-if="pageData.show_type==1" @click="confirm">{{confirmBtnText}}</text>
+						<text class="button2" v-else @click="confirm">{{confirmBtnText}}</text>
+						
+					
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				pageData: {},
+				nodes: '',
+				confirmBtnText: "",
+				progress: 0,
+				isNumber: 0,
+				durationNumber: 30,
+				newDate: '',
+				isShow: true
+			}
+		},
+		methods: {
+			doThis() {
+
+			},
+			//升级
+			confirm() {
+				if (this.isShow) {
+					this.isShow = false
+					let that = this;
+					
+					// 如果是第三方
+					if (this.pageData.extraFlag == 1) {
+						plus.runtime.openURL(this.pageData.app_url);
+						return;
+					}
+
+					// 热更
+					if (this.pageData.wdg_url) {
+						plus.nativeUI.showWaiting("检测更新...");
+						uni.downloadFile({
+							url: that.pageData.wdg_url,
+							success: (downloadResult) => {
+								console.log(downloadResult)
+								plus.nativeUI.closeWaiting();
+								if (downloadResult.statusCode === 200) {
+									plus.runtime.install(downloadResult.tempFilePath, {
+										force: false
+									}, function() {
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.alert("升级完成，准备重启", function() {
+										plus.runtime.restart();
+										});
+									}, function(e) {
+										console.log(e);
+										uni.showToast({
+											title: "安装失败",
+											icon: "none"
+										})
+									});
+								}
+							}
+						});
+					}
+					// 整包升级
+					else {
+						console.log(this.pageData, 'this.pageDatathis.pageData')
+						uni.request({
+							url: that.pageData.app_url,
+							success: (res) => {
+								if (res.data.code == 200) {
+									that.download(res.data.data.down_url);
+								} else {
+									uni.showToast({
+										title: "升级包错误",
+										icon: "none"
+									})
+								}
+							}
+						})
+					}
+				}
+			},
+			//关闭
+			Clickclose() {
+				uni.$emit('close', true)
+			},
+			download(url) {
+				console.log(url,'urllllll')
+				if(this.$store.state.platform=='ios'){
+					return plus.runtime.openURL(url);
+				}
+				
+				
+				let that = this;
+				// 创建下载任务
+				let downloadTask = plus.downloader.createDownload(url, {}, (downloadFile, status) => {
+					// 下载完成后的回调函数，成功失败都会进来
+					if (status == 200) {
+						uni.showToast({
+							title: "下载完成",
+							icon: "none",
+							success: () => {
+								setTimeout(() => {
+									plus.runtime.openFile(downloadFile.filename);
+								}, 340)
+							}
+						})
+					} else {
+						uni.showToast({
+							title: "下载失败，请手动下载",
+							icon: "none"
+						})
+					}
+				});
+				// 开始下载
+				downloadTask.start();
+				// 监听下载进度
+				downloadTask.addEventListener("statechanged", (task, status) => {
+					if (task.state == 3) {
+						// 已接收到数据
+						let progressVal = (task.downloadedSize / task.totalSize) * 100;
+						if (that.isNumber != Number(progressVal.toFixed(0))) {
+							that.isNumber = Number(progressVal.toFixed(0))
+							if (that.isNumber == 10) {
+								that.newDate = new Date().getTime()
+							}
+							if (that.isNumber == 11) {
+								let b = new Date().getTime()
+								that.durationNumber = b - that.newDate
+								that.progress = 100
+								console.log(b - that.newDate, that.newDate, b, that.durationNumber, 'b - that.newDate')
+							}
+
+						}
+					}
+				});
+			}
+		},
+		onLoad() {
+			let _this = this
+			uni.$once('update', function(data) {
+				_this.pageData = JSON.parse(data.msg)
+				_this.nodes = _this.pageData.note.replace(/\\n/g, "\n");
+				if (_this.pageData.app_url) {
+					_this.confirmBtnText = "立即升级";
+				} else {
+					_this.confirmBtnText = "立即更新";
+				}
+			})
+		},
+		onReady() {
+			plus.key.addEventListener('backbutton', this.doThis, false)
+		},
+
+
+	}
+</script>
+
+<style scoped>
+	.popup {
+		align-items: center;
+		justify-content: center;
+
+	}
+
+	.popupSub {
+		position: relative;
+
+	}
+
+	.detail {
+		padding: 20rpx 25rpx;
+		position: absolute;
+		bottom: 40rpx;
+		left: 0;
+		width: 600rpx;
+
+	}
+
+	.popup_body {
+		font-size: 30rpx;
+		color: #aaa;
+		margin: 30rpx 0;
+	}
+
+	.popup_head {
+		color: #1C1C1C;
+		font-weight: 700;
+		font-size: 40rpx;
+		margin-right: 50rpx;
+		
+	}
+
+	.But {
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.buttons{
+		flex-direction: row;
+		align-items: center;
+	    border-radius: 30rpx;
+		width: 460rpx;
+		
+	}
+       .button1{
+		   font-size: 26rpx;
+		   font-weight: 700;
+		   color: #666666;
+		   background-color: #F0F0F0;
+		   padding: 18rpx 64rpx;
+		   border: 1px solid #F0F0F0;
+		   border-radius:  30rpx 0  30rpx  30rpx ;
+	   }
+	   .button2{
+		  font-size: 26rpx;
+		  font-weight: 700;
+		  color: #FF5927;
+		  background-color: #fff;
+		  border: 1px solid #ff5927;
+		  padding: 18rpx 160rpx;
+		  border-radius:30rpx; 
+	   }
+	.button {
+		font-size: 26rpx;
+		font-weight: 700;
+		color: #FF5927;
+		background-color: #fff;
+		border: 1px solid #ff5927;
+		padding: 18rpx 64rpx;
+		border-radius: 0 30rpx 30rpx  30rpx;
+		/* margin: 10rpx 10rpx; */
+	}
+</style>

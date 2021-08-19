@@ -1,0 +1,20 @@
+{
+	"name": "ChannelUniPlugin",
+	"id": "DCChannelUniPlugin",
+	"version": "0.0.2",
+	"description": "XW获取channelid以及gameid",
+	"_dp_type":"nativeplugin",
+	"_dp_nativeplugin":{
+		"ios": {
+			"plugins": [
+				{
+					"type": "module",
+					"name": "DCChannelUniPlugin-ChannelModule",
+					"class": "ChannelModule"
+				}
+			],
+			"integrateType": "framework",
+			"deploymentTarget": "9.0"
+		}
+	}
+}

@@ -1,0 +1,276 @@
+<!-- 分类弹框 -->
+<template>
+	<view class="listcontent" @click.stop="noclick" :style="{marginTop:myHeight+200>700?'120rpx':'120rpx'}">
+		<popdown :nheight='gameSelete?myHeight:260' easing='linear' :ntime='300' :isShow='isShow'>
+			<list ref="list" loadmoreoffset='10' style="margin-top: 20rpx;">
+				<cell>
+					<view class="is_h5">
+						<text class="text h5text" :class="{text1:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
+					</view>
+					<view class="tags">
+						<text class="h2 titles">游戏福利</text>
+						<view style="flex-direction: row;flex-wrap: wrap;">
+							<text class="text h5text" v-for="(item,index) in tagsList" @click="handeltags(item.id,item.name)" :class="{text1:active1==item.id}">{{item.name}}</text>
+						</view>
+					</view>
+					<view class="cates" v-if="gameSelete">
+						<text class="h2 titles">游戏类型</text>
+						<view style="flex-direction: row;" class="catesList">
+							<view v-for="(item,index) in pageList" @click="handelCates(item.id,item.name)"
+								class="catesitem" :class="{catesitem1:active2==item.id}">
+								<image :src="'../../../static/images/game/'+(active2==item.id?'black':'grey')+'/'+ item.id+'.png'" style="width: 32rpx;height: 32rpx;margin:0 24rpx;" mode="widthFix"></image>
+								<text class="text" :class="{text2:active2==item.id}">{{item.name}}</text>
+								<image src="@/static/images/game/active2.png" mode="widthFix"
+									v-if="active2==item.id" class="active2"></image>
+							</view>
+						</view>
+					</view>
+				</cell>
+			</list>
+				<view class="button" :style="{width:$store.state.myWidth-55+'px',marginLeft:'20rpx'}">
+					<text class="buttonText h2" @click="handleReset">重 置</text>
+					<text class="h2 buttonText1" @click="handelSubmit">确 定</text>
+			</view>
+		</popdown>
+	</view>
+</template>
+
+<script>
+	import popdown from '@/components/nvue-popdown/nvue-popdown'
+
+	export default {
+		components: {
+			popdown
+		},
+		data() {
+			return {
+				isShow: false,
+				is_h5List: [{
+						name: '全部',
+						type: 0,
+
+					},
+					{
+						name: '手游',
+						type: 2,
+
+					},
+					{
+						name: 'H5',
+						type: 1,
+					}
+				],
+				active: 0,
+				active1: 0,
+				active2: 0,
+				formData: {
+					cates: 0,
+					tags: 0,
+					is_h5: 0
+				},
+				gameSelete: 0,
+
+			}
+		},
+		computed: {
+
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight - 200
+			},
+
+
+		},
+		methods: {
+			noclick() {},
+			handleisH5(id,type,name) {
+				this.active = id
+				this.formData.is_h5 = type
+				this.formData.is_h5name = name
+
+			},
+			handelCates(id, name) {
+				this.active2 = id
+				this.formData.cates = id
+				this.formData.catesname = name
+			},
+			handeltags(id, name) {
+				this.active1 = id
+				this.formData.tags = id
+				this.formData.tagsname = name
+			},
+			//重置
+			handleReset() {
+				uni.vibrateShort({
+					success: () => {
+						this.active = 0
+						this.active1 = 0
+						this.active2 = 0
+						this.formData = {
+							cates: 0,
+							tags: 0,
+							is_h5: 0
+						}
+						this.handelSubmit()
+					   // this.$emit('Reset',this.formData)
+					}
+				});
+
+			},
+			//确定
+			handelSubmit() {
+				// console.log(this.formData);
+				this.$emit('submit', this.formData)
+			}
+		},
+		props: {
+			type: {
+				default: false
+			},
+			pageList: {
+				type: Array,
+				default: () => []
+			},
+			tagsList: {
+				type: Array,
+				default: () => []
+			},
+			isShowSelet: {
+				default: false
+			},
+			mycates:{
+				default:0
+			}
+
+		},
+		watch: {
+			type: { //深度监听，可监听到对象、数组的变化
+				handler(val) {
+					this.isShow = val
+
+				},
+				immediate: true
+			},
+			isShowSelet:{
+				handler(val) {
+						this.gameSelete = val
+					},
+					immediate: true
+			},
+			mycates(val){
+				this.active2 = val
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+	.listcontent {
+		margin-top: 172rpx;
+	}
+
+	.is_h5 {
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 46rpx;
+	}     
+
+	.titles {
+		margin-bottom: 28rpx;
+	}
+
+	.tags {
+		margin-bottom: 48rpx;
+	}
+
+	,
+	.cates {
+		margin-bottom: 36rpx;
+	}
+
+	.catesList {
+		flex-wrap: wrap;
+		flex: 1;
+		justify-content: space-between;
+	}
+
+	.h5text {
+		padding: 12rpx 32rpx;
+		border-radius: 40rpx;
+		margin: 10rpx 32rpx 20rpx 0;
+		background-color: #F8F8F8;
+		border: 1px solid #F8F8F8;
+		lines: 4;
+
+	}
+
+	.text1 {
+		border: 1px solid #FF5927;
+		background-color: #fff;
+		color: #FF5927;
+	}
+
+	.text2 {
+		color: #1C1C1C;
+		font-weight: 600;
+	}
+
+	.catesitem1 {
+		border: 1rpx solid #FF5927 !important;
+		background-color: #fff !important;
+	}
+
+	.catesitem {
+		flex-direction: row;
+		align-items: center;
+		background-color: #F8F8F8;
+		border: 1px solid #F8F8F8;
+		border-radius: 40rpx;
+		padding: 20rpx 0;
+		margin: 0 24rpx 32rpx 0;
+		width: 200rpx;
+
+		position: relative;
+	}
+
+	.active2 {
+		width: 60rpx;
+		height: 60rpx;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
+
+	.button {
+		/* flex: 1; */
+		height: 88rpx;
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 20rpx;
+		border-radius: 46rpx;
+		padding: 20rpx 0;
+		background-color: #EFEFEF;
+		/* overflow:hidden */
+		
+	}
+
+	.buttonText {
+		color: #666;
+		padding: 18rpx 112rpx;
+		border-radius: 46rpx;
+
+
+	}
+
+	.buttonText1 {
+		color: #FF5927;
+		padding: 18rpx 140rpx 18rpx 112rpx;
+		/* border-radius: 46rpx; */
+		background-color: #FFFFFF;
+		border: 1px solid #FF5927;
+		border-bottom-right-radius: 46rpx;
+		border-top-right-radius: 46rpx;
+		border-bottom-left-radius: 46rpx;
+	}
+</style>

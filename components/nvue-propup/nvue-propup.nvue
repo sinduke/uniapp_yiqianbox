@@ -1,0 +1,305 @@
+<template>
+	<view v-if="isshow" class="mask" @click.stop="show">
+		<view class="bbox" ref="bbox">
+			<view class="share-btn" :style="{width:myWidth+'px'}">
+
+				<view class="share3" >
+					<view class="share-btn-item" @click="copy">
+						<image src="@/static/images/fzlj-share.png" style="width: 80rpx;height: 80rpx;margin-top: 30rpx;"mode="widthFix" />
+						<text class="text">复制链接</text>
+					</view>
+				</view>
+				<view :style="{width:myWidth-160+'px'}" style="flex-direction: row;justify-content: space-between;margin-top: -70rpx;">
+					<view class="share-btn-item" @click="share('','qq')">
+						<image src="@/static/images/QQ-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
+						<text class="text">QQ</text>
+					</view>
+					<view class="share-btn-item" @click="share('WXSenceTimeline','weixin')">
+						<image src="@/static/images/pengyouquan-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text class="text">朋友圈</text>
+					</view>
+				</view>
+				<view class="" style="flex-direction: row;justify-content: space-between;margin-top: -58rpx;" :style="{width:myWidth-24+'px'}">
+					<view class="share-btn-item" @click="share('WXSceneSession','weixin')" >
+						<image src="@/static/images/wx-icon.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
+						<text class="text">微信</text>
+					</view>
+					<view class="share-btn-item" @click="share('','sinaweibo')">
+						<image src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text class="text">微博</text>
+					</view>
+					<!-- <view class="share-btn-item" >
+						<image src="@/static/images/wb-login.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text class="text">微博</text>
+					</view> -->
+				</view>
+			
+			</view>
+
+			
+    	</view>
+		<view class="box" ref="pirotate">
+			<view class="box-item" :style="{width:myWidth+'px'}">
+				<view class="box-item1" @click="bind1" ref="share1"  :style="{marginBottom:type?'80rpx':''}">
+					<view class="" class="shareImage">
+					<image src="@/static/images/fx-share.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
+					</view>
+					<text class="text">分享</text>
+				</view>
+				<view  v-if="type==0" :style="{width:myWidth-100+'px'}" style="flex-direction: row;align-items: center;justify-content: space-between;margin-top: -70rpx;">
+					<view class="box-item1" @click="bind2" ref="sc1">
+						<view class="shareImage">
+						<image src="@/static/images/sc1-share.png" mode="widthFix"   style="width: 60rpx;height: 60rpx" v-if="is_collect==1"></image>
+						<image src="@/static/images/sc-share.png" mode="widthFix"   style="width: 60rpx;height: 60rpx" v-else></image>
+						</view>
+						<text class="text" v-if="is_collect==1">已收藏</text>
+						<text class="text" v-else>收藏</text>
+					</view>
+					<view class="box-item1" ref="fk1" @click="bind3">
+						<view  class="shareImage">
+						<image src="@/static/images/fk-share.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
+						</view>
+						<text class="text" >反馈</text>
+					</view>
+				</view>
+			
+				<view class="close" @click="close" style="margin-top: -40rpx;">
+					<image src="@/static/images/comment-close.png" mode="widthFix" style="width: 40rpx;height: 40rpx;"></image>
+				</view>
+			</view>
+		
+		</view>
+		
+	</view>
+</template>
+
+<script>
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	
+	export default {
+		data() {
+			return {}
+		},
+		props: {
+			isshow: {
+				type: Boolean
+			},
+			shareData:{
+				type:Object,
+				default:()=>{}
+			},
+			type:{
+				default:0
+			},
+			is_collect:{
+				default:0
+			}
+		},
+		mounted() {
+
+
+		},
+		computed: {
+			
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+		
+			},
+			userInfo(){
+				return this.$store.state.userInfo
+			}
+		},
+		methods: {
+			show() {
+				// this.$emit('close')
+				// this.bind()
+			},
+			close(){
+				this.$emit('close')
+			},
+			bind1(){
+				this.bindingx(300,common.getEl(this.$refs.share1),'transform.scale', 'easeOutElastic(t,.2,.8,300)')
+				this.bindingx(600,common.getEl(this.$refs.bbox),'transform.rotateZ', 'linear(t,-90,135,600)')
+				
+			},
+			bind2(){
+				this.bindingx(300,common.getEl(this.$refs.sc1),'transform.scale', 'easeOutElastic(t,.2,.8,300)')
+				this.$emit('is_collect',this.is_collect)
+				this.$emit('close')
+			},
+			bind() {
+				this.bindingx(600,common.getEl(this.$refs.pirotate),'transform.rotateZ', 'linear(t,-90,135,600)')
+				
+			},
+			bind3(){
+				this.bindingx(300,common.getEl(this.$refs.fk1),'transform.scale', 'easeOutElastic(t,.2,.8,300)')
+				uni.navigateTo({
+					url:'/pages/my/comprehensive/feedback/feedback'
+				})
+			},
+			bindingx(timer,element,property,expression){
+				let mybindUp = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: `t>600`,
+					props: [{
+						element,
+						property,
+						expression,
+					}]
+				}, (e) => {
+					if (e.state === 'exit') {
+						BindingX.unbind({
+						token: mybindUp.token,
+						eventType: 'timing'
+		     			})
+				
+					}
+				});
+				
+				
+			},
+			share(type,status) {
+				console.log(type,status,'type,statustype,status')
+				if(status=='qq'){
+					uni.share({
+						provider:status,
+						scene:type,
+						type: 1,
+						href: this.shareData.url,
+						title: this.shareData.title,
+						summary: this.shareData.content,
+						success: res=> {
+							console.log("success:" + JSON.stringify(res));
+						},
+						fail: function(err) {
+						}
+					});
+				}else{
+					uni.share({
+						provider:status,
+						scene:type,
+						type: 0,
+						href: this.shareData.url,
+						title: this.shareData.title,
+						summary: this.shareData.content,
+						imageUrl:this.shareData.icon_share ? this.shareData.icon_share : this.shareData.icon,
+						success: res=> {
+							console.log("success:" + JSON.stringify(res));
+						},
+						fail: function(err) {
+					      console.log(err,'ssssssssssssssssssss')
+						}
+					});
+				}
+			
+			},
+			//复制
+			copy(){
+			common.copyText(this.shareData.url)
+			},
+			
+		},
+		watch: {},
+	}
+</script>
+
+<style>
+	.mask {
+		flex: 1;
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background-color: rgba(0, 0, 0, 0.4);
+	}
+    .bbox{
+		position: absolute;
+		bottom: -420rpx;
+		right: 375rpx;
+		background-color: #F6F6F6;
+		width: 1000rpx;
+		height: 1000rpx;
+		border-radius: 1200rpx 0 0 0;
+		transform: rotate(-90deg);
+		transform-origin: 1000rpx 1000rpx;
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+	.box {
+		position: absolute;
+		bottom: -440rpx;
+		right: 375rpx;
+		background-color: #fff;
+		width: 800rpx;
+		height: 800rpx;
+		border-radius: 800rpx 0 0 0;
+		transform: rotate(-90deg);
+		transform-origin: 800rpx 800rpx;
+		justify-content: flex-end;
+		align-items: flex-end;
+
+	}
+
+	.box-item {
+		transform: rotateZ(-45.5deg);
+		margin-right: 70rpx;
+		height: 310rpx;
+		margin-bottom: 280rpx;
+		/* background-color: red; */
+		justify-content: center;
+		align-items: center;
+	}
+	.close {
+		background-color: #F2F2F2;
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 80rpx;
+	    align-items: center;
+		justify-content: center;
+	
+	}
+	.text {
+		font-size: 24rpx;
+		color: #1c1c1c;
+		font-weight: 700;
+		lines: 1;
+		margin-top: 6rpx;
+	
+	}
+	.share-btn{
+		position: absolute;
+		transform: rotateZ(-46.5deg);
+		height: 330rpx;
+	    margin-bottom: 450rpx;
+	    /* background-color: red; */
+		margin-right: 230rpx;
+		justify-content: center;
+		align-items: center;
+	}
+	.share-btn-item{
+		justify-content: center;
+		align-items: center;
+
+	}
+	.box-item1{
+		justify-content: center;
+		align-items: center;
+	}
+	.shareImage{
+		width: 100rpx;
+		height: 100rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		background-color: #F6F6F6;
+		border-radius: 100rpx;
+	}
+</style>

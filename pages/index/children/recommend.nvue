@@ -1,0 +1,572 @@
+<template>
+	<view class="recommend" >
+		<view class="titleLine" ref="titleLine" :style="{width:myWidth+'px'}" />
+		<view :style="{height:myHeight-232+'rpx',width:myWidth+'px'}">
+			<list :style="{height:myHeight-232+'rpx',width:myWidth+'px'}" @loadmore='loadmore'
+			 loadmoreoffset='20' :show-scrollbar='false' @scrollstart='scrollstart' 
+			 @scrollend='scrollend' alwaysScrollableVertical class="list" ref="list" >
+				<refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
+					<view class="refreshImages" :style="{width:myWidth-6+'px'}">
+						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
+					</view>
+				</refresh>
+				<cell>
+					<view class="" style="margin-bottom: 39rpx;height: 1rpx;" :style="{width:myWidth+'px'}"/>
+				</cell>
+				<cell v-for="(item,index) in pageData" :key='index' v-if="pageData.length" style="overflow:hidden">
+					<view class="card" :style="{width:myWidth-32+'px',
+					boxShadow:$store.state.platform!='android'?'0px 0px 4px rgba(0, 0, 0, 0.16)':'',
+					marginBottom:$store.state.platform=='android'?'6rpx':'40rpx',height:'620rpx'}" ref="card" 
+					@touchstart='touchstart(index,$event)' @touchend='touchend(index,$event)'  >
+					<cover-view class="cover-view" :style="{width:myWidth-34+'px',height:'400rpx'}" >
+						<video :poster='item.hot_image' :style="{width:myWidth-34+'px',height:'400rpx'}"
+						 @click='handleRouter(item.game_id)' :direction="direction" 
+						 :src="item.mp4_url" :id="'video'+index" :controls='false' muted 
+						 v-if="active==index&&!wifiAuto" autoplay
+						   loop :enable-progress-gesture='false' 
+						   :show-center-play-btn='false' ref="chunleiVideo"  
+							:show-loading='false' class="chunleiVideo" 
+							@play='loadedmetadata($event,index)' objectFit="fill">
+						</video>
+					</cover-view>
+						<cover-image class="images" @click='handleRouter(item.game_id)' ref="images" :style="{width:myWidth-34+'px',height:'400rpx'}" :src="item.hot_image" v-if="imgactive!=index"></cover-image>
+						<view v-if="active!=index" class="rates" :style="{top:$store.state.platform=='ios'?'-10rpx':'0',left:$store.state.platform=='ios'?'-8rpx':'-4rpx'}">
+							<image class="rateimages" v-if="item.rate<1" mode="widthFix" src="@/static/images/index/index-rate.png"></image>
+							<image class="rateimages" v-else-if="item.has_coupons" mode="widthFix" src="@/static/images/yhq-rate.png"></image>
+							<text v-if="item.rate<1" class="rateText">{{(item.rate*10).toFixed(1)}} 折</text>
+							<text v-else-if="item.has_coupons" class="rateText">优惠券</text>
+						</view>
+
+						<view class="tags" @click="handleRouterdetail(item.game_id)">
+							<text class="tag">#{{item.one_word.length>26?item.one_word.slice(0,22)+'..':item.one_word}}</text>
+							<image class="tagImage" src="@/static/images/index/tagst.png" mode="widthFix" style="width: 25rpx;height: 25rpx;" />
+						</view>
+						
+						<view class="gameDetail" @click="handleRouterdetail(item.game_id)">
+							<text class="gamename">{{item.gamename}}</text>
+							<view class="star_cnt">
+								<image src="@/static/images/index/hout.png" style="width: 40rpx;height: 40rpx;" />
+								<text class="star_cntText">{{item.star_cnt}}</text>
+							</view>
+						</view>
+						<view class="listBottom" @click="handleRouterdetail(item.game_id)">
+							<view class="" style="flex-direction: row;align-items: center;" v-if="item.game_start_time">
+						    <text class="text" style="color: #FF5927;"> {{item.game_start_time|dateFormat('hh:mm')}}</text>
+							<text class="text"> 开服 | </text>
+							</view>
+							<text class="type text" v-if="item.classify==5">H5</text>
+							<text class="type text" v-for="(v,i) in item.type" :key="i" v-if="i<3">{{v}}</text>
+							<text class="user_cnt text"> | 已有{{item.popularity_cnt}}人在玩</text>
+						</view>
+		
+					<view class="touchRidus" ref="touchRidus" :style="{left:active1==index?x+'px':0,top:active1==index?y+'px':0,transform:'scale('+0+')' }" >
+						
+					</view>
+						 <view class="cardBckground" v-if="$store.state.platform=='android'" style="position: absolute">
+							<image src="@/static/images/index/cards.png" :style="{width:myWidth-32+'px',height:'620rpx'}">	</image>
+						</view>
+					</view>
+				</cell>
+				<cell>
+					<view class="" style="flex-direction: row;justify-content: center;margin: 32rpx 0;">
+					</view>
+				</cell>
+				<cell v-if="loadinging">
+					<view class="" style="margin-bottom: 120rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth+'px'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
+				</cell>
+				<!-- 	<loading class="loadList" @loading="onloading"  :display="loadinging ? 'show' : 'hide'" :style="{width:myWidth+'px',height:'220rpx'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</loading> -->
+					
+
+			</list>
+			<view v-if="!pageData" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;" >
+				<myloading :isrefre='isrefre' @Refresh='Refresh'></myloading>
+			</view>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import myloading from '@/components/nvue-loading/nvue-loading'
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	export default {
+		components: {
+			myloading
+		},
+		data() {
+			return {
+				isTrue: true,
+				pageData: [],
+				isNumber: 0,
+				active: 0,
+				count:0,
+				x:0,
+				y:0,
+				active1: 0,
+				isradius: true,
+				direction: -90,
+				scale:0,
+				refreshing: false,
+				loadinging: false,
+				isrefre: false,
+				times:0,
+				imgactive:-1,
+				formData:{
+					is_mp4: 1,
+					offset: 10,
+					page:1
+				}
+
+			}
+		},
+		props: {
+			myHeight: {
+				type: Number
+			},
+			myWidth: {
+				type: Number
+			},
+			wifiAuto:{
+				default:false
+			}
+		},
+		methods: {
+			getSpecialData() {
+				$api.get('/game/multilistnew', {
+					...this.formData,
+					client_id:this.$store.state.client_id
+				}).then(res => {
+					this.pageData = this.pageData.concat(res.data.data.list)  
+					this.count = res.data.data.count
+					setTimeout(()=>{
+					this.loadinging = false;
+					this.bind()  
+					},100)
+				})
+
+			},
+			//下拉刷新
+			onpullingdown(e) {
+				// this.pageData = []
+               // this.getSpecialData()
+			},
+			//刷新
+			Refresh(data) {
+				this.isrefre = ture
+				if (data) {
+					this.getSpecialData()
+				}
+			},
+			
+			onrefresh() {
+				this.refreshing = true
+				setTimeout(() => {
+				// this.getSpecialData()
+					// this.resetLoadMore()
+					this.refreshing = false;
+				}, 1000)
+			},
+			// 重置 loadmore
+			resetLoadMore() {
+				this.$refs.list.resetLoadmore();
+			
+			},
+			//加载
+	       loadmore(){
+			   // console.log(this.count,Object.keys(this.pageData).length)
+			 if(this.count>Object.keys(this.pageData).length){
+			  this.loadinging = true
+			    this.formData.page++
+			     this.getSpecialData()
+			 	}
+		    },
+			//路由跳转
+			handleRouter(id) {
+				uni.navigateTo({
+					url: `/pages/index/children/videoDetail?id=${id}`
+				})
+			},
+			handleRouterdetail(id) {
+				uni.navigateTo({
+				  	url: `/pages/view/gamedetail/gamedetail?gameid=${id}`
+				})
+				
+			},
+			clearMove() {
+				if(this.$refs.chunleiVideo){
+				const myVideo = this.$refs.chunleiVideo
+					myVideo.forEach((item, i) => {
+						item.pause()
+					})
+				}
+			},
+			//视频加载完成
+			loadedmetadata(e,i){		
+				let a = false
+				if(this.$store.state.platform=='ios'){
+			       new Promise((resolve,reject)=>{
+					 setTimeout(()=>{
+					   if(Object.keys(e).length){
+                         resolve(a)
+								}
+							   },1100)	 
+						      }).then(res=>{
+					 a = true
+					 if(a){
+						this.imgactive = i
+						 } 
+				    })
+								
+				}else{
+					setTimeout(()=>{
+					this.imgactive = i
+					},100)
+				}
+			
+			},
+
+			//动画
+			bind() {
+				let anchor = this.getEl(this.$refs.list);
+				let titleLine = this.getEl(this.$refs.titleLine);
+				let res = BindingX.bind({
+					anchor: anchor,
+					eventType: 'scroll',
+					props: [{
+							element: titleLine,
+							property: 'background-color', //动画属性
+							expression: 'evaluateColor("#ffffff","#dddddd", min(y, 500)/500)' //表达式 说明了y从0-400,对应的值是1-0  
+						},
+						// {
+						// 	element: recommend,
+						// 	property: 'background-color', //动画属性
+						// 	expression: 'evaluateColor("#ffffff","#f3f3f3", min(y, 500)/500)' //表达式 说明了y从0-400,对应的值是1-0  
+						// },
+					]
+				}, (e) => {
+					// if (e.state === 'turn') {
+					// 	this.bind();
+					// }
+				});
+			},
+		//动画
+		binds(ref, property, expression, type) {
+			let rotatebin = BindingX.bind({
+				eventType: 'timing',
+				exitExpression: 't>300',
+				props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+					{
+						element: ref, //动画元素
+						property: property, //动画属性
+						expression: expression
+					}
+		
+				]
+			}, e => {
+				if (e.state === 'start') {
+					setTimeout(()=>{
+					BindingX.unbind({
+						token: rotatebin.token,
+						eventType: 'timing'
+					})
+						
+					},300)
+				}
+			});
+		},
+		
+			//触摸开始
+			touchstart(index, event) {
+			
+				if (this.isradius) {
+					this.active1 = index
+					// this.active = index
+					this.isradius = false
+					if (event.touches[0].screenY > 300) {
+						this.y = event.touches[0].screenY / 2 -80
+					} else {
+						this.y = event.touches[0].screenY-50
+					}
+					this.x = event.touches[0].screenX
+					setTimeout(() => {
+						this.radiusBin(index)
+					}, 100)
+				} else {
+					
+				}
+			},
+			//滚动开始位置
+			scrollstart(e){
+
+			},
+			//滚动结束位置
+			scrollend(e){
+			if(this.active!=Math.round(Math.abs(e.contentOffset.y)/(620*this.myWidth/750))){
+			   	this.imgactive = -1
+				this.active = Math.round(Math.abs(e.contentOffset.y)/(620*this.myWidth/750))
+				 setTimeout(()=>{
+				   // this.imgactive = this.active
+			     	},700)	
+				}
+			
+
+			},
+			//触摸结束
+			touchend(index, event){
+				// console.log(index, event,'index, eventindex, eventindex, event')
+			},
+
+			radiusBin(index) {
+				// this.opacity = .2
+				this.scale = 140
+				let card = this.getEl(this.$refs.card[index]);
+				let touchRidus = this.getEl(this.$refs.touchRidus[index]);
+				let touchBind = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>500',
+					props: [{
+						element: touchRidus,
+						property: 'transform.scale', //动画属性
+						expression: `linear(t,1,${this.scale},500)`
+					},
+					{
+						element: touchRidus,
+						property: 'opacity', //动画属性
+						expression: `linear(t,0,.2,500)`
+					},
+					{
+						element: touchRidus,
+						property: 'opacity', //动画属性
+						expression: `linear(t,.2,-.4,700)`
+					},					 
+					 ]
+				}, e => {
+				     	this.scale = 0
+					if (e.state == 'start') {
+						setTimeout(() => {
+							this.isradius = true
+							BindingX.unbind({
+								token: touchBind.token,
+								eventType: 'timing'
+							})
+						}, 800)
+						
+					}
+
+				})
+			},
+
+			getEl(el) {
+				if (typeof el === 'string' || typeof el === 'number') return el;
+				if (WXEnvironment) {
+					return el.ref;
+				} else {
+					return el instanceof HTMLElement ? el : el.$el;
+				}
+			},
+
+		},
+		filters: {
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		},
+		watch:{
+			wifiAuto(val){
+				if(val){
+					this.imgactive = -1
+				}
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+	.rates {
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		width: 130rpx;
+		height: 80rpx;
+	}
+
+	.rateText {
+		font-size: 24rpx;
+		color: #fff;
+		position: absolute;
+		left: 30rpx;
+		top: 16rpx
+	}
+
+	.rateimages {
+		width: 130rpx;
+		height: 80rpx;
+		margin-left: 14rpx;
+	}
+
+	.touchRidus {
+		position: absolute;
+		width: 20rpx;
+		height: 20rpx;
+		border-radius: 20rpx;
+		background-color: #333;
+		opacity: 0;
+
+	}
+
+	.radius {
+		width: 100rpx;
+		height: 100rpx;
+		position: absolute;
+		background-color: #fff;
+
+
+	}
+
+	.recommend {
+		overflow: hidden;
+		justify-content: center;
+		align-items: center;
+
+	}
+
+	.images {
+		position: absolute;
+		border-top-left-radius: 20rpx;
+		border-top-right-radius: 20rpx;
+
+	}
+	.chunleiVideo{
+		border-top-left-radius: 20rpx;
+		border-top-right-radius: 20rpx;
+		
+	}
+
+	.card {
+		height: 620rpx;
+		border-radius: 20rpx;
+		margin: 6rpx 0 6rpx 16px;
+		background-color: #fff;
+		position: relative;
+		overflow: hidden;
+	}
+	.cover-view{
+		 border-top-left-radius: 20rpx;
+		 border-top-right-radius: 20rpx;
+	     overflow: hidden;
+
+
+	}
+	
+
+	.coverimages {
+		position: absolute;
+	}
+
+	.tags {
+		margin-top: 20rpx;
+		flex-direction: row;
+		align-items: center;
+		margin-left: 30rpx;
+		position: relative;
+	}
+
+	.tagImage {
+		position: absolute;
+		top: 8rpx;
+		left: 12rpx;
+	}
+
+	.tag {
+		color: #666666;
+		font-weight: 300;
+		font-size: 24rpx;
+		lines: 1;
+		padding: 4rpx 20rpx 4px 45rpx;
+		border-radius: 20rpx;
+		background-color: #F4F4F4;
+
+	}
+
+	.gameDetail {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 30rpx;
+		margin: 14rpx 0;
+	}
+
+	.gamename {
+		color: #1C1C1C;
+		font-weight: 900;
+		font-size: 40rpx;
+	}
+
+	.star_cnt {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.star_cntText {
+		color: #FF5927;
+		font-weight: 700;
+		font-size: 42rpx;
+		margin-left: 16rpx;
+	}
+
+	.listBottom {
+		flex-direction: row;
+		align-items: center;
+		padding: 0 30rpx 20rpx 30rpx;
+	}
+
+	.type {
+		margin: 0 6rpx;
+	}
+
+	.text {
+		color: #666666;
+		font-size: 26rpx;
+	}
+
+	.titleLine {
+		height: 2rpx;
+
+
+	}
+</style>

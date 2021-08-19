@@ -1,0 +1,146 @@
+<template>
+	<view class="nuve-titleLine">
+		<view   ref="scroller">
+			<view class="titleItem" style="flex-direction: row;">
+				<view v-for="(item,index) in TitleList" :key='index' style="align-items: center;width: 50px;" :style="{marginRight:(myWidth / 3)-100-13+'px'}">
+					<text class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
+				</view>
+			</view>
+			<view :style="{transform:'translateX('+widthLine+'rpx)'}" class="lines" ref="lines"></view>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	export default {
+		props: {
+			TitleList: {
+				type: Array,
+				default: () => []
+			},
+			length:{
+				type:Number,
+				default:0
+			},
+			active: {
+				type: Number,
+				default: 0
+			},
+			scrollMove: {
+				type: Number,
+				default: 0
+			},
+			number: {
+				type: Number,
+				default: 0
+			},
+			isActives: {
+				default: false
+			},
+			myWidth:{
+				default: uni.getSystemInfoSync().windowWidth
+			},
+		},
+		data() {
+			return {
+				actives: 0,
+				isActive: false,
+				widthLine:0
+			}
+		},
+		computed: {
+			// widthLine() {
+			// 	return this.scrollMove / 3
+			// },
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			// myWidth() {
+			// 	return uni.getSystemInfoSync().windowWidth
+			// },
+		},
+		methods: {
+			// 切换
+			handleClick(e) {
+				this.$emit('active', e)
+				this.$emit('isactive', false)
+				this.isActive = false
+				this.widthLine = (this.myWidth / 3) * e
+				// console.log(this.widthLine, 'TitleNameTitleNameTitleName')
+			},
+		},
+		watch: {
+			active(val) {
+				if (val > this.actives) {
+					
+					this.actives = val
+				} else {
+					
+					// this.actives = val
+				}
+			},
+			scrollMove(val) {
+				if(this.number==(this.length-1)&&val>0){
+					this.widthLine = Math.round(this.myWidth / 3) * (this.length-1) + Math.round(val / 3)				
+				}else if(this.number==0&&val<0){					
+					this.widthLine = 0
+					
+				}else{
+					if (this.isActive) {
+						this.widthLine = Math.round(this.myWidth / 3) * this.number + Math.round(val / 3)
+					}
+				}		
+				// console.log(val,this.number,this.widthLine,'ssssssssssss')
+			},
+			isActives(val) {
+				this.isActive = val
+
+			}
+		}
+
+
+	}
+</script>
+
+<style scoped>
+	/* @import '@/common/css/nvue-whith.css'; */
+
+	.lines {
+		height: 6rpx;
+		width: 26px;
+		background-color: #FF5927;
+		margin-left: 11px;
+		border-radius: 6rpx;
+	}
+
+	.titleItem {
+		/* #ifdef APP-VUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+
+
+	.TitleName {
+		color: #666666;
+		padding-bottom: 10rpx;
+		font-weight: 300;
+		font-size: 34rpx;
+		/* margin-top: 4rpx; */
+		
+	}
+
+	.TitleName1 {
+		color: #1c1c1c;
+		font-weight: 700;
+		font-size: 40rpx;
+	
+
+
+	}
+</style>

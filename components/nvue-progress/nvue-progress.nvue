@@ -1,0 +1,133 @@
+<!-- 进度条 -->
+<template>
+	<view class="nvue-progress">
+		<view class="" v-if="type">
+		<view class="liner" :style="{backgroundColor:'#efefef',width:100/wNumber+'px',height:mheight+'rpx',borderRadius:'20rpx'}" />
+		<view class="activeLine" v-if="type" :style="{backgroundColor:activecolor,height:mheight+'rpx',width:loadLoading/wNumber+'px',borderRadius:'20rpx'}"  />	
+		</view>
+		  
+		<view class="" v-else>	
+		<view class="liner" :style="{backgroundColor:bgcolor,width:mwidth+'px',height:mheight+'rpx'}" />
+		<view class="activeLine"  :style="{backgroundColor:activecolor,height:mheight+'rpx',width:activeWidth+'px',borderTopRightRadius:radius+'rpx',borderBottomRightRadius:radius+'rpx'}" />
+		</view>
+
+	</view>
+</template>
+
+<script>
+	let flag = true;
+	export default {
+		data() {
+			return {
+				getTimer: '',
+				getmduration: 0,
+
+			}
+		},
+		props: {
+			activeWidth :{
+				type: Number,
+				default: 0
+			},
+			type:{
+			type: Number,
+			default: 0	
+			},
+			bgcolor: {
+				type: String,
+				default: '#333333'
+			},
+			loadLoading:{
+				type: Number,
+				default: 0
+			},
+			activecolor: {
+				type: String,
+				default: '#FF5927'
+			},
+			mwidth: {
+				default: '300'
+			},
+			//系数
+			wNumber:{
+				default:1
+			},
+			mheight: {
+				default: '6'
+			},
+			//圆角
+			radius: {
+				default: 10
+			},
+			pause: {
+				type: Boolean,
+				default: false
+			},
+			//时间
+			mduration: {
+				type: Number,
+				default: 30
+			},
+
+
+		},
+		methods: {
+			timer(val) {
+				this.getTimer = setInterval(() => {
+					this.activeWidth += this.mwidth / 100
+					if (Math.round(this.activeWidth) == Math.round(this.mwidth)) {
+						clearInterval(this.getTimer)
+					}
+					
+				}, val)
+				
+			}
+		},
+		watch: {
+			
+			mduration(val) {
+
+				if (flag) {
+					this.getmduration = val
+					this.getTimer = 0
+					this.timer(this.getmduration)
+				}
+
+			},
+			pause(val) {
+				if (val) {
+					
+					clearInterval(this.getTimer)
+				} else {
+					
+					this.timer(this.getmduration)
+					if (Math.round(this.activeWidth) == Math.round(this.mwidth)) {
+						this.activeWidth = 0
+					}
+				}
+
+			}
+
+		}
+	}
+</script>
+
+<style scoped>
+	.nvue-progress {
+		position: relative;
+		/* border-bottom-right-radius: ; */
+		
+	}
+
+	.liner {
+		opacity: .8;
+	}
+
+	.activeLine {
+		top: 0;
+		position: absolute;
+		transition-property: width;
+		transition-duration: 0.3s;
+		transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+	}
+</style>

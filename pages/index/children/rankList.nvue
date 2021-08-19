@@ -1,0 +1,277 @@
+<!-- 排行 -->
+<template>
+	<view class="ranklist">
+		 <!-- <view class="" :style="{height:3+'rpx',width:myWidth+'px',backgroundColor:'#dddddd'}"> </view> -->
+		<scroller class="scroller" scroll-direction='horizontal' :show-scrollbar='false'  >
+			<text @click="handletab(item.type)" class="text" :class="{text1:active==item.type}" v-for="item in tabList"
+				:key='item.type'>{{item.name}}</text>
+		</scroller>
+		<view class="titleLine" ref="titleLine" :style="{width:myWidth+'px',height:'2rpx'}"></view>
+		<view class="myList" :style="{height:myHeight-400+'rpx',width:myWidth+'px'}">
+			<list :show-scrollbar='false'  class="list" :style="{height:myHeight-400+'rpx'}" @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="pageData.length">
+				<refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'" :style="{width:myWidth-32+'px'}" :viewHeight='120'>
+					<view class="refreshImages" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
+					</view>
+				</refresh>
+				
+				<cell>
+					<hotCard :item='pageData[0]'></hotCard>
+				</cell>
+				<cell v-for="(item,index) in pageData" :key='index' v-if="index>1">
+					<gameItem :itemIndex='index' :item="item" :type='1' style="margin:20rpx 0;"></gameItem>
+				</cell>
+				<cell v-if="loadinging">
+					<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
+				</cell>
+				
+			</list>
+			<view v-if="pageData.length==0&&islogin" :style="{width:myWidth-32+'px'}" style="position: absolute;top: 300rpx;">
+				<myloading :isrefre='isrefre' @Refresh='Refresh'></myloading>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	import hotCard from '@/components/nvue-hotCard/nvue-hotCard'
+	import gameItem from '@/components/nvue-gameItem/nvue-gameItem'
+	import myloading from '@/components/nvue-loading/nvue-loading'
+
+	export default {
+		components: {
+			hotCard,
+			gameItem,
+			myloading
+		},
+		props: {
+			myHeight: {
+				type: Number
+			},
+			myWidth: {
+				type: Number
+			},
+			isRank: {
+				type: Boolean,
+				default: false,
+			}
+		},
+		data() {
+			return {
+				islogin:false,
+				scrollLeft:0,
+				loadinging:false,
+				tabList: [{
+						type: 0,
+						name: '热门榜'
+					},
+					{
+						type: 1,
+						name: '新游榜'
+					},
+					{
+						type: 2,
+						name: 'H5热门榜'
+					},
+					{
+						type: 3,
+						name: 'H5新游榜'
+					}
+				],
+				pageData: [],
+				count: 0,
+				status: 'loadMore',
+				formData: {
+					page: 1,
+					offset: 15,
+					is_h5: 0,
+					/*, 是否H5游戏*/
+					sort: 1,
+					/* 热门榜还是新游榜 */
+
+				},
+				refreshing: false,
+				isrefre: false,
+				active: 0,
+				scrollTop:0,
+			}
+		},
+		methods: {
+			onpullingdown(e) {
+
+			},
+			//加载
+			loadmore(){
+			if(this.count>this.pageData.length){
+		     this.loadinging = true
+			   this.formData.page++
+			    this.getpageData(this.formData)
+				}
+			},
+			//刷新
+			Refresh(data) {
+				this.isrefre = true
+				if (data) {
+					this.pageData = []
+					this.getpageData(this.formData)
+				}
+			},
+			//下拉刷新
+			onrefresh() {
+				this.refreshing = true
+				setTimeout(() => {
+						this.resetLoadMore()
+					this.refreshing = false;
+				}, 1000)
+			},
+
+			/* 切换 */
+			handletab(index) {
+				this.active = index
+				this.formData = {
+					page: 1,
+					offset: 15,
+					is_h5: 0,
+					sort: 1,
+				}
+					this.scrollLeft = 10
+
+				switch (index) {
+					case 0:
+						this.pageData = []
+						this.formData.page = 1
+						this.formData.sort = 1
+						this.getpageData(this.formData)
+						break;
+					case 1:
+						this.pageData = []
+						this.formData.page = 1
+						this.formData.sort = 2
+						this.getpageData(this.formData)
+						break;
+					case 2:
+						this.pageData = []
+						this.formData.page = 1
+						this.formData.sort = 1
+						this.formData.is_h5 = 1
+						this.getpageData(this.formData)
+						break;
+					case 3:
+						this.pageData = []
+						this.formData.page = 1
+						this.formData.sort = 2
+						this.formData.is_h5 = 1
+						this.getpageData(this.formData)
+						break;
+				}
+
+			},
+			// 首页专区数据
+			getpageData(data = {}) {
+				$api.get('/game/multilistnew', {
+					...data,
+					client_id:this.$store.state.client_id
+				}).then(res => {
+					this.pageData = this.pageData.concat(res.data.data.list)
+					this.count = res.data.data.count
+					setTimeout(()=>{	
+			       	this.loadinging = false;
+					this.bind();
+					},100)
+				})
+
+			},
+
+			// 重置 loadmore
+			resetLoadMore() {
+				this.$refs.list.resetLoadmore();
+				// this.loadinging = false
+			},
+			//动画
+			bind() {
+				let anchor = common.getEl(this.$refs.list);
+				let titleLine = common.getEl(this.$refs.titleLine);
+				let mybinx = BindingX.bind({
+					anchor: anchor,
+					eventType: 'scroll',
+					props: [{
+						element: titleLine,
+						property: 'background-color', //动画属性
+						expression: 'evaluateColor("#ffffff","#efefef", min(y, 200)/200)' //表达式 说明了y从0-400,对应的值是1-0  
+					}, ]
+				}, e => {
+					if (e.state === 'turn') {
+
+					}
+				});
+			},
+
+		},
+		watch: {
+			isRank(val) {
+				if (val) {
+					this.getpageData(this.formData)
+
+					this.islogin = true
+				}
+
+			}
+		},
+
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+	.myList {
+		padding: 0rpx 32rpx;
+	}
+
+	.ranklist {
+		/* padding: rpx 0; */
+	}
+
+	.text {
+		padding: 10rpx 32rpx;
+		margin-right: 32rpx;
+		color: #666666;
+		font-size: 32rpx;
+		background-color: #F4F4F4;
+		border-radius: 40rpx;
+		border: 2rpx solid #F4F4F4;
+
+	}
+
+	.text1 {
+		border: 2rpx solid #FF5927;
+		background-color: #fff;
+		color: #FF5927;
+		 font-weight: 700; 
+	}
+
+	.loadmoreText {
+		font-size: 22rpx;
+		font-weight: 400;
+		text-align: center;
+		color: #666;
+		margin: 10rpx 0;
+	}
+
+	.scroller {
+		margin-left: 32rpx;
+		flex-direction: row;
+		padding: 40rpx 0;
+	}
+	.loadList{
+       position: absolute;
+	}
+</style>

@@ -1,0 +1,1198 @@
+<template>
+	<view class="gameDetail" v-if="pageData">
+		<!-- 背景图 -->
+		<view class="images" ref="myimages" style="position: absolute;">
+			<image :src="pageData.app_hot_image" :style="{width: myWidth+'px',height:'230px'}" ></image>
+		</view>
+		<!-- 头部图标 -->
+		<view class="icon" ref="iconleft" style="position: fixed;left:32rpx;"  @click="back">
+			<image src="@/static/images/back.png" style="width: 40rpx;height: 40rpx;"></image>
+		</view>
+		<view class="icon" ref="iconright" style="position: fixed;right: 32rpx;" @click="propupmother">
+			<image src="@/static/images/more.png" style="width: 40rpx;height: 40rpx;" v-if="i" ></image>
+		</view>
+		
+        <view class="navshow" ref="navshow" >
+        	<image src="@/static/images/back.png" style="width: 30rpx;height: 30rpx;" @click="back"></image>
+        	<image :src="pageData.new_icon||pageData.icon" style="width: 80rpx;height:80rpx;margin: 0 20rpx;"></image>
+        	<text style="color: #FEFEFE;font-size: 36rpx;">{{pageData.gamename.length>10?pageData.gamename.slice(0,8)+'..':pageData.gamename}}</text>
+        </view>
+		<view class="downLoad" ref="downLoad" >
+			<text style="color: #fff;font-size: 26rpx;" v-if="pageData.classify==5" @click="handleh5play">开玩</text>
+			<text style="color: #fff;font-size: 26rpx;" v-else-if="pageData.classify==3" @click="handleDownLoad">{{status}}</text>
+			<text style="color: #fff;font-size: 26rpx;" v-else  @click="handleIOSDown">{{opUrl?'安 装':'下 载'}}</text>
+		</view>  
+        
+		<view class="myList" :style="{height:myHeight+'rpx'}">
+			<!-- @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend' -->
+			<list  @scroll='scroll' @scrollstart='scrollstart' @scrollend='scrollend'  ref="list" fixFreezing="true" :style="{height:myHeight +'rpx'}" :show-scrollbar='false' >
+				<cell  :style="{height: '210px'}" @disappear='scollshow' @appear="scollshow"></cell>
+				<!-- 头部导航 -->
+				<header style='background-color: #FFFFFF;'>
+					<view  style="position: relative;overflow:hidden;height: 180rpx;background-color: #ccc;">
+					<image v-if='isAndroid' style="margin-left: 20rpx;position: absolute;" :src="pageData.app_hot_image" :style="{width: myWidth-70+'px',height:'180rpx'}"></image>
+							
+					<image v-if="$store.state.platform=='ios'"   :src="pageData.app_hot_image" :style="{width: myWidth+'px',height:'180rpx'}"></image>
+					<view v-if="$store.state.platform=='ios'" blurEffect="light" style=";position: absolute;width: 1000rpx;height: 200rpx;">
+					</view>
+					<sn-blur-view ref='sn_blur' :radius='22'  fps='120' v-if='isBlur&&isAndroid'  :style="{position:'absolute',width: myWidth+100+'px',height:'180rpx',bottom:0}" />	
+					</view>
+					<view class="nav" ref="nav"   style="margin-top: -200rpx;">
+						<view style="width: 140rpx;margin-top: 20rpx;">
+							<image :src="pageData.new_icon||pageData.icon" style="width: 140rpx;height: 140rpx;"></image>
+						</view>	
+						<view style="width: 400rpx;margin-top: 20rpx;">
+							<text style="color: #FEFEFE;margin-bottom: 20rpx;">{{pageData.gamename}}</text>
+							<view style="flex-direction: row;">
+								<text style="color: #FEFEFE;font-size: 24rpx;" v-if="pageData.gc_id">{{pageData.gc_id}}出品</text>
+								<text style="color: #FEFEFE;font-size: 24rpx;margin: 0 20rpx;" v-if="pageData.gc_id">|</text>
+								<text style="color: #FEFEFE;font-size: 24rpx;">{{pageData.popularity_cnt}}人在玩</text>
+							</view>
+						</view>
+						<view class="star_cnt" style="margin-top: 20rpx;">
+							<text style="color: #FEFEFE;font-size: 50rpx;font-weight: 700;">{{pageData.star_cnt}}</text>
+							<text style="color: #FEFEFE;font-size: 24rpx;">评分</text>
+						</view>
+					</view>
+					
+				<!--  隐藏区域-->
+				<view  style="background-color: #FFFFFF;">
+					
+				<view class="cards" ref="box1">
+					<view class="box1" style="background-color: #fff;" >
+												<!-- 优惠券 -->
+						<view  class="youhuiquan" v-if="pageData.coupons.count" @click="toYouHui(pageData.game_id)">
+					    	<image src="@/static/images/view/rateQuan.png" style="width: 48rpx;height: 30rpx;" mode="widthFix"   ></image>
+							<text style="margin-left: 20rpx;font-size: 28rpx;" :style="{color:pageData.coupons.count?'#1c1c1c':'#666'}">优惠券</text>
+					     </view>
+						 <view  class="youhuiquan" v-else>
+						 	<image src="@/static/images/view/yhq-black.png" style="width: 48rpx;height: 30rpx;" mode="widthFix" ></image>
+						 	<text style="margin-left: 20rpx;font-size: 28rpx;" :style="{color:pageData.coupons.count?'#1c1c1c':'#666'}">优惠券</text>
+						  </view>
+						 
+							<!-- 开服 -->
+						  <view class="kaifu" @click="IsServeShow=true">			
+									<image class="kf_image" src="@/static/images/view/PlayGame.png" mode="widthFix"  v-if="pageData.game_start_time"></image>
+									 <image  class="kf_image" src="@/static/images/view/noPlayGame.png" v-else mode="widthFix"></image>
+									<view style="margin-right: 10rpx;" v-if="pageData.game_start_time">
+									<text style="color: #c1c1c1;font-size: 24rpx;text-align: center;">机动22区</text>
+									<text style="color: #666;font-size: 32rpx;text-align: center;">今天 {{pageData.game_start_time|dateFormat('hh:mm')}}</text>
+							        </view>
+								<view style="margin-right: 10rpx;" v-else>
+								<text style="color: #666;font-size: 32rpx;text-align: center;">暂无新服</text>
+								</view>				
+						     	<image src="@/static/images/right.png" mode="widthFix" style="width: 14rpx;height: 12rpx;" v-if="pageData.game_start_time"></image>
+							</view>
+								<!-- 折扣 -->
+							<view class="zhekou" >
+									<image src="@/static/images/zhekou.png" style="width: 100rpx;height: 110rpx;"  v-if="pageData.rate<1"></image>
+									<image src="@/static/images/nozhekou.png" style="width: 100rpx;height: 110rpx;"  v-else></image>
+									<view style="position: absolute;width: 100rpx;height: 110rpx;flex-direction: row;align-items: center;justify-content: center;margin-left: 5rpx;">
+									<text style="font-size: 28rpx;color: #fff;margin-right: 10rpx;" >{{pageData.rate<1?(pageData.rate*10).toFixed(1):'无折扣'}}</text>
+								    <text style="font-size: 22rpx;color: #fff;" v-if="pageData.rate<1">折</text>
+									</view>
+									
+						    </view>
+					
+					</view>
+			  	</view>
+				<!-- 下载  -->		
+				<!-- android -->
+				<view class="cards" ref="down" v-if="pageData.classify==3" @click="handleDownLoad">
+				<view class="down">
+					<image class="operation-item_image" src="@/static/images/dwonLoad.png" mode="widthFix" style="margin-right: 12rpx;"  v-if="status=='下 载'"></image>
+					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"  v-else></image>
+					    <text class="down_text"  v-if="pageData.game_task_content" >试玩</text>
+							<text class="down_text" v-else>{{status}}</text>
+							<text class="down_text" v-if="status=='下 载'">{{pageData.size}}</text>
+				     	</view>
+						<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
+				</view>
+				<!-- h5 -->
+	         <view class="cards" ref="down" v-else-if="pageData.classify==5" @click="handleh5play">
+				<view class="down"  >
+					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"></image>
+					   <text class="down_text"  v-if="pageData.game_task_content" >试玩</text>
+					    <text class="down_text" v-else>开玩</text>
+				 </view>
+					<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
+		    	</view>
+	        <!-- IOS -->
+	         <view class="cards" ref="down" v-else @click="handleIOSDown">
+				<view class="down"  >
+					<image class="operation-item_image" src="@/static/images/dwonLoad.png" mode="widthFix" style="margin-right: 12rpx;"  v-if="status=='下 载'"></image>
+					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"  v-else></image>
+					    <text class="down_text"  v-if="pageData.game_task_content&&!opUrl" >试玩</text>
+							<text class="down_text"  v-else-if='!opUrl' >{{'下 载'}}</text>
+							<text class="down_text"  v-else >{{'安 装'}}</text>
+							<!--     -->
+					 	</view>
+					<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
+		    	</view>
+				
+               </view>
+     					<!-- 收藏 福利 资讯攻略 -->
+						 <view class="cards" ref="operation">
+						 	<view class="operation" >
+						 		<!-- 收藏 -->
+						 		<view class="operation-item" @click="handleOperation(pageData.game_id,pageData.is_collect)">
+						 		<image class="operation-item_image" src="@/static/images/view/ysc.png"  v-if="pageData.is_collect==1" mode="widthFix"></image>
+						 		<image class="operation-item_image" src="@/static/images/view/sc.png" v-else mode="widthFix"></image>
+						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;" v-if="pageData.is_collect==1">已收藏</text>
+						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;" v-else>收藏</text>
+									
+						 		</view>
+						 			<text class="operation-item_line"> | </text>
+						 		<!-- 福利 -->
+						 		<view class="operation-item" @click="handleRouter('/pages/view/gamedetail/children/welfare/index?game_id='+pageData.game_id)">
+						 			<image class="operation-item_image" src="@/static/images/view/fl.png" mode="widthFix"></image>
+						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;">福利</text>
+						 		</view>
+						 		<text class="operation-item_line"> | </text>
+						 		<!-- 资讯攻略 -->
+						 		<view class="operation-item" @click="handleRouter('/pages/view/gamedetail/children/zxDetail?game_id='+pageData.game_id)">
+						 		<image class="operation-item_image" src="@/static/images/view/zxgl.png" mode="widthFix"></image>
+						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;">资讯攻略</text>
+						 		</view>
+						 	</view>
+
+						 </view>
+
+				</header>
+				<!--  -->
+                   <cell class="slot">
+					   <view :style="{width:myWidth+'px',backgroundColor:'#fff'}" ref="slot">
+					   </view>
+				   </cell>
+				   
+				<!-- 轮播图 -->
+				<cell class="cards" style="padding-left: 40rpx 0rpx 0rpx 0rpx;">
+					<scroller class="scroller" style="flex-direction: row;background-color: #fff;align-items: center;" scroll-direction='horizontal' :show-scrollbar='false'>
+					   <view v-if="pageData.mp4_type==1" :style="{width:myWidth-60+'px',height:'360rpx',position:'relative',borderRadius:'20rpx'}" style="background-color: #000;flex-direction: row;justify-content: center;align-items: center;margin-left: 24rpx;margin-bottom: -10rpx;">
+						<video id="video" :src="pageData.mp4_url" autoplay objectFit="fill" :enable-progress-gesture='false' :poster='pageData.hot_image'  :style="{width:myWidth-66+'px'}" style="height: 360rpx;margin:20rpx 10rpx;border-radius: 20rpx;" ></video>   	
+					    <cover-image src="@/static/images/view/video-background.png"  :style="{width:myWidth-60+'px',height:'360rpx'}" style="position: absolute;"></cover-image>
+					   </view>
+						<image v-for="(v,i) in pageData.image" :key='i' @click="imageBig(/http/i.test(v)?v:'https:'+v)"	style="width: 200rpx;height: 360rpx;border-radius: 20rpx;margin:20rpx 10rpx;"	:src="/http/i.test(v)?v:'https:'+v"></image>
+					</scroller>
+				</cell>
+				  <cell style="height: 72rpx;background-color: #fff;"></cell>
+				<!-- 游戏简介 -->
+				<cell class="cards">
+					<view style="flex-direction: row;align-items: center;justify-content: space-between;background-color: #fff;">
+						<text style="font-size: 40rpx;color: #000;font-weight: 700;">简介</text>
+						<text style="font-size: 28rpx;color: #666;" @click="topage">查看全部</text>
+					</view>
+					<view style="flex-direction: row;align-items: center;background-color: #fff;margin-top: 40rpx;">
+						<view style="flex-direction: row;margin: 0 10rpx;padding: 16rpx;border-radius: 40rpx; background-color: #D0F2FE; align-items: center;" v-if="pageData.tag">
+							<text style="color: #19BFFF;font-size: 24rpx;"  v-if="pageData.detailtype==1">NO:{{pageData.tag}} 新游榜 </text>
+							<text style="color: #19BFFF;font-size: 24rpx;"  v-if="pageData.detailtype==2">NO:{{pageData.tag}} 热门榜 </text>
+							<image src="@/static/images/view/left-black.png" mode="widthFix" style="width: 14rpx;height: 14rpx;margin-left: 4rpx;"></image>
+						</view>
+						<view style="flex-direction: row;margin: 0 10rpx;padding: 16rpx;border-radius: 40rpx; background-color: #F4F4F4; align-items: center;"	v-for="(item,index) in pageData.type" :key='index' @click="handleCates(index,item)">
+							<text style="font-size: 24rpx;color: #666;">{{item}}</text>		
+							<image src="@/static/images/view/left-gred.png" mode="widthFix" style="width: 14rpx;height: 14rpx;margin-left: 4rpx;"></image>
+						</view>
+					</view>
+					<text style="font-size: 28rpx;margin: 20rpx 0;line-height: 50rpx;"	v-if="pageData.desc">{{pageData.desc.slice(0,70)+'...'}}</text>
+				</cell>
+				<cell style="height: 72rpx;background-color: #fff;"></cell>
+				<!-- 评分 -->
+				<cell class="cards" >
+					<view @click="toDetail(pageData.game_id)" style="flex-direction: row;align-items: center;justify-content: space-between;background-color: #fff;margin-bottom: 20rpx;">
+						<text style="font-size: 40rpx;color: #000;font-weight: 700;">评价</text>
+						<text style="font-size: 28rpx;color: #666;">查看全部</text>
+					</view>
+					<!-- 玩家评价 -->
+					<view style="margin-bottom: 40rpx;">
+						<view style="background-color: #fff;flex-direction: row;margin-bottom: 24rpx;">
+							<view class="pf-left">
+								<text style="color: #FF5927;font-size: 80rpx;">{{pageData.star_cnt}}</text>
+								<uni-rate v-model="pageData.star_cnt" :margin="4" :readonly="true" color="#DADADA"
+									:size="8" active-color="#FF5927" style="margin: 10rpx 0;" />
+								<text style="color: #C1C1C1;font-size: 24rpx;">{{pageData.star_all}}人在评分</text>
+							</view>
+							<view class="pf-right">
+								<view style="flex-direction: row;align-items: center;justify-content: flex-end;">
+									<text style="font-size: 24rpx;color: #C1C1C1;margin-right:10rpx;">★★★★★</text>
+									<view style="background-color: #EFEFEF;width: 300rpx;">
+										<view :style="{width:3*pageData.star5+'rpx'}"
+											style="height: 10rpx;background-color:#FF5927;border-radius: 5rpx;">
+										</view>
+									</view>
+								</view>
+								<view style="flex-direction: row;align-items: center;justify-content: flex-end;">
+									<text style="font-size: 24rpx;color: #C1C1C1;margin-right:10rpx;">★★★★</text>
+									<view style="background-color: #EFEFEF;width: 300rpx;">
+										<view :style="{width:3 * pageData.star4 +'rpx'}"
+											style="height: 10rpx;background-color:#FF5927;border-radius: 5rpx;">
+										</view>
+									</view>
+								</view>
+								<view style="flex-direction: row;align-items: center;justify-content: flex-end;">
+									<text style="font-size: 24rpx;color: #C1C1C1;margin-right:10rpx;">★★★</text>
+									<view style="background-color: #EFEFEF;width: 300rpx;">
+										<view :style="{width:3*pageData.star3+'rpx'}"
+											style="height: 10rpx;background-color:#FF5927;border-radius: 5rpx;">
+										</view>
+									</view>
+								</view>
+								<view style="flex-direction: row;align-items: center;justify-content: flex-end;">
+									<text style="font-size: 24rpx;color: #C1C1C1;margin-right:10rpx;">★★</text>
+									<view style="background-color: #EFEFEF;width: 300rpx;">
+										<view :style="{width:3*pageData.star2+'rpx'}"
+											style="height: 10rpx;background-color:#FF5927;border-radius: 5rpx;">
+										</view>
+									</view>
+								</view>
+								<view style="flex-direction: row;align-items: center;justify-content: flex-end;">
+									<text style="font-size: 24rpx;color: #C1C1C1;margin-right:10rpx;">★</text>
+									<view style="background-color: #EFEFEF;width: 300rpx;">
+										<view :style="{width:3*pageData.star1+'rpx'}"
+											style="height: 10rpx;background-color:#FF5927;border-radius: 5rpx;">
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<text style="font-size: 28rpx;color: #666;">当前共有{{evaluate.count}}条评论</text>
+					</view>
+					<view style="margin-bottom: 20rpx;flex-direction: row;" v-if="Object.keys(evaluateitem)" @click="toDetail(pageData.game_id)">
+						<image v-if="evaluateitem.mem_avatar" :src="/http/i.test(evaluateitem.mem_avatar)?evaluateitem.mem_avatar:'https:'+ evaluateitem.mem_avatar" style="width: 80rpx;height: 80rpx;border-radius: 40rpx;"></image>
+						<view style="margin-left: 30rpx;justify-content: space-between;">
+							<text style="font-size: 30rpx;font-weight: 700;">{{evaluateitem.mem_name}}</text>
+							<text style="font-size: 24rpx;color: #666;"
+								v-if="evaluateitem.create_time">{{ evaluateitem.create_time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
+						</view>
+					</view>
+					<view style="flex-direction: row;align-items: center;" v-if="evaluateitem">
+						<uni-rate v-if='evaluateitem.star_cnt>0' :value="evaluateitem.star_cnt/2" :margin="6"
+							:readonly="true" color="#DADADA" :size="12" active-color="#FF5927" />
+						<text v-if='evaluateitem.star_cnt>0' style="color: #666;font-size: 20rpx;">游戏时长{{Math.floor(Math.random()*(100-1)+1)}}分钟</text>
+					</view>
+					<view v-if="evaluateitem.content" style="margin-bottom: 40rpx;position: relative;">
+						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" v-if="!isConent">{{evaluateitem.content.length>42?evaluateitem.content.slice(0,40)+'...':evaluateitem.content}}</text>
+						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" v-else>{{evaluateitem.content}}</text>
+					    <text style="position: absolute;right: 10rpx;font-size: 24rpx;color: #666;top:60rpx" v-if="!isConent&&evaluateitem.content.length>42" @click="isConent = true">查看全文</text>
+						<image @click="imageBig(evaluateitem.content_img[0])" :src="evaluateitem.content_img[0]" v-if="evaluateitem.content_img.length>0"  style="border-radius: 20rpx;margin-bottom: 20rpx;" :style="{width:myWidth-40+'px'}" mode="aspectFill"></image>
+						<!-- 点赞 评论 -->
+						<view
+							style="flex-direction: row;justify-content: space-between; width: 300rpx;margin-bottom: 40rpx;">
+							<view style="flex-direction: row;align-items: center;">
+								<image src="@/static/images/zan.png" mode="widthFix" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
+								<text style="font-size: 24rpx;color: #666;">{{evaluateitem.like_cnt}}</text>
+							</view>
+							<view style="flex-direction: row;align-items: center;">
+								<image src="@/static/images/notZan.png" mode="widthFix" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
+								<text style="font-size: 24rpx;color: #666;">{{evaluateitem.hate_cnt}}</text>
+							</view>
+							<view style="flex-direction: row;align-items: center;">
+								<image src="@/static/images/contens.png" mode="widthFix" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
+								<text style="font-size: 24rpx;color: #666;">{{evaluateitem.sum?evaluateitem.sum:0}}</text>
+							</view>
+						</view>
+						<!-- 子回复 -->
+						<view @click="toDetail(pageData.game_id)" style="background: #F4F4F4;border-radius: 20rpx;padding: 20rpx;margin-bottom: 40rpx;"	v-if='evaluateitem.sub.length'>
+							<view style="flex-direction: row;margin-bottom: 20rpx;" v-if="index<2" v-for="(item,index) in evaluateitem.sub" :key='index'>
+								<text style="font-size: 24rpx;color: #121212;font-weight: 700;margin-right: 20rpx;">{{item.mem_name}}:</text>
+								<text style="font-size: 24rpx;color: #666;">{{item.content}}</text>
+							</view>
+							<text	style="font-size: 24rpx;color: #c1c1c1;" >查看全部{{evaluateitem.sum?evaluateitem.sum:0}}条评论</text>
+						</view>
+						<view class="down" @click="toDetail(pageData.game_id)" >
+							<text style="color: #FF5927;font-size: 28rpx;" >查看全部评论</text>
+						</view>
+					</view>
+					
+					<!-- 相关游戏 -->
+					<view style="margin-bottom: 60rpx;">
+						<view style="flex-direction: row;align-items: center;justify-content: space-between;margin-bottom: 40rpx;">
+							<text style="font-size: 40rpx;color: #000;font-weight: 700;">相关游戏</text>
+							<view style="flex-direction: row;align-items: center;width: 200rpx;justify-content: flex-end;" @tap="getrelevantData">
+								<image src="@/static/images/Refresh-icon.png" mode="widthFix" style="width: 40rpx;height: 40rpx;" ref="icon1"></image>
+								<text style="font-size: 24rpx;margin-left: 6rpx;">换一批</text>
+							</view>
+						</view>
+						<view ref="box_icon1" style="height:520rpx;">
+							<view  style="flex-direction: row;flex-wrap: wrap; justify-content: space-between;" >
+								<gameicon :srcurl='pageData.new_icon||pageData.icon' :discount='discount' style="margin-right: 32rpx;" :iconData='item' v-for="item in relevantData" :key="item.game_id" />
+							</view>
+						</view>
+					</view>
+				</cell>
+			</list>
+		</view>
+
+		<!-- 弹出框 -->
+		<gameporp :isshow='propup' @close='propup=false' :is_collect='pageData.is_collect' @is_collect='is_collect' :shareData='shareData' ref='propup'></gameporp>
+		
+		<!-- serlistNew v-if="IsServeShow" -->
+		<serveShow  v-if="IsServeShow"   style="position: fixed;"  @close='IsServeShow=false' :serveList='pageData.serlistNew.list'></serveShow>
+		
+		<!-- ios下载 -->
+		<iosDownLoad @close='iosShow=false' style="position: fixed;top: 0;"  @newStatus='newStatus' @openurl='openurl' :iosStatus='iosStatus' :game_id='pageData.game_id' v-if="pageData.classify==4&&iosShow" ref='iosdownLoad' :show='iosShow'></iosDownLoad>
+		
+		
+	</view>
+</template>
+
+<script>
+	import {$api} from '@/config/api.js';
+	import gameicon from '@/components/nvue-icon/nvue-icon.nvue';
+	import gameporp from '@/components/nvue-propup/nvue-propup.nvue';
+	import serveShow from './children/serveShow.nvue';
+	import iosDownLoad from "./children/iosDownLoad/index.nvue";
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from '@/common/js/common.js';
+	export default {
+		data() {
+			return {
+				isAndroid: uni.getSystemInfoSync().platform == "android",
+				pageData: null,
+				shareData: null,
+				isBlur:false,
+				iosStatus: 0,
+				iosShow:false,
+				opUrl:'',
+				//开服
+				IsServeShow:false,
+				isConent:false,
+				operation:[],
+				status:'',
+				isshow: false,
+				evaluate: {},
+				evaluateitem: {},
+				propup: false,
+				discount: 2,
+				relevantData: [],
+				startY:0,
+				startX:0,
+				// myScale:1,
+				mybinding:'',
+				scrollDirection:0,
+				scrollEnd:0,
+				scrollY:0,
+				y:0,
+				timerr:'',
+				rotatebin:'',
+				i:1,
+				isReback:true,
+				wifiDown:true,
+				
+			}
+		},
+		components: {
+			gameicon,
+			gameporp,
+			serveShow,
+			iosDownLoad
+	
+		},
+		mounted() {
+	         
+		},
+		computed: {
+			
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+
+			},
+			userInfo(){
+				return this.$store.state.userInfo
+			}
+		},
+		onLoad(option) {
+			this.game_id = option.gameid
+			this.getData(this.game_id)
+		    this.wifiDown = uni.getStorageSync('isWifiDown').status
+		},
+		onHide(){
+			if(this.pageData.mp4_url){
+				
+			uni.createVideoContext("video").pause();
+			}
+			
+		},
+		onShow(){
+			setTimeout(()=>{
+				this.getEvaluate()
+			},300)
+	
+		 
+		},
+		onReady() {
+			
+			let fontSrc = plus.io.convertLocalFileSystemURL('/static/fonts/iconfont.ttf')
+			var domModule = weex.requireModule("dom");
+			domModule.addRule('fontFace', {
+				'fontFamily': 'iconfont',
+				'src': "url('file:/" + fontSrc + "')"
+			})
+		},
+		methods: {
+			//跳转游戏列表
+			handleCates(i,name){
+				let id = this.pageData.category_id[i]
+				uni.navigateTo({
+					url: `/pages/game/children/gameList?id=${id}&type=cate&name=${name}`
+				})
+			},
+			//放大图片
+			imageBig(img){
+			 common.previewImage(0,[img])
+			},
+			//去优惠券页面
+			toYouHui(id){
+				uni.navigateTo({
+					url: `/pages/view/gamedetail/children/youhui?gameid=${id}`
+				})
+			},
+			// 去全部评论详情页
+			toDetail(id){
+				uni.navigateTo({
+					url: `/pages/view/gamedetail/comment1234?gameid=${id}`
+				})
+			},
+			// 获取游戏数据
+			getData(params = {}) {
+				$api.get('game/detail', {
+					game_id: this.game_id,
+					client_id:this.$store.state.client_id
+				}).then(res => {
+					this.pageData = res.data.data;
+					setTimeout(()=>{
+						this.isBlur = true
+					},50)
+			     	setTimeout(()=>{
+					if(this.isAndroid){	
+					this.$refs.sn_blur.pauseBlur()
+					}
+				},1000)
+					
+					if (plus.runtime.isApplicationExist({
+							pname: this.pageData.package_name
+						})) {
+						this.status = '打 开'
+					} else if (this.pageData.classify == 5) {
+						this.status = '开 玩'
+					} else {
+						this.status = '下 载'
+					}
+			
+					this.switchData()
+					// this.getEvaluate()
+				})
+			},
+			//分享
+			getshareData() {
+			$api.get("share/detail", {
+					share_type: 'game',
+					game_id: this.pageData.game_id,
+					client_id: this.$store.state.client_id
+			
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.shareData = {
+							...res.data.data
+						}
+			
+					}
+				})
+			},
+			//收藏
+			is_collect(type){
+				this.handleOperation(this.pageData.game_id,type)
+			},
+			//H5
+			handleh5play(){
+				if(this.isLogin()){
+					uni.navigateTo({
+						url:`/pages/view/h5play/index?game_url=${this.pageData.down_url}`
+					})
+				}
+				
+			},
+			//ios 下载
+			handleIOSDown(){
+			console.log(this.iosStatus,'this.iosStatusthis.iosStatusthis.iosStatus')
+			if(this.iosStatus == 2){
+				this.iosShow = true
+				return
+			}	
+			if(this.iosStatus ==3){
+				plus.runtime.openURL(this.opUrl, (res) => {
+					console.log(res);
+				});
+				return
+			}
+			
+			let networkType = ''
+			uni.getNetworkType({
+				success: res=> {
+				   networkType = res.networkType;
+				}
+			});	
+			
+			if(this.wifiDown&&networkType!='wifi'){
+				uni.showModal({
+				    title: '提示',
+				    content: '当前网络状态为'+networkType+'，您是否要使用流量下载',
+				    success: res=> {
+				        if (res.confirm) {
+				           this.getIosDownLoad()
+				        } else if (res.cancel) {	
+			                 return
+				        }
+				    }
+				});
+			}else{
+				this.getIosDownLoad()
+			}
+		},
+			getIosDownLoad(){
+				console.log(this.$store.state.udid,'this.$store.state.udid')		
+				if (this.$store.state.udid && this.pageData.is_third != 2) {
+						if (this.opUrl) {
+							plus.runtime.openURL(this.opUrl, (res) => {
+								console.log(res);
+							});
+						} else {
+							this.iosShow = true
+							this.iosStatus == 2 ? this.iosStatus : this.iosStatus = 1
+						}
+					} else {
+						plus.runtime.openURL(this.pageData.down_url, (res) => {
+							console.log(res);
+						});
+					} 
+			},
+			openurl(url) {
+				this.opUrl = url
+			},
+			newStatus(index) {
+				this.iosStatus = index
+			},
+		
+			// 判断是否登录，评论时需要先登录
+			 isLogin() {
+			   if (!Object.keys(this.userInfo).length) {
+				   uni.showToast({
+				   	  title:'登录过期,请重新登录',
+					  icon:'none',
+				      success: () => {
+						  setTimeout(()=>{
+						   uni.navigateTo({
+							url: '/pages/my/children/login',
+							})
+							},300)
+						  }
+					   })
+					      return false;
+							}else{
+								return true
+							}
+						},
+			//收藏
+			handleOperation(game_id,type){
+				if(this.isLogin()){
+					$api.get('game/check_collect', {
+						game_id,
+						status:type == 1 ? 2 : 1,
+						client_id:this.$store.state.client_id
+					}).then(res => {
+						if(res.data.code==200){
+							uni.showToast({
+								title:'操作成功！',
+								success: () => {
+									setTimeout(()=>{
+										this.getData()
+									},300)
+								}
+							})
+						}else{
+							uni.showToast({
+								title:res.data.msg,
+								icon:'none',
+								
+							})
+						}
+						
+					})
+				}
+	
+			},
+			//下载
+			handleDownLoad(){
+			  let networkType = ''
+				uni.getNetworkType({
+					success: res=> {
+					   networkType = res.networkType;
+					}
+				});
+				if(this.pageData.is_third==2){
+					plus.runtime.openURL(this.down_url);
+					return
+				}
+				
+				
+				if(this.status=='打 开'){
+					plus.runtime.launchApplication( {pname:this.pageData.package_name}, err => {uni.showToast({ title:'打开失败',icon:'none'	})} );
+					
+					return
+					
+				}
+			
+				if(this.wifiDown&&networkType!='wifi'){
+					uni.showModal({
+					    title: '提示',
+					    content: '当前网络状态为'+networkType+'，您是否要使用流量下载',
+					    success: res=> {
+					        if (res.confirm) {
+					           this.getDownLoad()
+					        } else if (res.cancel) {	
+                                 return
+					        }
+					    }
+					});
+				}else{
+					this.getDownLoad()
+				}
+			},
+			getDownLoad(){
+				//将数据存入数组
+
+					let arrList = uni.getStorageSync('downList')||[]
+					let downList = this.$store.state.downTasksList
+					console.log(arrList.length,this.pageData.down_url,'arrList.lengtharrList.length')
+					if(arrList.length>0){
+						if(!arrList.some(item=>{ return item.game_id == this.pageData.game_id })){
+							arrList.unshift({
+								game_id:this.pageData.game_id,
+								down_url:this.pageData.down_url,
+								popularity_cnt:this.pageData.popularity_cnt,
+								type:this.pageData.type,
+								icon:this.pageData.new_icon||this.pageData.icon,
+								gamename:this.pageData.gamename,
+								package_name:this.pageData.package_name,
+								myTotalData:0,
+								myloading:0,
+								noActive:false,
+								status:0,
+								filename:'',
+								downs:0
+							})
+							downList.unshift({
+								game_id:this.pageData.game_id,
+								downTasks:null
+							})
+							
+							
+						}else{
+							console.log('数据已存在')
+						}
+					}else{
+						arrList.unshift({
+							game_id:this.pageData.game_id,
+							down_url:this.pageData.down_url,
+							popularity_cnt:this.pageData.popularity_cnt,
+							type:this.pageData.type,
+							icon:this.pageData.new_icon||this.pageData.icon,
+							gamename:this.pageData.gamename,
+							package_name:this.pageData.package_name,
+							myTotalData:0,
+							myloading:0,
+							noActive:false,
+							status:0,
+							filename:'',
+							downs:0
+							
+						})
+						downList.unshift({
+							game_id:this.pageData.game_id,
+							downTasks:null
+						})
+					}
+					console.log(downList,'downListdownLists')
+				this.$store.commit('setDownTasksList',[]) 
+				this.$store.commit('setDownTasksList',downList) 
+				uni.setStorageSync('downList',[])
+				uni.setStorageSync('downList',arrList)
+				this.handleRouter('/pages/view/downLoad/downLoad')
+				
+			},
+			
+			
+			//触摸
+			touchstart(e){
+				this.startY = e.changedTouches[0].screenY
+			},
+			touchmove(e){
+
+			},
+			touchend(e){
+
+			},
+
+			scrollstart(e){
+              this.bind()
+			
+			},
+			scrollend(e){
+			},
+
+          //动画
+			  bind() {        
+				let anchor = common.getEl(this.$refs.list);
+				let myimages = common.getEl(this.$refs.myimages)
+				let iconleft = common.getEl(this.$refs.iconleft)
+				let iconright = common.getEl(this.$refs.iconright)
+				let nav = common.getEl(this.$refs.nav)
+				let navshow = common.getEl(this.$refs.navshow)
+				let operation = common.getEl(this.$refs.operation)
+				let down = common.getEl(this.$refs.down)
+				let box1 = common.getEl(this.$refs.box1)
+				let downLoad = common.getEl(this.$refs.downLoad)
+				let slot = common.getEl(this.$refs.slot);
+				
+				 this.mybinding = BindingX.bind({
+					anchor: anchor,
+					eventType: 'scroll',
+					props: [{
+							element: myimages,
+							property: 'transform.scale', //动画属性
+							expression: `1-(y>0?0:y)/96` 
+						},
+						{
+								element: iconleft,
+								property: 'opacity', //动画属性
+								expression: `1-y/200` 
+					    },
+						{
+								element: iconright,
+								property: 'opacity', //动画属性
+								expression: `1-y/200`  
+						},
+						{
+								element: nav,
+								property: 'opacity', //动画属性
+								expression: `1-(y>80?y-80:0)/130`  
+						},
+						{
+								element: navshow,
+								property: 'opacity', //动画属性
+								expression: `0+(y>160?y-160:0)/70` 
+						},
+						{
+								element: navshow,
+								property: 'transform.translateY', //动画属性
+								expression: `0+(y>260?y-(y-260):y)/15` 
+						},
+						{
+								element: operation,
+								property: 'transform.translateY', //动画属性
+								// expression: `0-(y>250&&y<310?y-250:0)/1` 
+						},
+						{
+								element: operation,
+								property: 'transform.translateY', //动画属性
+								// expression: `0-(y>480?y-(y-480):0)/1` 
+						},
+						{
+								element: down,
+								property: 'height', //动画属性
+								expression: `80-(y>280?y-280:0)/.7` 
+						},
+						{
+								element: down,
+								property: 'opacity', //动画属性
+								expression: `1-(y>220?y-220:1)/120` 
+						},
+						
+						{
+								element: box1,
+								property: 'height', //动画属性
+								expression: `110-(y>320?y-320:0)/.7` 
+						},
+						{
+								element: box1,
+								property: 'opacity', //动画属性
+								expression: `1-(y>220?y-220:1)/120` 
+						},
+						{
+								element: downLoad,
+								property: 'transform.translateY', //动画属性
+								expression: `0-(y>370?200:y-200)/4` 
+						},
+						{
+								element: downLoad,
+								property: 'opacity', //动画属性
+								expression: `0+(y>280?y-280:0)/120` 
+						},
+					
+						
+					]
+				}, (e) => {
+					if(e.state === 'turn') {
+						if(this.isAndroid){
+							
+						this.$refs.sn_blur.pauseBlur()
+						}
+					}
+				});
+			 },		
+			scollshow(e) {
+				if(this.$refs.sn_blur){
+				  if(this.isAndroid){ 	
+				  this.$refs.sn_blur.pauseBlur()
+				  }
+				}
+				if(e.type=='disappear'){
+					this.i = 1
+				}
+				this.isshow = e.direction == 'up' ? true : false
+			},
+			//获取评论
+			getEvaluate() {
+				$api.get('v8/comments/list', {
+					type_name: 'game',
+					object_id: this.game_id,
+					client_id:this.$store.state.client_id
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.evaluate = res.data.data
+						if (res.data.data.list.length > 0) {
+							this.evaluateitem = res.data.data.list[0]
+							if (typeof this.evaluateitem.content == 'string') {
+								try {
+									this.evaluateitem.content = JSON.parse(this.evaluateitem.content);
+									return true;
+								} catch (e) {
+									return false;
+								}
+							}
+						} else {
+							this.evaluateitem = {}
+						}
+					}
+				})
+			},
+			//返回上一级
+			back() {
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			//路由跳转
+			handleRouter(url){
+				uni.navigateTo({
+					url
+				})
+			},
+			propupmother() {
+				this.getshareData()
+				this.propup = true
+				this.$nextTick(function() {
+					this.$refs.propup.bind()
+
+				})
+			},
+			//获取相关游戏
+			getrelevantData() {
+				if(this.isReback){
+					this.isReback = false
+					setTimeout(()=>{
+					this.isReback = true
+					},600)
+					this.bins(common.getEl(this.$refs.icon1), 'transform.rotateZ', `easeOutCubic(t,0,180,600)`)
+					this.relevantData = []
+					this.bin1(common.getEl(this.$refs.box_icon1), 'opacity', `easeInOutQuint(t,-1,2,600)`)
+						setTimeout(() => {
+						this.switchData()
+						}, 20)
+				}
+		
+			},
+			switchData(){
+				$api.get('game/related_game', {cate_id: this.pageData.cate_id,tags:0,client_id:this.$store.state.client_id}).then(res => {
+					if (res.data.code == 200) {
+						this.relevantData = res.data.data
+					}
+				})
+			},
+			//动画
+			bins(ref, property, expression, type) {
+				let rotatebins = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>600',
+					props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+						{
+							element: ref, //动画元素
+							property: property, //动画属性
+							expression: expression
+						}
+			
+					]
+				}, e => {
+					if (e.state === 'exit') {
+						BindingX.unbind({
+							token: rotatebins.token,
+							eventType: 'timing'
+						})
+					}
+				});
+			},
+			//动画
+			bin1(ref, property, expression, type) {
+				let rotatebins = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>600',
+					props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+						{
+							element: ref, //动画元素
+							property: property, //动画属性
+							expression: expression
+						}
+			
+					]
+				}, e => {
+					if (e.state === 'exit') {
+						BindingX.unbind({
+							token: rotatebins.token,
+							eventType: 'timing'
+						})
+					}
+				});
+			},
+			//跳转
+			topage() {
+				uni.navigateTo({
+					url: `/pages/view/gamedetail/children/introduce?content=${this.pageData.desc}&title=${this.pageData.gamename}`,
+				});
+			}
+
+		},
+		filters: {
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		},
+
+
+	}
+</script>
+
+<style scoped>
+	.iconfont {
+		font-family: iconfont;
+	}
+
+	.icon-like {
+		font-size: 34px;
+		color: #19BFFF;
+	}
+
+	.gameDetail {
+		flex: 1;
+		position: relative;
+	}
+/* 收藏福利资讯攻略 */
+	.operation {
+		padding: 0 54rpx;
+		padding-bottom: 40rpx;
+		border-bottom: 1px solid #EFEFEF;
+		flex-direction: row;
+		justify-content: space-between;
+		position: relative;
+	}
+
+	.operation-item {
+		flex-direction: row;
+		align-items: center;
+
+	}
+	.operation-item_image{
+		width: 36rpx;
+		height: 36rpx;
+	}
+	.operation-item_line{
+		color: #c1c1c1;
+		font-size: 32rpx;
+		font-weight: 300;
+	}
+	.operation-itemRadius{
+		position:absolute;
+		height:40rpx;
+		width: 2rpx;
+		background-color: #333;
+	}
+	.icon {
+		width: 60rpx;
+		height: 60rpx;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 100rpx;
+		border-radius: 40rpx;
+		background-color: rgba(0, 0, 0, 0.4);
+	}
+
+	.cards {
+		/* position: absolute; */
+		/* height: 10000rpx; */
+		
+		background-color: #fff;
+		padding: 12rpx 32rpx 0rpx 32rpx;
+		position: relative;
+	}
+	.cars{
+		margin-bottom: 72rpx;
+	}
+
+	/* 导航栏 */
+	.navshow {
+		position: fixed;
+		flex-direction: row;
+		align-items: center;
+	
+		padding: 50rpx 32rpx;
+		height: 150rpx;
+		opacity: 0;
+	}
+	/* 下载 */
+	.downLoad{
+		position: fixed;
+		padding: 8rpx 32rpx;
+		/* background-color: #FF5927; */
+		border-radius:30rpx;
+		top:188rpx;
+		right:30rpx;
+		opacity: 0;
+		border: 1px solid #efefef;
+		/* color:#FF5927; */
+		
+		
+	}
+	.nav {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 32rpx;
+		height: 200rpx;
+	}
+
+	.star_cnt {
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 30rpx;
+		border: 1px solid #fff;
+		justify-content: center;
+		align-items: center;
+	}
+
+	/* 优惠券 开服 折扣 */
+	.box1 {
+		padding: 48rpx 0;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.youhuiquan {
+		background-color: #F4F4F4;
+		padding: 0 20rpx;
+		flex-direction: row;
+		align-items: center;
+		border-radius: 32rpx;
+	}
+
+	.kaifu {
+		background-color: #F4F4F4;
+		padding: 0 20rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		border-radius: 32rpx;
+	}
+
+	.zhekou {
+		position: relative;
+	}
+
+	/* 下载 */
+	.down {
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		height: 80rpx;
+		border: 1px solid #E4E4E4;
+		border-radius: 40rpx;
+		margin-bottom: 64rpx;
+	}
+   .down_text{
+	color: #FF5927;
+	font-size: 32rpx;
+	margin: 0 20rpx;
+   }
+	.jiangli {
+		position: absolute;
+		background-color: #fff;
+		top: 0;
+		right: 60rpx;
+		padding: 0 10rpx;
+		font-size: 24rpx;
+		color: #FF5927;
+		
+	}
+
+
+
+	.pf-left {
+		justify-content: center;
+		align-items: center;
+		margin-right: 100rpx;
+		height: 200rpx;
+	}
+
+	.pf-right {
+		justify-content: center;
+		/* align-items: center; */
+		height: 200rpx;
+
+	}
+	.kf_image{
+		width: 48rpx;
+		height: 30rpx;
+		margin-right: 20rpx;
+		}
+
+</style>

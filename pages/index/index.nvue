@@ -1,0 +1,332 @@
+	<template>
+		<view class="index" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
+			<view  :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
+			<view class="Title nav">
+				<view class="TitleList">
+					<titleLine :number='number' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine>
+				</view>
+				<view class="TitleRight" style="flex-direction: row;align-items: center;height: 80rpx;margin-bottom: 8rpx;">
+					<view elevation="5px" class="Righticon">
+						<image src="@/static/images/search-black.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/view/search/search')" ></image>
+					</view>
+					<view class="Righticon" elevation="5px" style="margin:0 6rpx 0 24rpx;">
+						<image src="@/static/images/load-app.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/game/children/gameList')" ></image>
+					</view>
+				</view>
+			</view>
+	
+
+			<view class="swiper" @touchstart='touchstart'>
+			<swiper @change='swiperChange' @transition='transition'  :current="active" @animationfinish='animationfinish' :style="{height:myHeight-120+'rpx',width:myWidth+'px'}" ref="swiper">
+				<swiper-item>
+					<view class="swiper-item">
+						<recommend :wifiAuto='wifiAuto' ref='recommend' :myWidth='myWidth' :myHeight='myHeight'></recommend>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						<rankList ref='rankList' :myWidth='myWidth' :myHeight='myHeight' :isRank='isRank'></rankList>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						<serverList ref='serverList' :myWidth='myWidth' :myHeight='myHeight' :isServer='isServer'></serverList>
+					</view>
+				</swiper-item>
+			</swiper>
+			</view>
+		</view>
+	</template>
+	<script>
+		import {
+			$api
+		} from '@/config/api.js';
+		import common from "@/common/js/common.js";
+		import recommend from './children/recommend'
+		import rankList from './children/rankList'
+		import serverList from './children/serverList'
+		import titleLine from '@/components/nuve-titleLine/nuve-titleLine'
+
+		const BindingX = uni.requireNativePlugin('bindingx');
+		// Get the globalData
+		//const globalData = getApp().globalData
+		export default {
+			components: {
+				recommend,
+				rankList,
+				serverList,
+				titleLine
+			},
+		data() {
+			return {
+				wifiAuto:false,
+				pageData: null,
+				isRank: false,
+				isServer: false,
+				lineRotate: 1,
+				isActive: false,
+				networkType:'',
+				scrollMove: 0,
+				number: 0,
+				isalign: 'felx-start',
+				TitleList: [{
+						id: 0,
+						name: '推荐'
+					},
+					{
+						id: 0,
+						name: '排行'
+					},
+					{
+						id: 0,
+						name: '新服'
+					}
+				],
+				active: 0,
+			updata: {
+					type: 1,
+					show_type: 1, // 热更：1，正常更新；2，静默更新；   整包升级：1，正常升级；2，强制升级；
+					app_extra_flag: 2, // 用于判断是否为第三方：1，是第三方，需要特殊对待；2，不是第三方，走正常流程
+					data: null,
+				},
+			}
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			},
+		   subNvue() {
+				return uni.getSubNVueById('popup')
+			},
+			
+		},
+		beforeCreate() {
+			let fontSrc = plus.io.convertLocalFileSystemURL('/static/fonts/iconfont.ttf')
+			var domModule = weex.requireModule("dom");
+			domModule.addRule('fontFace', {
+				'fontFamily': 'iconfont',
+				'src': "url('file:/" + fontSrc + "')"
+			})
+		},
+		onHide() {
+			if(this.$refs.recommend){
+				this.$refs.recommend.clearMove()
+			}
+		},
+		onReady() {
+			this.$refs.recommend.getSpecialData()
+			uni.$once('close', data => {
+					if (data) {
+						this.subNvue.hide()
+						uni.$off()
+					}
+			
+				})
+	
+	    	},
+		
+		
+		onLoad() {
+			this.checkHotUpdate()
+		    this.getWifi()
+			
+		},
+		mounted() {
+			uni.onNetworkStatusChange(res=> {
+				if(!res.isConnected){
+					uni.showToast({
+						title:'没有网络连接，请检查网络',
+						icon:'none'
+					})
+					 this.wifiAuto = true
+					return 
+				}
+				this.getWifi()
+			});
+		},
+		methods: {
+			//判断是否wifi
+			getWifi(){
+			let isWifi = uni.getStorageSync('isWifi')
+			uni.getNetworkType({
+			  	success: (res) => {
+				  this.networkType =  res.networkType
+			  	}
+			}) 	
+			if(!isWifi.status&& this.networkType!='wifi'){
+			this.wifiAuto = true
+			uni.showToast({
+				title: '当前网络状态为'+ this.networkType+'，已启用省流量模式',
+				icon:'none'
+			})			
+		   }else{
+			   this.wifiAuto = false
+		   }
+				
+		},	
+			//路由跳转
+			handleRouter(id) {
+				uni.navigateTo({
+					url: `/pages/index/children/videoDetail?id=${id}`
+				})
+			},
+			handleRouters(url){
+				uni.navigateTo({
+					url: url
+				})
+			},
+			// 切换
+			touchstart(e) {
+				this.isActive = true
+			},
+			isactive(e){
+				this.isActive = false
+			},
+			handleActive(e) {
+				this.active = e
+			},
+			animationfinish(e) {
+				this.number = e.detail.current
+				
+			},
+			//滑动监听
+			transition(e) {
+				if(Math.abs(Math.round(e.detail.dx))==this.$store.state.myWidth){
+					setTimeout(()=>{
+					},400)
+				}else{
+					this.scrollMove = Math.round(e.detail.dx)
+				}
+			},
+			swiperChange(e) {
+				this.active = e.detail.current
+				if(this.$refs.recommend){
+					this.$refs.recommend.clearMove()
+				}
+			},
+			// change() {
+			// 	console.log('语言切换')
+			// 	let language = uni.getStorageSync('CURRENT_LANG')
+			// 	if (language === 'en') {
+			// 		language = globalData.$i18n.locale = 'zh-CN'
+			// 	} else {
+			// 		language = globalData.$i18n.locale = 'en'
+			// 	}
+			// 	uni.setStorageSync('CURRENT_LANG', language)
+			// 	uni.reLaunch({
+			// 		url: 'index'
+			// 	})
+			// },
+			// getInitData() {
+
+			// }
+			
+			
+		// 检查热更
+			checkHotUpdate() {
+				// #ifdef APP-PLUS
+				let that = this;
+				plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {
+					uni.request({
+						url: `${that.$store.state.httpAPI}app/update`,
+						data: {
+							client_id: that.$store.state.client_id,
+							// client_id: 4231,
+							// ver: '2.0.1',
+							ver: plus.runtime.version + "." + that.$store.state.sp, // 每次要热更是，最后一位要加一
+							format: "json",
+							app_id: that.$store.state.app_id,
+						},
+						success: (result) => {
+							console.log(plus.runtime.version + "." + that.$store.state.sp);
+							console.log(result);
+							that.updata.data = result.data.data;
+							uni.$emit('update', {
+								msg: JSON.stringify(that.updata.data)
+							})
+							// 用于检测是否强制更新
+							that.updata.show_type = result.data.data.show_type || 1;
+							// 用于判断是否为第三方
+							that.updata.app_extra_flag = result.data.data.app_extra_flag || 2;
+							// 热更
+							if (that.updata.data.status == 1 && that.updata.data.wdg_url) {
+								that.subNvue.show()
+							}
+							// 整包升级
+							else if (
+								that.updata.data.status == 1 &&
+								!that.updata.data.wdg_url &&
+								that.updata.data.app_url
+							) {
+								that.subNvue.show()
+
+							}
+
+						},
+					});
+				});
+				// #endif
+			},	
+			
+			
+		},
+		watch: {
+			active(val) {
+				if (val == 1) {
+					this.isRank = true
+				} else if (val == 2) {
+					this.isServer = true
+				}
+
+			},
+		}
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+
+
+	.index {
+		overflow: hidden;
+		flex: 1;
+		background-color: #FFFFFF;
+
+	}
+
+	.Title {
+		flex-direction: row;
+		padding: 0rpx 32rpx 0rpx 32rpx;
+		align-items: center;
+		margin-top: 24rpx;
+		justify-content: space-between;
+
+	}
+
+	.TitleList {
+		position: relative;
+	}
+
+	.Righticon {
+		margin-left: 20rpx;
+		height: 64rpx;
+		width: 64rpx;
+		border-radius: 64rpx;
+		background-color: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+	}
+</style>

@@ -1,0 +1,19 @@
+{
+  "name": "Android 高斯模糊View",
+  "id": "sn-blur",
+  "version": "1.0.0",
+  "description": "提供Android 高斯模糊View",
+  "_dp_type": "nativeplugin",
+  "_dp_nativeplugin": {
+    "android": {
+      "integrateType": "aar",
+      "plugins": [
+        {
+          "type": "component",
+          "name": "sn-blur-view",
+          "class": "com.itfenbao.snplugin.blur.BlurComponent"
+        }
+      ]
+    }
+  }
+}

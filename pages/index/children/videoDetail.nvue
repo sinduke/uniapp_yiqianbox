@@ -1,0 +1,939 @@
+<template>
+	<view class="videoDetail" :style="{width:myWidth+'px'}" @touchstart='touchstart'  @touchmove='touchmove' >
+		<list class="list" :pagingEnabled="true"  :show-scrollbar='false'  @scrollstart='scrollstart' @scrollend='scrollend' >
+			<cell v-for="(item,index) in pageData" :key='index' :style="{width:myWidth+'px',height:myHeight+'rpx'}" class="cell"  >
+				<view class="bottom">
+					<view class="inputs" >
+						<image src="@/static/images/index/detail-comment.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+						<input hideDoneButton='false' cursor-spacing='20' class="input" placeholder-style='font-size:16px;color:#c1c1c1' type="text" @confirm='handleConent(item.game_id)' v-model="rate.content" maxlength='80' placeholder='说点什么吧' />
+					</view>
+					<view class="radius" elevation="2px" @click="handleConent(item.game_id)">
+						<image src="@/static/images/index/detail-button.png" mode="widthFix" style="width: 50rpx;height: 50rpx;"></image>
+					</view>
+				</view>
+				<view class="games" v-if="screenHeight>700">
+					<gameItem :item='item'></gameItem>
+				</view>
+				<view  v-else style="margin-top: 20rpx;">
+						
+				</view>
+				<view class="body">
+					<view class="bodyleft" v-if="screenHeight>700">
+						<view class="" v-if="item.comment.length==0">
+							<text class="commentItem">{{commentList[index%3]}}</text> 
+						</view>
+						<view class="" v-else>
+						<view v-for="(i,v) in item.comment" :key='v' v-if="v<5">
+							<view class="memItem">
+								<text class="mem_name">{{i.mem.nickname}}：</text>
+								<text class="content"  v-if="/desc/g.test(i.content)" :style="{maxWidth:'360rpx',alignItems:JSON.parse(i.content).desc.length>30?'flex-start':'center'}">{{JSON.parse(i.content).desc.length>20?JSON.parse(i.content).desc.slice(0,16)+'..':JSON.parse(i.content).desc}}</text>
+								<text class="content" v-else style="text-overflow:ellipsis;max-width:360rpx">{{i.content.length>20?i.content.slice(0,16)+'..':i.content}}</text>
+							</view>
+						</view>
+						</view>
+					</view>
+					<view class="bodyleft" v-else style="justify-content: flex-end;">
+						<view class="" v-if="item.comment.length==0">
+							<text class="commentItem">{{commentList[index%3]}}</text> 
+							<gameItem style="margin-top: 20rpx;" :item='item'></gameItem>
+						</view>
+						<view class="" v-else>
+						<view v-for="(i,v) in item.comment" :key='v' v-if="v<3">
+							<view class="memItem">
+								<text class="mem_name">{{i.mem.nickname}}：</text>
+								<text class="content" v-if="/desc/g.test(i.content)" :style="{maxWidth:'360rpx',alignItems:JSON.parse(i.content).desc.length>30?'flex-start':'center'}">{{JSON.parse(i.content).desc.length>20?JSON.parse(i.content).desc.slice(0,16)+'..':JSON.parse(i.content).desc}}</text>
+								<text class="content" v-else style="text-overflow:ellipsis;max-width:360rpx" >{{i.content.length>20?i.content.slice(0,16)+'..':i.content}}</text>
+							</view>
+						</view>
+						<gameItem style="margin-top: 20rpx;" :item='item'></gameItem>
+						</view>
+					</view>
+					
+					
+					
+					<view class="bodyRight">
+						<view class="rightItem" @click="handleThumbs(item.game_id,index,item.is_game_like)">
+							<image class="image" :src="imageList[item.is_game_like]" ref="images" style="width: 80rpx;" mode="widthFix">
+							</image>
+							<text class="rightText">{{item.like_cnt}}</text>
+						</view>
+						<view class="rightItem" @click="handleContent(index,item.game_id)">
+							<image class="image" src="@/static/images/content.png" mode="widthFix" ref="contentimg">
+							</image>
+							<text class="rightText">{{item.comment_count}}</text>
+						</view>
+						<view class="rightItem" @click="handleshare(index,item.game_id)">
+							<image class="image" src="@/static/images/share.png" mode="widthFix" ref="shareimg"></image>
+							<text class="rightText">{{item.share_cnt}}</text>
+						</view>
+					</view>
+				</view>
+				
+               <!-- 安卓-->
+				<view class="Title" :style="{width:myWidth+'px'}" v-if="$store.state.platform=='android'">
+					<cover-view :style="{width:myWidth+'px',height:'460rpx',position:'relative'}">
+						<video 
+						 :src="item.mp4_url" :id="'video'+index" 
+						:enable-progress-gesture='false' @play='loadedmetadata($event,index)' 
+						@click="handleClickStop"   @timeupdate='timeupdate' :controls='false' 
+						:show-center-play-btn='false' ref="chunleiVideo" show-mute-btn v-if="active==index"
+						 autoplay :muted='muted' :danmu-list="danmuList" @ended='ended'	:show-loading='false' 
+						 class="chunleiVideo" :style="{width:myWidth+'px',height:'460rpx'}" :title='item.game_name'  	
+						 :objectFit="isFullScreen?'contain':'fill'" enable-danmu @fullscreenclick='fullscreenclick($event,item)'>
+
+							<!-- 全屏展示 -->
+						    <cover-view class="cover-view" :style="{width:screenHeight+40+'px',height:myWidth+'px',opacity:opacity}">
+							<view class="coverTop" style="position: absolute;"  :style="{width:isFullScreen?screenHeight+40+'px':myWidth+'px',height:88+'rpx'}">
+							<image src="@/static/images/back.png" mode="widthFix" style="width: 36rpx;height: 36rpx;margin:0 24rpx;" @click="handlebackFull('video'+index)"></image>
+						    <text class="nakeWoke">{{networkType=='wifi'?'Wi-Fi':networkType}}</text>	
+						
+							</view>
+							<view class="coverBottom" style="position: absolute;"  :style="{width:screenHeight+'px',height:88+'rpx',bottom:'0'}">
+							<image src="@/static/images/musicon.gif" mode="widthFix" style="width: 40rpx;height: 40rpx;margin-right: 24rpx;" ></image>
+							<text class="ControlsText">{{start_timer}}</text>
+							<nprogress :id="'progress'+index"  ref="Progress" bgcolor='#Efefef' :pause='pause' v-if='active==index' :mwidth='screenHeight-280' radius='10' mheight="8" :mduration='durationNumber'></nprogress>
+							<text class="ControlsText" style="color: #c1c1c1;">{{end_timer}}</text>
+							<image src="@/static/images/index/video-mouted.png" mode="widthFix" style="width: 40rpx;height: 40rpx; margin-right: 20rpx;" @click="handleMuted(0)" v-if="!muted"></image>
+							<image src="@/static/images/index/video-nomouted.png" mode="widthFix" style="width: 40rpx;height: 40rpx; margin-right: 20rpx;" @click="handleMuted(1)" v-else></image>
+							<image src="@/static/images/index/video-notfull.png" mode="widthFix" style="width: 40rpx;height: 40rpx; margin-right: 20rpx;" @click="handlebackFull('video'+index)"></image>
+							</view>
+							<view class="stopVideo" :style="{width:screenHeight+40+'px',height:88+'px',top:myWidth/2-42+'px'}" >
+								<image src="@/static/images/index/video-stop.png" mode="widthFix" style="width: 80rpx;height: 80rpx;opacity: 0.8;" v-if="!isStop&&opacity" @click="stop(0,'video'+index)"></image>
+								<image src="@/static/images/index/video-play.png" mode="widthFix" style="width: 80rpx;height: 80rpx;opacity: 0.8;" v-if="isStop&&opacity" @click="stop(1,'video'+index)"></image>
+							</view>
+						</cover-view>
+						</video>
+						<cover-image :style="{width:myWidth+'px',height:'460rpx',position:'absolute'}" :src="item.hot_image" v-if='isimage!=index'></cover-image>			
+					</cover-view>
+					<view class="stopVideo"  :style="{width:myWidth+'px',height:'460rpx'}">
+						<image src="@/static/images/index/video-stop.png" mode="widthFix" style="width: 60rpx;height: 60rpx;opacity: 0.8;" v-if="!isStop&&isProgress" @click="stop(0,'video'+index)"></image>
+						<image src="@/static/images/index/video-play.png" mode="widthFix" style="width: 60rpx;height: 60rpx;opacity: 0.8;" v-if="isStop&&isProgress" @click="stop(1,'video'+index)"></image>
+
+					</view>
+				
+					<view v-if='durationNumber&&isProgress' class="videoControls" :style="{width:myWidth+'px'}">
+						<view class="Controlsitem">		
+						<image src="@/static/images/musicon.gif" mode="widthFix" style="width: 30rpx;height: 30rpx;margin-right: 24rpx;" ></image>
+						<text class="ControlsText">{{start_timer}} / </text>
+						<text class="ControlsText" style="color: #c1c1c1;margin-right: 20rpx;">{{end_timer}}</text>
+						</view>
+						<view class="Controlsitem">
+						<image src="@/static/images/index/video-mouted.png" mode="widthFix" style="width: 36rpx;height: 36rpx; margin-right: 30rpx;" @click="handleMuted(0)" v-if="!muted"></image>
+						<image src="@/static/images/index/video-nomouted.png" mode="widthFix" style="width: 36rpx;height: 36rpx; margin-right: 30rpx;" @click="handleMuted(1)" v-else></image>
+						<image src="@/static/images/index/video-full.png" mode="widthFix" style="width: 36rpx;height: 36rpx; margin-right: 10rpx;" @click="handleFullScreen('video'+index)"></image>	 
+						</view>
+					
+					</view>
+					<view class="" style="height: 30rpx;">	
+				 <nprogress   :id="'progress'+index" ref="Progress" bgcolor='#Efefef' :pause='pause' v-if='active==index' :mwidth='myWidth' radius='10' mheight="12" :mduration='durationNumber'></nprogress>
+					</view>
+				</view>
+				
+				
+			<!-- ios -->	
+				<view class="Title" :style="{width:myWidth+'px'}"  @click="handleClickStop" v-else>
+					<cover-view :style="{width:myWidth+'px',height:'460rpx',position:'relative'}">
+						<video 
+                         :src="item.mp4_url" :id="'video'+index" :enable-progress-gesture='false'
+						 @play='loadedmetadata($event,index)'  @timeupdate='timeupdate' 
+						 :show-center-play-btn='false' ref="chunleiVideo" 
+						  show-mute-btn v-if="active==index" autoplay :muted='muted'
+						  :danmu-list="danmuList" :show-loading='false'		
+						   class="chunleiVideo" play-strategy
+						   codec='software' @ended='ended'
+						  :style="{width:myWidth+'px',height:'460rpx'}" :title='item.game_name'  	
+						  :objectFit="isFullScreen?'contain':'fill'" enable-danmu @fullscreenclick='fullscreenclick($event,item)'>
+							<!-- 全屏展示 -->
+						    <cover-view class="cover-view" :style="{width:isFullScreen?screenHeight+'px':myWidth+'px',height:isFullScreen?myWidth+'px':'460rpx',opacity:opacity}">
+							<view class="coverTop" style="position: absolute;"  :style="{width:isFullScreen?screenHeight+'px':myWidth+'px',height:88+'rpx'}">
+							<view class=""  style="width: 40rpx;height: 40rpx;margin-right:24rpx;padding-right: 24rpx;" @click="handlebackFull('video'+index)">
+							<image src="@/static/images/back.png" mode="widthFix" style="width: 40rpx;height: 40rpx;" ></image>
+							</view>
+						    <text class="nakeWoke" @click="handlebackFull('video'+index)">{{networkType=='wifi'?'Wi-Fi':networkType}}</text>	
+							</view>
+							<view class="coverBottom" style="position: absolute;"   :style="{width:screenHeight+'px',height:88+'rpx',bottom:'0'}">
+							<image src="@/static/images/musicon.gif" mode="widthFix" style="width: 30rpx;height: 30rpx;margin-right: 24rpx;" ></image>
+							<text class="ControlsText">{{start_timer}}</text>
+							<nprogress  ref="Progress" bgcolor='#Efefef' :pause='pause' v-if='active==index' :mwidth='screenHeight-260' radius='10' mheight="8" :mduration='durationNumber'></nprogress>
+							<text class="ControlsText" style="color: #c1c1c1;">{{end_timer}}</text>
+							<image src="@/static/images/index/video-mouted.png" mode="widthFix" style="width: 40rpx;height: 40rpx; margin-right: 20rpx;" @click="handleMuted(0)" v-if="!muted"></image>
+							<image src="@/static/images/index/video-nomouted.png" mode="widthFix" style="width: 40rpx;height: 40rpx; margin-right: 10rpx;" @click="handleMuted(1)" v-else></image>
+							<image src="@/static/images/index/video-notfull.png" mode="widthFix" style="width: 40rpx;height: 40rpx;" @click="handlebackFull('video'+index)"></image>
+							</view>
+							<view class="stopVideo" :style="{width:screenHeight+'px',height:88+'px',top:myWidth/2-22+'px'}" >
+								<image src="@/static/images/index/video-stop.png" mode="widthFix" style="width: 80rpx;height: 80rpx;opacity: 0.8;" v-if="!isStop&&opacity" @click="stop(0,'video'+index)"></image>
+								<image src="@/static/images/index/video-play.png" mode="widthFix" style="width: 80rpx;height: 80rpx;opacity: 0.8;" v-if="isStop&&opacity" @click="stop(1,'video'+index)"></image>		
+							</view>	
+						</cover-view>
+						</video>
+						<cover-image :style="{width:myWidth+'px',height:'460rpx',position:'absolute'}" :src="item.hot_image" v-if='isimage!=index'></cover-image>			
+					</cover-view>
+					<view class="stopVideo" :style="{width:myWidth+'px',height:'460rpx'}" >
+						<image src="@/static/images/index/video-stop.png" mode="widthFix" style="width: 60rpx;height: 60rpx;opacity: 0.8;" v-if="!isStop&&isProgress" @click="stop(0,'video'+index)"></image>
+						<image src="@/static/images/index/video-play.png" mode="widthFix" style="width: 60rpx;height: 60rpx;opacity: 0.8;" v-if="isStop&&isProgress" @click="stop(1,'video'+index)"></image>	
+					</view>
+					<view v-if='durationNumber&&isProgress' class="videoControls" :style="{width:myWidth+'px'}">
+						<view class="Controlsitem">		
+						<image src="@/static/images/musicon.gif" mode="widthFix" style="width: 30rpx;height: 30rpx;margin-right: 24rpx;" ></image>
+						<text class="ControlsText">{{start_timer}} / </text>
+						<text class="ControlsText" style="color: #c1c1c1;margin-right: 20rpx;">{{end_timer}}</text>
+						</view>
+						<view class="Controlsitem">
+					<image src="@/static/images/index/video-mouted.png" mode="widthFix" style="width: 36rpx;height: 36rpx; margin-right: 30rpx;" @click="handleMuted(0)" v-if="!muted"></image>
+					<image src="@/static/images/index/video-nomouted.png" mode="widthFix" style="width: 36rpx;height: 36rpx; margin-right: 30rpx;" @click="handleMuted(1)" v-else></image>
+					<image src="@/static/images/index/video-full.png" mode="widthFix" style="width: 36rpx;height: 36rpx; margin-right: 10rpx;" @click="handleFullScreen('video'+index)"></image>	
+						</view>
+					</view>
+					<view class="" style="height: 30rpx;">
+				      <nprogress ref="Progress" bgcolor='#Efefef' :pause='pause' v-if='active==index' :mwidth='myWidth' radius='10' mheight="12" :mduration='durationNumber'></nprogress>
+					</view>
+				</view>
+
+			</cell>
+		</list>
+		<!--评论 弹出框 -->
+		<view class="" style="position: absolute;">	
+		<ncontent v-if="isShow" :id='content.id' :type='isShow' @close='contentclose'></ncontent>
+		</view>
+		<view v-if="!pageData" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
+			<myloading :isrefre='isrefre' @Refresh='Refresh'></myloading>
+		</view>
+		<!-- 弹出框 -->
+		<gameporp :isshow='propup' @close='propup=false'  :shareData='shareData' ref='propup' type='1'></gameporp>
+	</view>
+</template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import gameItem from '@/components/nvue-gameItem/nvue-gameItem'
+	import nprogress from '@/components/nvue-progress/nvue-progress'
+	import gameporp from '@/components/nvue-propup/nvue-propup.nvue';
+	import myloading from '@/components/nvue-loading/nvue-loading'
+	import ncontent from './content'
+	const BindingX = uni.requireNativePlugin('bindingx');
+	export default {
+		components: {
+			gameItem,
+			ncontent,
+			nprogress,
+			myloading,
+			gameporp
+		},
+		data() {
+			return {
+				id:'video0',
+				pageData: null,
+				isrefre: false,
+				propup:false,
+				shareData:null,
+				game_id: 0,
+				type: 0,
+				progress:100,
+				durationNumber:0,
+				start_timer:0,
+				end_timer:0,
+				isVideo:true,
+				active:0,
+				isimage:-1,
+			    is_like: 1,
+				pause:false,
+				networkType:'',
+				commentList:[
+					'山外青山楼外楼，评论在这等你留',
+					'万丈高楼平地起，评论搭桥还差你',
+					'笑点泪点齐飞，评论等你发挥'
+				],
+				imageList:[
+					'../../../static/images/redheard.gif',
+					'../../../static/images/blackheard.png',
+					'../../../static/images/redheard.png'		
+				],
+				danmuList:[],
+				inpit: '',
+				count: 0,
+				is_like_cnt:true,
+				isShow: false,
+				isStop:false,
+				isnumber:true,
+				game_sort:0,
+				muted:false,
+				isProgress:false,
+				//是否全屏
+				isFullScreen:false,
+				isback:true,
+				opacity:0,
+				isTouch:0,
+				handletrue:true,
+				// 评分
+				rate: {
+					count: 5,
+					value: 10,
+					content: "",
+					type_name:'game'
+				},
+				commentParams: {
+					page: 1,
+					offset: 40,
+					type_name: "game",
+				},
+				content:{
+					id:0
+				}
+			}
+		},
+		beforeCreate() {
+			let fontSrc = plus.io.convertLocalFileSystemURL('/static/fonts/iconfont.ttf')
+			var domModule = weex.requireModule("dom");
+			domModule.addRule('fontFace', {
+				'fontFamily': 'iconfont1',
+				'src': "url('file:/" + fontSrc + "')"
+			})
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			screenHeight(){
+				return uni.getSystemInfoSync().screenHeight
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			userInfo() {
+				return this.$store.state.userInfo;
+				},
+		},
+		
+		methods: {
+			noblur(){
+				uni.hideKeyboard() 	
+			},
+		     start() {
+		        let  wid = plus.accelerometer.watchAcceleration( a=> {
+			          		// console.log( "\ny:" + a.yAxis);
+			          		// console.log( "\nz:" + a.zAxis);
+					if(this.handletrue){
+		          		        // console.log( "x:" + a.xAxis );
+								if(Math.abs(a.xAxis)>5.5){
+									this.handletrue = false
+									// this.handleFullScreen(this.id)
+								}else{
+									// this.handletrue = false
+									// this.handlebackFull(this.id)
+								}
+							}
+						
+			          	}, e=> {
+			          		plus.nativeUI.alert("watchAcceleration error: " + JSON.stringify(e)); 
+			          	} ); 
+						
+						
+			        },
+			     
+			//滑动退出
+			touchstart(e){
+				this.isTouch = e.touches[0].screenX
+				this.noblur()
+			},
+			touchmove(e){
+				if(this.$store.state.platform=='android'){
+					if(e.touches[0].screenX-this.isTouch>180&&this.isback){
+						this.isback = false
+						uni.navigateBack()
+					}
+				}
+			
+			},
+
+			//刷新
+			Refresh(data) {
+				this.isrefre = ture
+				if (data) {
+					this.getPageData()
+				}
+			},
+			//全屏
+			handleFullScreen(id){
+			let videoContext = uni.createVideoContext(id,this);
+			if(videoContext){
+				
+			 this.isFullScreen = true
+             videoContext.requestFullScreen();
+			}
+			},
+			fullscreenclick(e,item){
+				if(this.opacity){
+					this.opacity = 0
+				}else{
+				this.opacity = 1
+				}
+			},
+			//播放完退出全屏
+			ended(){		
+				this.isStop = true
+				this.pause = true
+				if(this.isFullScreen){
+					 this.handlebackFull(this.id)
+				}
+			},
+			//退出全屏
+			handlebackFull(id){
+				this.isFullScreen = false
+			    this.opacity = 0
+				let videoContext = uni.createVideoContext(id,this);
+				 videoContext.exitFullScreen();
+				 
+			},
+			//暂停
+			handleClickStop(){
+				this.isProgress = !this.isProgress
+			},
+			stop(type,id){
+			  let videoContext = uni.createVideoContext(id,this);
+			  this.isStop =!this.isStop
+			  if(type){
+				 videoContext.play();
+				 this.pause = false
+			  }else{
+				  videoContext.pause();
+				  this.pause = true
+			  }
+			},
+			//声音
+			handleMuted(type){
+				if(type){
+					this.muted = false
+				}else{
+					this.muted = true
+				}
+				
+			},
+		//视频加载完成
+		loadedmetadata(e,i){
+			console.log(e,i,'sssssssssssssssssss')
+	    	let a = false
+			if(this.$store.state.platform=='ios'){
+			   new Promise((resolve,reject)=>{
+					 setTimeout(()=>{
+						 if(Object.keys(e).length){
+							
+						   resolve(a)
+						  }
+					 },1100)
+					 
+				 }).then(res=>{
+					 // a = res
+			         // console.log(1,a,'sssssssssssssssssss')
+					  a = true
+					  // console.log(2,a,'sssssssssssssssssss')
+					 if(a){
+					  // console.log(3,a,this.isimage,this.active,'sssssssssssssssssss')
+						this.isimage = this.active
+						// console.log(4,a,this.isimage,this.active,'sssssssssssssssssss')
+					 }
+					 
+					
+					 
+				 })
+			
+			}
+			if(this.$store.state.platform=='android'){
+  
+				setTimeout(()=>{
+				this.isimage = this.active
+				},100)
+				}
+			
+		},
+
+		
+		//滑动结束
+		scrollend(e){
+			if(this.active!=Math.round(Math.abs(e.contentOffset.y)/uni.getSystemInfoSync().windowHeight)){
+				this.durationNumber = 0
+				this.isProgress = false
+			
+			}
+			this.pause = false
+			this.handletrue = true
+			this.active = Math.round(Math.abs(e.contentOffset.y)/uni.getSystemInfoSync().windowHeight)
+			this.id = 'video'+this.active
+			this.danmuList = []
+			this.isnumber = true
+			this.isStop=false
+			this.rate.content = ''
+			this.getdanmuList(this.pageData[this.active].comment)
+			
+		},
+			getPageData(id) {
+				$api.get('/game/multilistnew', {
+					is_mp4: 1,
+					offset: 40,
+					game_sort:this.game_sort,
+					client_id:this.$store.state.client_id
+				}).then(res => {
+					this.pageData = res.data.data.list
+					this.getdanmuList(this.pageData[0].comment)
+
+				})
+			},
+			//评论
+			handleConent(id){
+				if (!this.rate.content) {
+					uni.showToast({
+						title: '请输入您的评论',
+						icon: 'none'
+					})
+					return
+				}
+
+				$api.get('/v8/comments/add', {
+					object_id: id,
+					...this.rate,
+					client_id:this.$store.state.client_id
+				}).then(res => {
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: '发表成功'
+						})
+						// 重置输入框
+						this.rate.content = "";
+						// this.active=0
+						this.getPageData();
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none',
+				
+						})
+					}
+				})
+				
+				plus.key.hideSoftKeybord();
+			},
+			// 时间
+			timeupdate(e){
+
+				let timers = e.detail.duration
+				let timers1 = e.detail.currentTime
+			if(e.detail.duration>0 && this.isnumber){
+				this.isnumber = false
+				this.durationNumber = Math.round(e.detail.duration*10) 			
+			}
+				this.end_timer = Math.floor(timers)>60?'0'+ Math.floor(timers/60)+':'+ (Math.floor(timers%60)>=10?Math.floor(timers%60):'0'+Math.floor(timers%60)):'00:'+Math.floor(timers)   
+				this.start_timer = Math.floor(timers1)>60?'0'+ Math.floor(timers1/60)+':'+ (Math.floor(timers1%60)>=10?Math.floor(timers1%60):'0'+Math.floor(timers1%60)) :'00:'+(Math.floor(timers1)>=10?Math.floor(timers1):'0'+Math.floor(timers1))
+	
+			},
+			getdanmuList(comment){
+				if(comment.length>0){
+					let timer = 2
+					comment.forEach(item=>{
+					   /desc/i.test(item.content)?this.danmuList.push({text:(JSON.parse(item.content).desc),color:'#ffffff',time:timer}):this.danmuList.push({text:item.content,color:'#ffffff',time:timer})
+					   
+					   timer+=6
+					})
+				}else{
+					
+				this.danmuList = [{
+						text: '快来发表您的评论吧~',
+						color: '#ffffff',
+						time: 2
+					},
+					{
+							text: '快来发表您的评论吧~',
+							color: '#ffffff',
+							time: 6
+						},
+						{
+								text: '快来发表您的评论吧~',
+								color: '#ffffff',
+								time: 12
+							},
+
+					]
+					
+				}
+				
+			},
+       	// 判断是否登录，评论时需要先登录
+         isLogin() {
+           if (!Object.keys(this.userInfo).length) {
+        	  uni.navigateTo({
+        			url: '/pages/my/children/login',
+        		     		})
+        					return false;
+        				}else{
+							return true
+						}
+        			},
+			//点赞动画
+			handleThumbs(game_id,index,is_like) {
+				if(this.is_like_cnt){
+					this.is_like_cnt = false
+					setTimeout(()=>{
+					this.is_like_cnt = true
+					},1500)
+				if(this.isLogin()){
+					$api.get('/game/like', {
+					  game_id : game_id,
+					  client_id:this.$store.state.client_id,
+					 type : is_like == 1 ? (is_like = 2) : (is_like = 1), sign : 1})
+					.then(res=>{
+						if (res.data.code == 200) {
+						  if (is_like == 1){ 
+							  this.bind(index, 0)
+							   this.getPageData() }
+							   else{
+									this.pageData[index].is_game_like=1
+								   	this.bindUp(index)
+								    setTimeout(()=>{
+								      this.getPageData()
+											},800)
+								}}else {
+								uni.showToast({
+					    	      icon: "none",
+								title: res.data.msg
+								})
+							}
+						})
+			     	}				
+				}
+
+			},
+			bind(index, status) {
+				let images = common.getEl(this.$refs.images[index]);
+				let contentimg = common.getEl(this.$refs.contentimg[index]);
+				let shareimg = common.getEl(this.$refs.shareimg[index]);
+				let mybindin = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>300',
+					props: [{
+						element: status == 0 ? images : status == 1 ? contentimg : shareimg,
+						property: 'transform.scale', //动画属性
+						expression: 'linear(t,.6,.4,300)'
+					}]
+				}, e => {
+					if (e.state === 'exit') {
+						switch (status) {
+							case 0:
+								this.type = 0
+								break;
+							case 1:
+								this.isShow = true
+								break;
+							case 2:
+								break;
+						}
+
+						BindingX.unbind({
+							token: mybindin.token,
+							eventType: 'timing'
+						})
+					}
+				});
+			},
+			bindUp(index) {
+				let images = common.getEl(this.$refs.images[index]);
+				this.pageData[index].is_game_like=0
+				// this.type = 1
+				let mybindUp = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>400',
+					props: [{
+							element: images,
+							property: 'transform.scale', //动画属性
+							expression: 'easeOutBounce(t,.2,0.8,400)'
+						}
+					]
+				},e => {
+	
+					if (e.state === 'start') {
+						// this.type = 1
+						setTimeout(()=>{
+						BindingX.unbind({
+							token: mybindUp.token,
+							eventType: 'timing'
+						})
+							
+						},400)
+					}
+				});
+			},
+			/* 点赞 */
+
+
+
+			/* 点评 */
+			handleContent(index,id) {
+				this.bind(index, 1)
+				this.content.id=id
+			},
+			contentclose(i) {
+				if (i) {
+					this.isShow = false
+					this.getPageData()
+				}
+			},
+			/* 分享 */
+			handleshare(index,game_id) {
+				this.bind(index, 2)
+				this.getshareData(game_id)
+				this.propup = true
+				this.$nextTick(function() {
+					this.$refs.propup.bind()
+				
+				})
+			},
+           //分享
+           getshareData(game_id) {
+           $api.get("share/detail", {
+           		share_type: 'game',
+           		game_id,
+           		client_id: this.$store.state.client_id
+           
+           	}).then(res => {
+           		if (res.data.code == 200) {
+           			this.shareData = {
+           				...res.data.data
+           			}
+           
+           		}
+           	})
+           },
+		   //判断是否wifi
+		   	getWifi(){
+		   	let isWifi = uni.getStorageSync('isWifi')
+			let networkType = ''
+		   	uni.getNetworkType({
+		   	  	success: (res) => {
+		   		  networkType=  res.networkType
+		   	  	}
+		   	}) 	
+		   	if(!isWifi.status&& networkType!='wifi'){
+		   	uni.showToast({
+		   		title: '当前网络状态为'+ networkType+'，请注意流量耗用',
+		   		icon:'none'
+		   	})			
+		      }
+		   		
+		   },
+
+		},
+
+		onLoad(option) {
+			this.game_sort = option.id
+			this.getPageData(this.game_sort)
+			
+			uni.getNetworkType({
+				success: (res) => {
+					this.networkType = res.networkType
+				}
+			})
+			this.getWifi()
+		},
+		onHide() {
+			if(this.$refs.chunleiVideo){
+			const myVideo = this.$refs.chunleiVideo
+				myVideo.forEach((item, i) => {
+					item.pause()
+				})
+			}
+			this.pause = true
+		}
+		
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+	.chunleiVideo{
+
+	}
+	.commentItem{
+		background-color: #F4F4F4;
+		border-radius: 40rpx;
+		padding: 10 32rpx;
+		font-size: 28rpx;
+		color: #1C1C1C;
+	}
+	.cover-view{
+		position: relative;
+		/* background-color: #000000; */
+  
+	}
+	.stopVideo{
+		position: absolute;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.nakeWoke{
+		font-size: 28rpx;
+		color: #fff;
+		padding:6rpx 20rpx;
+        background: #1C1C1C;
+		opacity: .6;
+		border-radius: 30rpx;
+	}
+	.coverTop{
+		top: 0;
+		padding: 20rpx 32rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		background-image: linear-gradient(to bottom, rgba(0, 0, 0, .4), rgba(111, 111, 111, 0));
+		
+	}
+	.coverBottom{
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 20rpx 48rpx;
+		bottom: 0;
+		background-image: linear-gradient(to top, rgba(0, 0, 0, .4), rgba(111, 111, 111, 0));
+	}
+	.Title{
+		position: relative;
+	}
+	.Controlsitem{
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+	}
+	.ControlsText{
+		font-size: 24rpx;
+		color: #fff;
+		/* margin-right: 24rpx; */
+	}
+	.videoControls{
+		position: absolute;
+		bottom: 24rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 40rpx 32rpx;
+	    background-image: linear-gradient(to top, rgba(0, 0, 0, .4), rgba(255, 255, 255, 0));
+	}
+	.cell {
+		flex-direction: column-reverse;
+
+	}
+
+	.videoDetail {
+		flex: 1;
+		background-color: #fff;
+	}
+
+	.list {
+		flex: 1;
+	}
+
+	.body {
+		/* height: 550rpx; */
+		padding: 0rpx 32rpx;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.bodyleft {
+		width: 540rpx;
+		align-items: flex-start;
+	}
+
+	.memItem {
+		flex-direction: row;
+		margin-top: 16rpx;
+		border-radius: 20rpx;
+		/* align-items: center; */
+		padding: 8rpx 12rpx;
+		background-color: #F4F4F4;
+	}
+
+	.mem_name {
+		font-size: 28rpx;
+		font-weight: 600;
+		color: #1C1C1C;
+		lines: 1;
+		margin-left: 6rpx;
+	}
+
+	.content {
+		font-size: 24rpx;
+		color: #666666;
+		lines: 2;
+		margin-top: 4rpx;
+		
+	}
+
+	.bodyRight {
+		
+
+	}
+
+	.image {
+		width: 72rpx;
+		height: 72rpx;
+
+	}
+
+	.rightItem {
+		width: 120rpx;
+		height: 120rpx;
+		margin-top: 40rpx;
+		align-items: center;
+	}
+
+	.rightText {
+		font-size: 28rpx;
+		font-weight: 600;
+		color: #DCDCDC;
+		margin-top: 12rpx;
+	}
+
+	.games {
+		padding: 0rpx 32rpx;
+		margin-bottom: 40rpx;
+		/* margin-top: 48rpx; */
+		
+	}
+
+	.bottom {
+		border-top: 5rpx solid #f3f3f3;
+		padding: 20rpx 30rpx 20rpx 30rpx;
+		margin-bottom: 30rpx;
+		justify-content: space-between;
+		flex-direction: row;
+	}
+
+	.inputs {
+		flex-direction: row;
+		background-color: #F4F4F4;
+		border-radius: 40rpx;
+		align-items: center;
+		padding: 2rpx 30rpx;
+	}
+
+	.input {
+		font-size: 28rpx;
+		width: 450rpx;
+		margin-left: 20rpx;
+		/* height: 80rpx; */
+
+	}
+
+	.radius {
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 80rpx;
+		background-color: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+</style>

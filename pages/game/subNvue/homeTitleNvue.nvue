@@ -1,0 +1,160 @@
+<template>
+	<view class="content" >
+		<view class="status-bar"></view>
+		<view class="nav" :style="{width:$store.state.myWidth+'px'}">
+			<view class="input-box"  :style="{width:$store.state.platform=='android'?'530rpx':'600rpx'}" @click="handleRouter('/pages/view/search/search')">
+				<image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;margin-left: 24rpx;"  @click="handleRouter('/pages/view/search/search')" ></image>
+				<input class="input-box-input" placeholder="去找你要看到的" placeholder-style="color:#C1C1C1" :disabled="true" @click="handleRouter('/pages/view/search/search')" />
+			</view>
+			<view class="Righticon" elevation="5px" v-if="$store.state.platform=='android'">
+			<image src="@/static/images/downLoad-black.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouter('/pages/view/downLoad/downLoad')" ></image>
+			</view>
+			<view class="Righticon" elevation="5px">
+			<image src="@/static/images/load-app.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouter('/pages/game/children/gameList')" ></image>
+		     </view>
+		</view>
+	</view>
+</template>
+<script>
+	const subNVue = uni.getSubNVueById('navigationBar') 
+	subNVue.setStyle({  
+	    height : '88px',  
+	})
+	export default {
+		data() {
+			return {
+				city: '北京',
+				subNVue: uni.getCurrentSubNVue(),
+				statusBarHeight: 20
+			};
+		},
+		beforeCreate() {
+			// const domModule = weex.requireModule('dom');
+			let fontSrc = plus.io.convertLocalFileSystemURL('/static/fonts/iconfont.ttf')
+			var domModule = weex.requireModule("dom");
+			domModule.addRule('fontFace', {
+				'fontFamily': 'iconfont1',
+				'src': "url('file:/" + fontSrc + "')"
+			})
+
+		},
+		mounted() {
+			this.init();
+		},
+		methods: {
+			toMsg() {
+				uni.navigateTo({
+					url: '../../msg/msg'
+				});
+			},
+			init() {
+				uni.getSystemInfo({
+					success: (res) => {
+						this.statusBarHeight = res.statusBarHeight;
+					}
+				});
+				this.nVueTitle = uni.getCurrentSubNVue();
+			},
+			handleRouter(url) {
+				uni.navigateTo({
+					url: url
+				})
+			},
+		}
+	};
+</script>
+<style scoped>
+	.icon {
+		font-family: iconfont;
+		font-size: 42rpx;
+	}
+
+	.content {
+		background-color: #ffffff;
+		flex-direction: column;
+	}
+
+	.status-bar {
+		flex: 1;
+		
+	}
+
+	.nav {
+		
+		padding: 32rpx 32rpx 12rpx 32rpx;
+		position: relative;
+		/* height: 188rpx; */
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.location,
+	.yuyin,
+	.tongzhi {
+		width: 66rpx;
+		height: 66rpx;
+		text-align: center;
+		line-height: 66rpx;
+		border-radius: 33rpx;
+		/* background-color: red; */
+		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+		margin-left: 15rpx;
+	}
+
+	.location {
+		color: #ffc50a;
+	}
+
+	.location-city-text {
+		width: 60rpx;
+		height: 88rpx;
+		line-height: 88rpx;
+		font-size: 26rpx;
+		color: #000;
+	}
+
+	.yuyin {
+		color: #000;
+	}
+
+	.tongzhi {
+		color: #000;
+	}
+
+	.input-box {
+		margin-left: 5rpx;
+		border-radius: 60rpx;
+		background-color: #f5f5f5;
+		position: relative;
+		flex-direction: row;
+		/* justify-content: space-between; */
+		align-items: center;
+	}
+
+	.input-box-input {
+		width: 330rpx;
+		height: 72rpx;
+		font-size: 28rpx;
+		margin-left: 30rpx;
+		background-color: #f4f4f4;
+	}
+
+	.search {
+		width: 60rpx;
+		font-size: 34rpx;
+		padding-left: 30rpx;
+		color: #c0c0c0;
+	}
+	.Righticon {
+		margin-left: 20rpx;
+		height: 64rpx;
+		width: 64rpx;
+		border-radius: 64rpx;
+		background-color: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+	}
+</style>

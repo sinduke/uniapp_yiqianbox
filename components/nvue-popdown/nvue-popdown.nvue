@@ -1,0 +1,118 @@
+<template>
+	<view class="nvue-popdown" :style="{width:$store.state.myWidth+'px',height:$store.state.myHeight+'rpx'}" v-if="myIsshow">
+		<view class="popdown" ref='popdown' :style="{width:$store.state.myWidth+'px'}">
+			<slot></slot>
+		</view>
+	</view>
+</template>
+
+<script>
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	export default {
+		props: {
+			isShow: {
+				default: false
+			},
+			nheight: {
+				type: Number,
+				default: 500
+			},
+			easing: {
+				type: String,
+				default: 'linear'
+			},
+			ntime: {
+				type: Number,
+				default: 300
+			}
+		},
+		data() {
+			return {
+				myIsshow: false,
+			}
+		},
+		methods: {
+			getdwon() {
+				let popdown = common.getEl(this.$refs.popdown);
+				let mybindin = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>400',
+					props: [{
+						element: popdown,
+						property: 'height', //动画属性
+						expression: `${this.easing}(t,10,${this.nheight},${this.ntime})`
+					}]
+				}, e => {
+					if (e.state === 'exit') {
+						BindingX.unbind({
+							token: mybindin.token,
+							eventType: 'timing'
+						})
+					}
+				});
+			},
+			getclose() {
+				let popdown = common.getEl(this.$refs.popdown);
+				let mybindin = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>400',
+					props: [{
+						element: popdown,
+						property: 'height', //动画属性
+						expression: `linear(t,${this.nheight},-${this.nheight},${this.ntime})`
+					}]
+				}, e => {
+					if (e.state === 'exit') {
+						BindingX.unbind({
+							token: mybindin.token,
+							eventType: 'timing'
+						})
+					}
+				});
+			}
+
+
+
+		},
+		// mounted() {
+		// 	this.getdwon()
+		// },
+		watch: {
+			isShow: { //深度监听，可监听到对象、数组的变化
+				handler(val) {
+					if (val) {
+						this.myIsshow = val
+						setTimeout(()=>{
+						this.getdwon()	
+						},100)
+					} else {
+						this.getclose()
+						setTimeout(()=>{
+							this.myIsshow = val
+						},300)
+					}
+				},
+				// immediate: true
+			}
+		}
+
+
+	}
+</script>
+
+<style scoped>
+	.nvue-popdown {
+		background: rgba(0, 0, 0, .4);
+
+
+	}
+
+	.popdown {
+		background-color: #FFFFFF;
+		padding: 20rpx 32rpx 0 32rpx;
+		border-bottom-left-radius: 40rpx;
+		border-bottom-right-radius: 40rpx;
+		height: 10rpx
+	}
+</style>

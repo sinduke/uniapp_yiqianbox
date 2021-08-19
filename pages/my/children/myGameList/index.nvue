@@ -1,0 +1,270 @@
+<template>
+	<view class="myGameLists">
+		<view class="mygameList" :style="{width:myWidth-32+'px'}">
+			<view class="listitem" v-for="(item,index) in myGame" :key='index' @click="handleClick(index)">
+				<text class="mygametext" :class="{mygametext1:active==index}">{{item.name}}</text>
+				<view class="lines" :class="{line:active==index}" />
+				<!-- <titleLine :number='number' :myWidth='myWidth' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine> -->
+			</view>
+		</view>
+	
+		<swiper @change='swiperChange' :current="active" :style="{height:$store.state.platform=='ios'&&myHeight<1400?myHeight-460+'rpx':$store.state.platform=='ios'&&myHeight<1400?myHeight-220+'rpx':$store.state.platform=='android'? myHeight-200+'rpx':''}" v-if="pageData" >
+			<swiper-item v-for="(value,index) in pageData" :key='index'>
+				<scroller :show-scrollbar="false"  :style="{height:myHeight-440+'rpx'}">
+					<view class="">
+						<view class="" style="height: 48rpx;"/>
+						<view class="item"  v-for="(item,i) in value.list" :key='i' v-if="value.list.length">
+							<view class="itemLeft" style="flex-direction: row;align-items: center;">
+								<image :src="item.new_icon||item.icon" mode="widthFix" style="width: 126rpx;height: 126rpx;margin-right: 24rpx;"></image>
+								<view class="gameDetail">
+									<text class="game_name">{{item.name.length>10?item.name.slice(0,8)+'..':item.name}}</text>
+									<text class="text" style="margin: 6rpx 0;" v-if="active==0">最近游戏时间：{{item.create_time|dateFormat('MM.dd')}}</text>
+									<text class="text" style="margin: 6rpx 0;" v-else-if="active==1">收藏时间：{{item.collect_time|dateFormat('MM.dd')}}</text>
+									<text class="text" style="font-size: 24rpx;color: #999;">当前游戏小号{{item.trumpet_num}}</text>
+								</view>
+							</view>
+							<view class="itemRight">
+								<view class="buttons">
+									<text class="mybuttont" v-if="item.classify==5" @click="handleRouter(0,item.game_id)">开玩</text>
+									<text class="mybuttont" :style="{color:getpack(item.package_name)?'#ff5927':'#999'}"  @click="handleRouter(item.package_name,item.game_id)" v-else>{{getpack(item.package_name)?'启动':'未下载' }}</text>
+								</view>
+							</view>
+						</view>
+				        <view class="" :style="{width:myWeight-32+'px'}" style="flex-direction: row;justify-content: center;">    	
+						 <myloading v-if="!value.list.length"></myloading>
+				        </view>
+						
+					</view>
+				</scroller>
+			</swiper-item>
+		</swiper>
+		
+		<view class="buttony" v-if="!Object.keys(userInfo).length">
+			<text class="mybutton" @click="handleRoute('/pages/my/children/login')">登录后查看</text>
+		</view>
+		
+	</view>
+
+</template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import myloading from '@/components/nvue-loading/nvue-loading'
+	import titleLine from '@/components/nuve-titleLine/nuve-titleLine'
+	export default {
+		components:{
+	    	titleLine,
+			myloading
+		},
+		data() {
+			return {
+				active: 0,
+				pageData:null,
+				isActive: false,
+				scrollMove: 0,
+				number:0,
+				myGame: [{
+						id: 0,
+						name: '玩过'
+					},
+					{
+						id: 0,
+						name: '收藏'
+					},
+					{
+						id: 0,
+						name: '预约'
+					}
+				],
+				active: 0,
+			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},	
+			getpack(){
+				return function(package_name){
+					return plus.runtime.isApplicationExist({pname:package_name})
+					}
+				},
+				userInfo(){
+					return this.$store.state.userInfo
+				}		
+		
+		},
+		methods: {
+			handleClick(i) {
+				this.active = i
+			},
+			swiperChange(e) {
+				this.active = e.detail.current
+			},
+			handleActive(e) {
+				this.active = e
+			},
+			isactive(e){
+				this.isActive = false
+			},
+			// 切换
+			touchstart(e) {
+				this.isActive = true
+			},
+			clearData(){
+				this.pageData = null
+			},
+			animationfinish(e) {
+				this.number = e.detail.current
+				console.log(this.number,'this.number')
+				
+			},
+			//滑动监听
+			transition(e) {
+				if(Math.abs(Math.round(e.detail.dx))==this.$store.state.myWidth){
+					setTimeout(()=>{
+						
+					},400)
+				}else{
+					this.scrollMove = Math.round(e.detail.dx)
+				}
+			},
+			
+			getPageData(){
+				$api.get("user/my_games").then(res => {
+					if(res.data.code==200){
+					this.pageData = res.data.data
+					}
+	
+				})
+			},
+			handleRoute(url){
+				uni.navigateTo({
+					url
+				})
+			},
+			handleRouter(package_name,id){
+			
+				if(this.getpack(package_name)){
+					plus.runtime.launchApplication( {pname:package_name}, err => {uni.showToast({ title:'打开失败',icon:'none'	})} );
+				}else{
+				uni.navigateTo({
+					url: `/pages/view/gamedetail/gamedetail?gameid=${id}`
+				})	
+				
+					
+				}
+			}
+			
+		},
+		
+		mounted() {
+			if(Object.keys(this.userInfo).length){
+				this.getPageData()
+			}else{
+				this.clearData()
+			}
+		},
+		filters: {
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		}
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+	.mygameList{
+		flex-direction: row;
+		justify-content: space-between;
+		border-bottom:1rpx solid #ECECEC;
+		padding:0 68rpx;
+	}
+	.listitem{
+		margin-right: 62rpx;
+		align-items: center;
+	}
+	.mygametext{
+		color: #999;
+		font-size: 34rpx;
+		font-weight: 700;
+		margin-bottom: 12rpx;
+	}
+	.mygametext1{
+		color: #1C1C1C;
+	}
+	.buttony{
+		flex-direction: row;
+		justify-content: center;
+	}
+	.mybutton {
+		margin: 240rpx 0;
+        color: #ff5927;
+	    font-size: 34rpx;
+		border-radius: 40rpx;
+		padding: 12rpx 60rpx;
+		border: 1px solid #f5f5f5;
+	
+ 	}
+	.mybuttont{
+		width: 120rpx;
+		color: #ff5927;
+		font-size:28rpx;
+		border-radius: 40rpx;
+		padding: 8rpx 0;
+		text-align: center;
+		border: 1px solid #f5f5f5;
+	}
+	.game_name{
+		font-size: 36rpx;
+		font-weight: 700;
+		color: #1C1C1C;
+	}
+	.item{
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding-bottom: 32rpx;
+		margin-bottom: 32rpx;
+		border-bottom:1px solid #ECECEC;
+	}
+	.text{
+		font-size: 24rpx;
+		color: #666;
+	}
+	
+	
+
+</style>

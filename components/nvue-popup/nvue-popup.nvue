@@ -1,0 +1,86 @@
+<template>
+	<view class="nvue-popup" :style="{width:$store.state.myWidth+'px',height: $store.state.myHeight+'rpx'}">
+		<view class="popup" ref='popup' :style="{width:$store.state.myWidth+'px'}">
+              <slot></slot>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	export default {
+		props: {
+			nheight:{
+				type:Number,
+				default:10
+			},
+			easing:{
+				type:String,
+				default:'linear'
+			},
+			ntime:{
+				type:Number,
+				default:300
+			}
+		},
+		methods: {
+			getup() {
+				let popup = common.getEl(this.$refs.popup);
+				let mybindin = BindingX.bind({
+					eventType: 'timing',
+					// exitExpression: 't>8000',
+					props: [{
+						element: popup,
+						property: 'height', //动画属性
+						expression: `${this.easing}(t,50,${this.nheight},${this.ntime})`
+					}]
+				}, e => {
+					if (e.state === 'exit') {
+						BindingX.unbind({
+							token: mybindin.token,
+							eventType: 'timing'
+						})
+					}
+				});
+			}
+		},
+		mounted() {
+			this.getup()
+		}
+		// watch: {
+		// 	type: { //深度监听，可监听到对象、数组的变化
+		// 		handler(val) {
+		// 			// console.log(val,';vakse')
+		// 			if (val) {
+		// 				setTimeout(() => {
+		// 					this.getup()
+		// 				}, 300)
+		// 			}
+		// 		},
+		// 		immediate: true
+		// 	}
+
+
+		// }
+
+	}
+</script>
+
+<style scoped>
+	.nvue-popup {
+		background: rgba(0, 0, 0, .4);
+		flex-direction: column-reverse;
+
+
+	}
+
+	.popup {
+		background-color: #FFFFFF;
+		height: 10rpx;
+		padding: 20rpx 40rpx 0 40rpx;
+		border-top-left-radius: 40rpx;
+		border-top-right-radius: 40rpx;
+	}
+</style>

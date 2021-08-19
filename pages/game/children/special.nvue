@@ -1,0 +1,219 @@
+<!-- 专题 -->
+<template>
+	<view class="special" :style="{width:myWidth+'px'}">
+		<view class="" :style="{height:statusBarHeight+'px',width:myWidth+'px'}" />
+		<view class="Title">
+			<view class="TitleLeft" style="flex-direction: row;align-items: center;">
+				<view ref="handleBack" style="margin:0 32rpx 0 8rpx;" @click="handleBack" >
+				<image src="@/static/images/left.png" mode="widthFix" style="width: 32rpx;height:32rpx;"></image>
+				</view>
+					<text class="titlename h1">{{name}}</text>
+			</view>
+		</view>
+		<view class="speciallist"  :style="{height:myHeight-180+'rpx',width:myWidth+'px'}">	
+		 <list v-if="pageData.length>0" ref="list" loadmoreoffset='10' :show-scrollbar='false' :style="{height:myHeight-180+'rpx'}" class="list" @loadmore='loadmore'>
+		 <refresh @refresh="onrefresh"  :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
+		 	<view class="refreshImages" >
+		 		<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
+		 	</view>
+		 </refresh>
+			<cell>
+				<uni-swiper-dot style="margin: 52rpx 0;" :info="[0,1,2,3]" :current="current" field="content" :mode="mode" :dotsStyles='{selectedBackgroundColor:"#fff",selectedBorder:"0rpx"}'>
+					<swiper autoplay class="swiper-box" @change="change" circular>
+						<swiper-item  v-for="(item ,index) in pageData" :key="index" v-if="index<4" style="height: 400rpx;flex-direction: row;align-items: center;justify-content: center;">
+							<image :src="/http/i.test(item.hot_image)?item.hot_image:'https:'+ item.hot_image" class="swiper-image" :style="{width:myWidth-32+'px',height:'400rpx'}" @click='handleRouter(item.game_id)'></image>
+						</swiper-item>
+					</swiper>
+				</uni-swiper-dot>
+			  </cell>
+			 <cell v-for="(item,index) in pageData" :key='index' v-if="pageData.length">
+				<gameItem :item='item' type='4' style="padding-bottom: 32rpx;"></gameItem>
+			</cell>
+			<!-- <loading class="loadList" @loading="onloading" :display="loadinging ? 'show' : 'hide'" :style="{height:'220rpx'}">
+				<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+			</loading> -->
+			<cell v-if="loadinging">
+				<view class="" style="margin-bottom: 120rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth+'px'}">
+					<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+				</view>
+			</cell>
+			
+		  </list>
+		  <view v-if="pageData.length==0" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
+		  	<myloading ></myloading>
+		  </view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	import gameItem from '@/components/nvue-gameItem/nvue-gameItem'
+	import myloading from '@/components/nvue-loading/nvue-loading'
+	export default {
+		components: {
+			gameItem,
+			myloading
+		},
+		data() {
+			return {
+              name:'',
+			  pageData:[],
+			  mode: 'round',
+			  current:0,
+			  loadinging:false,
+			  refreshing:false,
+			  formData:{
+				  page:1,
+				  offset:15,
+				  topic_id:0
+				  
+			  },
+			  count:0,
+			}
+		},
+		onLoad(option) {
+			this.name = option.name
+			this.formData.topic_id = option.id
+			this.getPageData()
+	
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			}
+
+		},
+		methods:{
+			//专题
+			getPageData(){
+				$api.get('/game/special/games',{
+					...this.formData,
+					client_id:this.$store.state.client_id
+				}).then(res=>{
+				   if(res.data.code==200){
+					   this.pageData = this.pageData.concat(res.data.data.list) 
+						this.count = res.data.data.count
+						setTimeout(()=>{
+						this.loadinging = false;
+						},100)
+				   }
+				})
+			},
+			//后退
+			handleBack() {
+				this.bin()
+			},
+			change(e) {
+				this.current = e.detail.current;
+			},
+			//加载
+			loadmore(){
+						 if(this.count>this.pageData.length){
+						  this.loadinging = true
+						    this.formData.page++
+						     this.getPageData()
+						 	}
+			 },
+			handleRouter(id){
+				uni.navigateTo({
+					url:'/pages/view/gamedetail/gamedetail?gameid='+id
+				})
+			},
+			//下拉刷新
+			onrefresh() {	
+				this.refreshing = true
+				setTimeout(() => {
+					this.formData.page = 1
+					this.pageData = []
+				this.getPageData()
+					this.resetLoadMore()
+					this.refreshing = false;
+				}, 1000)
+			},
+			// 重置 loadmore
+			resetLoadMore() {
+				// this.$refs.list.resetLoadmore();
+				this.loadinging = false
+			},
+			//动画
+			bin() {
+				let handleBack = common.getEl(this.$refs.handleBack)
+				let binx = BindingX.bind({
+						eventType: 'timing',
+						exitExpression: 't>300',
+						props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+							{
+								element: handleBack, //动画元素
+								property: 'transform.scale', //动画属性
+								expression: `linear(t,.8,.2,300)`
+							},
+							{
+								element: handleBack, //动画元素
+								property: 'opacity', //动画属性
+								expression: `linear(t,.6,.1,300)`
+							}
+			
+						]
+					}, e => {
+						if (e.state == 'start') {
+							setTimeout(() => {
+								uni.navigateBack({
+									delta: 1
+								})
+							}, 300)
+						}
+					}
+			
+				);
+			},
+		}
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+	.special{
+		background-color: #fff;
+		overflow:hidden;
+		flex: 1;
+	}
+	.Title {
+		flex-direction: row;
+		margin-top: 40rpx;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0rpx 32rpx 16rpx 32rpx;
+	}
+	.speciallist{
+		/* padding: 0 32rpx; */
+	}
+	.list{
+		padding: 0 16px;
+		/* flex-direction: row; */
+		/* align-items: center; */
+		/* justify-content: center; */
+	}
+	.titlename{
+		color: #1C1C1C;
+	}
+	.swiper-box {
+		height: 400rpx;
+		/* border-radius: 40rpx; */
+	}
+	
+	.swiper-image {
+		border-radius: 20rpx;
+	}
+</style>

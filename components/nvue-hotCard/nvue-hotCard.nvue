@@ -1,0 +1,175 @@
+<template>
+	<view class="hotCard" v-if="item">
+		<view class="card" @click="handleRouter(item.game_id)">
+			<image class="images" :style="{width: myWidth-32+'px',height:'396rpx'}" :src="item.hot_image"></image>
+			<view class="coverFlow" :style="{width: myWidth-32+'px'}">
+				<text class="gamename">{{item.gamename}}</text>
+				<view class="tags">
+					<text class="tag">{{item.one_word.length>26?item.one_word.slice(0,24)+'..':item.one_word}}</text>
+					<image class="tagImage" src="@/static/images/index/tagst.png" mode="widthFix"
+						style="width: 25rpx;height: 25rpx;" />
+				</view>
+				<view class="listBottom">
+					<view class="" style="flex-direction: row;align-items: center;" v-if="item.start_time.length">
+					<text class="text" style="color: #FF5927;" v-if="typeof item.start_time=='number'"> {{item.start_time|dateFormat('hh:mm')}}</text>
+					<text class="text" style="color: #FF5927;" v-else> {{item.start_time[0]|dateFormat('hh:mm')}}</text>
+					<text class="text"> 开服 | </text>
+					</view>
+					<text class="type text" v-for="(v,i) in item.type" :key="i">{{v}}</text>
+					<text class="user_cnt text">| {{item.popularity_cnt}}在玩</text>
+				</view>
+
+			</view>
+			<view class="corner">
+				<image src="../../static/images/rate-rate.png" mode="widthFix" style="width: 100rpx;height: 100rpx;"></image>
+				<text class="number">NO：1</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	
+	export default {
+		props: {
+			item: {
+				type: Object,
+				default: () => {}
+			}
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		
+		},
+		methods: {
+			handleRouter(id) {
+				uni.navigateTo({
+					url: `/pages/view/gamedetail/gamedetail?gameid=${id}`
+				})
+			}
+		},
+		filters: {
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	.card {
+		border-radius: 20rpx;
+		margin: 20rpx 0 20rpx 0rpx;
+		background-color: #fff;
+		position: relative;
+	}
+
+	.images {
+		border-radius: 20rpx;
+	}
+
+
+	.coverFlow {
+		flex: 1;
+		position: absolute;
+		bottom: 0;
+		background-image: linear-gradient(to top, rgba(0, 0, 0, .4), rgba(255, 255, 255, 0.1));
+		border-bottom-right-radius: 20rpx;
+		border-bottom-left-radius: 20rpx;
+	}
+
+	.tags {
+		flex-direction: row;
+		align-items: center;
+		margin:10rpx 0 10rpx 30rpx;
+		position: relative;
+	}
+
+	.tagImage {
+		position: absolute;
+		top: 8rpx;
+		left: 12rpx;
+	}
+
+	.tag {
+		color: #fff;
+		font-weight: 300;
+		font-size: 24rpx;
+		lines: 1;
+		padding: 4rpx 20rpx 4px 45rpx;
+		border-radius: 20rpx;
+		background-color: rgba(0, 0, 0, 0.3);
+
+	}
+
+	.gamename {
+		color: #fff;
+		font-weight: 900;
+		font-size: 40rpx;
+		padding: 0rpx 30rpx;
+	}
+
+	.listBottom {
+		flex-direction: row;
+		align-items: center;
+		padding: 0 30rpx 20rpx 30rpx;
+	}
+
+	.type {
+		margin: 0 6rpx;
+	}
+
+	.text {
+		color: #fff;
+		font-size: 26rpx;
+	}
+
+   .corner{
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	.number{
+		position: absolute;
+		font-size: 20rpx;
+		left: 14rpx;
+		top: 4rpx;
+		color: #fff;
+		font-weight: 600
+	}
+</style>

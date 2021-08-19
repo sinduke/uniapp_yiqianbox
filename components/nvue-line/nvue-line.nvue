@@ -1,0 +1,57 @@
+<template>
+	<view class="titleLine" ref="titleLine" :style="{width:myWidth+'px',height:'3rpx'}">
+	</view>
+</template>
+
+<script>
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	export default {
+		props: {
+			losColor: {
+				type: String,
+				default: '#cccccc'
+			},
+			toColor: {
+				type: String,
+				default: '#ffffff'
+			},
+			higt: {
+				type: Number,
+				default: 200
+			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
+		methods: {
+			//动画
+			bind() {
+				let anchor = common.getEl(this.$refs.list);
+				let titleLine = common.getEl(this.$refs.titleLine);
+				let res = BindingX.bind({
+					anchor: anchor,
+					eventType: 'scroll',
+					props: [{
+						element: titleLine,
+						property: 'background-color', //动画属性
+						expression: `evaluateColor(${this.toColor},${this.losColor}, min(y, ${this.higt})/200)` //表达式 说明了y从0-400,对应的值是1-0  
+					}, ]
+				}, e => {
+					if (e.state === 'turn') {
+
+					}
+				});
+			},
+		},
+	}
+</script>
+
+<style scoped>
+
+</style>

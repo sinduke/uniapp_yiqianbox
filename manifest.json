@@ -1,0 +1,229 @@
+{
+    "name" : "闲玩手游",
+    "appid" : "__UNI__94481FE",
+    "description" : "",
+    "versionName" : "2.0.8",
+    "versionCode" : 20008,
+    "transformPx" : false,
+    /* 5+App特有相关 */
+    "app-plus" : {
+        // "nvueCompiler":"weex", //是否启用 uni-app 模式
+        "usingComponents" : true,
+        "nvueStyleCompiler" : "uni-app",
+        "compilerVersion" : 3,
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : false,
+            "waiting" : false,
+            //"autoclose" : true,
+            "autoclose" : false,
+            "delay" : 0
+        },
+        // "splashscreen" : {
+        //     "alwaysShowBeforeRender" : true,
+        //     "waiting" : true,
+        //     "autoclose" : true,
+        //     "delay" : 0
+        // },
+        /* 模块配置 */
+        "modules" : {
+            "VideoPlayer" : {},
+            "OAuth" : {},
+            "Share" : {}
+        },
+        /* 应用发布信息 */
+        "distribute" : {
+            /* android打包配置 */
+            "android" : {
+                "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                ],
+                "schemes" : "zhaosy"
+            },
+            /* ios打包配置 */
+            "ios" : {
+                "urltypes" : "zhaosyAppBox",
+                "urlschemewhitelist" : "alipays"
+            },
+            /* SDK配置 */
+            "sdkConfigs" : {
+                "ad" : {},
+                "push" : {
+                    "unipush" : {}
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx11272a3a63d9cad8",
+                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
+                    },
+                    "sina" : {
+                        "appkey" : "3046851712",
+                        "appsecret" : "8276d6a7c66f26398b2ce57acbbc9aab",
+                        "redirect_uri" : "https://api.weibo.com/oauth2/default.html"
+                    },
+                    "qq" : {
+                        "appid" : "101961430"
+                    }
+                },
+                "oauth" : {
+                    "univerify" : {},
+                    "weixin" : {
+                        "appid" : "wx11272a3a63d9cad8",
+                        "appsecret" : "43a95fa92ffe8170e6379d77fc28df6a",
+                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
+                    },
+                    "qq" : {
+                        "appid" : "101961430"
+                    },
+                    "sina" : {
+                        "appkey" : "3046851712",
+                        "appsecret" : "8276d6a7c66f26398b2ce57acbbc9aab",
+                        "redirect_uri" : "https://api.weibo.com/oauth2/default.html"
+                    }
+                }
+            },
+            "splashscreen" : {
+                "androidStyle" : "common",
+                "android" : {
+                    "hdpi" : "static/launchpage/480x762.png",
+                    "xhdpi" : "static/launchpage/720x1242.png",
+                    "xxhdpi" : "static/launchpage/1080x1882.png"
+                },
+                "iosStyle" : "storyboard",
+                "ios" : {
+                    "storyboard" : "storyboard.zip"
+                }
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/icons/72x72.png",
+                    "xhdpi" : "unpackage/res/icons/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                },
+                "ios" : {
+                    "appstore" : "unpackage/res/icons/1024x1024.png",
+                    "ipad" : {
+                        "app" : "unpackage/res/icons/76x76.png",
+                        "app@2x" : "unpackage/res/icons/152x152.png",
+                        "notification" : "unpackage/res/icons/20x20.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons/167x167.png",
+                        "settings" : "unpackage/res/icons/29x29.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight" : "unpackage/res/icons/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                    },
+                    "iphone" : {
+                        "app@2x" : "unpackage/res/icons/120x120.png",
+                        "app@3x" : "unpackage/res/icons/180x180.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "notification@3x" : "unpackage/res/icons/60x60.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "settings@3x" : "unpackage/res/icons/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    }
+                }
+            }
+        },
+        "nativePlugins" : {
+            "DCChannelUniPlugin" : {
+                "__plugin_info__" : {
+                    "name" : "ChannelUniPlugin",
+                    "description" : "XW获取channelid以及gameid",
+                    "platforms" : "iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            },
+            "ZSY_GetXWID" : {
+                "__plugin_info__" : {
+                    "name" : "GetXWID",
+                    "description" : "获取app包中的id信息",
+                    "platforms" : "Android",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            },
+            "sn-blur" : {
+                "__plugin_info__" : {
+                    "name" : "Android 高斯模糊View",
+                    "description" : "提供Android 高斯模糊View",
+                    "platforms" : "Android",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            }
+        }
+    },
+    /* 快应用特有相关 */
+    "quickapp" : {},
+    /* 小程序特有相关 */
+    "mp-weixin" : {
+        "appid" : "",
+        "setting" : {
+            "urlCheck" : false
+        },
+        "usingComponents" : true
+    },
+    "mp-alipay" : {
+        "usingComponents" : true
+    },
+    "mp-baidu" : {
+        "usingComponents" : true
+    },
+    "mp-toutiao" : {
+        "usingComponents" : true
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "h5" : {
+        "devServer" : {
+            "https" : false,
+            "proxy" : {
+                "/api" : {
+                    "target" : "https://api.sy12306.com",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/api" : "/"
+                    }
+                }
+            }
+        }
+    }
+}

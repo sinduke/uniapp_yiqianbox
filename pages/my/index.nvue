@@ -1,0 +1,546 @@
+<!-- 个人中心 -->
+<template>
+	<view class="my" :style="{width:myWidth+'px'}">
+		<view class="" :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
+		<view class="title nav">
+			<view class="titleLeft">
+				<view style="flex-direction: row;" :style="{opacity: opacity}"  ref="titles">
+					<!-- <image :src="userInfo.avatar" style="width: 60rpx;height: 60rpx;border-radius: 60rpx;margin: 0 24rpx 0 32rpx;"></image> -->
+					<text  class="titlename" style="margin-left: 12rpx;" v-if="Object .keys(userInfo).length">{{userInfo.nickname}}</text>
+				</view>
+			</view>
+			<view class="titleRight">
+				<image src="@/static/images/my/news.png" mode="widthFix" style="width: 42rpx;height: 42rpx;" @click="handleRouter('/pages/my/myMessage/index',1)">	</image>
+				<image src="@/static/images/my/setting.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/index')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
+				<!-- 	<image src="@/static/images/my/black-mode.png" mode="widthFix" style="width: 42rpx;height: 42rpx;">
+				</image> -->
+			</view>
+		</view>
+		<view class="list"> 
+			 <!-- @scrollend='scrollend' -->
+			<list :show-scrollbar="false" :style="{height:mysHeight-262+'rpx'}"  ref="list" >
+				<refresh @refresh="onrefresh" :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
+					<view class="refreshImages" :style="{width:myWidth+'px'}">
+						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
+					</view>
+				</refresh>
+			    <cell style="height: 32rpx;"> </cell>
+				<cell >	
+				<!-- 头像 -->
+				<view class="login flex" @click="handleRouter('/pages/my/children/login')" v-if="!Object.keys(userInfo).length">
+					<image class="images2" src="@/static/images/my/myAvart.png"></image>
+					<view class="loginText">
+						<text class="h1">点击后登录</text>
+						<text class="loginText-text">未实名认证 &nbsp ></text>
+					</view>
+				</view>
+				<view class="login flex" v-else @click="handleRouter('/pages/my/myAdministration/index')">
+					<image class="images2" :src="/http/i.test(userInfo.avatar)?userInfo.avatar:'https:'+userInfo.avatar"></image>
+					<view class="loginText">
+						<text class="h1">{{userInfo.nickname}}</text>
+						<text class="loginText-text" v-if="userInfo.is_real_name">已实名认证</text>
+						<text class="loginText-text" v-else @click.stop="handleRouter('/pages/my/myAdministration/children/changeRealname/index')">未实名认证 &nbsp ></text>
+					</view>
+				</view>
+				</cell>
+				<cell>
+				<!-- 常用功能 -->
+					<view class="card" :style="{width:myWidth-32+'px'}">
+						<view class="mycard" >
+							<text class="h2">常用功能</text>
+							<view class="grid">
+								<view class="grid-item" v-for="(item,index) in commonList" :key='index'	@click="handleRouter(item.router,item.type)">
+									<image :src="item.url" mode="widthFix" class="images"></image>
+									<text class="grid-text">{{item.name}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</cell>	
+				<cell>
+				<!-- 我的资产 -->
+				<view class="card" :style="{width:myWidth-32+'px'}">
+				<view class="mycard">
+					<text class="h2">我的资产</text>
+					<view class="grid" style="padding-left:60rpx;padding-right: 60rpx;" >
+						<view class="grid-item" @click="handleRouter('/pages/my/FlatGoldCoins/FlatGoldCoins?ptb_cnt='+userInfo.ptb_cnt,1)">
+							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-ptb.png" mode="widthFix" class="images"></image>
+							<view style="flex-direction: row;align-items: center;" v-else>
+							<text class="myrate" >{{userInfo.ptb_cnt}}</text>
+							<text style="font-weight: 300;font-size:22rpx;">个</text>
+							</view>
+							<text class="grid-text">平台币</text>
+						</view>
+						<view class="grid-item" @click="handleRouter('/pages/my/coupons/coupons',1)">
+							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-yhq.png"	mode="widthFix" class="images"></image>
+							<view style="flex-direction: row;align-items: center;" v-else>
+							<text class="myrate" >{{userInfo.coupon_count}}</text>
+							<text style="font-weight: 300;font-size:22rpx;">张</text>
+							</view>
+							<text class="grid-text">优惠券</text>
+						</view>
+						<view class="grid-item" @click="handleRouter('/pages/my/integral/index',1)">
+							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-jf.png"	mode="widthFix" class="images"></image>
+							<view style="flex-direction: row;align-items: center;" v-else>
+							<text class="myrate" >{{userInfo.my_integral}}</text>
+							<text style="font-weight: 300;font-size:22rpx;">分</text>
+							</view>
+							<text class="grid-text">积分</text>
+						</view>
+					 </view>
+			       </view>
+				</view>
+		     	</cell>
+				<cell>
+				<!-- 综合功能 -->
+				<view class="card" :style="{width:myWidth-32+'px'}" style="margin-bottom: 48rpx;">	
+				<view class="mycard">
+					<text class="h2">综合功能</text>
+					<view class="grid" style="margin-bottom: 32rpx;">
+						<view class="grid-item" v-for="(item,index) in mergeList" :key='index' @click="handleRouter(item.router,item.type)" v-if="($store.state.platform=='ios'?item.status!=1:true)&&index<5">
+							<image :src="item.url" mode="widthFix" class="images"></image>
+							<text class="grid-text">{{item.name}}</text>
+						</view>
+					</view>
+					<view class="grid" >
+						<view class="grid-item" v-for="(item,index) in mergeList" :key='index' @click="handleRouter(item.router,item.type)" v-if="($store.state.platform=='ios'?item.status!=1:true)&&index>4">
+							<image :src="item.url" mode="widthFix" class="images"></image>
+							<text class="grid-text">{{item.name}}</text>
+						</view>
+					</view>	
+				</view>
+				</view>
+				</cell>
+				<!-- 我的游戏 -->
+					<header>
+						<view class="game_line" :style="{width:myWidth+'px',opacity: 0}" ref="game_line">
+							<view class="lins" v-if="Object .keys(userInfo).length"></view>
+							<view class="lins" v-if="Object .keys(userInfo).length" style="width: 50rpx;"></view>
+						</view>
+						<view class="card" :style="{width:myWidth-32+'px',marginTop:0}">
+						<view class="mycard">
+							<myGameList ref="myGameList"></myGameList>
+						</view>
+					  </view>
+					</header>
+			  </list>
+	    	</view>
+		</view>
+  </template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import myGameList from './children/myGameList/index.nvue'
+	export default {
+		components: {
+			myGameList
+		},
+		data() {
+			return {
+				someActive: 0,
+				opacity: 0,
+				refreshing:false,
+				toupper: false,
+				scrollTop:0,
+				contentOffset:0,
+				commonList: [{
+						url: '../../static/images/my/swyx.png',
+						router: '/pages/my/children/demoGame/index',
+						name: '试玩游戏',
+						type: '1'
+					},
+					{
+						url: '../../static/images/my/xyzp.png',
+						name: '幸运转盘',
+						router: '/pages/my/children/bigTurntable/index',
+						type: 1
+					},
+					{
+						url: '../../static/images/my/lqzx.png',
+						name: '领券中心',
+						router: '/pages/my/children/couponsCore/index',
+						type: 1
+					},
+					{
+						url: '../../static/images/my/jfsc.png',
+						name: '积分商城',
+						router: '/pages/my/children/pointMall/index',
+						type: 1
+					},
+					{
+						url: '../../static/images/my/qmtg.png',
+						name: '全民推广',
+						router: '/pages/my/children/share/index',
+						type: 1
+					}],
+				mergeList: [
+					{
+						url: '../../static/images/my/smdl.png',
+						name: '扫码登陆',
+						router:'/pages/my/children/scanCode/index',
+						type: 2
+					},
+					{
+						url: '../../static/images/my/zhgl.png',
+						name: '账号管理',
+						router: '/pages/my/myAdministration/index',
+						type: 1
+					},
+					{
+						url: '../../static/images/my/rwzx.png',
+						name: '任务中心',
+						router: '/pages/my/children/taskCenter/index',
+						type: 1,
+					},
+					{
+						url: '../../static/images/my/czfl.png',
+						name: '充值返利',
+						router: '/pages/customerService/children/rechargeRebate/index',
+						type: 1
+					},
+					{
+						url: '../../static/images/my/yjfk.png',
+						name: '意见反馈',
+						router: '/pages/my/comprehensive/feedback/feedback',
+						type: 1,
+					},
+					{
+						url: '../../static/images/my/yxlb.png',
+						name: '游戏礼包',
+						router: '/pages/my/comprehensive/gameGiftBag/gameGiftBag',
+						type: 0,
+					},
+					{
+						url: '../../static/images/my/yxzx.png',
+						name: '游戏资讯',
+						router: '/pages/my/comprehensive/gameConsulting/gameConsulting',
+						type: 0,
+					},
+					{
+						url: '../../static/images/my/yxfl.png',
+						name: '游戏分类',
+						router: '/pages/game/children/gameList',
+
+					},
+					{
+						url: '../../static/images/my/yxsp.png',
+						name: '游戏视频',
+						router: '/pages/index/children/videoDetail'
+					},
+					{
+						url: '../../static/images/my/xzgl.png',
+						name: '下载管理',
+						router: '/pages/view/downLoad/downLoad',
+						status: 1,
+
+					},
+				],
+
+
+			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			mysHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},           
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			},
+			userInfo(){
+				return this.$store.state.userInfo
+			}
+			
+		},
+		methods: {
+			scrollend(e){
+				this.scrollTop = 0
+				if(Math.abs(e.contentOffset.y)>140){
+						// this.opacity = 1
+				}
+				// console.log(e.contentOffset.y,this.contentOffset,Math.abs(e.contentOffset.y) ,'eeeeeeeeeeeeeeeeeeee')
+				if(Math.abs(e.contentOffset.y)<140){
+		          // this.scrollTop = Math.abs(e.contentOffset.y)-20
+					//判断是up 还是down
+					if( this.contentOffset<Math.abs(e.contentOffset.y) ){
+						// let timer = setInterval(()=>{
+						// 	this.scrollTop +=1
+						// 	if(this.scrollTop >= 120){
+						// 		this.opacity = 1
+						//         clearInterval(timer)
+								
+						// 	}
+						// },5)
+						// this.scrollTop = 120
+						// this.opacity = 1
+						console.log('up','up','up','up','up','up',)
+						// this.bin1(common.getEl(this.$refs.game_line), 'scroll.contentOffsetY', `easeOutBounce(t,0,180,600)`)
+						// this.bin1(common.getEl(this.$refs.list), 'transform.scale', `easeOutBounce(t,0,1.2,600)`)
+						console.log(this.scrollTop,this.opacity,'console.log(this.scrollTop)')
+					}else{
+						// this.scrollTop = 0
+						// this.opacity = 0
+						// let times = setInterval(()=>{
+						// 	this.scrollTop -=1
+						// 	if(this.scrollTop <= 0){
+						// 		this.scrollTop =  0
+						// 		this.opacity = 0
+						// 		 clearInterval(times)
+								
+						// 	}
+						// },5)	
+						console.log('dwondwondwondwondwondwon')
+					}
+				}
+				
+				  // this.contentOffset = Math.abs(e.contentOffset.y) 
+				// console.log(this.scrollTop,this.opacity,'this.scrollTopthis.scrollTopthis.scrollTop')
+			},
+			onrefresh() {
+				this.refreshing = true
+				common.getuserInfo()
+				setTimeout(() => {
+					this.refreshing = false;
+				}, 1000)
+			},
+			// 重置 loadmore
+			resetLoadMore() {
+				this.$refs.list.resetLoadmore();
+			
+			},
+			handleRouter(url, type) {
+				if (type == 1) {
+					if (common.isLogin()) {
+						uni.navigateTo({
+							url
+						})
+					}
+
+				} else if (type == 2) {
+					if (common.isLogin()) {
+						uni.scanCode({
+							success: (res) => {
+								uni.navigateTo({
+									url: url + `?scanType=${res.scanType}&result=${res.result}`
+								})
+
+							}
+						});
+					}
+
+				} else {
+					uni.navigateTo({
+						url
+					})
+				}
+			},
+			bin1(ref, property, expression) {
+				let rotatebin = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>600',
+					props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+						{
+							element: ref, //动画元素
+							property: property, //动画属性
+							expression: expression
+						}
+
+					]
+				}, e => {
+					if (e.state === 'exit') {
+						BindingX.unbind({
+							token: rotatebin.token,
+							eventType: 'timing'
+						})
+					}
+				});
+			},
+			
+			//动画
+			bind() {
+				let anchor = common.getEl(this.$refs.list);
+				let titles = common.getEl(this.$refs.titles);
+				let game_line = common.getEl(this.$refs.game_line);
+				let mybind = BindingX.bind({
+					anchor: anchor,
+					eventType: 'scroll',
+					props: [
+						{
+								element: titles,
+								property: 'opacity', //动画属性
+								expression: `0+y/120`    
+							},
+							{
+									element: game_line,
+									property: 'opacity', //动画属性
+									expression: `0+y/420`    
+								},
+							
+					]
+				}, (e) => {
+					if (e.state === 'turn') {
+						this.bind();
+					}
+				});
+			},
+			
+
+		},
+		// onLoad() {
+			
+		// },
+		onReady() {
+			setTimeout(()=>{		
+			this.bind()
+			},200)
+		
+		},
+		onShow() {
+			// console.log(this.$refs.myGameList,11111111111111111)
+		  common.getuserInfo()
+		  if(this.$refs.myGameList){
+			  if(Object.keys(this.userInfo).length){
+			  	  this.$refs.myGameList.getPageData()
+			  }else {
+			  	this.$refs.myGameList.clearData()
+			  }
+		  }
+		  
+		},
+		watch: {
+			userInfo: {
+				handler(val) {
+					if (Object.keys(val).length) {
+						this.$refs.myGameList.getPageData()
+					} else {
+						this.$refs.myGameList.clearData()
+					}
+				},
+
+
+			}
+		},
+
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+	.my {
+		overflow: hidden;
+		background-color: #F9F9F9;
+		flex: 1;
+	}
+
+	.title {
+		padding: 0 32rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.titlename {
+		font-weight: 700;
+		font-size: 30rpx;
+		color: #1c1c1c;
+	}
+
+
+	.titleItem {
+		align-items: center;
+		margin-right: 64rpx;
+	}
+
+	.titleRight {
+		
+		flex-direction: row;
+		align-items: center;
+
+	}
+	.login{
+		padding: 0 32rpx;
+		flex-direction: row;
+	}
+	.images2{
+		width: 140rpx;
+		height: 140rpx;
+		border-radius: 140rpx;
+		margin-right: 12rpx;
+	}
+	.images{
+		width: 48rpx;
+		height: 48rpx;
+		margin-bottom: 12rpx;
+	}
+	.flex{
+		flex-direction: row;
+		align-items: center;
+	}
+	.loginText{
+	     align-items: flex-start;
+	}
+	.loginText-text{
+		font-size: 26rpx;
+		font-weight: 400;
+		color: #252525;
+		background-color:#E9E8EA;
+		border-radius: 20rpx;
+		padding: 2rpx 12rpx;
+	}
+	.card{
+		background-color: #fff;
+		margin-left: 16px;
+		border-radius: 20rpx;
+		margin-top: 48rpx;
+		
+	}
+	.mycard{
+		padding: 38rpx 24rpx;
+	}
+	.grid{
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.grid-item{
+		align-items: center;
+	}
+	.grid-text{
+		color: #1C1C1C;
+		font-size: 28rpx;
+		font-weight: 300;
+	}
+	.myrate{
+		font-weight: 700;
+		font-size: 32rpx;
+		color: #1C1C1C;
+		margin-bottom: 12rpx;
+	}
+	
+	.h1{
+		margin-bottom: 12rpx;
+	}
+	.h2{
+		margin-bottom: 28rpx;
+	}
+    .game_line{
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 12rpx;
+	}
+	.lins{
+		margin:4rpx 0;
+		width: 70rpx;
+		height: 7rpx;
+		border-radius: 30rpx;
+		background-color: #e6e6e6;
+	}
+</style>
