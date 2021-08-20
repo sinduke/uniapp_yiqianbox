@@ -2,30 +2,46 @@
 	<view class="box" :style="{height:myHeight-1+'rpx'}">
 		<view class="lineShowdow"></view>
 		<view class="container" >
-			<gamecell left="通用设置"  type="1"></gamecell>
-			<gamecell left="清除缓存" right="11.23Mb"></gamecell>
-			<gamecell left="当前版本" right="12314"></gamecell>
-			<gamecell left="设备码" right="123" type="1"></gamecell>
-			<view class="button" :style="{width:myWidth+'px'}">
-				<text class="button_text isActive" >退出登录</text>
+			<view @click='toSet'>
+				<gamecell left="通用设置"  type="1"></gamecell>
 			</view>
-			<popup></popup>
+			
+			<view @click="isModal">
+				<gamecell left="清除缓存" :right="fileSizeString"></gamecell>
+			</view>
+			<gamecell left="当前版本" :right="version+'.'+sp+'.'+client_id"></gamecell>
+			<gamecell  left="设备码" :right="$store.state.equipmentCode||0" type="1"></gamecell>
+			<view  class="button" :style="{width:myWidth+'px'}"  @click="loginOut" v-if="Object.keys($store.state.userInfo).length">
+				<text class="button_text isActive" >退出登录</text>
+			</view>	
 		</view>
-		
+		<modal @remove="remove" :isShow="isShow" @confirm="confirm"></modal>
 	</view>
-	
 </template>
 
 <script>
+	import {
+		$api
+	} from '@/config/api.js';
 	import gamecell from '@/components/nvue-cell/nvue-cell.nvue'
-	import popup from '@/components/nvue-popup/nvue-popup.nvue'
+	import modal from '@/components/nvue-shModal/shModel.nvue'
 	export default {
 		data() {
 			return {
-				
+				isShow:false,
+				fileSizeString:0,
 			}
 		},
 		computed: {
+			sp() {
+				return this.$store.state.sp
+			},
+			version() {		
+				return plus.runtime.version
+			},
+			client_id() {
+				return this.$store.state.client_id;
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -33,12 +49,111 @@
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			} 
 		},
+		onLoad(){
+			this.formatSize()
+		},
 		components: {
 			gamecell,
-			
+			modal
 		},
 		methods: {
-			
+			remove(){
+				this.isShow=false
+			},
+			isModal(){
+				this.isShow=true
+			},
+			//确认
+			confirm(){
+				this.isShow=false
+				this.clearCache()
+				plus.downloader.clear();
+			},
+			//清除缓存
+			clearCache() {  
+			     let that = this;  
+			     let os = plus.os.name;  
+			     if (os == 'Android') {  
+			         let main = plus.android.runtimeMainActivity();  
+			         let sdRoot = main.getCacheDir();  
+			         let files = plus.android.invoke(sdRoot, "listFiles");  
+			         let len = files.length;  
+			         for (let i = 0; i < len; i++) {  
+			             let filePath = '' + files[i]; // 没有找到合适的方法获取路径，这样写可以转成文件路径  
+			             plus.io.resolveLocalFileSystemURL(filePath, function(entry) {  
+			                 if (entry.isDirectory) {  
+			                     entry.removeRecursively(function(entry) { //递归删除其下的所有文件及子目录  
+			                         uni.showToast({  
+			                             title: '缓存清理完成',  
+													icon:'none',
+			                             duration: 2000  
+			                         });  
+			                         that.formatSize(); // 重新计算缓存  
+			                     }, function(e) {  
+			                         console.log(e.message)  
+			                     });  
+			                 } else {  
+			                     entry.remove();  
+			                 }  
+			             }, function(e) {  
+			                 console.log('文件路径读取失败')  
+			             });  
+			         }  
+			     } else { // ios暂时未找到清理缓存的方法，以下是官方提供的方法，但是无效，会报错  
+			         plus.cache.clear(function() {  
+			             uni.showToast({  
+			                 title: '缓存清理完成',  
+										icon:'none',
+			                 duration: 2000  
+			             });  
+			             that.formatSize();  
+			         });  
+			     }  
+			 
+			},
+			//缓存
+			formatSize() {
+			    let that = this;  
+			    plus.cache.calculate(function(size) {  
+			        let sizeCache = parseInt(size);  
+			        if (sizeCache == 0) {  
+			            that.fileSizeString = "0B";  
+			        } else if (sizeCache < 1024) {  
+			            that.fileSizeString = sizeCache + "B";  
+			        } else if (sizeCache < 1048576) {  
+			            that.fileSizeString = (sizeCache / 1024).toFixed(2) + "KB";  
+			        } else if (sizeCache < 1073741824) {  
+			            that.fileSizeString = (sizeCache / 1048576).toFixed(2) + "MB";  
+			        } else {  
+			            that.fileSizeString = (sizeCache / 1073741824).toFixed(2) + "GB";  
+			        }  
+			    });  
+			},
+			//跳转通用设置
+			toSet(){
+				uni.navigateTo({
+					url: `/pages/my/mySetting/tySet`
+					
+				})
+			},
+			//退出登录
+			loginOut() {
+				$api.get("/user/logout", {}).then(res => {
+					// 返回上一页
+					uni.navigateBack({
+							delta: 1
+						}),
+					// 清空本地存储的登录数据
+					uni.setStorageSync('mem-username', '')
+					uni.setStorageSync('mem-password', '')
+					uni.setStorageSync('sms-mobile', '')
+					this.$store.commit('setInit', {});
+					this.$store.commit('setLoginInfo', {});
+					this.$store.commit('setUserInfo', {});
+					uni.setStorageSync('mem-openid','')
+					this.$store.commit('setSelectedGame','')
+				})
+			}
 		},
 	}
 </script>
@@ -54,7 +169,6 @@
 	.button{
 		flex-direction: row;
 		justify-content: center;
-		margin-left: -16rpx;
 	}
 	.button_text{
 		margin-top:112rpx ;

@@ -1,0 +1,58 @@
+<template>
+	<view>
+		<u-navbar title="" :border-bottom='false' class="u-navbar">
+			<slot>
+				<view class="title">
+					<view class="slot-wrap">
+						<text class="customer" style="font-weight: 400;margin-left: -20rpx;font-size: 32rpx;">全民推广</text>
+					</view>
+					<view class="slot-right">
+						<view class="radius">
+							<text class="iconfont" style="font-weight: 400;font-size: 34rpx;"
+								@click="handleRouter('/pages/my/children/withdrawalRecord/index')">&#xe645;</text>
+						</view>
+					</view>
+				</view>
+			</slot>
+		</u-navbar>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style>
+.u-navbar {
+
+		.title {
+			
+			padding: 0 $xw-padding;
+			flex-direction: row;
+		}
+
+		.customer {
+			color: $xw-black-dark;
+			font-size: $xw-h1-font;
+		}
+
+		.radius {
+			width: 64rpx;
+			height: 64rpx;
+			border-radius: 50%;
+			box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+			flex-direction: row;
+			justify-content: center;
+		}
+
+	}
+</style>

@@ -1048,6 +1048,32 @@
             }
             
         }
+        ,{
+            "path" : "pages/my/mySetting/tySet",
+            "style": {
+            	"app-plus": {
+            		"bounce": "none", //关闭窗口回弹效果
+            		"titleNView": {
+            			"backgroundColor": "#fff",
+            			"titleColor": "#1C1C1C",
+            			"titleAlign": "left",
+            			"titleText": "通用设置"
+            		}
+            	}
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/children/share/share",
+            "style": {
+            	// 取消默认的原生导航栏
+            	"navigationStyle": "custom",
+            	"app-plus": {
+            		"bounce": "none"
+            	}
+            }
+            
+        }
     ],
 
 	"easycom": {

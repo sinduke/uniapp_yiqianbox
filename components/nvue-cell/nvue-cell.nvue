@@ -1,12 +1,12 @@
 <template>
-	<view >
-		<view class="cell" :style="{width:myWidth+'px'}">
+	<view class="box_cell" :style="{width:myWidth+'px'}">
+		<view class="cell" :style="{borderBottom:borderBottom==true?'1rpx solid #ECECEC':'none'}">
 			<text class="left_text isTheme">{{left}}</text>
 			<view class="right">
 				<text class="right_text noTheme">{{right}}</text>
 				<image v-if="type==1" class="right_icon" src="@/static/images/left.png"></image>
+				<switch  style="transform:scale(0.8);" v-if="type==2" :checked="checked" @change="change" color="#FF4810"/>
 			</view>
-			
 		</view>
 	</view>
 </template>
@@ -33,23 +33,38 @@
 			type: {
 				type: Number
 			},
+			borderBottom:{
+				type: Boolean,
+				default:true
+			},
+			checked:{
+				type: Boolean,
+			}
 		},
 		methods: {
-			
+			change(){
+				this.checked=!this.checked
+				this.$emit('change',this.checked)
+			}
 		},
 	}
 </script>
 
 <style scoped>
 	@import '@/common/css/nvue-whith.css';
+.box_cell{
+	padding:0rpx 28rpx ;
+}
 .cell{
-	padding:44rpx 32rpx;
+	height:120rpx;
+	padding:36rpx 0;
 	flex-direction: row;
 	justify-content: space-between;
-	border-bottom: 1rpx solid #ECECEC;
+	align-items: center;
 }
 .right{
 	flex-direction: row;
+	
 }
 .left_text{
 	font-weight:400 ;
@@ -57,7 +72,7 @@
 }
 .right_text{
 	font-weight:400 ;
-	font-size:28rpx ;	
+	font-size:28rpx ;
 }
 .right_icon{
 	transform: rotate(180deg);
