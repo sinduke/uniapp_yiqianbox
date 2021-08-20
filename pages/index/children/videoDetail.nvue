@@ -683,7 +683,7 @@
 				this.bind(index, 2)
 				this.getshareData(game_id)
 				this.propup = true
-				this.$nextTick(function() {
+				this.$nextTick( res=> {
 					this.$refs.propup.bind()
 				
 				})

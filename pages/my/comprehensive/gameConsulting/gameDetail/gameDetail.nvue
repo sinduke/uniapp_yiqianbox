@@ -1,52 +1,55 @@
 <!-- 游戏资讯详情 -->
 <template>
-	<view class="container" >
+	<view class="container">
 		<!-- 内容部分 -->
-		<view class="box" style="margin-top: 24rpx;" v-if="detailList">
-			<view class="box_head" style="padding-bottom:36rpx; border-bottom: 1rpx solid #ECECEC;" @click="handleRouterdetail(detailList.game_id)">
-				<view class="head_left" style="width: 120rpx;height: 120rpx;border-radius: 28rpx;margin-right: 28rpx;">
-					<image :src="detailList.icon" mode="" style="width: 120rpx;height: 120rpx"></image>
+		<view class="box" v-if="detailList">
+			<view class="box_head" @click="handleRouterdetail(detailList.game_id)">
+				<view class="head_left">
+					<image :src="detailList.icon" mode="widthFix" style="width: 140rpx;height: 140rpx"></image>
 				</view>
-				<view class="head_mid" >
-					<text class="head_mid1" style="font-size: 32rpx;font-weight: 700;color: #252525;margin-top: 13rpx;">{{detailList.title}}</text>
-					<view style="font-size: 24rpx;color: #666666;margin-top: 24rpx;">
-						<text>{{detailList.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text><text style="margin: 0 20rpx;">|</text><text>{{post_hits}} 浏览</text>
+				<view class="head_mid">
+					<text class="head_mid1">{{detailList.title}}</text>
+					<view style="flex-direction: row;align-items: center;">
+						<text class="text">{{detailList.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+						<text class="text" style="margin: 0 20rpx;">|</text>
+						<text class="text">{{post_hits}} 浏览</text>
 					</view>
 				</view>
-				<!-- <view  class="head_right" style="width: 120rpx;height: 55rpx;border-radius: 24rpx;border:1rpx solid #E1E1E1;color: #19BFFF;font-size: 26rpx;text-align: center;line-height: 46rpx;margin-top: 36rpx;">
-					优惠券
-				</view> -->
 			</view>
+			<scroller :show-scrollbar='false'  :style="{height: $store.state.myHeight-320+'rpx'}">
 			<view class="box_middle">
-				<view
-					style="font-size: 41rpx;font-family: PingFang SC;font-weight:600;;color: #252525;line-height: 60rpx;margin: 36rpx 0;">
-					{{detailList.excerpt}}
+				<text class="title">{{detailList.excerpt}}</text>
+				<view class="" >
+					<image :src="detailList.img"  style="height: 380rpx;border-radius: 20rpx;margin-bottom: 36rpx;" :style="{width:$store.state.myWidth-32+'px'}"></image>
 				</view>
-				<view class="" style="width: 100%; height: 370rpx;border-radius: 20rpx;margin-bottom: 36rpx;">
-					<image :src="detailList.img" mode="" style="width: 100%; height: 370rpx;border-radius: 20rpx;margin-bottom: 36rpx;"></image>
-				</view>
-				<view v-html="content" style="color: #252525;font-size: 32rpx;"></view>
+				<text class="texts">{{content}}</text>
 			</view>
+			</scroller>
 		</view>
 		<!-- 分享 -->
-	<!-- 	<xw-share v-if="show" @close='show=false' :shareData='shareData' type='game' ></xw-share> -->
-	       <propup :isshow='show' @close='show=false'  :shareData='shareData' ref='propup' type='1'></propup>
-		
+		<propup :isshow='show' @close='show=false' :shareData='shareData' ref='propup' type='1'></propup>
+
 	</view>
 </template>
 
 <script>
 	import propup from '@/components/nvue-propup/nvue-propup.nvue';
-	import { $api } from '@/config/api.js';
+	import {
+		$api
+	} from '@/config/api.js';
 	import common from "@/common/js/common.js";
 	export default {
+		components: {
+			propup
+		},
 		data() {
 			return {
 				show: false,
 				detailList: null,
-				content: '',
-				shareData:null,
-				post_hits:0
+			    nodes:[],
+				content:'',
+				shareData: null,
+				post_hits: 0
 			}
 		},
 		methods: {
@@ -61,8 +64,15 @@
 					...params
 				}).then(res => {
 					if (res.statusCode == 200) {
+						let cont =''
 						this.detailList = res.data.data.data;
-						this.content = this.detailList.content;
+						   cont = this.detailList.content;
+						   var reg = /<[^<>]+>/g 
+						    this.content=cont.replace(reg,'')
+							console.log()
+                        
+					
+	
 					}
 				})
 			},
@@ -71,13 +81,13 @@
 					share_type: 'game',
 					game_id: this.detailList.game_id,
 					client_id: this.$store.state.client_id
-			
+
 				}).then(res => {
 					if (res.data.code == 200) {
 						this.shareData = {
 							...res.data.data
 						}
-			
+
 					}
 				})
 			},
@@ -85,20 +95,106 @@
 			popClick() {
 				this.getData()
 				this.show = true
+				this.$nextTick(() => {
+					this.$refs.propup.bind()
+
+				})
 			},
 		},
-		onNavigationBarButtonTap() {
+		onNavigationBarButtonTap(e) {
 			this.popClick()
+
 		},
 		onLoad(option) {
 			this.getPageData({
 				news_id: option.news_id
 			})
 			this.post_hits = option.post_hits
-		}
+		},
+		filters: {
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		},
 	}
 </script>
 
-<style  scoped>
+<style scoped>
+	.container {
+		background-color: #fff;
+		flex: 1;
+		
+	}
 
+	.box {
+		margin-top: 40rpx;
+		padding: 0 32rpx;
+	}
+
+	.box_head {
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		padding-bottom: 32rpx;
+		border-bottom: 1px solid #ECECEC;
+	}
+
+	.head_left {
+		margin-right: 32rpx;
+	}
+
+	.head_mid1 {
+		font-size: 32rpx;
+		font-weight: 700;
+		color: #252525;
+		margin-bottom: 24rpx;
+
+	}
+
+	.title {
+		font-size: 40rpx;
+		font-weight: 700;
+		color: #252525;
+		margin: 36rpx 0
+	}
+
+	.text {
+		font-size: 24rpx;
+		color: #666666;
+	}
+	.texts{
+		color: #252525;
+		font-weight: 300;
+		font-size: 32rpx;
+		line-height: 42rpx;
+		padding-bottom: 60rpx;
+	}
+	
 </style>

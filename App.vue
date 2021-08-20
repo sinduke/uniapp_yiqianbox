@@ -218,6 +218,7 @@
 			},
 		}
 	}
+
 </script>
 
 <style lang="scss">
