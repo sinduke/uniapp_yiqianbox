@@ -107,7 +107,7 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
-					
+
 					"bounce": "none"
 				}
 			}
@@ -282,7 +282,7 @@
 			"style": {
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
-				 // "enablePullDownRefresh": true,
+				// "enablePullDownRefresh": true,
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -313,38 +313,38 @@
 		},
 		//消息-客服通知
 		{
-		    "path" : "pages/my/myMessage/children/customerNotice/index",
+			"path": "pages/my/myMessage/children/customerNotice/index",
 			"style": {
-		   	// 取消默认的原生导航栏
-		   	"navigationStyle": "custom",
-		   	"app-plus": {
-		   		"bounce": "none"
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
 				}
-		   }
+			}
 		},
 		//消息-互动消息
 		{
-		    "path" : "pages/my/myMessage/children/activeMessage/activeMessage",
+			"path": "pages/my/myMessage/children/activeMessage/activeMessage",
 			"style": {
-		   	// 取消默认的原生导航栏
-		   	"navigationStyle": "custom",
-		   	"app-plus": {
-		   		"bounce": "none"
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
 				}
-		   }
+			}
 		},
-	
+
 		//消息-我的赞
 		{
-		    "path" : "pages/my/myMessage/children/activeMessage/Myzan",
-		    "style": {
-		    	// 取消默认的原生导航栏
-		    	"navigationStyle": "custom",
-		    	"app-plus": {
-		    		"bounce": "none"
-		    				}
-		    }
-		    
+			"path": "pages/my/myMessage/children/activeMessage/Myzan",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
 		},
 		//官方通知
 		{
@@ -570,7 +570,7 @@
 			"path": "pages/my/children/scanCode/index",
 			"style": {
 				"app-plus": {
-					
+
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -609,18 +609,18 @@
 		},
 		//游戏详情-全部评论
 		{
-		    "path" : "pages/view/gamedetail/comment1234",
-		    "style": {
-		    	"app-plus": {
-		    		"bounce": "none", //关闭窗口回弹效果
-		    		"titleNView": {
-		    			"backgroundColor": "#fff",
-		    			"titleColor": "#1C1C1C",
-		    			"titleAlign": "left",
-		    			"titleText": "全部评论"
-		    		}
-		    	}
-		    }  
+			"path": "pages/view/gamedetail/comment1234",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "全部评论"
+					}
+				}
+			}
 		},
 		//评论详情
 		{
@@ -949,10 +949,21 @@
 		{ //游戏资讯-详情页面
 			"path": "pages/my/comprehensive/gameConsulting/gameDetail/gameDetail",
 			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
 				"app-plus": {
-					"bounce": "none"
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "资讯详情",
+						"buttons": [ 
+							{
+								"type": "menu"
+							}
+						]
+
+					}
+
 				}
 			}
 		}
@@ -1016,65 +1027,62 @@
 				}
 			}
 		}
-        
-       
-        ,{
-            "path" : "pages/my/integral/dhptb",
-            "style": {
-            	"app-plus": {
-            		"bounce": "none", //关闭窗口回弹效果
-            		"titleNView": {
-            			"backgroundColor": "#fff",
-            			"titleColor": "#1C1C1C",
-            			"titleAlign": "left",
-            			"titleText": "兑换平台币"
-            		}
-            	}
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/mySetting/Setting",
-            "style": {
-            	"app-plus": {
-            		"bounce": "none", //关闭窗口回弹效果
-            		"titleNView": {
-            			"backgroundColor": "#fff",
-            			"titleColor": "#1C1C1C",
-            			"titleAlign": "left",
-            			"titleText": "设置中心"
-            		}
-            	}
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/mySetting/tySet",
-            "style": {
-            	"app-plus": {
-            		"bounce": "none", //关闭窗口回弹效果
-            		"titleNView": {
-            			"backgroundColor": "#fff",
-            			"titleColor": "#1C1C1C",
-            			"titleAlign": "left",
-            			"titleText": "通用设置"
-            		}
-            	}
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/children/share/share",
-            "style": {
-            	// 取消默认的原生导航栏
-            	"navigationStyle": "custom",
-            	"app-plus": {
-            		"bounce": "none"
-            	}
-            }
-            
-        }
-    ],
+
+
+		, {
+			"path": "pages/my/integral/dhptb",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "兑换平台币"
+					}
+				}
+			}
+
+		}, {
+			"path": "pages/my/mySetting/Setting",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "设置中心"
+					}
+				}
+			}
+
+		}, {
+			"path": "pages/my/mySetting/tySet",
+			"style": {
+				"app-plus": {
+					"bounce": "none", //关闭窗口回弹效果
+					"titleNView": {
+						"backgroundColor": "#fff",
+						"titleColor": "#1C1C1C",
+						"titleAlign": "left",
+						"titleText": "通用设置"
+					}
+				}
+			}
+
+		}, {
+			"path": "pages/my/children/share/share",
+			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+
+		}
+	],
 
 	"easycom": {
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"

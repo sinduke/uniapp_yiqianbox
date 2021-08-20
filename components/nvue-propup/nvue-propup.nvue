@@ -64,13 +64,7 @@
 				</view>
 			</view>
 			
-			
-			
-			
-			
-			
 
-			
     	</view>
 		<view class="box" ref="pirotate">
 			<view class="box-item" :style="{width:myWidth+'px'}">
