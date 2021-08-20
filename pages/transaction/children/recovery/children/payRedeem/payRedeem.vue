@@ -10,7 +10,7 @@
 			</u-cell-item>
 		</u-cell-group>
 		<!-- 弹出框 -->
-		<u-popup width='70%' height="30%" v-model="isShow" mode="center" border-radius='14' :mask-close-able='false'>
+		<!-- <u-popup width='70%' height="30%" v-model="isShow" mode="center" border-radius='14' :mask-close-able='false'>
 			<view class="popup">
 				<view class="popupSub">
 					确认提交
@@ -27,7 +27,7 @@
 					<u-toast ref="uToast" />
 				</view>
 			</view>
-		</u-popup>
+		</u-popup> -->
 	</view>
 </template>
 
@@ -72,10 +72,6 @@
 				})
 
 			},
-			//取消
-			haColse() {
-				this.isShow = false
-			},
 			//提交
 			hadlSub() {
 				this.$api.get('app/recycle/pay', {
@@ -101,7 +97,19 @@
 			//点击支付
 			handlePay(ip) {
 				this.payway = ip
-				this.isShow = true
+				// this.isShow = true
+			uni.showModal({
+			    title: '确认提交',
+			    content: '提交后会从您平台币扣取余额！',
+				confirmText:'提交',
+			    success: res=> {
+			        if (res.confirm) {
+			          this.hadlSub()
+			        } else if (res.cancel) {			
+			           return
+			        }
+			    }
+			});
 
 			}
 		},
@@ -116,7 +124,7 @@
 	.container {
 		.text {
 			// color: $xw-font-auxiliary-color;
-			padding: 0 40rpx;
+			padding:32rpx 40rpx;
 		}
 
 		.popup {

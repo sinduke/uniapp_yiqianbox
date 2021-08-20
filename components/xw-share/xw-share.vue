@@ -1,6 +1,6 @@
 <template>
 	<view class="xw-share">
-		<xw-popup v-model="show" mode="bottom" height='560' @close="close">
+		<xw-popup v-model="show" class="shares" mode="bottom" height='560' @close="close">
 			<view class="share-btn">
 
 
@@ -137,8 +137,11 @@
 </script>
 
 <style scoped lang="scss">
+	.xw-share{
+		background-color: transparent
+	}
 	/deep/.u-drawer-bottom[data-v-44d673c4] {
-		background-color: transparent;
+		background-color: transparent !important;
 	}
    /deep/.uni-scroll-view{
 	   overflow: hidden !important;

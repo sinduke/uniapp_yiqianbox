@@ -1,17 +1,16 @@
 <template>
 	<view v-if="isshow" class="mask" @click.stop="show">
 		<view class="bbox" ref="bbox">
-			<view class="share-btn" :style="{width:myWidth+'px'}">
-
+			<view class="share-btn" :style="{width:myWidth+'px'}" v-if="$store.state.platform=='android'">
 				<view class="share3" >
 					<view class="share-btn-item" @click="copy">
 						<image src="@/static/images/fzlj-share.png" style="width: 80rpx;height: 80rpx;margin-top: 30rpx;"mode="widthFix" />
 						<text class="text">复制链接</text>
 					</view>
 				</view>
-				<view :style="{width:myWidth-160+'px'}" style="flex-direction: row;justify-content: space-between;margin-top: -70rpx;">
-					<view class="share-btn-item" @click="share('','qq')">
-						<image src="@/static/images/QQ-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
+				<view :style="{width:myWidth-160+'px'}"  style="flex-direction: row;justify-content: space-between;margin-top: -70rpx;" >
+					<view class="share-btn-item"  @click="share('','qq')">
+						<image  src="@/static/images/QQ-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
 						<text class="text">QQ</text>
 					</view>
 					<view class="share-btn-item" @click="share('WXSenceTimeline','weixin')">
@@ -28,13 +27,48 @@
 						<image src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
 						<text class="text">微博</text>
 					</view>
-					<!-- <view class="share-btn-item" >
-						<image src="@/static/images/wb-login.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
-						<text class="text">微博</text>
-					</view> -->
 				</view>
-			
 			</view>
+			
+			<!-- ios -->
+			<view class="share-btn" :style="{width:myWidth+'px'}" v-else style="position: relative;">
+
+				
+				<view class="" style="flex-direction: row;justify-content: space-between;margin-top: 120rpx;" :style="{width:myWidth-24+'px'}">
+					<view class="share-btn-item" @click="share('WXSceneSession','weixin')" >
+						<image src="@/static/images/wx-icon.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
+						<text class="text">微信</text>
+					</view>
+					<view class="share-btn-item" @click="share('','sinaweibo')">
+						<image src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text class="text">微博</text>
+					</view>
+				</view>
+				
+				<view :style="{width:myWidth-160+'px'}"  style="flex-direction: row;justify-content: space-between;margin-top: 32rpx;position: absolute;">
+					<view class="share-btn-item"  >
+						<image  src="@/static/images/QQ-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
+						<text class="text">QQ</text>
+					</view>
+					<view class="share-btn-item" >
+						<image src="@/static/images/pengyouquan-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text class="text">朋友圈</text>
+					</view>
+				</view>
+				
+				<view class="share3" style="position: absolute;margin-top: -90rpx">
+					<view class="share-btn-item" >
+						<image src="@/static/images/fzlj-share.png" style="width: 80rpx;height: 80rpx;margin-top: 30rpx;"mode="widthFix" />
+						<text class="text"  >复制链接</text>
+					</view>
+				</view>
+			</view>
+			
+			
+			
+			
+			
+			
 
 			
     	</view>
@@ -46,6 +80,7 @@
 					</view>
 					<text class="text">分享</text>
 				</view>
+				
 				<view  v-if="type==0" :style="{width:myWidth-100+'px'}" style="flex-direction: row;align-items: center;justify-content: space-between;margin-top: -70rpx;">
 					<view class="box-item1" @click="bind2" ref="sc1">
 						<view class="shareImage">
@@ -69,7 +104,21 @@
 			</view>
 		
 		</view>
-		
+		<!-- ios点击 -->
+	
+		  <!-- qq -->
+		    <view class="" v-if="isAction&&$store.state.platform=='ios'" style="position: fixed;flex-direction: row;align-items: center;justify-content: space-between;width: 200px;height: 50px;bottom: 188px;"  :style="{left:myWidth/2-94+'px'}">
+				<view class="a" style="width: 50px;height: 50px;" @click="share('','qq')">
+					
+				</view>
+				<view class="a" style="width: 50px;height: 50px;" @click="share('WXSenceTimeline','weixin')">
+					
+				</view>
+			</view>
+		<!-- 复制链接 -->
+		  <view class="" v-if="isAction&&$store.state.platform=='ios'"  style="position: fixed; width: 50px;height: 50px;bottom: 210px"  @click="copy" :style="{left:myWidth/2-25+'px'}">
+			
+		  </view>
 	</view>
 </template>
 
@@ -79,7 +128,9 @@
 	
 	export default {
 		data() {
-			return {}
+			return {
+				isAction:false,
+			}
 		},
 		props: {
 			isshow: {
@@ -125,6 +176,7 @@
 				this.$emit('close')
 			},
 			bind1(){
+				this.isAction = true
 				this.bindingx(300,common.getEl(this.$refs.share1),'transform.scale', 'easeOutElastic(t,.2,.8,300)')
 				this.bindingx(600,common.getEl(this.$refs.bbox),'transform.rotateZ', 'linear(t,-90,135,600)')
 				
