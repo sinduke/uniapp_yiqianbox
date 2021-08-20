@@ -64,7 +64,9 @@
             },
             /* SDK配置 */
             "sdkConfigs" : {
-                "ad" : {},
+                "ad" : {
+                    "gdt" : {}
+                },
                 "push" : {
                     "unipush" : {}
                 },
@@ -76,10 +78,12 @@
                     "sina" : {
                         "appkey" : "3046851712",
                         "appsecret" : "8276d6a7c66f26398b2ce57acbbc9aab",
-                        "redirect_uri" : "https://api.weibo.com/oauth2/default.html"
+                        "redirect_uri" : "https://api.weibo.com/oauth2/default.html",
+                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
                     },
                     "qq" : {
-                        "appid" : "101961430"
+                        "appid" : "101961430",
+                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
                     }
                 },
                 "oauth" : {
@@ -90,12 +94,14 @@
                         "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
                     },
                     "qq" : {
-                        "appid" : "101961430"
+                        "appid" : "101961430",
+                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
                     },
                     "sina" : {
                         "appkey" : "3046851712",
                         "appsecret" : "8276d6a7c66f26398b2ce57acbbc9aab",
-                        "redirect_uri" : "https://api.weibo.com/oauth2/default.html"
+                        "redirect_uri" : "https://api.weibo.com/oauth2/default.html",
+                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
                     }
                 }
             },
