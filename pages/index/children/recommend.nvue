@@ -3,7 +3,7 @@
 		<view class="titleLine" ref="titleLine" :style="{width:myWidth+'px'}" />
 		<view :style="{height:myHeight-232+'rpx',width:myWidth+'px'}">
 			<list :style="{height:myHeight-232+'rpx',width:myWidth+'px'}" @loadmore='loadmore'
-			 loadmoreoffset='20' :show-scrollbar='false' @scrollstart='scrollstart' 
+			 loadmoreoffset='20' :show-scrollbar='false'  
 			 @scrollend='scrollend' alwaysScrollableVertical class="list" ref="list" >
 				<refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
 					<view class="refreshImages" :style="{width:myWidth-6+'px'}">
@@ -136,6 +136,9 @@
 				default:false
 			}
 		},
+		mounted() {
+			this.getSpecialData()
+		},
 		methods: {
 			getSpecialData() {
 				$api.get('/game/multilistnew', {
@@ -151,6 +154,7 @@
 				})
 
 			},
+		
 			//下拉刷新
 			onpullingdown(e) {
 				// this.pageData = []
@@ -179,7 +183,6 @@
 			},
 			//加载
 	       loadmore(){
-			   // console.log(this.count,Object.keys(this.pageData).length)
 			 if(this.count>Object.keys(this.pageData).length){
 			  this.loadinging = true
 			    this.formData.page++
@@ -301,10 +304,7 @@
 					
 				}
 			},
-			//滚动开始位置
-			scrollstart(e){
 
-			},
 			//滚动结束位置
 			scrollend(e){
 			if(this.active!=Math.round(Math.abs(e.contentOffset.y)/(620*this.myWidth/750))){
