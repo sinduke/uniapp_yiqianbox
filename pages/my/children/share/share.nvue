@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<u-navbar title="" :border-bottom='false' class="u-navbar">
-			<slot>
+		<text>1111</text>
+			<!-- <slot>
 				<view class="title">
 					<view class="slot-wrap">
 						<text class="customer" style="font-weight: 400;margin-left: -20rpx;font-size: 32rpx;">全民推广</text>
@@ -13,8 +13,8 @@
 						</view>
 					</view>
 				</view>
-			</slot>
-		</u-navbar>
+			</slot> -->
+		
 	</view>
 </template>
 
@@ -31,28 +31,6 @@
 	}
 </script>
 
-<style>
-.u-navbar {
+<style scoped>
 
-		.title {
-			
-			padding: 0 $xw-padding;
-			flex-direction: row;
-		}
-
-		.customer {
-			color: $xw-black-dark;
-			font-size: $xw-h1-font;
-		}
-
-		.radius {
-			width: 64rpx;
-			height: 64rpx;
-			border-radius: 50%;
-			box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
-			flex-direction: row;
-			justify-content: center;
-		}
-
-	}
 </style>

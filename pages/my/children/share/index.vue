@@ -16,7 +16,9 @@
 				</view>
 			</slot>
 		</u-navbar>
-
+		<view class="" @click="toshare">
+			点击跳转
+		</view>
 		<view class="share" :style="{height:2000+'rpx'}">
 			<view class="image-btn" @click="ishow"></view>
 			<view class="image-pay">
@@ -100,7 +102,11 @@
 			}
 		},
 		methods: {
-
+			toshare(){
+				uni.navigateTo({
+					url:"/pages/my/children/share/share"
+				})
+			},
 			// onReady() {
 			// 	uni.setNavigationBarTitle({
 			// 		title: this.$t('Sharingbenefits')
