@@ -1,7 +1,7 @@
 <template>
 	<view class="share" >
 		<image :style="{height:2000+'rpx',width:myWidth+'px'}" src="@/static/images/my/share-bgi.png" mode=""></image>
-		<view class="image-btn" :style="{height:140+'rpx',width:myWidth+'px',top:2000*0.343}" @click="ishow"></view>
+		<view class="image-btn" :style="{height:300+'rpx',width:myWidth+'px',top:2000*0.6+'rpx'}" @click="ishow"></view>
 		<view class="textAll" :style="{top:2000*0.78+'rpx',width:myWidth-86+'px',left:'42px'}">
 			<view class="text_le">
 				<text class="text">{{shareData.share_total}}</text>
