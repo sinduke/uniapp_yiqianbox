@@ -33,7 +33,7 @@
 			<!-- ios -->
 			<view class="share-btn" :style="{width:myWidth+'px'}" v-else style="position: relative;">
 
-				
+	
 				<view class="" style="flex-direction: row;justify-content: space-between;margin-top: 120rpx;" :style="{width:myWidth-24+'px'}">
 					<view class="share-btn-item" @click="share('WXSceneSession','weixin')" >
 						<image src="@/static/images/wx-icon.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
@@ -45,7 +45,7 @@
 					</view>
 				</view>
 				
-				<view :style="{width:myWidth-160+'px'}"  style="flex-direction: row;justify-content: space-between;margin-top: 32rpx;position: absolute;">
+				<view :style="{width:myWidth-160+'px'}"  style="flex-direction: row;justify-content: space-between;margin-top: 18rpx;position: absolute;">
 					<view class="share-btn-item"  >
 						<image  src="@/static/images/QQ-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
 						<text class="text">QQ</text>
@@ -101,7 +101,16 @@
 		<!-- ios点击 -->
 	
 		  <!-- qq -->
-		    <view class="" v-if="isAction&&$store.state.platform=='ios'" style="position: fixed;flex-direction: row;align-items: center;justify-content: space-between;width: 200px;height: 50px;bottom: 188px;"  :style="{left:myWidth/2-94+'px'}">
+		    <view class="" v-if="isAction&&$store.state.platform=='ios'" 
+			style="position: fixed;flex-direction: row;align-items: center;justify-content: space-between;height: 50px; background-color: #F0AD4E;"  
+			:style="{
+			bottom:myHeight<1400?'200px':'410rpx',
+			left:myHeight<1400?myWidth/2-94+'px':myWidth/2-116+'px',
+			width:myHeight<1400?'200px':'440rpx',
+
+			}"
+			
+			>
 				<view class="a" style="width: 50px;height: 50px;" @click="share('','qq')">
 					
 				</view>
@@ -110,7 +119,13 @@
 				</view>
 			</view>
 		<!-- 复制链接 -->
-		  <view class="" v-if="isAction&&$store.state.platform=='ios'"  style="position: fixed; width: 50px;height: 50px;bottom: 210px"  @click="copy" :style="{left:myWidth/2-25+'px'}">
+		  <view class="" v-if="isAction&&$store.state.platform=='ios'"  
+		  style="position: fixed; width: 50px;height: 50px;background-color: #FF3A59;"  @click="copy" 
+		  :style="{left:myWidth/2-25+'px',
+		  bottom:myHeight<1400?'210px':'460rpx'
+		  }"
+		  
+		  >
 			
 		  </view>
 	</view>
