@@ -24,19 +24,24 @@
 			},
 		},
 		props: {
+			//左边文本
 			left: {
 				type: String
 			},
+			//右边文本
 			right: {
 				type: String
 			},
+			//icon类型
 			type: {
 				type: Number
 			},
+			//是否显示下边框
 			borderBottom:{
 				type: Boolean,
 				default:true
 			},
+			//
 			checked:{
 				type: Boolean,
 			}

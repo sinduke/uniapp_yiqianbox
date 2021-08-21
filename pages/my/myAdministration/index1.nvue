@@ -1,0 +1,169 @@
+<template>
+	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
+		<view class="avatar_box" :style="{width:$store.state.myWidth+'px'}">
+			<view class="avatar" @click="changeAvatar">
+				<image class="avatar" :src="userInfo.avatar" mode="widthFix" ></image>
+			</view>
+			<view class="photo" :style="{left:$store.state.myWidth*0.59+'px',bottom:'58rpx'}">
+				<image class="photo" src="../../../static/images/userp.png" mode="widthFix"></image>
+			</view>
+		</view>
+		<view class="lineShowdow"></view>
+		<view>
+			<gamecell left="手机号" :right="userInfo.mobile"></gamecell>
+			<view @click="nickName.show = true">
+				<gamecell left="昵称" :right="userInfo.nickname" :type="1" ></gamecell>
+			</view>
+			<view @click="handleRouter('/pages/my/myAdministration/children/changePassword/index')">
+				<gamecell left="密码修改" :type="1" ></gamecell>
+			</view>
+			<view @click="handleRouter('/pages/my/myAdministration/children/changeRealname/index')">
+				<gamecell left="实名认证" :right="userInfo.has_identify == 2 ?'已认证':'未认证'" :type="1"></gamecell>
+			</view>
+			<view @click="handleRouter('/pages/my/myAdministration/children/withdrawalList/index')">
+				<gamecell left="提现信息"  :type="1"></gamecell>
+			</view>
+		</view>
+		<shModal title="修改昵称" :textType="false" :isShow="nickName.show" @confirm="confirm" @remove="noModal">
+			<view class="nameBox" :style="{width:$store.state.myWidth*0.7+'px'}">
+				<input type="text" class="nameInput" v-model="nickName.value" :placeholder="userInfo.nickname" />
+			</view>
+		</shModal>
+		
+	</view>
+	
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import gamecell from '@/components/nvue-cell/nvue-cell.nvue';
+	import shModal from '@/components/nvue-shModal/nvue-shModal.nvue';
+	import { mapState } from "vuex";
+	export default {
+		data() {
+			return {
+				nickName: {
+					value: "",
+					show: false,
+				},
+			}
+		},
+		components:{
+			gamecell,
+			shModal
+		},
+		computed: {
+			...mapState({
+				userInfo: "userInfo",
+				client_id: "client_id",
+			}),
+			myHeight(){
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			}
+		},
+		methods: {
+			// 进入图库选图上传
+			changeAvatar() {
+				let that = this;
+				uni.chooseImage({
+					count: 1,
+					sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					success(file) {
+						uni.uploadFile({
+							url: that.$store.state.httpAPI+"asset/upload",
+							files: [{
+								name: "file",
+								uri: file.tempFilePaths[0]
+							}],
+							success(res) {
+								console.log(res)
+								let avatar = JSON.parse(res.data).data.url;
+								that.avatarUpload({
+									avatar: avatar
+								})
+							},
+						})
+					}
+				})
+			},
+			// 头像数据上传
+			avatarUpload(params) {
+				$api.get("user/avatar/update",{ ...params
+				}).then(res => {
+					this.$common.getuserInfo();
+				})
+			},
+			// 修改用户昵称
+			noModal(){
+				this.nickName.show = false
+			},
+			confirm() {
+				$api.get("user/nickname/update",{
+					nickname: this.nickName.value,
+				}).then(res => {
+					if(res.data.code==200){
+						uni.showToast({
+							icon: 'none',
+							title: res.data.msg
+						})
+						common.getuserInfo()
+					}
+					else{
+						uni.showToast({
+							icon: 'none',
+							title: res.data.msg
+						})
+					}
+				})
+				this.nickName.show = false
+			},
+			// 跳转
+			handleRouter(url){
+				uni.navigateTo({
+					url
+				})
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	.box{
+		background: #fff;
+	}
+	.avatar_box{
+		position: relative;
+		flex-direction: row;
+		justify-content: center;
+		padding:56rpx 0;
+	}
+	.avatar{
+		width:248rpx ;
+		height:248rpx ;
+		border-radius:128rpx ;	
+	}
+	.photo{
+		position:absolute;
+		width:48rpx;
+		height:48rpx;
+		border-radius:24rpx;
+	}
+	.lineShowdow{
+		height:6rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	.nameBox{
+		/* width: 600rpx; */
+		border-bottom:2rpx solid #ECECEC;
+		margin-bottom:48rpx ;
+	}
+	.nameInput{
+		font-size: 32rpx;
+		color: #666666;
+		margin:0rpx 0rpx 32rpx 32rpx;
+	}
+</style>

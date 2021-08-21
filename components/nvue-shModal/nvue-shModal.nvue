@@ -3,9 +3,10 @@
 		<view class="modal_box" :style="{height:$store.state.myHeight+'rpx',width:$store.state.myWidth+'px'}" @click="noModal">
 			
 		</view>
-		<view class="but_box" :style="{width:$store.state.myWidth*0.8+'px',marginLeft:$store.state.myWidth*0.1+'px',marginTop:$store.state.myHeight*0.2+'rpx'}">
-			<text class="but_text1">清除缓存</text>
-			<text class="but_text2">确定清除缓存吗？</text>
+		<view @click.stop="stopModal" class="but_box" :style="{width:$store.state.myWidth*0.8+'px',marginLeft:$store.state.myWidth*0.1+'px',marginTop:$store.state.myHeight*0.2+'rpx'}">
+			<text class="but_text1">{{title}}</text>
+			<text class="but_text2" v-if="textType">{{text}}</text>
+			<slot></slot>
 			<view class="but_but" :style="{width:$store.state.myWidth*0.8-50+'px'}">
 				<text class="but_text3" @click="noModal" :style="{width:$store.state.myWidth*0.4-25+'px'}">取消</text>
 				<text class="but_text4" @click="confirm" :style="{width:$store.state.myWidth*0.4-25+'px'}">确认</text>
@@ -24,15 +25,35 @@
 			}
 		},
 		props: {
+			//是否显示模态框
 			isShow: {
 				type: Boolean
 			},
-			
+			//标题文字
+			title: {
+				type: String,
+				default:'这是title'
+			},
+			//文本内容
+			text: {
+				type: String,
+				default:'text是文本，是否显示文本textType'
+			},
+			//是否显示文字
+			textType: {
+				type: Boolean,
+				default:true
+			},
 		},
 		methods: {
+			stopModal(){
+				
+			},
+			//点击取消
 			noModal(){
 				this.$emit('remove',this.isShow)
 			},
+			//点击确认
 			confirm(){
 				this.$emit('confirm',this.isShow)
 			}
@@ -56,13 +77,13 @@
 		padding:36rpx ;
 	}
 	.but_text1{
-		margin-bottom:36rpx ;
+		margin-bottom:32rpx ;
 		color: #000000;
 		font-size:36rpx ;
 		font-weight:400 ;
 	}
 	.but_text2{
-		margin-bottom:36rpx ;
+		margin-bottom:32rpx ;
 		color: #666666;
 		font-size:32rpx ;
 		font-weight:400 ;
@@ -71,17 +92,17 @@
 		text-align: center;
 		color: #666666;
 		font-weight:400 ;
-		line-height:80rpx ;
+		line-height:70rpx ;
 		font-size:28rpx ;
 	}
 	.but_text4{
 		text-align: center;
-		line-height:80rpx ;
+		line-height:70rpx ;
 		font-weight:400 ;
-		height:80rpx ;
+		height:70rpx ;
 		color: #FF4810;
 		font-size:28rpx ;
-		border-radius:0 40rpx 40rpx 40rpx ;
+		border-radius:0 35rpx 35rpx 35rpx ;
 		border:1rpx solid #FF4810; ;
 		background: #fff;
 	}

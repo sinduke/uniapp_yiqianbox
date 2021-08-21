@@ -394,6 +394,24 @@
 				}
 			}
 		},
+		//账号管理
+		{
+		    "path" : "pages/my/myAdministration/index1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleText": "账号管理",
+		    			"titleAlign": "left",
+		    			"fontWeight": "bold"
+		    
+		    		}
+		    	}
+		    }
+		    
+		},
 		// 幸运大转盘
 		{
 			"path": "pages/my/children/bigTurntable/index",
@@ -527,6 +545,21 @@
 					}
 				}
 			}
+		},
+		{
+		    "path" : "pages/my/myAdministration/children/changePassword/index1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleText": "修改密码",
+		    			"titleAlign": "left"
+		    		}
+		    	}
+		    }
+		    
 		},
 		// 实名认证
 		{
@@ -1101,7 +1134,8 @@
 		// 	}
 
 		// }
-	],
+	    
+    ],
 
 	"easycom": {
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"

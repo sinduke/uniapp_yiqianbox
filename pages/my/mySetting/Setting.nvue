@@ -24,7 +24,7 @@
 		$api
 	} from '@/config/api.js';
 	import gamecell from '@/components/nvue-cell/nvue-cell.nvue'
-	import modal from '@/components/nvue-shModal/shModel.nvue'
+	import modal from '@/components/nvue-shModal/nvue-shModal.nvue'
 	export default {
 		data() {
 			return {
