@@ -576,6 +576,22 @@
 				}
 			}
 		},
+		//实名认证nvue
+		{
+		    "path" : "pages/my/myAdministration/children/changeRealname/index1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleText": "实名认证",
+		    			"titleAlign": "left"
+		    		}
+		    	}
+		    }
+		    
+		},
 		// 提现信息
 		{
 			"path": "pages/my/myAdministration/children/withdrawal/index",
@@ -604,6 +620,22 @@
 					}
 				}
 			}
+		},
+		//提现信息nvue
+		{
+		    "path" : "pages/my/myAdministration/children/withdrawalList/index1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleText": "提现信息",
+		    			"titleAlign": "left"
+		    		}
+		    	}
+		    }
+		    
 		},
 
 
@@ -1135,6 +1167,8 @@
 
 		// }
 	    
+        
+        
     ],
 
 	"easycom": {

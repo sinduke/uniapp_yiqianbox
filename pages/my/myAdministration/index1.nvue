@@ -57,11 +57,22 @@
 		},
 		computed: {
 			...mapState({
-				userInfo: "userInfo",
+				// userInfo: "userInfo",
 				client_id: "client_id",
 			}),
 			myHeight(){
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			userInfo(){
+				return this.$store.state.userInfo
+			}
+		},
+		watch:{
+			userInfo:{
+				handler(val){
+					console.log(777,val)
+				},
+				immediate:true
 			}
 		},
 		methods: {
@@ -94,7 +105,7 @@
 			avatarUpload(params) {
 				$api.get("user/avatar/update",{ ...params
 				}).then(res => {
-					this.$common.getuserInfo();
+					common.getuserInfo();
 				})
 			},
 			// 修改用户昵称
@@ -110,7 +121,9 @@
 							icon: 'none',
 							title: res.data.msg
 						})
+						console.log(66666)
 						common.getuserInfo()
+						console.log(77777)
 					}
 					else{
 						uni.showToast({

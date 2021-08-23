@@ -1,20 +1,21 @@
 <template>
 	<view class="box" :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
 		<view class="input_box" :style="{width:myWidth-32+'px'}">
-			<input v-model="form.oldpwd" class="input_style" type="text" placeholder="请输入原密码"   :password="isshow1"/>
-			<image @click="isShow1" class="img_style" src="@/static/images/close.png" mode=""></image>
+			<input @input="input1"  class="input_style" type="text" placeholder="请输入原密码"   :password="isshow1"/>
+			<image @click="isShow1" class="img_style" :src="isshow1?'../../../../../static/images/my/password.png':'../../../../../static/images/my/nopassword.png'" mode=""></image>
 		</view>
 		<view class="input_box" :style="{width:myWidth-32+'px'}">
-			<input v-model="form.newpwd" class="input_style" type="text" placeholder="请输入新密码"  :password="isshow2"/>
-			<image  @click="isShow2" class="img_style" src="@/static/images/close.png" mode=""></image>
+			<input @input="input2"  class="input_style" type="text" placeholder="请输入新密码"  :password="isshow2"/>
+			<image  @click="isShow2" class="img_style" :src="isshow2?'../../../../../static/images/my/password.png':'../../../../../static/images/my/nopassword.png'" mode=""></image>
 		</view>
 		<view class="input_box" :style="{width:myWidth-32+'px'}">
-			<input v-model="form.newpwdAgain" class="input_style" type="text" placeholder="请再次输入新密码"  :password="isshow3"/>
-			<image  @click="isShow3" class="img_style" src="@/static/images/close.png" mode=""></image>
+			<input @input="input3"  class="input_style" type="text" placeholder="请再次输入新密码"  :password="isshow3"/>
+			<image  @click="isShow3" class="img_style" :src="isshow3?'../../../../../static/images/my/password.png':'../../../../../static/images/my/nopassword.png'" mode=""></image>
 		</view>
 		<view class="button" :style="{width:myWidth+'px'}" >
 			<text class="button_text" @click="getPageData">确认</text>
 		</view>	
+		
 	</view>
 </template>
 
@@ -45,6 +46,15 @@
 			},
 		},
 		methods: {
+			input1(e){
+				this.form.oldpwd = e.detail.value
+			},
+			input2(e){
+				this.form.newpwd = e.detail.value
+			},
+			input3(e){
+				this.form.newpwdAgain = e.detail.value
+			},
 			isShow1(){
 				this.isshow1 = !this.isshow1
 			},
@@ -69,10 +79,12 @@
 						uni.showToast({
 							title:res.data.msg,
 							icon:"none",
-						})
-						uni.navigateBack({
-							delta:1
-						})
+						}),
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta:1
+							})
+						},200)
 					}else{
 						uni.showToast({
 							title:res.data.msg,
@@ -93,9 +105,10 @@
 	padding:0rpx 32rpx ;
 }
 .input_box{
-	padding:40rpx 32rpx;
+	padding:36rpx 32rpx;
 	border-bottom:2rpx solid #ECECEC;
 	flex-direction: row;
+	align-items: center;
 	justify-content: space-between;
 }
 .input_style{
@@ -105,8 +118,8 @@
 	font-weight:400 ;
 }
 .img_style{
-	width:30rpx ;
-	height:30rpx ;
+	width:36rpx ;
+	height:24rpx ;
 }
 .button{
 	flex-direction: row;
