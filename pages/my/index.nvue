@@ -147,7 +147,7 @@
 				contentOffset:0,
 				commonList: [{
 						url: '../../static/images/my/swyx.png',
-						router: '/pages/my/children/demoGame/index',
+						router: '/pages/my/children/demoGame/index1',
 						name: '试玩游戏',
 						type: '1'
 					},
