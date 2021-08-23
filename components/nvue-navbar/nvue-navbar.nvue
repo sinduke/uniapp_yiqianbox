@@ -1,6 +1,6 @@
 <!-- 自定义导航栏 -->
 <template>
-	<view class="nvue-navbar" @click.stop="stop" style="box-shadow: 0px 0px 6px 0px rgba(221, 221, 221, 0.6);">
+	<view class="nvue-navbar" @click.stop="stop" :style="{boxShadow: lines?'0px 0px 6px 0px rgba(221, 221, 221, 0.6)':''}">
 	 	<view class="statusBarHeight" :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
 		<view class="title">
 			<view class="slot-left">
@@ -42,7 +42,9 @@
 			right:{
 				default:true
 			},
-			
+			lines:{
+				default:true
+			},
 			src:{
 				type:String,
 				default:''

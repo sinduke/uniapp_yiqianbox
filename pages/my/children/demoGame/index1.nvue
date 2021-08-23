@@ -1,44 +1,54 @@
 <template>
 	<view class="demoGame">
+		<view class="lineShowdow">
+			
+		</view>
 		<view class="bottom" :style="{height:$store.state.mysHeight-160+'rpx'}" >
-			<list :show-scrollbar='false' :style="{height:$store.state.mysHeight-160+'rpx'}"  @scrolltolower='scrollLoad' >
+			<list :show-scrollbar='false' :style="{height:$store.state.mysHeight-160+'rpx'}"  @scrolltolower='scrollLoad' v-if="pageData.length">
 				<cell>
 					<view class="head">
 						<text class="str">1.点击试玩领取任务后，进入游戏详情</text>
 						<text class="str">2.在达到试玩要求后，自己发放奖励到您账户中</text>
 						<text class="str">3.使用获得的奖励兑换其他福利</text>
 					</view>
-					<view style="height: 48rpx;" />
 				</cell>
 				<cell v-for="(item,index) in pageData" style="margin-bottom: 84rpx;">
 					<view class="bottom_item">
-						<view class="item_head" :style="{width:$store.state.myWidth-32+'px'}">
-							<image class="item_img" :src="item.game.ext_info.hot_image" mode="widthFix"></image>
+						<view class="item_head" :style="{width:$store.state.myWidth-32+'px'}" @click="handleRouter(item.app_id)">
+							<image class="item_img" :src="item.game.ext_info.hot_image" ></image>
 							<view  class="blurs" :style="{width:$store.state.myWidth-32+'px'}">
-								<view class="blurs" :style="{background:'url('+item.game.ext_info.hot_image+') bottom'}"></view>
+								<view class="blurs" ></view>
 								<view style=" left: 16rpx;position: absolute;bottom:18rpx ;">
 									<text style="color: #FFFFFF;font-size:26rpx ;font-weight: 400;">{{item.content}}</text>
 								</view>
 							</view>
 						</view>
 						<view class="item_bottom">
-							<view class="item_1">
-								<image class="item_1" src="" mode="widthFix"></image>
+							<view class="item_1" @click="handleRouter(item.app_id)">
+								<image class="item_1" :src="item.game.icon" mode="widthFix"></image>
 							</view>
 							<view class="item_2">
-								<text></text>
-								<text></text>
+								<text class="item_2_text1">{{item.game.name}}</text>
+								<view class="item_2text">
+									<text class="item_2_text2">截止时间：{{item.end_time|dateFormat('yyyy-MM-dd')}}</text>
+									<text class="item_2_text2">|</text>
+									<text class="item_2_text2">{{item.popularity_cnt}}在玩</text>
+								</view>
+								
 							</view>
-							<view class="item_3">
-								<text></text>
+							<view class="item_3"  v-if="item.is_complete==1">
+								<text v-if="item.is_recevie==1" class="item_3_text" style="color:#666">已领取</text>
+								<text v-else @click="handleClick(item)" class="item_3_text" style="color:#19BFFF">未领取</text>
+							</view>
+							<view class="item_3" v-if="item.is_complete==2" @click="handleRouter(item.app_id)">
+								<text class="item_3_text">试 玩</text>
 							</view>
 						</view>
-						<!-- <demoGame-list @getData='getData' :key='index' :item='item'></demoGame-list> -->
 					</view>
 				</cell>
 				<xw-loadingGif :isShow='isShow'></xw-loadingGif>
 			</list >
-			<!-- <nvue-loading v-else></nvue-loading> -->
+			<nvue-loading v-else></nvue-loading>
 		</view>
 	</view>
 </template>
@@ -58,6 +68,38 @@
 					offset:15
 				},
 				isShow:false
+			}
+		},
+		filters: {
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
 			}
 		},
 		methods: {
@@ -95,7 +137,34 @@
 					}
 					this.isShow = false
 				},1800)
-			}
+			},
+			handleRouter(id){
+				uni.navigateTo({
+					url: `/pages/view/gamedetail/gamedetail?gameid=${id}`
+				})
+			},
+			handleClick(item) {
+				$api.get("/task/receive",{task_id: item.id}).then(res => {
+			    if (res.data.code == 200) {
+					uni.showToast({
+						icon: 'none',
+						title: '领取成功' + ',' + (item.reward_type == 1 ? '积分' : item.reward_type == 2 ?
+						'平台币' : '现金红包') + '＋' + item.reward_amount,
+						success: () => {
+							setTimeout(() => {
+							common.getUserInfo()
+							this.$emit('getData',true)
+						  }, 100)
+						}
+					})		
+			    } else {
+						uni.showToast({
+							icon: 'none',
+							title: res.data.msg
+						})
+					}		
+				})
+			},
 		},
 		onLoad() {
 			this.getpageData()
@@ -104,20 +173,32 @@
 </script>
 
 <style scoped>
+	.demoGame{
+		background-color: #fff;
+	}
+	.lineShowdow{
+		height:4rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
 	.str {
 		margin-bottom: 26rpx;
 		font-size:24rpx ;
 		color: #666666;
 	
 	}
+	.head{
+		padding:48rpx 0 ;
+	}
 	.bottom {
 		padding: 0 32rpx;
 	}
 	.item_head{
-		
+		height:384rpx ;
+		border-radius:20rpx ;
 	}
 	.item_img{
 		position: relative;
+		height:384rpx ;
 		border-radius:20rpx ;
 	}
 	.blurs{
@@ -125,12 +206,53 @@
 		bottom:0 ;
 		background: rgba(0, 0, 0, 0);
 		height:66rpx ;
+		border-radius:20rpx ;
+		background-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(255, 255, 255, 0.1));
 	}
-	.item1{
-		width:44rpx ;
-		height:44rpx ;
-		border-radius:12rpx ;
-		border:1rpx solid red ;
+	.item_bottom{
+		position: relative;
+		flex-direction: row;
+		align-items: center;
+		margin-top:24rpx ;
+		margin-bottom:80rpx ;
+	}
+	.item_1{
+		width:88rpx ;
+		height:88rpx ;
+		border-radius:24rpx ;
+	}
+	.item_2{
+		/* flex-direction: row; */
+		margin-left:16rpx ;
+	}
+	.item_2_text1{
+		color: #1C1C1C;
+		font-size:32rpx ;
+		font-weight: 600;
+	}
+	.item_2text{
+		flex-direction: row;
+		margin-top:10rpx ;
+	}
+	.item_2_text2{
+		margin-right:16rpx ;
+		color: #666666;
+		font-size:26rpx ;
+		font-weight:400 ;
+	}
+	.item_3{
+		position: absolute;
+		right:0 ;
+		top:24rpx ;
+		height:48rpx ;
+		padding:6rpx 24rpx;
+		border-radius: 24rpx;
+		border:1rpx solid #E4E4E4;
+	}
+	.item_3_text{
+		color: #19BFFF;
+		font-weight: 600;
+		font-size:26rpx ;
 	}
 	/* .blur{
 		filter: blur(5px);

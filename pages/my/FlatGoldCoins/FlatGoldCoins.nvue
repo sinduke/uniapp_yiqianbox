@@ -1,7 +1,7 @@
 <template>
 	<!-- 平台币页面 -->
 	<view class="FlatGoldCoins">
-       <myNavbar title='我的平台币' right radius router='/pages/my/FlatGoldCoins/record/record' src='../../../static/images/my_details.png'></myNavbar>
+       <myNavbar title='我的平台币' right radius router='/pages/my/integral/integral' src='../../../static/images/my_details.png'></myNavbar>
 		<view class="box" :style="{width:myWidth+'px'}">
 			<view class="head"></view>
 			<view class="bottom" >

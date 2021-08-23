@@ -447,6 +447,18 @@
 			}
 
 		},
+		// 积分商城nvue
+		{
+		    "path" : "pages/my/children/pointMall/index1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }
+		    
+		},
 		//全民推广
 		{
 			"path": "pages/my/children/share/index",
@@ -855,19 +867,6 @@
 			}
 
 		},
-
-		//试玩游戏
-		{
-			"path": "pages/my/children/demoGame/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
-		},
 		//试玩游戏nvue
 		{
 		    "path" : "pages/my/children/demoGame/index1",
@@ -1182,6 +1181,7 @@
 		// 	}
 
 		// }
+        
     ],
 
 	"easycom": {
