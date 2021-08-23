@@ -44,7 +44,8 @@
 							<text class="box-content-item" v-for="(v,i) in tagsList"	@click="handleList('tags',v.id,v.name)">{{v.name}}</text>
 						</view>
 						<view class="box-content" v-if="tagsList.length>0">
-							<text class="box-content-item" v-for="(v,i) in cateList"	@click="handleList('cate',v.id,v.name)" v-if="i<3">{{v.name}}</text>
+					     	<text class="box-content-item"  @click="handleList('h5',1,'H5')" >H5</text>
+							<text class="box-content-item" v-for="(v,i) in cateList" @click="handleList('cate',v.id,v.name)" v-if="i<2">{{v.name}}</text>
 						</view>
 					</view>
 				</cell>

@@ -8,7 +8,7 @@
 					<image src="@/static/images/left.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
 				</view>
 				<view  style="flex-direction: row;align-items: center;" v-if="formData.is_h5name||formData.tagsname||formData.catesname">
-					<text class="titlename h1">{{formData.is_h5name||'手游'}}</text>
+					<text class="titlename h1">{{params.is_h5==0?'全部': params.is_h5==2?'手游':'H5'}}</text>
 					<text class="titlename h1" v-if="formData.tagsname&&formData.tagsname!='全部'">·{{formData.tagsname}}</text>
 					<text class="titlename h1"	v-if="formData.catesname&&formData.catesname!='全部'">·{{formData.catesname}}</text>
 				</view>
@@ -63,7 +63,7 @@
 							<text class="h2">所有游戏</text>
 						</view>
 					</cell>
-					<cell v-for="(item,index) in list" :key="i" v-if="list.length>0">
+					<cell v-for="(item,index) in list" :key="index" v-if="list.length>0">
 						<gameItem :item='item' style="margin-bottom:32rpx;" :type='isShowSelet?3:2'></gameItem>
 					</cell> 
 					<cell v-if="loadinging">
@@ -85,7 +85,7 @@
 
 		</view>
 	<view class="" style="position: absolute;">
-		<listcontent @submit='submit' :isShowSelet='isShowSelet' :tagsList='tagsList' :mycates='params.cates' :pageList='pageList' :type='popdown'></listcontent>
+		<listcontent @submit='submit' :isShowSelet='isShowSelet' :tagsList='tagsList' :mycates='params.cates' :mytags='params.tags' :myis_h5='params.is_h5' :pageList='pageList' :type='popdown'></listcontent>
 	</view>
 	</view>
 	
@@ -227,6 +227,7 @@
 				this.params.is_h5 = data.is_h5
 				this.params.cates = data.cates
 				this.activeIndex = this.params.cates;
+				console.log(data,'data')
 				this.formData = {
 					...data
 				}
@@ -255,7 +256,6 @@
 			},
 			//下拉
 			handleDwon() {
-				console.log(11111111111111,'2222222222222222')
 				if (this.isShowTags) {
 					this.bin1(common.getEl(this.$refs.titleRadius1), 'transform.rotateZ', `linear(t,180,-180,600)`)
 					this.isShowTags = false
@@ -470,18 +470,20 @@
 		},
 		onLoad(option) {
 			if(Object.keys(option).length>0){
-			// console.log(option)
 			if(option.type =='tags'){
 				this.params.tags = option.id;
 				this.formData.tagsname = option.name
-			}else{
+			}else if(option.type=='cate'){
 				this.params.cates = option.id;
 				this.activeIndex = option.id;
 				this.formData.catesname = option.name
 			}
+			else if(option.type=='h5'){
+				this.params.is_h5 = option.id;
+				this.formData.is_h5name = option.name
+			}
 				
 			}
-			// this.reset();
 			this.getInitData();
 			this.getPageData();
 			this.getServerList()

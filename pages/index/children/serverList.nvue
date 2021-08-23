@@ -159,7 +159,6 @@
 							}
 							
 						}	
-							console.log(this.timeList,'keyssssss')
 					this.count = res.data.data.count
 
 				})

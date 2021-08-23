@@ -49,16 +49,16 @@
 						name: '全部',
 						type: 0,
 
-					},
-					{
-						name: '手游',
-						type: 2,
-
-					},
+					},		
 					{
 						name: 'H5',
 						type: 1,
-					}
+					},
+					{  
+						name: '手游',
+						type: 2,
+					
+					},
 				],
 				active: 0,
 				active1: 0,
@@ -139,7 +139,13 @@
 			},
 			mycates:{
 				default:0
-			}
+			},
+			mytags:{
+				default:0
+			},
+			myis_h5:{
+				default:0
+			},
 
 		},
 		watch: {
@@ -156,9 +162,28 @@
 					},
 					immediate: true
 			},
-			mycates(val){
-				this.active2 = val
-			}
+			myis_h5:{
+				handler(val) {
+					this.active = val
+					},
+				immediate: true
+			},
+			mytags:{
+				handler(val) {
+						this.active1 = val
+					},
+				immediate: true
+	
+			},
+			mycates:{
+				handler(val) {
+					this.active2 = val
+					},
+				immediate: true
+					
+				
+				// console.log(val,'mycates')
+			},
 		}
 	}
 </script>
