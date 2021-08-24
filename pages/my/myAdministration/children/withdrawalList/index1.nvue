@@ -1,6 +1,14 @@
 <template>
 	<view>
-		
+		<!-- <view class="box" style="border:2rpx solid red ;"  :style="{width:$store.state.myWidth+'px',height:active?600+'rpx':100+'rpx'}">
+			
+		</view> -->
+		<view class="box" :style="{transform:active?'scale(1,1)':'scale(0,0)'}">
+			
+		</view>
+		<view class="">
+			<text @click="show">点击过渡</text>
+		</view>
 	</view>
 </template>
 
@@ -8,15 +16,36 @@
 	export default {
 		data() {
 			return {
-				
+				active:false,
+				isactive:false,
+				noactive:false
 			}
 		},
+		
 		methods: {
-			
+			show(){
+				this.isactive = !this.isactive
+				if(this.isactive){
+					setTimeout(()=>{
+						this.active = true
+					},100)	
+				}else{
+					setTimeout(()=>{
+						this.active = false
+					},100)	
+				}
+				
+			}
 		}
 	}
 </script>
 
-<style>
+<style scoped>
+.box{
+	transition-property:transform;
+	transition-duration:5s;
+	width:600rpx ;height:600rpx ;background-color: #000000;border:2rpx solid red ;
+}
+
 
 </style>
