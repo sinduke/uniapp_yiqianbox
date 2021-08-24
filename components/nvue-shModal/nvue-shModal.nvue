@@ -3,7 +3,7 @@
 		<view class="modal_box" :style="{height:$store.state.myHeight+'rpx',width:$store.state.myWidth+'px'}" @click="noModal">
 			
 		</view>
-		<view @click.stop="stopModal" class="but_box" :style="{width:$store.state.myWidth*0.8+'px',marginLeft:$store.state.myWidth*0.1+'px',marginTop:$store.state.myHeight*0.2+'rpx'}">
+		<view @click.stop="stopModal" :class="{'isbut_box':isShow}" class="but_box" :style="{width:$store.state.myWidth*0.8+'px',marginLeft:$store.state.myWidth*0.1+'px',marginTop:$store.state.myHeight*0.2+'rpx'}">
 			<text class="but_text1">{{title}}</text>
 			<text class="but_text2" v-if="textType">{{text}}</text>
 			<slot></slot>
@@ -72,6 +72,18 @@
 	.but_box{
 		position: fixed;
 		top:0 ;
+		background: #FFFFFF;
+		border-radius: 48rpx;
+		padding:36rpx ;
+		opacity:0 ;
+		transition-property: opacity;
+		transition-duration:5s;
+		/* transition-delay:0.1s; */
+	}
+	.isbut_box{
+		position: fixed;
+		top:0 ;
+		opacity:1 ;
 		background: #FFFFFF;
 		border-radius: 48rpx;
 		padding:36rpx ;

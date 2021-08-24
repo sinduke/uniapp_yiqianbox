@@ -34,7 +34,7 @@
 						<text class="loginText-text">未实名认证 &nbsp ></text>
 					</view>
 				</view>
-				<view class="login flex" v-else @click="handleRouter('/pages/my/myAdministration/index')">
+				<view class="login flex" v-else @click="handleRouter('/pages/my/myAdministration/index1')">
 					<image class="images2" :src="/http/i.test(userInfo.avatar)?userInfo.avatar:'https:'+userInfo.avatar"></image>
 					<view class="loginText">
 						<text class="h1">{{userInfo.nickname}}</text>
