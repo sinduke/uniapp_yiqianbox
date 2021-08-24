@@ -41,7 +41,7 @@
 	import common from "@/common/js/common.js";
 	import gamecell from '@/components/nvue-cell/nvue-cell.nvue';
 	import shModal from '@/components/nvue-shModal/nvue-shModal.nvue';
-	import { mapState } from "vuex";
+	const globalData = getApp().globalData
 	export default {
 		data() {
 			return {
@@ -56,25 +56,21 @@
 			shModal
 		},
 		computed: {
-			...mapState({
-				// userInfo: "userInfo",
-				client_id: "client_id",
-			}),
+			userInfo(){
+				return globalData.store.state.userInfo
+			},
 			myHeight(){
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
-			userInfo(){
-				return this.$store.state.userInfo
-			}
 		},
-		watch:{
-			userInfo:{
-				handler(val){
-					console.log(777,val)
-				},
-				immediate:true
-			}
-		},
+		// watch:{
+		// 	userInfo:{
+		// 		handler(val){
+		// 			console.log(777,val)
+		// 		},
+		// 		immediate:true
+		// 	}
+		// },
 		methods: {
 			// 进入图库选图上传
 			changeAvatar() {
@@ -91,7 +87,6 @@
 								uri: file.tempFilePaths[0]
 							}],
 							success(res) {
-								console.log(res)
 								let avatar = JSON.parse(res.data).data.url;
 								that.avatarUpload({
 									avatar: avatar
@@ -121,9 +116,7 @@
 							icon: 'none',
 							title: res.data.msg
 						})
-						console.log(66666)
 						common.getuserInfo()
-						console.log(77777)
 					}
 					else{
 						uni.showToast({

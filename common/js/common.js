@@ -26,12 +26,12 @@ export default {
 	// 获取用户信息
 	getuserInfo() {
 		return $api.get("/user/detail").then(res => {
-			console.log(res,'getuserInfo')
 			let username = uni.getStorageSync('mem-username')||uni.getStorageSync('sms-mobile');
 			if (res.data.code == 200) {
 				// 当记录的用户登录账户与登录之后返回的账户不匹配时，就不允许登录成功
 				if (username == res.data.data.mobile || username == res.data.data.username) {
-					Store.commit('setUserInfo', res.data.data);
+					console.log(res)
+					getApp().globalData.store.commit('setUserInfo', res.data.data);
 				} else {	
 			    this.logOut()
 				}
@@ -68,7 +68,7 @@ export default {
 	// },
 	// 判断是否登录，评论时需要先登录
 	isLogin() {	
-		if (Object.keys(Store.state.userInfo).length == 0) {
+		if (Object.keys(getApp().globalData.store.state.userInfo).length == 0) {
 			uni.showToast({
 				title: '您还未登录，快去登录吧~',
 				icon: 'none',

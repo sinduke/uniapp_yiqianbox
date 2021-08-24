@@ -61,7 +61,7 @@
 	padding:0rpx 28rpx ;
 }
 .cell{
-	height:120rpx;
+	height:100rpx;
 	padding:36rpx 0;
 	flex-direction: row;
 	justify-content: space-between;
