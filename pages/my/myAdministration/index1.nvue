@@ -63,14 +63,6 @@
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
 		},
-		// watch:{
-		// 	userInfo:{
-		// 		handler(val){
-		// 			console.log(777,val)
-		// 		},
-		// 		immediate:true
-		// 	}
-		// },
 		methods: {
 			// 进入图库选图上传
 			changeAvatar() {
