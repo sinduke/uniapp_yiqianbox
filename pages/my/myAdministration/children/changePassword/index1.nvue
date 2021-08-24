@@ -12,7 +12,7 @@
 			<input @input="input3"  class="input_style" type="text" placeholder="请再次输入新密码"  :password="isshow3"/>
 			<image  @click="isShow3" class="img_style" :src="isshow3?'../../../../../static/images/my/password.png':'../../../../../static/images/my/nopassword.png'" mode=""></image>
 		</view>
-		<view class="button" :style="{width:myWidth+'px'}" >
+		<view class="button" :style="{width:myWidth-32+'px'}" >
 			<text class="button_text" @click="getPageData">确认</text>
 		</view>	
 		
@@ -105,7 +105,7 @@
 	padding:0rpx 32rpx ;
 }
 .input_box{
-	padding:36rpx 32rpx;
+	padding:28rpx 32rpx;
 	border-bottom:2rpx solid #ECECEC;
 	flex-direction: row;
 	align-items: center;
@@ -129,7 +129,7 @@
 	margin-top:48rpx ;
 	font-size:32rpx ;
 	border-radius:80rpx ;
-	border:1rpx solid #E1E1E1;
+	border:2rpx solid #E1E1E1;
 	text-align: center;
 	padding:24rpx 180rpx;
 	color:#FF4810 ;

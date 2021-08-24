@@ -375,25 +375,6 @@
 			}
 
 		},
-
-
-		// 账号管理
-		{
-			"path": "pages/my/myAdministration/index",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "账号管理",
-						"titleAlign": "left",
-						"fontWeight": "bold"
-
-					}
-				}
-			}
-		},
 		//账号管理
 		{
 		    "path" : "pages/my/myAdministration/index1",
@@ -543,21 +524,7 @@
 				}
 			}
 		},
-		// 修改密码
-		{
-			"path": "pages/my/myAdministration/children/changePassword/index",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "修改密码",
-						"titleAlign": "left"
-					}
-				}
-			}
-		},
+		// 修改密码nvue
 		{
 		    "path" : "pages/my/myAdministration/children/changePassword/index1",
 		    "style": {

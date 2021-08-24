@@ -14,7 +14,7 @@
 			<view @click="nickName.show = true">
 				<gamecell left="昵称" :right="userInfo.nickname" :type="1" ></gamecell>
 			</view>
-			<view @click="handleRouter('/pages/my/myAdministration/children/changePassword/index')">
+			<view @click="handleRouter('/pages/my/myAdministration/children/changePassword/index1')">
 				<gamecell left="密码修改" :type="1" ></gamecell>
 			</view>
 			<view @click="handleRouter('/pages/my/myAdministration/children/changeRealname/index')">
