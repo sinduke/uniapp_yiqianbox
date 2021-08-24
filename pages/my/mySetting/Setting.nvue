@@ -7,7 +7,7 @@
 			</view>
 			
 			<view @click="isModal">
-				<gamecell left="清除缓存" :right="fileSizeString"></gamecell>
+				<gamecell left="清除缓存" :right="fileSizeString"  ></gamecell>
 			</view>
 			<gamecell left="当前版本" :right="version+'.'+sp+'.'+client_id"></gamecell>
 			<gamecell  left="设备码" :right="$store.state.equipmentCode||0" type="1"></gamecell>
@@ -15,7 +15,7 @@
 				<text class="button_text isActive" >退出登录</text>
 			</view>	
 		</view>
-		<modal @remove="remove" :isShow="isShow" @confirm="confirm"></modal>
+		<modal @remove="remove" :isShow="isShow" @confirm="confirm" title='确定要请客缓存？' text="下载，图片缓存将被清空"></modal>
 	</view>
 </template>
 

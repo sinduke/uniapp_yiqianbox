@@ -11,7 +11,7 @@
 			</view>
 			<view class="titleRight">
 				<image src="@/static/images/my/news.png" mode="widthFix" style="width: 42rpx;height: 42rpx;" @click="handleRouter('/pages/my/myMessage/index',1)">	</image>
-				<image src="@/static/images/my/setting.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/index')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
+				<image src="@/static/images/my/setting.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/Setting')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
 				<!-- 	<image src="@/static/images/my/black-mode.png" mode="widthFix" style="width: 42rpx;height: 42rpx;">
 				</image> -->
 			</view>

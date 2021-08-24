@@ -477,21 +477,6 @@
 				}
 			}
 		},
-		/* 设置*/
-		{
-			"path": "pages/my/mySetting/index",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "设置中心",
-						"titleAlign": "left"
-					}
-				}
-			}
-		},
 		//通用设置
 		{
 			"path": "pages/my/mySetting/tySetting",
