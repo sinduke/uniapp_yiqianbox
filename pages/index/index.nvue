@@ -49,7 +49,7 @@
 
 		const BindingX = uni.requireNativePlugin('bindingx');
 		// Get the globalData
-		//const globalData = getApp().globalData
+		const globalData = getApp().globalData
 		export default {
 			components: {
 				recommend,
@@ -123,6 +123,7 @@
 			}
 		},
 		onReady() {
+			console.log(globalData.store.state.userInfo,'globalData.store.state.userInfo')
 			uni.$once('close', data => {
 					if (data) {
 						this.subNvue.hide()

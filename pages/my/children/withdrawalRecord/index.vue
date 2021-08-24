@@ -11,7 +11,7 @@
 					<text>+{{item.amount}}元</text>
 				</view>
 			</view>
-			<nvue-loading v-if="pageData.length==0" style="margin-top: 300rpx;"></nvue-loading>
+			<nvue-loading :isNoData='isNoData' v-if="pageData.length==0" style="margin-top: 300rpx;"></nvue-loading>
 		</scroll-view>
 
 	</view>
@@ -26,6 +26,7 @@
 					page: 1,
 					offset: 10
 				},
+				isNoData:false,
 				isshow:false
 			}
 		},
@@ -34,6 +35,7 @@
 				this.$api.get("financial/withdraw/list", {
 					...this.fromData
 				}).then(res => {
+					this.isNoData = true
 					this.pageData = this.pageData.concat(res.data.data.list)
 					this.count = res.data.data.count
 				})

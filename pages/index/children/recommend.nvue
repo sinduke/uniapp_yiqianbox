@@ -19,7 +19,7 @@
 					marginBottom:$store.state.platform=='android'?'6rpx':'40rpx',height:'620rpx'}" ref="card" 
 					@touchstart='touchstart(index,$event)' @touchend='touchend(index,$event)'  >
 					<cover-view class="cover-view" :style="{width:myWidth-34+'px',height:'400rpx'}" >
-						<video :poster='item.hot_image' :style="{width:myWidth-34+'px',height:'400rpx'}"
+						<video :style="{width:myWidth-34+'px',height:'400rpx'}"
 						 @click='handleRouter(item.game_id)' :direction="direction" 
 						 :src="item.mp4_url" :id="'video'+index" :controls='false' muted 
 						 v-if="active==index&&!wifiAuto" autoplay

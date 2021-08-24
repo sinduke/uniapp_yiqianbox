@@ -227,7 +227,6 @@
 				this.params.is_h5 = data.is_h5
 				this.params.cates = data.cates
 				this.activeIndex = this.params.cates;
-				console.log(data,'data')
 				this.formData = {
 					...data
 				}

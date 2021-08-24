@@ -66,8 +66,8 @@
 					<text class="loadmoreText">{{'——— 没有更多了 ———'}}</text>
 				</cell>
 			</list>
-			<view v-if="pageData.length==0&&islogin" :style="{width:myWidth-32+'px'}" style="position: absolute;top: 300rpx;">
-				<myloading :isrefre='isrefre' @Refresh='Refresh'></myloading>
+			<view v-if="pageData.length==0&&islogin" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
+				<myloading :isrefre='isrefre' :isNoData='isNoData' @Refresh='Refresh'></myloading>
 			</view>
 		</view>
 	</view>
@@ -99,6 +99,7 @@
 		data() {
 			return {
 				pageData: [],
+				isNoData:false,
 				count: 0,
 				weekday: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
 				active: 0,
@@ -158,7 +159,8 @@
 								this.timeList.push(keys)
 							}
 							
-						}	
+						}
+					this.isNoData = true
 					this.count = res.data.data.count
 
 				})
@@ -197,41 +199,7 @@
 					}
 				}
 			},
-			
-			
-			
-			// handleApp(e, i, day) {
-			// 	let timeday = this.weekday[new Date((i*1000)-86400000).getDay()]
-			// 	if (e.direction == 'down') {
-			// 		if ( ((new Date().getMonth() + 1)<10 ? '0': '') + (new Date().getMonth() + 1) + '月' +  (new Date().getDate()<10?'0':'') + new Date().getDate()+'日' == i) {
-			// 			this.mytimes = '今日'+ ' '+this.weekday[this.newTime]
-                        
-			// 		} else {
-			// 			if(day){
-			// 			let b = i.replace('月', "-")
-			// 			let c = b.replace('日', "")
-			// 			this.timeList.forEach((item,index)=>{
-			// 				if(item==c){
-			// 					this.timeList[index-1].replace('月', "-")
-								
-			// 					this.mytimes = this.timeList[index-1]
-			// 				}
-			// 			})
-			// 			this.mytimes = i + ' ' + day
-			// 			console.log(i,c)
 
-			// 			console.log( c, day,'handleApp,handleApphandleApphandleApphandleApp')
-			// 			}else{
-			// 				this.mytimes = '今日'+ ' '+this.weekday[this.newTime]
-			// 			}
-                 
-			// 		}
-				
-			
-			// 	}
-				
-			// },
-			
 			dispall(e,i,day){
 			let	timeday1 = this.weekday[new Date(day*1000).getDay()]
 			let timeday = this.weekday[new Date((day*1000)-86400000).getDay()]

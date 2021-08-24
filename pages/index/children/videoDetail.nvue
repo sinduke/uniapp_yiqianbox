@@ -414,7 +414,6 @@
 			},
 		//视频加载完成
 		loadedmetadata(e,i){
-			console.log(e,i,'sssssssssssssssssss')
 	    	let a = false
 			if(this.$store.state.platform=='ios'){
 			   new Promise((resolve,reject)=>{
@@ -434,15 +433,11 @@
 					  // console.log(3,a,this.isimage,this.active,'sssssssssssssssssss')
 						this.isimage = this.active
 						// console.log(4,a,this.isimage,this.active,'sssssssssssssssssss')
-					 }
-					 
-					
-					 
+					 } 
 				 })
 			
 			}
 			if(this.$store.state.platform=='android'){
-  
 				setTimeout(()=>{
 				this.isimage = this.active
 				},100)

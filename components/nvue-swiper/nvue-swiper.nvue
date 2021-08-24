@@ -1,0 +1,160 @@
+<template>
+	<view>
+		<scroller style="flex-direction: row;" :style="{width:myWidth*3+'px'}" :show-scrollbar='false' scroll-direction='horizontal' :scrollTop="scrollLeft" @touchstart='touchstart' @touchend='touchend' @scrollstart='scrollstart' @scroll='scroll' @scrollend='scrollend'>
+			<view class="swiper-item" :style="{width:myWidth+'px',transform:transform}" style="background-color: #F0AD4E;">
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+              aaaaaaaaaaaaaaaaa
+			</view>
+			<view class="swiper-item" :style="{width:myWidth+'px',transform:transform}" style="background-color: #FF3A59;">
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			  bbbbbbbbbbbbbbbbbbb
+			</view>
+			<view class="swiper-item" :style="{width:myWidth+'px',transform:transform}" style="background-color: #4CD964;">
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			  cccccccccccccccccccc
+			</view>
+		</scroller>
+	</view>
+</template>
+
+<script>
+	const domModule = uni.requireNativePlugin('dom')
+	export default {
+		data() {
+			return {
+              x:0,
+			  _timer:'',
+			  cur:0,
+			  transform:'',
+			  touchMove:0,
+			  scrollLeft:0,
+			}
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			},
+		   subNvue() {
+				return uni.getSubNVueById('popup')
+			},
+			
+		},
+		methods:{
+			scroll(e){
+				let move = e.contentOffset.x
+				console.log(move,'movemovemovemovemovemove')
+				// console.log(e.contentOffset.x)
+				// if(Math.abs(move)<this.myWidth/2){
+				// 	this.ease(move-this.myWidth)
+				// }
+			
+			},
+			scrollstart(e){
+				// console.log(e,'scrollstartscrollstartscrollstartscrollstart')
+			},
+			touchstart(e){
+				this.touchMove = e.changedTouches[0].screenX
+				// console.log(e.changedTouches[0].screenX,'touchstarttouchstarttouchstarttouchstart')
+			},
+			touchend(e){
+				console.log(this.touchMove-e.changedTouches[0].screenX,'tuchendtuchendtuchend')
+				this.ease(this.touchMove-e.changedTouches[0].screenX)
+			},
+			scrollend(e){
+				console.log(e,'scrollendscrollendscrollend')
+			},
+			 setPos(x) {
+				this.transform = "translateX(" + x + "px)";
+			 },
+			ease(target){
+				console.log(target,'target')
+			
+				this._timer=setInterval(()=>{
+					this.scrollLeft++
+					console.log(this.scrollLeft,'this.scrollLeft')
+					this.setPos(this.x)
+					if(this.x<= -this.myWidth){
+					 clearInterval(this._timer)
+					}
+				},10)
+				
+				
+				// this._timer = setInterval( ()=> {
+				// 	this.cur -= (cur - target) * 0.2;
+				// 	if (Math.abs(cur - target) < 1) {
+				// 		cur = target;
+				// 		clearInterval(this._timer);
+				// 		isInTransition = false;
+				// 	}
+				// 	setPos(cur);
+				// }, 20);
+			}
+			
+		}
+	}
+</script>
+
+<style scoped>
+
+</style>

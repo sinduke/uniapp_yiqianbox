@@ -1,8 +1,10 @@
 <script>
+	import store from '@/store/store.js'
 	export default {
 		globalData: {
 			$i18n: {},
-			$t: {}
+			$t: {},
+			store
 		},
 		onLaunch: function() {
 			this.globalData.$i18n = this.$i18n

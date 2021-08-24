@@ -6,7 +6,7 @@
 	<view class="loading">
 	<!-- #endif -->
 		<view class="refreshmore">
-			<image v-if="isShow" src="@/static/images/Refreshmore.gif" style="width: 300rpx;height: 300rpx;"/>
+			<image v-if="!isNoData" src="@/static/images/Refreshmore.gif" style="width: 300rpx;height: 300rpx;"/>
 			<view class="nodata" v-else>
 				<image src="@/static/images/loading-noData.png" mode="widthFix" style="width: 500rpx;height: 500rpx;"/>
 				<view class="dataitem">
@@ -29,7 +29,6 @@
 	export default {
 		data() {
 			return {
-				isShow: true,
 				mytimes: ''
 			}
 		},
@@ -38,30 +37,20 @@
 				type: Boolean,
 				default: false,
 			},
-		},
-		mounted() {
-			this.timer()
-
+			isNoData:{
+				type: Boolean,
+				default: false,
+			}
 		},
 
 		methods: {
 			handleRefresh() {
 				this.$emit('Refresh', true)
 			},
-			timer() {
-				this.mytimes = setTimeout(() => {
-					this.isShow = false
-				}, 3000)
-			}
+
 		},
 		watch: {
-			isrefre(val) {
-				if (val) {
-					this.isShow = true
-					clearTimeout(this.mytimes)
-					this.timer()
-				}
-			}
+			
 		}
 	}
 </script>
