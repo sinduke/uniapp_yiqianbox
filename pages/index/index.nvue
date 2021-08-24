@@ -1,7 +1,7 @@
 	<template>
 		<view class="index" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
 			<view  :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
-			<view class="Title nav">
+			<view class="Title">
 				<view class="TitleList">
 					<titleLine :number='number' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine>
 				</view>
@@ -307,10 +307,11 @@
 
 	.Title {
 		flex-direction: row;
-		padding: 0rpx 32rpx 0rpx 32rpx;
+		padding: 0rpx 32rpx;
 		align-items: center;
-		margin-top: 24rpx;
+		margin-top: 20rpx;
 		justify-content: space-between;
+		height: 90rpx;
 
 	}
 

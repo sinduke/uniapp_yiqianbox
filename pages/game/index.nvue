@@ -916,7 +916,8 @@
 	}
 	.Title {
 		flex-direction: row;
-		padding: 24rpx 32rpx 0rpx 32rpx;
+		padding: 0 32rpx;
+		margin-top: 20rpx;
 		align-items: center;
 		justify-content: space-between;
 		background-color: #fff;

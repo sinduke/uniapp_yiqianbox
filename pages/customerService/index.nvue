@@ -1,0 +1,333 @@
+<!-- 客服中心 -->
+<template>
+	<view class="customerService">
+		<view :style="{height:statusBarHeight+'px',width:myWidth+'px'}" />
+		<view class="Title" >
+			<view class="titleLeft">
+			   <text class="titleName">客服中心</text> 
+			</view>
+			<view class="TitleRight" style="flex-direction: row;align-items: center;height: 80rpx;margin-bottom: 8rpx;">
+
+				<view class="Righticon" elevation="5px" style="margin:0 6rpx 0 24rpx;">
+					<image src="@/static/images/customerService/kfzx-icon.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/my/comprehensive/feedback/feedback')" ></image>
+				</view>
+			</view>
+		</view>
+		
+		<view class="Body" :style="{height:myHeight-252+'rpx'}">
+			<scroller :show-scrollbar="false" :style="{height:myHeight-252+'rpx'}">
+				<view>
+				<text class="Bodytitle">在使用中遇到任何问题请联系在线客服</text>
+					<view class="Body__back">
+						<view class="Body__back__left backimg" @click="handleRouter('/pages/customerService/children/problem/index')" :style="{width:myWidth/2+'px',height:'240rpx'}">
+							<image src="@/static/images/customerService/serverBackgorund1.png" :style="{width:myWidth/2+'px',height:'240rpx'}"></image>
+							<view class="body_absloute" :style="{width:myWidth/2-46+'px'}">
+								<view class="backitem">
+									<text class="backName">常见问题</text>
+									<text class="backsname">FAQ答疑</text>
+								</view>
+								<view>
+									<image src="@/static/images/customerService/cjwt.png" mode="widthFix" style="width: 72rpx;height: 72rpx;"></image>
+								</view>
+							</view>
+							
+						</view>
+						<view class="Body__back__right backimg"  @click="handleRouter('/pages/customerService/children/rechargeRebate/index')">
+							<image src="@/static/images/customerService/serverBackgorund2.png"  :style="{width:myWidth/2+'px',height:'240rpx'}"></image>
+							<view class="body_absloute" :style="{width:myWidth/2-46+'px'}">
+								<view class="backitem">
+									<text class="backName">返利申请</text>
+									<text class="backsname">更多福利	</text>
+								</view>
+								<view class="">
+									<image src="@/static/images/customerService/flsq.png" mode="widthFix" style="width: 64rpx;height: 72rpx;"></image>
+								</view>
+							</view>
+							
+				
+						</view>
+					</view>
+					<view class="kfqq-Item">
+						<view class="kfqq-Item__left">
+						<image src="@/static/images/qq-icon.png"  class="images"  mode="widthFix"></image>
+							<view class="detail">
+								<text class="detailname">游戏客服QQ: {{userFormat1.QQ_customerService}}</text>
+								<text class="detailtell">在线时间：09:00-22:00</text>
+							</view>
+						</view>
+						<text class="kfqq-Item__Right" @click="telme(userFormat1.QQ_customerService)">去联系</text>
+					</view>
+					<view class="kfqq-Item">
+						<view class="kfqq-Item__left">
+						<image src="@/static/images/phone-icon.png" class="images" mode="widthFix"></image>
+							<view class="detail">
+								<text class="detailname">游戏客服电话:{{userFormat1.footer_mobile}}</text>
+								<text class="detailtell">在线时间：09:00-22:00</text>
+							</view>
+						</view>
+						<text class="kfqq-Item__Right" @click="go">拨 打</text>
+					</view>
+					<view class="kfqq-Item">
+						<view class="kfqq-Item__left">
+						<image src="@/static/images/wx-icon.png"  class="images"  mode="widthFix"></image>
+							<view class="detail">
+								<text class="detailname">游戏客服微信: {{userFormat1.footer_wechat_number}}</text>
+								<text class="detailtell">在线时间：09:00-22:00</text>
+							</view>
+						</view>
+						<text class="kfqq-Item__Right" @click="weixinGo">复 制</text>
+				
+				
+					</view>
+				</view>
+				<view class="bottom" :style="{width:myWidth-32+'px'}">
+					<image @click="saveImage" :src="userFormat1.footer_wechatCode_number" class="erweima" mode="widthFix"></image>
+					<view class="scanning" @click="saveImage" >
+						<image src="@/static/images/erweima.png" mode="widthFix" style="width: 28rpx;height: 28rpx;margin-right: 8rpx;"></image>
+						<text class="text" style="color: #fff;font-size: 24rpx;" >微信扫码</text>
+					</view>
+				
+				</view>	
+			</scroller>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	export default {
+		data() {
+			return {
+				userFormat1: {}
+			}
+
+		},
+		computed:{
+			// 导航栏高度
+			statusBarHeight(){
+				return 	uni.getSystemInfoSync().statusBarHeight
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			
+		},
+		methods: {
+			telme(qq) { //QQ号聊天
+				console.log('mqq://im/chat?chat_type=wpa&uin=' + qq + '&version=1&src_type=web');
+				plus.runtime.openURL('mqq://im/chat?chat_type=wpa&uin=' + qq + '&version=1&src_type=web');
+
+			},
+
+			go() {
+				uni.makePhoneCall({
+					// 手机号
+					phoneNumber: this.userFormat1.footer_mobile,
+					// 成功回调
+					success: (res) => {
+					},
+					// 失败回调
+					fail: (res) => {
+
+					}
+
+				});
+			},
+			getList() {
+				$api.get(`system/box_front_setup`).then(res => {
+					this.userFormat1 = res.data.data.front_setup
+				})
+			},
+			//微信跳转
+			weixinGo(){
+				common.copyText(this.userFormat1.footer_wechat_number)
+				plus.runtime.openURL("weixin://");
+			},
+			//保存图片
+			saveImage(){
+
+	        	uni.previewImage({
+				current:1,
+				urls: [this.userFormat1.footer_wechatCode_number],
+				longPressActions: {
+					itemList: ['保存图片'],
+					itemColor:'#ff5927',		
+					success: data => {
+						uni.downloadFile({
+						    url: this.userFormat1.footer_wechatCode_number, //仅为示例，并非真实的资源
+						    success: res => {
+						        if (res.statusCode === 200) {
+									    uni.saveImageToPhotosAlbum({
+									      filePath: res.tempFilePath,
+									      success: res => {
+											 plus.nativeUI.alert('保存成功')
+									      }
+									    });
+									
+						        }
+						    }
+						});
+					},
+					fail: function(err) {
+						console.log(err.errMsg);
+					}
+				}
+			});
+			},
+			//路由跳转
+			handleRouters(url){
+				if(common.isLogin()){
+					uni.navigateTo({
+						url
+					})
+				}
+				
+			},
+			
+		},
+		onShow() {
+			this.getList()
+		}
+	}
+</script>
+
+<style  scoped>
+  .customerService{
+	  flex: 1;
+	  background-color: #fff;
+  }
+	.Title {
+		flex-direction: row;
+		padding: 0rpx 16px;
+		align-items: center;
+		margin-top: 20rpx;
+		justify-content: space-between;
+		height: 90rpx;
+
+	}
+	
+	.titleName{
+		color: #1c1c1c;
+		font-weight: 700;
+		font-size: 40rpx;
+	}
+
+	.TitleList {
+		position: relative;
+	}
+
+	.Righticon {
+		margin-left: 20rpx;
+		height: 64rpx;
+		width: 64rpx;
+		border-radius: 64rpx;
+		background-color: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+	}
+	.Body{
+		padding: 0 16px;
+	}
+	.Body__back{
+		margin-top: -80rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		overflow:hidden;
+	}
+	.backimg{
+		position: relative;
+		}
+		.body_absloute{
+		   padding:0 24rpx;
+			position: absolute;
+			left: 0;
+			top: 120rpx;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+	.Bodytitle {
+		color: #666;
+		margin: 48rpx 0;
+		font-size: 28rpx;
+	}
+	.backName{
+		font-size: 32rpx;
+		color: #fff;
+		font-weight: 700;
+		margin-bottom: 8rpx;
+		lines: 1;
+	}
+	.backsname {
+		font-size: 26rpx;
+		color: #fff;
+	}
+
+		.kfqq-Item{
+		margin-top: 60rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding-bottom: 46rpx;
+		border-bottom: 1px solid #EFEFEF;	
+		}
+		.kfqq-Item__left{
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+		}
+		.images {
+				width: 88rpx;
+				height: 88rpx;
+				margin-right: 20rpx;
+			}
+		.detailname {
+			color: #1C1C1C;
+			font-size:30rpx;
+			font-weight: 700;
+			margin-bottom: 14rpx;
+			lines: 1;
+		}
+		
+		.detailtell {
+			color:#999;
+			font-size: 26rpx;
+		}
+		
+		.kfqq-Item__Right{
+			border: 1px solid #E4E4E4;
+			border-radius: 32rpx;
+			padding: 8rpx 0;
+			color: #FF5927;
+			font-size:26rpx;
+			font-weight: 700;
+			lines: 1;
+			width: 114rpx;
+			text-align: center;
+		}
+		.bottom{
+		  align-items: center;
+		}
+		.erweima {
+			margin-top: 48rpx;
+			width: 300rpx;
+			height: 300rpx;
+		}
+		.scanning{
+			flex-direction: row;
+			align-items: center;
+			padding: 10rpx 20rpx;
+			background-color: #C1C1C1;
+			border-radius: 30rpx;
+			
+		}
+		
+</style>

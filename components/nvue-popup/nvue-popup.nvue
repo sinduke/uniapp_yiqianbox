@@ -35,6 +35,7 @@
 						element: popup,
 						property: 'height', //动画属性
 						expression: `${this.easing}(t,50,${this.nheight},${this.ntime})`
+						
 					}]
 				}, e => {
 					if (e.state === 'exit') {
