@@ -2,7 +2,7 @@
 	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
 		<view class="avatar_box" :style="{width:$store.state.myWidth+'px'}">
 			<view class="avatar" @click="changeAvatar">
-				<image class="avatar" :src="userInfo.avatar" mode="widthFix" ></image>
+				<image class="avatar":src="userInfo.avatar"  ></image>
 			</view>
 			<view class="photo" :style="{left:$store.state.myWidth*0.59+'px',bottom:'58rpx'}">
 				<image class="photo" src="../../../static/images/userp.png" mode="widthFix"></image>
@@ -10,7 +10,16 @@
 		</view>
 		<view class="lineShowdow"></view>
 		<view>
-			<gamecell left="手机号" :right="userInfo.mobile"></gamecell>
+			<view v-if="userInfo.has_bind_mobile == 2" >
+				<gamecell left="手机号" :right="userInfo.mobile"></gamecell>
+			</view>
+			<view v-else @click="handleRouter('/pages/view/changeMobile/changeMobile')">
+				<gamecell left="手机号" right="待绑定"></gamecell>
+			</view>
+			<!-- <view v-else @click="handleRouter('/pages/my/myAdministration/children/changeMobile/index1')">
+				<gamecell left="手机号" right="待绑定"></gamecell>
+			</view> -->
+			
 			<view @click="nickName.show = true">
 				<gamecell left="昵称" :right="userInfo.nickname" :type="1" ></gamecell>
 			</view>
@@ -143,6 +152,7 @@
 		width:248rpx ;
 		height:248rpx ;
 		border-radius:128rpx ;	
+		overflow:hidden;
 	}
 	.photo{
 		position:absolute;

@@ -296,7 +296,6 @@
 			},
 			//本机号码一键登录
 			phonelogin() {
-
 				uni.preLogin({ // 该函数是判断当前设备环境是否支持一键登录，
 					// 如果能支持一键登录，此时可以显示一键登录选项，同时预登录会准备好相关环境
 					provider: 'univerify',
@@ -305,9 +304,8 @@
 						this.oneLogin()
 					},
 					fail(res) {
-					
 						uni.showToast({
-							title: '该设备不支持一键登录',
+							title: '请开启第一个sim卡的流量后，重新进入登录界面，就能正确使用一键登录功能了！',
 							icon: 'none',
 
 						})
