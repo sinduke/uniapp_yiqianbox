@@ -20,7 +20,7 @@
 			<view @click="handleRouter('/pages/my/myAdministration/children/changeRealname/index1')">
 				<gamecell left="实名认证" :right="userInfo.has_identify == 2 ?'已认证':'未认证'" :type="1"></gamecell>
 			</view>
-			<view @click="handleRouter('/pages/my/myAdministration/children/withdrawalList/index')">
+			<view @click="handleRouter('/pages/my/myAdministration/children/withdrawalList/index1')">
 				<gamecell left="提现信息"  :type="1"></gamecell>
 			</view>
 		</view>

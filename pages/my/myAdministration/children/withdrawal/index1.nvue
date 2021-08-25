@@ -1,0 +1,161 @@
+<template>
+	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
+			<text class="input_text">支付方式</text>
+			<text class="input_style" style="color: #000000;font-size:30rpx ;">{{payWay.payList[form.type]}}</text>
+		</view>
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
+			<text class="input_text">户名</text>
+			<input v-model="form.cardholder" class="input_style" type="text" value="" placeholder="请输入户名"/>
+		</view>
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
+			<text class="input_text">账号</text>
+			<input v-model="form.banknum" class="input_style" type="number" value="" placeholder="请输入账号"/>
+		</view>
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}" v-if="form.type=='bank'">
+			<text class="input_text">银行名称</text>
+			<input v-model="form.bankname" class="input_style" type="text" value="" placeholder="请输入银行名称"/>
+		</view>
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}" v-if="form.type=='bank'">
+			<text class="input_text">支行名称</text>
+			<input v-model="form.branchname" class="input_style" type="text" value="" placeholder="请输入支行名称"/>
+		</view>
+		<view class="button" @click="editSettlement">
+			<text class="button_text">提 交</text>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData;
+	export default {
+		data() {
+			return {
+				payWay: {
+					name: "",
+					show: false,
+					payList: {
+						alipay: "支付宝",
+						wxpay: '微信',
+						bank: '银行卡',
+					}
+				},
+				form: {
+					type: '',
+					cardholder: "",
+					banknum: "",
+					bankname: "",
+					branchname: ""
+				}
+			}
+		},
+		computed:{
+			userInfo(){
+				return globalData.store.state.userInfo
+			},
+			myHeight(){
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		onLoad(data) {
+			this.form.type = data.paytype
+		},
+		methods: {
+			editSettlement() {
+				if (this.form.cardholder == '') {
+					uni.showToast({
+						title: "用户名不能为空",
+						type: 'error',
+						position: 'top',
+					})
+					return
+				}
+				if (this.form.banknum == '') {
+					uni.showToast({
+						title: "账号不能为空",
+						type: 'error',
+						position: 'top',
+					})
+					return
+				}
+				if (this.form.type == 'bank') {
+					if (this.form.bankname == '') {
+						uni.showToast({
+							title: "银行名称不能为空",
+							type: 'error',
+							position: 'top',
+						})
+						return
+					}
+					if (this.form.branchname == '') {
+						uni.showToast({
+							title: "支行名称不能为空",
+							type: 'error',
+							position: 'top',
+						})
+						return
+					}
+				}
+				$api.get( "user/editSettlement",{ ...this.form		
+				}).then(res => {
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: res.data.msg,
+							type: 'success',
+							position: 'top',
+						})
+					}
+					common.getuserInfo();
+				})
+				setTimeout(()=>{
+					uni.navigateBack({
+						delta:1
+					})
+				},200)
+				
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	.box{
+		background-color: #fff;
+		align-items: center;
+	}
+	.input_box{
+		padding:30rpx 0rpx;
+		border-bottom:2rpx solid #ECECEC;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.input_text{
+		color: #000000;
+		font-size:30rpx ;
+		font-weight: 400;
+	}
+	.input_style{
+		width:520rpx ;
+		color: #999999;
+		font-size:28rpx ;
+		font-weight: 400;
+	}
+	.button{
+		margin-top:60rpx ;
+		padding:25rpx 150rpx;
+		border-radius:50rpx;
+		height:100rpx ;
+		border:2rpx solid #E1E1E1;
+	}
+	.button_text{
+		color: #FF4810;
+		font-size:30rpx ;
+		font-weight: bold;
+	}
+</style>

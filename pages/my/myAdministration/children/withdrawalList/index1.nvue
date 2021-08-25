@@ -1,51 +1,109 @@
 <template>
-	<view>
-		<!-- <view class="box" style="border:2rpx solid red ;"  :style="{width:$store.state.myWidth+'px',height:active?600+'rpx':100+'rpx'}">
-			
-		</view> -->
-		<view class="box" :style="{transform:active?'scale(1,1)':'scale(0,0)'}">
+	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}" >
+		<view class="lineShowdow">
 			
 		</view>
-		<view class="">
-			<text @click="show">点击过渡</text>
+		<view class="" v-for="(item, index) in SettleInfoList" :key="index">
+			<collapse :title="type[item.type]" text1="户名" text2="账号" :downHeight="item.type=='bank'?720:500" :rightText1="item.cardholder" :rightText2="item.banknum">
+				<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}" v-if="item.type=='bank'">
+					<text class="input_text">银行卡名称</text>
+					<text class="input_style">{{item.bankname}}</text>
+					<!-- <image  class="img_style" src="@/static/images/close.png" mode=""></image>	 -->
+				</view>
+				<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}" v-if="item.type=='bank'">
+					<text class="input_text">支行名称</text>
+					<text class="input_style">{{item.branchname}}</text>
+					<!-- <image  class="img_style" src="@/static/images/close.png" mode=""></image>	 -->
+				</view>
+				<view class="button" @click="handleRouter(item.type)">
+					<text class="button_text">修 改</text>
+				</view>
+			</collapse>
 		</view>
 	</view>
+	
 </template>
 
 <script>
+	const globalData = getApp().globalData;
+	// import common from "@/common/js/common.js";
+	import collapse from '@/components/nvue-collapse/nvue-collapse.nvue';
 	export default {
 		data() {
 			return {
-				active:false,
-				isactive:false,
-				noactive:false
+				SettleInfoList: [],
+				type: {
+					alipay: "支付宝",
+					wxpay: '微信',
+					bank: '银行卡',
+				}
+			}
+			
+		},
+		components:{
+			collapse
+		},
+		computed:{
+			userInfo(){
+				return globalData.store.state.userInfo
+			},
+			myHeight(){
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		methods: {
+			handleRouter(type) {
+				uni.navigateTo({
+					url: `/pages/my/myAdministration/children/withdrawal/index1?paytype=${type}`
+				})
 			}
 		},
-		
-		methods: {
-			show(){
-				this.isactive = !this.isactive
-				if(this.isactive){
-					setTimeout(()=>{
-						this.active = true
-					},100)	
-				}else{
-					setTimeout(()=>{
-						this.active = false
-					},100)	
-				}
-				
-			}
-		}
+		onShow() {
+			this.SettleInfoList = this.userInfo.SettleInfo.data.list
+		},
 	}
 </script>
 
 <style scoped>
 .box{
-	transition-property:transform;
-	transition-duration:5s;
-	width:600rpx ;height:600rpx ;background-color: #000000;border:2rpx solid red ;
+	background-color: #fff;
 }
-
-
+.lineShowdow{
+	height:6rpx ;
+	background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+}
+.input_box{
+	padding:36rpx 32rpx;
+	border-bottom:2rpx solid #ECECEC;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.input_style{
+	
+	
+	color: #999999;
+	font-size:32rpx ;
+	font-weight: 400;
+}
+.img_style{
+	width:36rpx ;
+	height:36rpx ;
+}
+.input_text{
+	color: #999999;
+	font-size:32rpx ;
+	font-weight: 400;
+}
+.button{
+	margin-top:60rpx ;
+	padding:25rpx 150rpx;
+	border-radius:50rpx;
+	height:100rpx ;
+	border:2rpx solid #E1E1E1;
+}
+.button_text{
+	color: #FF4810;
+	font-size:30rpx ;
+	font-weight: bold;
+}
 </style>
