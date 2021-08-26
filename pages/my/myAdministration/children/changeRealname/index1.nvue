@@ -7,22 +7,30 @@
 				<text class="title_text2">信息仅用于认证且绝对保密</text>
 				<text class="title_text2">未成年人游戏支付额度有限制</text>
 			</view>
-			<view style="margin-top:30rpx ;" class="input_box" :style="{width:myWidth-32+'px'}">
-				<input   class="input_style" type="text" placeholder="请输入您的真实姓名" />
-				<image   class="img_style" src="../../../../../static/images/close.png" mode=""></image>
+			<!-- 已认证 -->
+			<view class="textList" v-if="hasIdentify && pageData" :style="{width:myWidth-32+'px'}">
+				<text class="list_text1">姓名: {{pageData.real_name}}</text>
+				<text class="list_text1">身份证号: {{pageData.id_card}}</text>
+				<text class="list_text2">已认证</text>
 			</view>
-			<view class="input_box" :style="{width:myWidth-32+'px'}" @click="isPicker">
-				<input   class="input_style" type="text" placeholder="请输入证件" />
-				<image style="width:20rpx ;height:30rpx;transform: rotate(90deg);" src="../../../../../static/images/view/left-gred.png" mode=""></image>
+			<view class="" style="align-items: center;" v-else>
+				<view style="margin-top:30rpx ;" class="input_box" :style="{width:myWidth-32+'px'}">
+					<input class="input_style" v-model="form.realname" type="text" placeholder="请输入您的真实姓名" />
+					<image @click="cancle" class="img_style" src="../../../../../static/images/close.png" mode=""></image>
+				</view>
+				<picker class="input_box" :style="{width:myWidth-32+'px'}" @change="bindPickerChange" :value="index" :range="array">
+					<text class="input_style" v-if="show">请选择证件</text>
+					<text class="input_style" v-else>{{array[index]}}</text>
+					<image style="width:20rpx ;height:30rpx;transform: rotate(90deg);margin-right:10rpx;" src="../../../../../static/images/view/left-gred.png" mode=""></image>
+				</picker>
+				<view class="input_box" :style="{width:myWidth-32+'px'}">
+					<input  class="input_style" v-model="form.idcard" type="number" placeholder="请输入您的证件号码" />
+					<image @click="cancle1" class="img_style" src="../../../../../static/images/close.png" mode=""></image>
+				</view>
+				<view class="button" @click="getPageData">
+					<text class="button_text">确认</text>
+				</view>
 			</view>
-			<view class="input_box" :style="{width:myWidth-32+'px'}">
-				<text class="input_style">请输入您的证件号码</text>
-				<image class="img_style" src="../../../../../static/images/close.png" mode=""></image>
-			</view>
-			<picker  class="input_box" :style="{width:myWidth-32+'px'}" @change="bindPickerChange" :value="index" :range="array">
-			    <view class="input_style">{{array[index]}}</view>
-				<image class="img_style" src="../../../../../static/images/close.png" mode=""></image>
-			</picker>
 			
 		</view>
 	</view>
@@ -37,8 +45,17 @@
 	export default {
 		data() {
 			return {
+				hasIdentify: false,
+				pageData: null,
+				form: {
+					realname: "",
+					type: "",
+					label: "",
+					idcard: ""
+				},
+				show:true,
 				array: ['大陆居民身份证', '台胞证'],
-				index: 3,
+				index: 0,
 			}
 		},
 		computed:{
@@ -53,17 +70,54 @@
 			},
 		},
 		methods: {
-			isPicker(){
-				console.log(2222)
-				this.bindPickerChange()
+			cancle(){
+				this.form.realname = ''
 			},
-			 bindPickerChange: function(e) {
-			            console.log('picker发送选择改变，携带值为', e.target.value)
-			            this.index = e.target.value
-			        },
+			cancle1(){
+				this.form.idcard = ''
+			},
+			bindPickerChange(e){
+				this.show = false
+				this.form.type = e.detail.value+1
+				this.index = e.detail.value
+				this.form.label = this.array[this.index]
+			},
+			getPageData() {
+				$api.get("wap/identify/set",{
+					...this.form
+				}).then(res => {
+					if(res.data.code){
+						uni.showToast({
+							title: '认证成功',
+							type: 'success',
+							icon: "none"
+						})
+						common.getuserInfo();
+						uni.navigateBack({
+							delta:1
+						})
+					}else{
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none',
+						})
+					}
+				})
+			},
+			// 获取认证信息
+			getIdentify(){
+				$api.get("wap/identify/info").then(res=>{
+					this.pageData = res.data.data
+				})
+			}
 		},
-		onLoad(){
-			
+		created(){
+			if(this.userInfo.has_identify == 2){
+				this.hasIdentify = true;
+				this.getIdentify();
+			}else{
+				this.hasIdentify = false
+			}
 		}
 	}
 </script>
@@ -78,6 +132,23 @@
 	}
 	.box{
 		padding:32rpx 32rpx ;
+		align-items: center;
+	}
+	.textList{
+		margin-top:40rpx ;
+	}
+	.list_text1{
+		margin-bottom:10rpx ;
+		text-align: center;
+		color: #000000;
+		font-size:36rpx ;
+		font-weight: bold;
+	}
+	.list_text2{
+		text-align: center;
+		color: #FF4810;
+		font-size:28rpx ;
+		font-weight: bold;
 	}
 	.title_text1{
 		text-align: center;
@@ -104,10 +175,22 @@
 		width:500rpx ;
 		color: #999999;
 		font-size:32rpx ;
-		font-weight: bold;
+		font-weight: 400;
 	}
 	.img_style{
 		width:36rpx ;
 		height:36rpx ;
+	}
+	.button{
+		margin-top:60rpx ;
+		padding:25rpx 150rpx;
+		border-radius:50rpx;
+		height:100rpx ;
+		border:2rpx solid #E1E1E1;
+	}
+	.button_text{
+		color: #FF4810;
+		font-size:28rpx ;
+		font-weight: bold;
 	}
 </style>

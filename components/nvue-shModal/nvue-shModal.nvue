@@ -3,7 +3,8 @@
 		<view class="modal_box" :style="{height:$store.state.myHeight+'rpx',width:$store.state.myWidth+'px'}" @click="noModal">
 			
 		</view>
-		<view @click.stop="stopModal" class="but_box" :style="{width:$store.state.myWidth*0.8+'px',marginLeft:$store.state.myWidth*0.1+'px',marginTop:$store.state.myHeight*0.2+'rpx'}">
+		<view @click.stop="stopModal" class="but_box" :style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:$store.state.myWidth*0.8+'px',left:$store.state.myWidth*0.1+'px',top:$store.state.myHeight*0.2+'rpx'}">
+		<!-- <view @click.stop="stopModal" class="but_box" :style="{height:active?350+'rpx':0+'rpx',opacity:active?1:0,width:active?$store.state.myWidth*0.8+'px':0,left:active?$store.state.myWidth*0.1+'px':$store.state.myWidth*0.5+'px',top:active?$store.state.myHeight*0.2+'rpx':$store.state.myHeight*0.33+'rpx'}"> -->
 			<text class="but_text1">{{title}}</text>
 			<text class="but_text2" v-if="textType">{{text}}</text>
 			<slot></slot>
@@ -21,7 +22,7 @@
 	export default {
 		data() {
 			return {
-				
+				active:false
 			}
 		},
 		props: {
@@ -44,6 +45,20 @@
 				type: Boolean,
 				default:true
 			},
+		},
+		watch:{
+			isShow(val){
+				if(val){
+					setTimeout(()=>{
+						this.active = true
+					},100)
+				}else{
+					setTimeout(()=>{
+						this.active = false
+					},100)
+				}
+				
+			}
 		},
 		methods: {
 			stopModal(){
@@ -71,11 +86,11 @@
 	}
 	.but_box{
 		position: fixed;
-		top:0 ;
 		background: #FFFFFF;
 		border-radius: 48rpx;
 		padding:36rpx ;
-		
+		transition-duration:0.3s;
+		transition-property: opacity,transform;
 	}
 	.but_text1{
 		font-family: PingFang SC;
