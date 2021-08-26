@@ -32,8 +32,8 @@
 						<text class="gamename"  @click="toDetail(item)">{{item.gamename}}</text>
 						<view class="" style="margin-bottom: 16rpx;">
 							<text class="text" v-for="(v,i) in item.type" :key="i" v-if="i<3">{{v}}</text>
-							<text class="text">|</text>
-							<text class="text">{{item.popularity_cnt}}人在玩</text>
+							<!-- <text class="text">|</text> -->
+							<!-- <text class="text">{{item.popularity_cnt}}人在玩</text> -->
 						</view>
 						<view class="size"  @click="toDetail(item)">
 							<text style="color: #FF5927;" v-if="item.myloading">{{item.myloading}}</text>
@@ -59,7 +59,7 @@
 			<view class="button" @click="handleconfirm">已选择{{isNumber}}个游戏清除下载痕迹</view>
 		</view>
 		
-		<nvue-loading v-if="pageList.length==0" style="margin-top: 400rpx;"></nvue-loading>
+		<nvue-loading v-if="pageList.length==0" :isNoData='pageList.length==0?true:false' style="margin-top: 400rpx;"></nvue-loading>
 		
 	</view>
 </template>

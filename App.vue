@@ -22,7 +22,7 @@
 			// 获取用户定制信息
 			this.userFormat();
 			setTimeout(() => {
-				plus.navigator.closeSplashscreen();
+				// plus.navigator.closeSplashscreen();
 			}, 100)
 			//设置初始化
 			this.getSetting()
@@ -170,17 +170,29 @@
 			//下载管理 
 			/* vuex 无法持久化存储  */
 			getDownLoad() {
-				let arrList = uni.getStorageSync('downList')
-				if (arrList.length) {
-					let downList = []
-					arrList.map((item, index) => {
-						downList.push({
-							game_id: item.game_id,
-							downTasks: ''
-						})
-					})
-					this.$store.commit('setDownTasksList', downList)
-				}
+				// console.log(this.$store.state.downTasksList[0],'downTasksListdownTasksListdownTasksList')
+				// if(this.$store.state.downTasksList){
+				// 	this.$store.state.downTasksList[0].downTasks.eventHandlers.statechanged.handles=function(){
+						
+				// 	}
+				// 	this.$store.state.downTasksList[0].downTasks.onCompleted=function(){
+						
+				// 	}
+				// }
+				
+				
+				
+				// let arrList = uni.getStorageSync('downList')
+				// if (arrList.length) {
+				// 	let downList = []
+				// 	arrList.map((item, index) => {
+				// 		downList.push({
+				// 			game_id: item.game_id,
+				// 			downTasks: ''
+				// 		})
+				// 	})
+				// 	this.$store.commit('setDownTasksList', downList)
+				// }
 
 
 			},

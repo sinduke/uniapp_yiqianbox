@@ -123,7 +123,6 @@
 			}
 		},
 		onReady() {
-			console.log(globalData.store.state.userInfo,'globalData.store.state.userInfo')
 			uni.$once('close', data => {
 					if (data) {
 						this.subNvue.hide()
@@ -248,7 +247,7 @@
 						},
 						success: (result) => {
 							console.log(plus.runtime.version + "." + that.$store.state.sp);
-							console.log(result);
+							// console.log(result);
 							that.updata.data = result.data.data;
 							uni.$emit('update', {
 								msg: JSON.stringify(that.updata.data)

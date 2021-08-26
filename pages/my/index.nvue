@@ -1,8 +1,8 @@
 <!-- 个人中心 -->
 <template>
 	<view class="my" :style="{width:myWidth+'px'}">
-		<view class="" :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
-		<view class="title nav">
+		<view :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
+		<view class="title">
 			<view class="titleLeft">
 				<view style="flex-direction: row;" :style="{opacity: opacity}"  ref="titles">
 					<!-- <image :src="userInfo.avatar" style="width: 60rpx;height: 60rpx;border-radius: 60rpx;margin: 0 24rpx 0 32rpx;"></image> -->
@@ -445,6 +445,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		margin-top: 20rpx;
 	}
 
 	.titlename {

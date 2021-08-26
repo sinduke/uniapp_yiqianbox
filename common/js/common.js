@@ -30,7 +30,6 @@ export default {
 			if (res.data.code == 200) {
 				// 当记录的用户登录账户与登录之后返回的账户不匹配时，就不允许登录成功
 				if (username == res.data.data.mobile || username == res.data.data.username) {
-					console.log(res)
 					getApp().globalData.store.commit('setUserInfo', res.data.data);
 				} else {	
 			    this.logOut()
