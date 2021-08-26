@@ -1,0 +1,115 @@
+<template>
+	<view>
+		<view class="container" :style="{width:$store.state.myWidth+'px'}">
+			<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
+				<view class="head">
+					<text class="head_text1">我的积分</text>
+					<text class="head_text2">{{userInfo.my_integral}}</text>
+				</view>
+				<view class="head">
+					<text class="head_text1">兑换平台币</text>
+					<text class="head_text2" style="color: #999999;">(100积分 = 1平台币)</text>
+				</view>
+				<view style="margin:32rpx 0rpx;">
+					<input v-model="ptb_cnt" class="head_text1" type="number" value="" placeholder="请输入平台币数量"/>
+				</view>
+				<view class="head">
+					<text class="head_text1">需消耗：</text>
+					<text class="head_text2">{{integral}}积分</text>
+				</view>
+				<view class="but" @click="exchangePtb">
+					<text class="but_text">兑换平台币</text>
+				</view>
+			</view>
+		</view>	
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData
+	export default {
+		data() {
+			return {
+				ptb_cnt: ""
+			}
+		},
+		computed: {
+			userInfo(){
+				return globalData.store.state.userInfo
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			integral() {
+				return this.ptb_cnt * 100 || 0;
+			},
+		},
+		methods: {
+			exchangePtb() {
+				$api.get( "app/shop/goods/exchange_ptb",{
+					ptb_cnt: this.ptb_cnt
+				}).then(res => {
+					if(res.data.code==200){
+						uni.showToast({
+							title:res.data.msg,
+							icon:"none"
+						})
+						this.ptb_cnt=""
+						common.getuserInfo()
+					}else{
+						uni.showToast({
+							title:res.data.msg,
+							icon:"none"
+						})
+					}	
+				})
+			}
+		},
+		
+	}
+</script>
+
+<style scoped>
+	.container{
+		background: #fff;
+	}
+	.lineShowdow{
+		height:6rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	.box{
+		padding:0rpx 32rpx ;
+	}
+	.head{
+		flex-direction: row;
+		justify-content: space-between;
+		padding:32rpx 0;
+	}
+	.head_text1{
+		font-size: 30rpx;
+		color:#909399;
+		font-weight:400 ;
+	}
+	.head_text2{
+		font-size: 30rpx;
+		color: #ff8500;
+		font-weight:400 ;
+	}
+	.but{
+		margin-top: 40rpx;
+		border: solid 1px #E4E4E4;
+		height: 80rpx;
+		border-radius: 40rpx;	
+	}
+	.but_text{
+		line-height:80rpx ;
+		text-align: center;
+		color: rgb(255, 72, 16);
+		font-size: 30rpx;
+		font-weight: 600;
+	}
+</style>

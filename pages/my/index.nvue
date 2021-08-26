@@ -79,7 +79,7 @@
 							</view>
 							<text class="grid-text">优惠券</text>
 						</view>
-						<view class="grid-item" @click="handleRouter('/pages/my/integral/index',1)">
+						<view class="grid-item" @click="handleRouter('/pages/my/integral/index1',1)">
 							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-jf.png"	mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
 							<text class="myrate" >{{userInfo.my_integral}}</text>
