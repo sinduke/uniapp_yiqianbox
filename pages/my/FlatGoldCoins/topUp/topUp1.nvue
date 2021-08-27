@@ -1,5 +1,8 @@
+<!-- 充值页面 -->
 <template>
-	<view>
+	<view class="container" :style="{width:$store.state.myWidth+'px'}">
+		<!-- <iframe :style="{width:$store.state.myWidth+'px'}" :src="url" frameborder="0" scrolling="no" seamless>暂无数据</iframe> -->
+		<web-view :src="url" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}" ></web-view>
 		
 	</view>
 </template>
@@ -8,15 +11,37 @@
 	export default {
 		data() {
 			return {
+				url: "",
 				
+				show: false,
+				content: ""
 			}
 		},
-		methods: {
-			
+		onLoad(options) {
+			switch (options.ret) {
+				case 1:
+					this.show = true;
+					this.content = "充值成功";
+					break;
+				case 0:
+					this.show = true;
+					this.content = "充值未成功";
+					break;
+				default:
+					return;
+			}
+		},
+		created() {
+			this.url =
+				"https://api.sy12306.com/app/wap/ptb/recharge?client_id=" +
+				this.$store.state.client_id +
+				"&token=" +
+				this.$store.state.loginInfo.user_token +
+				"&isBox=true"
 		}
 	}
 </script>
 
-<style>
-
+<style scoped>
+	
 </style>
