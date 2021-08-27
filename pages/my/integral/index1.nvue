@@ -1,16 +1,15 @@
 <template>
-	<!-- 平台币页面 -->
 	<view class="FlatGoldCoins">
-       <myNavbar title='我的平台币' right radius router='/pages/my/FlatGoldCoins/record/record' src='../../../static/images/my_details.png'></myNavbar>
+	   <myNavbar title='我的积分' right radius router='/pages/my/integral/integral1' src='../../../static/images/my_details.png'></myNavbar>
 		<view class="box" :style="{width:myWidth+'px'}">
 			<view class="head"></view>
 			<view class="bottom" >
-				<text style="color: #666666; font-size: 26rpx;margin-bottom: 24rpx;">平台币余额</text>
-				<text style="color: #1C1C1C; font-size: 48rpx; font-weight: bold;">{{ptb_cnt}}</text>
+				<text style="color: #666666; font-size: 28rpx;margin-bottom: 24rpx;text-align: center;">积分余额</text>
+				<text style="color: #1C1C1C; font-size: 48rpx; font-weight: bold;text-align: center;">{{$store.state.userInfo.my_integral}}</text>
 			</view>
-			<text class="butttons" @click="handleRouter('/pages/my/FlatGoldCoins/topUp/topUp')">充值</text>
+			<text class="butttons" @click="handleRouter('/pages/my/integral/dhptb1')">兑换平台币</text>
 		</view>
-
+	
 	</view>
 	
 </template>
@@ -18,18 +17,16 @@
 <script>
 	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
 	export default {
-		components: {
-			myNavbar
-		},
 		data() {
 			return {
 				ptb_cnt:0,
 			}
 		},
+		components: {
+			myNavbar
+		},
 		computed: {
-			i18n() {
-				return globalData.$t('index')
-			},
+			
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -44,11 +41,7 @@
 					url
 				})
 			},
-	
 		},
-		onLoad(option){
-			this.ptb_cnt = option.ptb_cnt
-		}
 	}
 </script>
 
@@ -62,17 +55,16 @@
 		align-items: center;
 	}
 	.bottom{
+		
 		margin-bottom: 42rpx;
 	}
 	.butttons{
 		background-color: #fff;
-		border-radius: 60rpx;
+		border-radius: 70rpx;
 		border:1px solid #E1E1E1 ;
 		color: #FF5927;
-		padding: 20rpx 168rpx;
+		padding: 25rpx 120rpx;
 		font-size:30rpx;
 		font-weight: 700;
 	}
-	
-
 </style>

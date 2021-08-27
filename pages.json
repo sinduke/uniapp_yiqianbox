@@ -732,32 +732,33 @@
 				}
 			}
 
-		}, {
-			"path": "pages/my/integral/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
-		},
-		//积分记录
+		}, 
+		//我的积分nvue
 		{
-			"path": "pages/my/integral/integral",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "积分记录"
-					}
-				}
-			}
-
+		    "path" : "pages/my/integral/index1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    } 
+		},
+		//积分记录nvue
+		{
+		    "path" : "pages/my/integral/integral1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "积分记录"
+		    		}
+		    	}
+		    }
+		    
 		},
 		//任务中心
 		{
@@ -863,9 +864,23 @@
 				}
 			}
 
-		}
-
-		, { //平台币-账号记录
+		},
+		//平台币-充值中心nvue
+		{
+		    "path" : "pages/my/FlatGoldCoins/topUp/topUp1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "充值中心"
+		    		}
+		    	}
+		    } 
+		},
+		{ //平台币-账号记录
 			"path": "pages/my/FlatGoldCoins/record/record",
 			"style": {
 				"app-plus": {
@@ -878,6 +893,22 @@
 					}
 				}
 			}
+		},
+		//平台币-账号记录nvue
+		{
+		    "path" : "pages/my/FlatGoldCoins/record/record1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "账号记录"
+		    		}
+		    	}
+		    }
+		    
 		},
 		// h5游戏开玩
 		{
@@ -1056,24 +1087,23 @@
 					}
 				}
 			}
-		}
-
-
-		, {
-			"path": "pages/my/integral/dhptb",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "兑换平台币"
-					}
-				}
-			}
-
-		}, {
+		},
+		{
+		    "path" : "pages/my/integral/dhptb1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "兑换平台币"
+		    		}
+		    	}
+		    }
+		    
+		},
+		{
 			"path": "pages/my/mySetting/Setting",
 			"style": {
 				"app-plus": {
@@ -1122,6 +1152,10 @@
 		// 	}
 
 		// }
+        
+        
+        
+        
         
     ],
 

@@ -1,0 +1,254 @@
+<template>
+	<view>
+		<view class="lineShowdow"></view>
+		<view class="container" :style="{width:$store.state.myWidth+'px'}">
+			<view class="box" :style="{width:$store.state.myWidth+'px'}">
+				<!-- tabs -->
+				<view class="tabslist">
+					<view class="tabs" style="margin-right:60rpx ;" :active="active"  v-for="(item,index) in tabslist" @click="tabsClick(index)">
+						<text :style="{color:active==index?'#000000':'#666666',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+					</view>	
+				</view>
+				<view class="tabs_line" :style="{transform:active==1?'translateX(96)':'translateX(0)'}"></view>
+				<!-- 滑动item -->
+				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}"  :duration="1000">
+					<swiper-item>
+						<list v-if="ObtainList.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}">
+							<cell  class="cell":style="{width:$store.state.myWidth-32+'px'}" v-for="(item,index) in ObtainList">
+								<view class="cell_left">
+									<text class="left_text1">{{item.ia_name}}</text>
+									<text class="left_text2">{{item.create_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+								</view>
+								<text class="cell_right">+{{item.integral}} 积分</text>
+							</cell>
+							<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+							</loading>
+						</list>
+						<nloading v-else :isNoData="isNoData"></nloading>
+					</swiper-item>
+					<swiper-item>
+						<list v-if="couponList.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}">
+							<cell  class="cell":style="{width:$store.state.myWidth-32+'px'}" v-for="(item,index) in couponList">
+								<view class="cell_left">
+									<text class="left_text1">{{item.goods_name}}</text>
+									<text class="left_text2" style="color:#999999;">{{item.create_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+								</view>
+								<text class="cell_right" style="color:#999999;">-{{item.integral}} 积分</text>
+							</cell>
+							<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+							</loading>
+						</list>
+						<nloading v-else :isNoData="isNoData"></nloading>
+					</swiper-item>
+				</swiper>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import nloading from '@/components/nvue-loading/nvue-loading'
+	
+	export default {
+		data() {
+			return {
+				tabslist: ['获取记录', '兑换记录'],
+				isNoData:false,
+				active: 0,
+				current: 0,
+				isActive:false,
+				ObtainList: [],
+				couponList: [],
+				params: [{
+					page: 1,
+					offset: 10,
+					itg_type: 1,
+					count:0,
+				}, {
+					page: 1,
+					count:0,
+					offset: 10,
+				
+				}],
+			}
+		},
+		components:{
+			nloading
+		},
+		watch:{
+			active(val){
+				if(val==1){
+					this.isActive = true 
+				}
+			},
+			isActive(val){
+				this.getExchangeData()
+			}
+		},
+		onShow(){
+			 common.getuserInfo()
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		filters:{
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		},
+		onLoad() {
+			this.getObtainData();
+		},
+		methods: {
+			//加载更多
+			onloading(e){
+				if(this.active==0){
+					if(this.params[0].count>this.ObtainList.length){
+						this.loadinging = true
+						this.params[0].page++
+						this.getObtainData()	
+					}
+				}else{
+					if(this.params[1].count>this.couponList.length){
+						this.loadinging = true
+						this.params[1].page++
+						this.getExchangeData()	
+					}
+				}
+				
+			},
+			tabsClick(index){
+				this.current = index
+			},
+			swiperClick(e){
+				this.active = e.detail.current
+			},
+			// 1.获取记录
+			getObtainData() {
+				$api.get('/app/user/itg/list', {
+					...this.params[0]
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.isNoData = true
+						this.ObtainList = this.ObtainList.concat(res.data.data.list)
+						this.params[0].count = res.data.data.count
+					} else {
+						uni.showToast({
+							title:res.data.msg,
+							icon: "none"
+						})
+					}
+			
+				})
+			
+			},
+			// 2.兑换记录
+			getExchangeData() {
+				$api.get('/app/shop/goods/exchange_list', {
+					...this.params[1]
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.isNoData = true
+						this.couponList = this.couponList.concat(res.data.data.list) ;
+						this.params[1].count = res.data.data.count
+					} else {
+						uni.showToast({
+							title:res.data.msg,
+							icon: "none"
+						})
+					}
+			
+				})
+			
+			},
+		}
+	}
+</script>
+
+<style scoped>
+	.container{
+		background: #fff;
+	}
+	.box{
+		padding:0rpx 32rpx ;
+	}
+	.lineShowdow{
+		height:6rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	.tabslist{
+		margin-top:60rpx ;
+		flex-direction: row;
+		margin-right:60rpx;
+	}
+	.tabs_text{
+		color: #666666;
+		font-weight: bold;
+		font-size: 32rpx;
+	}
+	.tabs_line{
+		margin:10rpx 0rpx 0rpx 37rpx;
+		width:50rpx;
+		height:6rpx ;
+		border-radius:6rpx;
+		background: #FF5927;
+		transition-property: transform;
+		transition-duration:0.5s;
+	}
+	.cell{
+		flex-direction: row;
+		justify-content: space-between;
+		padding:40rpx 0;
+		border-bottom:1rpx solid #ECECEC;
+		align-items: center;
+	}
+	.left_text1{
+		font-size:32rpx ;
+		color: #000000;
+		font-weight: bold;
+		margin-bottom:20rpx ;
+	}
+	.left_text2{
+		font-size:24rpx ;
+		color: #999999;
+		font-weight:400 ;
+	}
+	.cell_right{
+		color: #FF4810;
+		font-size:32rpx ;
+		font-weight: 400;
+	}
+</style>
