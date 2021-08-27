@@ -699,23 +699,22 @@
 				}
 			}
 
-		}
-		//我的优惠券
-		, {
-			"path": "pages/my/coupons/coupons",
-			"style": {
-				"onReachBottomDistance": 20,
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "我的优惠券"
-					}
-				}
-			}
-
+		},
+		//我的优惠券nvue
+		{
+		    "path" : "pages/my/coupons/coupons1",
+		    "style": {
+		    	
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "我的优惠券"
+		    		}
+		    	}
+		    }    
 		}
 		//游戏详情下面的优惠券
 		, {
@@ -951,7 +950,6 @@
 				}
 			}
 		},
-
 		// 综合功能-意见反馈
 		{
 			"path": "pages/my/comprehensive/feedback/feedback",
@@ -962,10 +960,20 @@
 					"bounce": "none"
 				}
 			}
-
-		}
+		},
+		// 综合功能-意见反馈nvue
+		{
+		    "path" : "pages/my/comprehensive/feedback/feedback1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }   
+		},
 		// 综合功能-游戏礼包
-		, {
+		{
 			"path": "pages/my/comprehensive/gameGiftBag/gameGiftBag",
 			"style": {
 				// 取消默认的原生导航栏
@@ -974,10 +982,21 @@
 					"bounce": "none"
 				}
 			}
-		}
-
+		},
+		// 综合功能-游戏礼包nvue
+		{
+		    "path" : "pages/my/comprehensive/gameGiftBag/gameGiftBag1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }
+		    
+		},
 		//综合功能-游戏资讯
-		, {
+		{
 			"path": "pages/my/comprehensive/gameConsulting/gameConsulting",
 			"style": {
 				"app-plus": {
@@ -990,10 +1009,24 @@
 					}
 				}
 			}
-
 		},
-
-		{ //游戏资讯-详情页面
+		//综合功能-游戏资讯nvue
+		{
+		    "path" : "pages/my/comprehensive/gameConsulting/gameConsulting1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "游戏资讯"
+		    		}
+		    	}
+		    }    
+		},
+		//游戏资讯-详情页面
+		{ 
 			"path": "pages/my/comprehensive/gameConsulting/gameDetail/gameDetail",
 			"style": {
 				"app-plus": {
@@ -1008,14 +1041,33 @@
 								"type": "menu"
 							}
 						]
-
 					}
-
 				}
 			}
-		}
+		},
+		//游戏资讯-详情页面nvue
+		{
+		    "path" : "pages/my/comprehensive/gameConsulting/gameDetail/gameDetail1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "资讯详情",
+		    			"buttons": [ 
+		    				{
+		    					"type": "menu"
+		    				}
+		    			]
+		    		}
+		    	}
+		    }
+		    
+		},
 		//忘记密码
-		, {
+		{
 			"path": "pages/my/children/forgetPwd",
 			"style": {
 				"app-plus": {
@@ -1118,31 +1170,6 @@
 			}
 
 		}
-		// {
-		// 	"path": "pages/my/children/share/share",
-		// 	"style": {
-		// 		"app-plus": {
-		// 			"bounce": "none", //关闭窗口回弹效果
-		// 			"titleNView": {
-		// 				"backgroundColor": "#fff",
-		// 				"titleColor": "#1C1C1C",
-		// 				"titleAlign": "left",
-		// 				"titleText": "全民推广",
-		// 				"buttons": [
-		// 					{
-		// 						"type": "menu"
-		// 					}
-		// 				]
-		// 			}
-		// 		}
-		// 	}
-
-		// }
-        
-        
-        
-        
-        
     ],
 
 	"easycom": {

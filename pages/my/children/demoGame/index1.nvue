@@ -4,7 +4,7 @@
 			
 		</view>
 		<view class="bottom" :style="{height:$store.state.mysHeight-160+'rpx'}" >
-			<list :show-scrollbar='false' :style="{height:$store.state.mysHeight-160+'rpx'}"  @scrolltolower='scrollLoad' v-if="pageData.length">
+			<list :show-scrollbar='false' :style="{height:$store.state.mysHeight-160+'rpx'}" v-if="pageData.length">
 				<cell>
 					<view class="head">
 						<text class="str">1.点击试玩领取任务后，进入游戏详情</text>
@@ -46,9 +46,9 @@
 						</view>
 					</view>
 				</cell>
-				<xw-loadingGif :isShow='isShow'></xw-loadingGif>
+				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" ></loading>
 			</list >
-			<nvue-loading v-else></nvue-loading>
+			<nloading v-else :isNoData="isNoData"></nloading>
 		</view>
 	</view>
 </template>
@@ -57,11 +57,14 @@
 	import {
 		$api
 	} from '@/config/api.js';
+	import nloading from '@/components/nvue-loading/nvue-loading';
 	import common from "@/common/js/common.js";
 	export default {
 		data() {
 			return {
 				pageData: [],
+				isNoData:false,
+				loadinging:false,
 				count:0,
 				formData:{
 					page:1,
@@ -69,6 +72,9 @@
 				},
 				isShow:false
 			}
+		},
+		components:{
+			nloading
 		},
 		filters: {
 			// 1.日期格式过滤器
@@ -109,6 +115,8 @@
 					
 				}).then(res => {
 					if(res.data.data.list.length){
+						this.isNoData = true
+						this.loadinging = false
 						this.pageData = this.pageData.concat(res.data.data.list)
 						this.count = res.data.data.count
 					}
@@ -128,15 +136,12 @@
 				}
 			},
 			//加载更多
-			scrollLoad(e){
-				setTimeout(()=>{
-					if(this.count>this.pageData.length){
-						this.isShow = true
-						this.formData.page++
-						this.getpageData()
-					}
-					this.isShow = false
-				},1800)
+			onloading(e){
+				if(this.count>this.pageData.length){
+					this.loadinging = true
+					this.formData.page++
+					this.getpageData()
+				}
 			},
 			handleRouter(id){
 				uni.navigateTo({

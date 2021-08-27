@@ -3,7 +3,7 @@
 	<view class="container">
 		<iframe :src="url" frameborder="0" scrolling="no" seamless>暂无数据</iframe>
 		
-		<!-- <u-modal v-model="show" :content="content" confirm-color="#ff8500"></u-modal> -->
+		<u-modal v-model="show" :content="content" confirm-color="#ff8500"></u-modal>
 	</view>
 </template>
 

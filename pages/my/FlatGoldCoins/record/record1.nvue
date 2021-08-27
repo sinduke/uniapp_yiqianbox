@@ -60,6 +60,7 @@
 			return {
 				tabslist: ['充值记录', '消费记录'],
 				isNoData:false,
+				loadinging:false,
 				active: 0,
 				current: 0,
 				isActive:false,
@@ -164,6 +165,7 @@
 					...this.params[0]
 				}).then(res => {
 					if (res.data.code == 200) {
+						this.loadinging = false
 						this.isNoData = true
 						this.ObtainList = this.ObtainList.concat(res.data.data.list);
 						this.params[0].count =  res.data.data.count
@@ -184,6 +186,7 @@
 					...this.params[1]
 				}).then(res => {
 					if (res.data.code == 200) {
+						this.loadinging = false
 						this.isNoData = true
 						this.couponList = this.couponList.concat(res.data.data.list) ;
 						this.params[1].count =  res.data.data.count

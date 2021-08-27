@@ -71,7 +71,7 @@
 							</view>
 							<text class="grid-text">平台币</text>
 						</view>
-						<view class="grid-item" @click="handleRouter('/pages/my/coupons/coupons',1)">
+						<view class="grid-item" @click="handleRouter('/pages/my/coupons/coupons1',1)">
 							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-yhq.png"	mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
 							<text class="myrate" >{{userInfo.coupon_count}}</text>
