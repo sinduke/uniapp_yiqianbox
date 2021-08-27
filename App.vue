@@ -168,27 +168,16 @@
 			},
 
 			//下载管理 
-			/* vuex 无法持久化存储  */
+			/* 无法持久化存储下载  */
 			getDownLoad() {
-				// console.log(this.$store.state.downTasksList[0],'downTasksListdownTasksListdownTasksList')
-				// if(this.$store.state.downTasksList){
-				// 	this.$store.state.downTasksList[0].downTasks.eventHandlers.statechanged.handles=function(){
-						
-				// 	}
-				// 	this.$store.state.downTasksList[0].downTasks.onCompleted=function(){
-						
-				// 	}
-				// }
-				
-				
-				
 				// let arrList = uni.getStorageSync('downList')
 				// if (arrList.length) {
 				// 	let downList = []
 				// 	arrList.map((item, index) => {
 				// 		downList.push({
 				// 			game_id: item.game_id,
-				// 			downTasks: ''
+				// 			downTasks: null,
+				// 			status:1
 				// 		})
 				// 	})
 				// 	this.$store.commit('setDownTasksList', downList)

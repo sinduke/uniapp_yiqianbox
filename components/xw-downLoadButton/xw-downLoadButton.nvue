@@ -54,7 +54,7 @@
 			},
 			//安装
 			installApp(name){
-				plus.runtime.openFile(name);
+				plus.runtime.install(name);
 			},
 			//暂停App
 			handleStop(){
@@ -148,7 +148,7 @@
 				     this.item.myloading =  (res.downloadedSize / 1024 / 1024) .toFixed(2)+ 'MB'
 					 this.item.myTotalData = (res.totalSize / 1024 / 1024).toFixed(2) +'MB'
 					 this.progress = Math.round(res.downloadedSize / res.totalSize * 100)  
-                     console.log( this.item.myloading, this.item.myTotalData,'down_url, indexdown_url, index') 
+                     // console.log( this.item.myloading, this.item.myTotalData,'down_url, indexdown_url, index') 
 					  
 				}) 
 				//如果是第一次进入
@@ -210,11 +210,14 @@
 			let arrList = uni.getStorageSync('downList')
 			if(!this.checkApp()&&this.downtype!=4){
 				if(this.downTasksItem){
+					console.log(this.downTasksItem,this.downTasksItem.id,'downTasksItemdownTasksItemdownTasksItemdownTasksItem')
 					this.addEventList(this.downTasksItem)
-					// this.isTrue=true
+					console.log(JSON.stringify(this.downTasksItem) ,'downTasksItemdownTasksItemdownTasksItemdownTasksItem')
 					this.item.status?this.isTrue=true:this.isTrue=false
+				}else if(this.$store.state.downTasksList[this.sort].status==1){
+						console.log(this.downTasksItem,'this.downTasksItem')
+					this.isTrue=false
 				}else{
-						
 					this.createDownload()
 				}
 				
@@ -234,15 +237,19 @@
 	}
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 	.buttons {
-           @include flex;
-		   justify-content: center;
-			width: 140rpx;
-			@include button(32rpx, 10rpx, 32rpx);
-		.button {
-			white-space: nowrap;
-			font-size: $xw-font;
-		}
+          flex-direction: row;
+		 align-items: center;
+		  justify-content: center;
+		width: 140rpx;
+		padding: 10rpx 32rpx;
+		border-radius: 32rpx;
+	
+		
+	}
+	.button {
+		lines: 1;
+		font-size: 24rpx;
 	}
 </style>

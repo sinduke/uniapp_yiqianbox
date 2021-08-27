@@ -714,7 +714,8 @@
 						})
 						downList.unshift({
 							game_id:this.pageData.game_id,
-							downTasks:null
+							downTasks:null,
+							status:0
 						})
 					}
 					console.log(downList,'downListdownLists')

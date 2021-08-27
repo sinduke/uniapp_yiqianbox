@@ -34,12 +34,12 @@
 						<text class="loginText-text">未实名认证 &nbsp ></text>
 					</view>
 				</view>
-				<view class="login flex" v-else @click="handleRouter('/pages/my/myAdministration/index1')">
-					<image class="images2" :src="/http/i.test(userInfo.avatar)?userInfo.avatar:'https:'+userInfo.avatar"></image>
+				<view class="login flex" v-else >
+					<image class="images2" @click="handleRouter('/pages/my/myAdministration/index1')" :src="/http/i.test(userInfo.avatar)?userInfo.avatar:'https:'+userInfo.avatar"></image>
 					<view class="loginText">
-						<text class="h1">{{userInfo.nickname}}</text>
+						<text class="h1" @click="handleRouter('/pages/my/myAdministration/index1')">{{userInfo.nickname}}</text>
 						<text class="loginText-text" v-if="userInfo.is_real_name">已实名认证</text>
-						<text class="loginText-text" v-else @click.stop="handleRouter('/pages/my/myAdministration/children/changeRealname/index')">未实名认证 &nbsp ></text>
+						<text class="loginText-text" v-else @click.stop="handleRouter('/pages/my/myAdministration/children/changeRealname/index1')">未实名认证 &nbsp ></text>
 					</view>
 				</view>
 				</cell>
@@ -185,7 +185,7 @@
 					{
 						url: '../../static/images/my/zhgl.png',
 						name: '账号管理',
-						router: '/pages/my/myAdministration/index',
+						router: '/pages/my/myAdministration/index1',
 						type: 1
 					},
 					{

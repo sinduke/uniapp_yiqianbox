@@ -112,7 +112,7 @@
 			}
 		},
 		created(){
-			if(this.userInfo.has_identify == 2){
+			if(this.userInfo.is_real_name){
 				this.hasIdentify = true;
 				this.getIdentify();
 			}else{
