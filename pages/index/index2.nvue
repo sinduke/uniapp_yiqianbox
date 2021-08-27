@@ -1,0 +1,302 @@
+<template>
+	<view class="index" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
+		<view class="Title">
+			<view class="TitleList">
+				<!-- <text class="TitleName" :class="[{TitleName1:active==index}]" ref='TitleName' :style="{transform:'scale('+lineRotate+')'}"
+					@click="handleClick(index)">{{item.name}}</text> -->
+				<view class="titleItem" @click="handleClick(0)">
+					<text class="TitleName" :class="[{TitleName1:active==0}]">推荐</text>
+					<text class="TitleName" :class="[{TitleName1:active==1}]">新服</text>
+					<text class="TitleName" :class="[{TitleName1:active==2}]">排行</text>
+				</view>
+				<view class="lines" :style="{width: '210rpx',marginLeft:linesLeft+'rpx',alignItems:isalign}">
+
+					<view class="line"
+						:style="{width:linWidth+'rpx',marginLeft: marginLeft+'rpx',marginRight:lineRight+'rpx'}" />
+				</view>
+
+			</view>
+		</view>
+
+		<view class="swiper">
+			<swiper @change='swiperChange' @transition='transition'
+				:style="{height:myHeight-120+'rpx',width:myWidth+'px'}">
+				<swiper-item ref="swiper">
+					<view class="swiper-item">
+						<recommend ref='recommend' :myWidth='myWidth' :myHeight='myHeight' :dataList='pageData'>
+						</recommend>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">bbbbbbbbbbbbbb</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">ccccccccccccccccccccc</view>
+				</swiper-item>
+			</swiper>
+		</view>
+
+	</view>
+
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import recommend from './children/recommend'
+	const BindingX = uni.requireNativePlugin('bindingx');
+	// Get the globalData
+	//const globalData = getApp().globalData
+	export default {
+		components: {
+			recommend
+		},
+		data() {
+			return {
+				pageData: null,
+				y: 0,
+				lineRotate: 1,
+				linWidth: 50,
+				isTrue: true,
+				isTime: false,
+				marginLeft: 0,
+				lineRight: 0,
+				linesLeft: 0,
+				isalign: 'felx-start',
+				TitleList: [{
+						id: 0,
+						name: '推荐'
+					},
+					{
+						id: 0,
+						name: '排行'
+					},
+					{
+						id: 0,
+						name: '新服'
+					}
+				],
+				active: 0,
+			}
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			}
+
+		},
+		onLoad() {
+			this.getSpecialData()
+		},
+		onHide() {
+			this.$refs.recommend.clearMove()
+		},
+		methods: {
+			// 切换
+			handleClick(e) {
+				this.active = e
+
+			},
+			//滑动监听
+			transition(e) {
+				console.log(Math.round(e.detail.dx))
+				if (e.detail.dx < 0) {
+					this.isalign = 'flex-end'
+					let absE = Math.abs(e.detail.dx)
+
+					if (absE < 50 && absE > 0) {
+						switch (this.active) {
+							case 2:
+								this.linesLeft = 150
+								// this.lineRight = 150
+								this.marginLeft = 150
+								this.myWidth = 50
+								break;
+							case 1:
+								this.linesLeft = 0
+								this.lineRight = 0
+								this.myWidth = 50
+								break;
+						}
+					} else if (absE > 50 && absE < this.myWidth / 2) {
+						this.linWidth = absE
+						this.lineRotate = absE / 200
+						this.lineRight = 0
+					} else if (absE > this.myWidth / 2 && absE < this.myWidth - 30) {
+						this.lineRight = absE / 3.8
+					} else if (absE > this.myWidth - 30 && absE < this.myWidth) {
+						this.lineRight = 150
+						this.linWidth = 50
+					} else if (Math.round(absE) == this.myWidth) {
+						switch (this.active) {
+							case 2:
+								this.linWidth = 50
+								this.lineRight = 0
+								break;
+							case 1:
+
+								this.linWidth = 50
+								this.lineRight = 0
+
+								break;
+						}
+
+					}
+
+				} else {
+					this.isalign = 'flex-start'
+					if (e.detail.dx < 50 && e.detail.dx > 0) {
+						switch (this.active) {
+							case 0:
+								this.marginLeft = 0
+								this.myWidth = 50
+								this.lineRotate = 1
+								this.linesLeft = 0
+								break;
+							case 1:
+								this.linesLeft = 150
+								this.marginLeft = 0
+								this.myWidth = 50
+								break;
+
+						}
+					} else if (e.detail.dx > 50 && e.detail.dx < this.myWidth / 2) {
+						this.linWidth = e.detail.dx
+						this.lineRotate = (e.detail.dx / 170 > 1 ? e.detail.dx / 170 : 1)
+						this.marginLeft = 0
+					} else if (e.detail.dx > this.myWidth / 2 && e.detail.dx < this.myWidth - 30) {
+						this.marginLeft = e.detail.dx / 3.9
+					} else if (e.detail.dx > this.myWidth - 30 && e.detail.dx < this.myWidth) {
+						this.marginLeft = 150
+						this.linWidth = 50
+					} else if (Math.round(e.detail.dx) == this.myWidth) {
+
+
+						this.linWidth = 50
+						this.marginLeft = 0
+
+
+					}
+				}
+
+			},
+			bin() {
+				this.numbers = .1
+				let TitleName = common.getEl(this.$refs.TitleName[this.active + 1])
+				let swiper = common.getEl(this.$refs.swiper)
+				let scrollB = BindingX.bind({
+						eventType: 'timing',
+						props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+							{
+								element: TitleName, //动画元素
+								property: 'transform.scale', //动画属性
+								expression: `linear(t,1,${this.numbers},500)`
+							}
+						]
+					}, e => {
+
+						setTimeout(() => {
+
+							this.isTime = true
+						}, 600)
+					}
+
+				);
+
+			},
+			swiperChange(e) {
+				this.active = e.detail.current
+
+			},
+
+			// 首页专区数据
+			getSpecialData() {
+				$api.get('/game/multilist', {
+					is_mp4: 1
+				}).then(res => {
+					this.pageData = res.data.data.list
+				})
+
+			},
+
+			// change() {
+			// 	console.log('语言切换')
+			// 	let language = uni.getStorageSync('CURRENT_LANG')
+			// 	if (language === 'en') {
+			// 		language = globalData.$i18n.locale = 'zh-CN'
+			// 	} else {
+			// 		language = globalData.$i18n.locale = 'en'
+			// 	}
+			// 	uni.setStorageSync('CURRENT_LANG', language)
+			// 	uni.reLaunch({
+			// 		url: 'index'
+			// 	})
+			// },
+			// getInitData() {
+
+			// }
+		}
+	}
+</script>
+
+<style scoped>
+	.index {
+		overflow: hidden;
+		background-color: #FFFFFF;
+
+	}
+
+	.titleItem {
+		width: 420rpx;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.Title {
+		flex-direction: row;
+		padding: 60rpx 0rpx 10rpx 30rpx;
+		align-items: center;
+
+	}
+
+	.TitleList {
+		position: relative;
+		/* align-items: center; */
+
+		width: 420rpx;
+	}
+
+	.TitleName {
+		color: #666666;
+		padding-bottom: 10rpx;
+		font-weight: 300;
+		font-size: 36rpx;
+		padding-right: 55rpx;
+	}
+
+	.TitleName1 {
+		color: #000;
+		font-weight: 800;
+		font-size: 40rpx;
+
+	}
+
+	.lines {
+		padding: 0 10rpx;
+	}
+
+	.line {
+		height: 6rpx;
+		border-radius: 6rpx;
+		background-color: #FF5927;
+		bottom: 0;
+	}
+</style>
