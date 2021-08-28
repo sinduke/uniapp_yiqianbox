@@ -166,6 +166,7 @@
 		color: #1C1C1C;
 		font-weight: 500;
 		font-size:32rpx ;
+		lines:1 ;
 		text-overflow: ellipsis;
 	}
 	.text2{
@@ -173,6 +174,7 @@
 		color: #666666;
 		font-size:24rpx ;
 		margin-top:8rpx ;
+		lines:1 ;
 		text-overflow: ellipsis;
 	}
 	.right_2{

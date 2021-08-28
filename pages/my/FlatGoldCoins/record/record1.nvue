@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style="flex:1 ;">
 		<view class="lineShowdow"></view>
 		<view class="container" :style="{width:$store.state.myWidth+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
@@ -9,7 +9,7 @@
 						<text :style="{color:active==index?'#000000':'#666666',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 					</view>	
 				</view>
-				<view class="tabs_line" :style="{transform:active==1?'translateX(96)':'translateX(0)'}"></view>
+				<view class="tabs_line" :style="{transform:active==1?'translateX('+0.255*myWidth+')':'translateX(0)'}"></view>
 				<!-- 滑动item -->
 				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}"  >
 					<swiper-item>
@@ -96,6 +96,9 @@
 			 common.getuserInfo()
 		},
 		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},

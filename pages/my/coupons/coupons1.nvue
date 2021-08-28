@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style="flex: 1;">
 		<view class="container" :style="{width:$store.state.myWidth+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
 				<!-- tabs -->
@@ -8,7 +8,7 @@
 						<text :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 					</view>	
 				</view>
-				<view  class="tabs_line" :style="{transform:left? 'translateX('+85.5*number+')':'translateX('+85.5*number1+')'}"></view>
+				<view  class="tabs_line" :style="{transform:left? 'translateX('+0.22*myWidth*number+')':'translateX('+0.22*myWidth*number1+')'}"></view>
 				<!-- 滑动item -->
 				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}"  >
 					<swiper-item>
@@ -175,6 +175,9 @@
 			}
 		},
 		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},

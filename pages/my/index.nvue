@@ -215,7 +215,7 @@
 					{
 						url: '../../static/images/my/yxzx.png',
 						name: '游戏资讯',
-						router: '/pages/my/comprehensive/gameConsulting/gameConsulting',
+						router: '/pages/my/comprehensive/gameConsulting/gameConsulting1',
 						type: 0,
 					},
 					{

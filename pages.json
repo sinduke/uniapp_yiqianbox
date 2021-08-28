@@ -972,17 +972,6 @@
 		    	}
 		    }   
 		},
-		// 综合功能-游戏礼包
-		{
-			"path": "pages/my/comprehensive/gameGiftBag/gameGiftBag",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		},
 		// 综合功能-游戏礼包nvue
 		{
 		    "path" : "pages/my/comprehensive/gameGiftBag/gameGiftBag1",
@@ -998,21 +987,6 @@
 		    	}
 		    }
 		    
-		},
-		//综合功能-游戏资讯
-		{
-			"path": "pages/my/comprehensive/gameConsulting/gameConsulting",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "游戏资讯"
-					}
-				}
-			}
 		},
 		//综合功能-游戏资讯nvue
 		{

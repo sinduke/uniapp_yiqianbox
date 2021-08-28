@@ -1,22 +1,412 @@
 <template>
-	<view>
-		
+	<view style="flex: 1;">
+		<view class="container" :style="{width:$store.state.myWidth+'px'}">
+			<view class="box" :style="{width:$store.state.myWidth+'px'}">
+				<!-- tabs -->
+				<view class="tabslist">
+					<view class="tabs" style="margin-right:60rpx ;" :active="active"  v-for="(item,index) in tabslist" @click="tabsClick(index)">
+						<text :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+					</view>	
+				</view>
+				<view  class="tabs_line" :style="{transform:left? 'translateX('+0.17*myWidth*number+')':'translateX('+0.17*myWidth*number1+')'}"></view>
+				<!-- 滑动item -->
+				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}"  >
+					<swiper-item>
+						<list class="list" v-if="pageData1.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
+							<cell  v-for="(item,index) in pageData1" @click="handleRouterdetail(item.news_id,item.post_hits)" :style="{width:$store.state.myWidth-32+'px'}">
+								<view class="head" :style="{width:$store.state.myWidth-33+'px'}" style="margin-left: 6rpx;">
+									<image class="head_img" :src="item.img" mode="widthFix"></image>
+									<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
+										<text class="head_text">{{item.post_title}}</text>
+									</view>
+								</view>
+								<view class="bottom" :style="{width:$store.state.myWidth-35+'px'}" style="box-shadow: 0px 0px 4rpx rgba(0, 0, 0, 0.16);margin-left: 6rpx;">
+									<view class="bottom_Left" :style="{width:($store.state.myWidth-145)*0.7+'px'}">
+										<text class="left_text1">{{item.title}}</text>
+										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+									</view>
+									<view class="bottom_right">
+										<image src="../../../../static/images/seeall.png" mode="" style="width: 32rpx;height: 16rpx;"></image>
+										<text class="right_text2">{{item.post_hits}}</text>
+									</view>
+								</view>
+								<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+							</cell>
+							<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+							</loading>
+						</list>
+						<nloading v-else :isNoData="isNoData"></nloading>
+					</swiper-item>
+					<swiper-item>
+						<list class="list" v-if="pageData2.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
+							<cell  v-for="(item,index) in pageData2" @click="handleRouterdetail(item.news_id,item.post_hits)" :style="{width:$store.state.myWidth-32+'px'}">
+								<view class="head" :style="{width:$store.state.myWidth-33+'px'}" style="margin-left: 6rpx;">
+									<image class="head_img" :src="item.img" mode="widthFix"></image>
+									<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
+										<text class="head_text">{{item.post_title}}</text>
+									</view>
+								</view>
+								<view class="bottom" :style="{width:$store.state.myWidth-35+'px'}" style="box-shadow: 0px 0px 4rpx rgba(0, 0, 0, 0.16);margin-left: 6rpx;">
+									<view class="bottom_Left" :style="{width:($store.state.myWidth-145)*0.7+'px'}">
+										<text class="left_text1">{{item.title}}</text>
+										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+									</view>
+									<view class="bottom_right">
+										<image src="../../../../static/images/seeall.png" mode="" style="width: 32rpx;height: 16rpx;"></image>
+										<text class="right_text2">{{item.post_hits}}</text>
+									</view>
+								</view>
+								<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+							</cell>
+							<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+							</loading>
+						</list>
+						<nloading v-else :isNoData="isNoData"></nloading>
+					</swiper-item>
+					<swiper-item>
+						<list class="list" v-if="pageData3.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
+							<cell  v-for="(item,index) in pageData3" @click="handleRouterdetail(item.news_id,item.post_hits)" :style="{width:$store.state.myWidth-32+'px'}">
+								<view class="head" :style="{width:$store.state.myWidth-33+'px'}" style="margin-left: 6rpx;">
+									<image class="head_img" :src="item.img" mode="widthFix"></image>
+									<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
+										<text class="head_text">{{item.post_title}}</text>
+									</view>
+								</view>
+								<view class="bottom" :style="{width:$store.state.myWidth-35+'px'}" style="box-shadow: 0px 0px 4rpx rgba(0, 0, 0, 0.16);margin-left: 6rpx;">
+									<view class="bottom_Left" :style="{width:($store.state.myWidth-145)*0.7+'px'}">
+										<text class="left_text1">{{item.title}}</text>
+										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+									</view>
+									<view class="bottom_right">
+										<image src="../../../../static/images/seeall.png" mode="" style="width: 32rpx;height: 16rpx;"></image>
+										<text class="right_text2">{{item.post_hits}}</text>
+									</view>
+								</view>
+								<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+							</cell>
+							<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+							</loading>
+						</list>
+						<nloading v-else :isNoData="isNoData"></nloading>
+					</swiper-item>
+				</swiper>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import nloading from '@/components/nvue-loading/nvue-loading'
 	export default {
 		data() {
 			return {
-				
+				tabslist: ['福利', '资讯', '攻略'],
+				isNoData:false,
+				loadinging:false,
+				active: 0,
+				current: 0,
+				isActive:false,
+				noActive:false,
+				number:0,
+				number1:0,
+				left:false,
+				pageData1:[],
+				pageData2:[],
+				pageData3:[],
+				params: [
+					{
+						page: 1,
+						offset: 10,
+						type: 1 ,
+						count:0,
+					},
+					{
+						page: 1,
+						offset: 10,
+						type:2,
+						count:0,
+					},
+					{
+						page: 1,
+						offset: 10,
+						type:3,
+						count:0,
+					}
+				]
 			}
 		},
+		components:{
+			nloading
+		},
+		watch:{
+			active(val){
+				this.number1 = this.number
+				this.number = val
+				if(this.number-this.number1>0){
+					this.left = true
+				}else{
+					this.left = false
+					this.number1 = this.number
+				}
+				if(val==1){
+					this.isActive = true 
+				}else if(val==2){
+					this.noActive = true
+				}	
+			},
+			isActive(val){
+				this.getzxData()
+			},
+			noActive(val){
+				this.getglData()
+			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		filters:{
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		},
+		onLoad() {
+			this.getflData()
+		},
 		methods: {
-			
+			//加载更多
+			onloading(e){
+				if(this.active==0){
+					if(this.params[1].count>this.pageData1.length){
+						this.loadinging = true
+						this.params[1].page++
+						this.getflData()
+					}
+				}else if(this.active==1){
+					if(this.params[0].count>this.pageData2.length){
+						this.loadinging = true
+						this.params[0].page++
+						this.getzxData()	
+					}
+				}else{
+					if(this.params[2].count>this.pageData3.length){
+						this.loadinging = true
+						this.params[2].page++
+						this.getglData()	
+					}
+				}
+				
+			},
+			tabsClick(index){
+				this.current = index
+			},
+			swiperClick(e){
+				this.active = e.detail.current
+			},
+			handleRouterdetail(id,post_hits) {
+				uni.navigateTo({
+					url: `/pages/my/comprehensive/gameConsulting/gameDetail/gameDetail?news_id=${id}&post_hits=${post_hits}`
+				})
+			},
+			//1.福利
+			getflData(data = {}) {
+				$api.get('/news/list', {
+					...this.params[1]
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.loadinging = false
+						this.isNoData = true
+						this.pageData1 = this.pageData1.concat(res.data.data.list)
+						this.params[1].count = res.data.data.count
+					} else {
+						uni.showToast({
+							title:res.data.msg,
+							icon: "none"
+						})
+					}
+				})
+			},
+			//2.资讯
+			getzxData(data = {}) {
+				$api.get('/news/list', {
+					...this.params[0]
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.loadinging = false
+						this.isNoData = true
+						this.pageData2 = this.pageData2.concat(res.data.data.list)
+						this.params[0].count = res.data.data.count
+					} else {
+						uni.showToast({
+							title:res.data.msg,
+							icon: "none"
+						})
+					}
+				})
+			},
+			//3.攻略
+			getglData(data = {}) {
+				$api.get('/news/list', {
+					...this.params[2]
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.pageData3 = this.pageData3.concat(res.data.data.list)
+						this.params[2].count = res.data.data.count
+					} else {
+						uni.showToast({
+							title:res.data.msg,
+							icon: "none"
+						})
+					}
+				})
+			},
 		}
 	}
 </script>
 
-<style>
-
+<style scoped>
+	/* body */
+	.container{
+		background: #fff;
+	}
+	.box{
+		padding:0rpx 32rpx ;
+	}
+	.lineShowdow{
+		height:6rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	/* 滑块 */
+	.tabslist{
+		margin-top:30rpx ;
+		flex-direction: row;
+		margin-right:60rpx;
+	}
+	.tabs_text{
+		color: #666666;
+		font-weight: 400;
+		font-size: 36rpx;
+		
+	}
+	.tabs_line{
+		margin:10rpx 0rpx 4rpx 13rpx;
+		width:50rpx;
+		height:6rpx ;
+		border-radius:6rpx;
+		background: #FF5927;
+		transition-property: transform;
+		transition-duration:0.4s;
+	}
+	/* item-cell */
+	.list{
+		overflow: hidden;
+	}
+	.cell{
+		border-radius: 40rpx;
+		background: #FFFFFF;
+	}
+	.head{
+		position:relative;
+		height:330rpx ;
+		border-radius: 40rpx 40rpx 0rpx 0rpx;
+		margin-top: 40rpx;
+	}
+	.icon{
+		position:absolute;
+		width:176rpx ;
+		height:176rpx ;
+		border-radius:40rpx ;
+		bottom: 43rpx;
+		left:30rpx ;
+	}
+	.head_img{
+		height:330rpx ;
+		border-radius: 40rpx 40rpx 0rpx 0rpx;
+	}
+	.head_box{
+		position:absolute;
+		bottom:0rpx;
+		height:70rpx ;
+		background-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(255, 255, 255, 0.1));
+	}
+	.head_text{
+		margin-left:224rpx ;
+		font-weight: 600;
+		color: #FFFFFF;
+		font-size: 32rpx;
+		text-overflow: ellipsis;
+		lines:1 ;
+	}
+	.bottom{
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border-radius:0rpx 0rpx 40rpx 40rpx;
+		margin-bottom:20rpx;
+	}
+	.bottom_Left{
+		margin-left:224rpx ;
+	}
+	.left_text1{
+		margin-top:10rpx;
+		color: #1C1C1C;
+		font-size:28rpx ;
+		font-weight:500 ;
+		text-overflow: ellipsis;
+		lines:1 ;
+	}
+	.left_text2{
+		color: #666666;
+		font-size: 24rpx;
+		font-weight: 400;
+		margin-top: 12rpx;
+		margin-bottom: 24rpx;
+	}
+	.bottom_right{
+		flex-direction: row;
+		
+	}
+	.right_text2{
+		color: #666666;
+		font-weight: 400;
+		font-size: 26rpx;
+		margin-right: 24rpx;
+	}
+	
 </style>
+
