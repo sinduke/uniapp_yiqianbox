@@ -1,6 +1,6 @@
 <template>
 	<view class="container" :style="{width:$store.state.myWidth+'px'}">
-		<view class="head" :style="{width:$store.state.myWidth+'px',height:active?downHeight+'rpx':93+'rpx'}">
+		<view class="head" :style="{width:$store.state.myWidth+'px',height:active?downHeight*myHeight+'rpx':93+'rpx'}">
 			<view @click="show" class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
 				<text class="input_text">{{title}}</text>
 				<text class="input_style">{{rightTitle}}</text>
@@ -35,7 +35,7 @@
 			// 过渡动画高度
 			downHeight:{
 				type: Number,
-				default:500
+				default:0.37
 			},
 			//标题
 			title:{
@@ -82,7 +82,7 @@
 						this.active = false
 					},100)	
 				}
-				
+				this.$emit('isactive',this.isactive)
 			}
 		}
 	}
@@ -97,6 +97,7 @@
 	align-items: center;
 	transition-duration:0.5s;
 	transition-property:height;
+	overflow:hidden;
 }
 .isimg{
 	transition-duration:0.5s;

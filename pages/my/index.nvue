@@ -209,7 +209,7 @@
 					{
 						url: '../../static/images/my/yxlb.png',
 						name: '游戏礼包',
-						router: '/pages/my/comprehensive/gameGiftBag/gameGiftBag',
+						router: '/pages/my/comprehensive/gameGiftBag/gameGiftBag1',
 						type: 0,
 					},
 					{

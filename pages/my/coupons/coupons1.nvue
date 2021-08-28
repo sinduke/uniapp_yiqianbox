@@ -10,7 +10,7 @@
 				</view>
 				<view  class="tabs_line" :style="{transform:left? 'translateX('+85.5*number+')':'translateX('+85.5*number1+')'}"></view>
 				<!-- 滑动item -->
-				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}"  :duration="400">
+				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}"  >
 					<swiper-item>
 						<list class="list" v-if="couponList1.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell v-for="(item,index) in couponList1" :style="{width:$store.state.myWidth-32+'px'}">
@@ -240,11 +240,9 @@
 			},
 			tabsClick(index){
 				this.current = index
-				console.log(111,this.current)
 			},
 			swiperClick(e){
 				this.active = e.detail.current
-				console.log(222,this.active)
 			},
 			handleRouterdetail(id) {
 				uni.navigateTo({

@@ -1,22 +1,189 @@
+<!-- 游戏礼包 -->
 <template>
-	<view>
-		
+	<view style="flex: 1;background-color: #fff;">
+		<view class="lineShowdow"></view>
+		<view class="box" :style="{width:$store.state.myWidth+'px'}">
+			<list class="list" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" v-if="pageData.length">
+				<cell class="cell" :style="{width:$store.state.myWidth+'px'}" v-for="(item,index) in pageData">
+					<image class="box_left" mode="widthFix" :src="item.icon"  @click="toDetail(item.game_id)"></image>
+					<view class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
+						<view class="right_1" :style="{width:($store.state.myWidth-128)*0.75+'px'}">
+							<text class="text1">{{item.gift_name}}</text>
+							<text class="text2">礼包类型：{{item.scope}}</text>
+							<text class="text2">礼包码：{{item.code}}</text>
+							<text class="text2">兑换期限：{{item.end_time | dateFormat("yyyy-MM-dd")}}</text>
+						</view>
+						<view class="right_2" @click="copy(item.code)" > 
+							<text class="text3">复制</text>
+						</view>
+					</view>
+				</cell>
+				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+				</loading>
+			</list>
+			<nloading v-else :isNoData="isNoData"></nloading>
+		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import nloading from '@/components/nvue-loading/nvue-loading'
 	export default {
 		data() {
 			return {
-				
+				isNoData:false,
+				loadinging:false,
+				copyShow: false,
+				params: {
+					page: 1,
+					offset: 10,
+				},
+				count:0,
+				pageData: []
 			}
 		},
+		components:{
+			nloading
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		filters:{
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		},
+		onLoad() {
+			this.getpageData()
+		},
 		methods: {
-			
+			//加载更多
+			onloading(e){
+				if(this.count>this.pageData.length){
+					this.loadinging = true
+					this.params.page++
+					this.getpageData()
+				}	
+			},
+			toDetail(id){
+				uni.navigateTo({
+					url:'/pages/view/gamedetail/gamedetail?gameid='+id
+				})
+			},
+			toRouter(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
+			getpageData(data = {}) {
+				$api.get('/user/gift/list', {
+					...data
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.pageData = this.pageData.concat(res.data.data.list) ;
+						this.count = res.data.data.count
+						console.log(this.pageData)
+					} else {
+						uni.showToast({
+							title:res.data.msg,
+							icon: "none"
+						})
+					}
+				})
+			},
+			//复制
+			copy(value) {
+				uni.setClipboardData({
+					data: value,
+				});
+			}
 		}
 	}
 </script>
 
-<style>
-
+<style scoped>
+	.box{
+		padding:0rpx 32rpx ;
+		
+	}
+	.lineShowdow{
+		height:6rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	.cell{
+		flex-direction: row;
+		align-items: center;
+	}
+	.box_left{
+		width:160rpx ;
+		height:160rpx ;
+		border-radius: 40rpx;
+		margin-right:32rpx;
+		margin:40rpx 32rpx 40rpx 0;
+	}
+	.box_right{
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 2rpx solid #EFEFEF; 
+		margin-top:40rpx ;
+		padding-bottom: 40rpx;
+	}
+	.text1{
+		color: #1C1C1C;
+		font-weight: 500;
+		font-size:32rpx ;
+		text-overflow: ellipsis;
+	}
+	.text2{
+		font-weight: 400;
+		color: #666666;
+		font-size:24rpx ;
+		margin-top:8rpx ;
+		text-overflow: ellipsis;
+	}
+	.right_2{
+		border: 1px solid #E4E4E4;
+		padding:8rpx 28rpx  ;
+		border-radius: 32rpx;
+	}
+	.text3{
+		color: #FF5927;
+		font-size:28rpx;
+		font-weight: 600;
+		
+	}
 </style>

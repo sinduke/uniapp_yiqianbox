@@ -3,8 +3,8 @@
 	<view class="nvue-navbar" @click.stop="stop" :style="{boxShadow: lines?'0px 0px 6px 0px rgba(221, 221, 221, 0.6)':''}">
 	 	<view class="statusBarHeight" :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
 		<view class="title">
-			<view class="slot-left">
-			<image class="right_icon" ref='handleBack' style="margin-right: 12rpx;" src="@/static/images/left.png" @click="handleback"></image>
+			<view class="slot-left" @click="handleback">
+			<image class="right_icon" ref='handleBack' style="margin-right: 12rpx;" src="@/static/images/left.png" ></image>
 			<text class="customer" >{{title}}</text>
 			</view>	
 			<view class="slot-center">
