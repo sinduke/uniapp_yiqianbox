@@ -26,7 +26,7 @@
 										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
 									</view>
 									<view class="bottom_right">
-										<image src="../../../../static/images/seeall.png" mode="" style="width: 32rpx;height: 16rpx;"></image>
+										<image src="../../../../static/images/seeall.png" mode="" style="width: 28rpx;height: 16rpx;"></image>
 										<text class="right_text2">{{item.post_hits}}</text>
 									</view>
 								</view>
@@ -52,7 +52,7 @@
 										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
 									</view>
 									<view class="bottom_right">
-										<image src="../../../../static/images/seeall.png" mode="" style="width: 32rpx;height: 16rpx;"></image>
+										<image src="../../../../static/images/seeall.png" mode="" style="width: 28rpx;height: 16rpx;"></image>
 										<text class="right_text2">{{item.post_hits}}</text>
 									</view>
 								</view>
@@ -78,7 +78,7 @@
 										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
 									</view>
 									<view class="bottom_right">
-										<image src="../../../../static/images/seeall.png" mode="" style="width: 32rpx;height: 16rpx;"></image>
+										<image src="../../../../static/images/seeall.png" mode="" style="width: 28rpx;height: 16rpx;"></image>
 										<text class="right_text2">{{item.post_hits}}</text>
 									</view>
 								</view>
@@ -362,9 +362,10 @@
 		position:absolute;
 		bottom:0rpx;
 		height:70rpx ;
-		background-image: linear-gradient(to top, rgba(0, 0, 0, .8), rgba(255, 255, 255, 0.1));
+		background-image: linear-gradient(to top, rgba(0, 0, 0, .4), rgba(255, 255, 255, 0.1));
 	}
 	.head_text{
+		margin-top:6rpx ;
 		margin-left:224rpx ;
 		font-weight: 600;
 		color: #FFFFFF;
@@ -399,9 +400,11 @@
 	}
 	.bottom_right{
 		flex-direction: row;
+		align-items: center;
 		
 	}
 	.right_text2{
+		margin-left:10rpx ;
 		color: #666666;
 		font-weight: 400;
 		font-size: 26rpx;

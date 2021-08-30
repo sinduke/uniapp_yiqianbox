@@ -1003,7 +1003,7 @@
 		    	}
 		    }    
 		},
-		//游戏资讯-详情页面
+		//游戏资讯-详情页面nvue
 		{ 
 			"path": "pages/my/comprehensive/gameConsulting/gameDetail/gameDetail",
 			"style": {
@@ -1022,27 +1022,6 @@
 					}
 				}
 			}
-		},
-		//游戏资讯-详情页面nvue
-		{
-		    "path" : "pages/my/comprehensive/gameConsulting/gameDetail/gameDetail1",
-		    "style": {
-		    	"app-plus": {
-		    		"bounce": "none", //关闭窗口回弹效果
-		    		"titleNView": {
-		    			"backgroundColor": "#fff",
-		    			"titleColor": "#1C1C1C",
-		    			"titleAlign": "left",
-		    			"titleText": "资讯详情",
-		    			"buttons": [ 
-		    				{
-		    					"type": "menu"
-		    				}
-		    			]
-		    		}
-		    	}
-		    }
-		    
 		},
 		//忘记密码
 		{
