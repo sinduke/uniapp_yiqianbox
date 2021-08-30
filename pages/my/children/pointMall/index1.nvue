@@ -1,23 +1,21 @@
+<!-- 积分商城 -->
 <template>
-	<view class="container" :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
-		<myNavbar title='积分商城' :lines="false" right radius router='/pages/my/FlatGoldCoins/record/record' src='../../../../static/images/my_details.png'></myNavbar>
+	<view :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
+		<myNavbar title='积分商城' :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
 		<view class="container" :style="{width:myWidth+'px'}">
 			<view :style="{marginTop:statusBarHeight+45+'px'}"></view>
-			<list :show-scrollbar="false" :style="{height:myHeight-1+'rpx'}" >
-				<cell>
-					<view class="demoTitle" :style="{width:myWidth+'px'}">
-						<image :style="{width:myWidth+'px'}" src="@/static/images/my/jfsc_banner.png" mode="widthFix" ></image>
+			<scroll-view scroll-y :style="{height:myHeight-153+'rpx'}" :show-scrollbar="false">
+				<view class="demoTitle" :style="{width:myWidth+'px'}">
+					<image :style="{width:myWidth+'px'}" src="@/static/images/my/jfsc_banner.png" mode="widthFix" ></image>
+				</view>
+				<view class="demotext">
+					<text class="text_le">我的积分：{{userInfo.my_integral}}</text>
+					<view class="text_ri">
+						<image class="ri_img" src="@/static/images/my/rhhqjf.png" mode="widthFix" @click="isShow= true"></image>
+						<text class="ri_text"  @click="isShow= true">如何获得积分</text>
 					</view>
-					<view class="demotext">
-						<text class="text_le">我的积分：50</text>
-						<!-- <text class="text_le">我的积分：{{userInfo.my_integral}}</text> -->
-						<view class="text_ri">
-							<image class="ri_img" src="@/static/images/my/rhhqjf.png" mode="widthFix" @click="isShow= true"></image>
-							<text class="ri_text"  @click="isShow= true">如何获得积分</text>
-						</view>
-					</view>
-				</cell>
-				<cell class="itemlist">
+				</view>
+				<view class="itemlist">
 					<view class="item" :style="{width:myWidth*0.5-24+'px'}">
 						<view class="item_head" :style="{width:myWidth*0.5-24-16+'px'}" @click="handleRouter('/pages/my/children/bigTurntable/index')">
 							<image src="@/static/images/my/jfsc-xyzp.png" style="width: 140rpx;" mode="widthFix"></image>
@@ -28,34 +26,41 @@
 							<text class="bo_text" >立即兑换</text>
 						</view>
 					</view>
-					<view class="item" :style="{width:myWidth*0.5-24+'px'}"></view>
-				</cell>
-				<cell class="itemlist">
-					<view class="item" :style="{width:myWidth*0.5-24+'px'}">
-						<view class="item_head" :style="{width:myWidth*0.5-24-16+'px'}" @click="handleRouter('/pages/my/children/bigTurntable/index')">
-							<image src="@/static/images/my/jfsc-xyzp.png" style="width: 140rpx;" mode="widthFix"></image>
-							<text class="head_text">积分“转”大奖</text>
+					<view class="item" :style="{width:myWidth*0.5-24+'px'}" v-for="item in pageData" :key='item.id'>
+						<view class="item_head" v-if="item.goods_img" :style="{width:myWidth*0.5-24-16+'px'}" >
+							<image :src="item.goods_img" style="width: 140rpx;" mode="widthFix"></image>
+							<text class="head_text">{{item.goods_content.length>12?item.goods_content.slice(0,10)+'..':item.goods_content}}</text>
 						</view>
-						<text class="item_mi">幸运转盘</text>
-						<view class="item_bo" @click="handleRouter('/pages/my/children/bigTurntable/index')">
+						<view class="item_head" v-else :style="{width:myWidth*0.5-24-16+'px'}" >
+							<image :src="item.integral<=500?'../../../../static/images/my/jfsc-5ptb.png':(item.integral>500&&item.integral<=1000)?'../../../../static/images/my/jfsc-10ptb.png':(item.integral>1000&&item.integral<=2000)?'../../../../static/images/my/jfsc-20ptb.png':'../../../../static/images/my/jfsc-30ptb.png'" style="width: 140rpx;" mode="widthFix"></image>
+							<text class="head_text">{{item.goods_content.length>12?item.goods_content.slice(0,10)+'..':item.goods_content}}</text>
+						</view>
+						<text class="item_mi">{{item.goods_name.length>12?item.goods_name.slice(0,10)+'..':item.goods_name}}</text>
+						<view class="item_bo" @click="handleClick(item)">
 							<text class="bo_text" >立即兑换</text>
 						</view>
 					</view>
-					
-				</cell>
-			</list> 
-			
+				</view>
+			</scroll-view>
 		</view>
+		<showpop :isShow="isShow" :textType="false" :titleType="false" :paddingType="true" :buttonType="false" @remove="remove">
+			<image src="@/static/images/my/jfsc-jfgz.png" mode="widthFix" class="showimg">
+				<text class="show_text1">1.每日签到，实名认证，充值获取积分。</text>
+				<text class="show_text2">2.完成游戏任务，获取积分。</text>
+				<view class="show_box" @click="remove">
+					<text class="show_text3" >我知道了</text>
+				</view>
+			</image>
+		</showpop>
 	</view>
 </template>
 
 <script>
-	import {
-		mapState
-	} from 'vuex';
 	import {$api} from '@/config/api.js';
 	import common from "@/common/js/common.js";
-	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
+	import showpop from '@/components/nvue-showpop/nvue-showpop.nvue';
+	const globalData = getApp().globalData
 	export default {
 		data() {
 			return {
@@ -72,13 +77,12 @@
 			}
 		},
 		components: {
-			myNavbar
+			myNavbar,
+			showpop
 		},
 		computed:{
-			computed: {
-				...mapState({
-					userInfo: 'userInfo'
-				})
+			userInfo(){
+				return globalData.store.state.userInfo
 			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
@@ -96,6 +100,21 @@
 					url
 				})
 			},
+			remove(){
+				this.isShow = false
+			},
+			handleClick(item) {
+				if (item.mem_times == 1 && item.is_exchange == 1) {
+					uni.showToast({
+						icon: "none",
+						title: this.$t('index.pointMall24'),
+					});
+					return;
+				} else {
+					this.handleShow = true;
+					this.subData = item;
+				}
+			},
 			getPageData() {
 				$api.get(
 					"app/shop/integralList", {
@@ -111,7 +130,6 @@
 			},
 		},
 		onLoad(){
-			// console.log(this.userInfo)
 			this.getPageData();
 		}
 	}
@@ -150,6 +168,7 @@
 	color: #999999;
 }
 .itemlist{
+	flex-wrap: wrap;
 	padding:32rpx 28rpx;
 	background: #F6F6F8;
 	flex-direction: row;
@@ -157,6 +176,7 @@
 }
 .item{
 	padding:16rpx ;
+	margin-bottom: 40rpx;
 	height: 360rpx;
 	background: #FFFFFF;
 	border-radius:40rpx ;
@@ -199,5 +219,40 @@
 	font-size:26rpx ;
 	font-weight: bold;
 	
+}
+.showimg{
+	position: relative;
+}
+.show_text1{
+	color:#252525;
+	font-size: 30rpx;
+	font-weight: bold;
+	position:absolute;
+	top:230rpx ;
+	left:60rpx ;
+}
+.show_text2{
+	color:#252525;
+	font-size: 30rpx;
+	font-weight: bold;
+	position:absolute;
+	top:300rpx ;
+	left:60rpx ;
+}
+.show_box{
+	position:absolute;
+	top:400rpx ;
+	left:200rpx ;
+	width:210rpx ;
+	height: 80rpx;
+	border: 2rpx solid #E3E3E3;
+	border-radius: 40rpx;
+	justify-content: center;
+	align-items: center;
+}
+.show_text3{
+	color: #FF4810;
+	font-size: 30rpx;
+	font-weight: 500;
 }
 </style>

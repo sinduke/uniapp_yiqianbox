@@ -14,6 +14,7 @@
 					<image :src="src" mode="widthFix" class="right_icon" ></image>	
 				</view>
 			</view>
+			
 		</view>
 	</view>
 </template>
@@ -48,7 +49,11 @@
 			src:{
 				type:String,
 				default:''
-			}
+			},
+			type:{
+				default:0
+			},
+			
 		},
 		computed: {
 			i18n() {
@@ -67,6 +72,10 @@
 				
 			},
 			handleRouter(){
+				if(this.type){
+					this.$emit("click")
+					return 
+				}
 				uni.navigateTo({
 					url:this.router
 				})

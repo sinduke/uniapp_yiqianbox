@@ -166,7 +166,7 @@
 					{
 						url: '../../static/images/my/jfsc.png',
 						name: '积分商城',
-						router: '/pages/my/children/pointMall/index',
+						router: '/pages/my/children/pointMall/index1',
 						type: 1
 					},
 					{
