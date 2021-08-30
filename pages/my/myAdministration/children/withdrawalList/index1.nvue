@@ -1,10 +1,11 @@
+
 <template>
 	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}" >
 		<view class="lineShowdow">
 			
 		</view>
 		<view class="" v-for="(item, index) in SettleInfoList" :key="index">
-			<collapse :title="type[item.type]" text1="户名" text2="账号" :downHeight="item.type=='bank'?720:500" :rightText1="item.cardholder" :rightText2="item.banknum">
+			<collapse  @isactive="isActive" :title="type[item.type]" text1="户名" text2="账号" :downHeight="item.type=='bank'?0.52:0.36" :rightText1="item.cardholder" :rightText2="item.banknum">
 				<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}" v-if="item.type=='bank'">
 					<text class="input_text">银行卡名称</text>
 					<text class="input_style">{{item.bankname}}</text>
@@ -56,6 +57,9 @@
 				uni.navigateTo({
 					url: `/pages/my/myAdministration/children/withdrawal/index1?paytype=${type}`
 				})
+			},
+			isActive(isactive){
+				console.log(isactive)
 			}
 		},
 		onShow() {
