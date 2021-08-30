@@ -1,7 +1,23 @@
 	<template>
 		<view class="index" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
 			<view  :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
-			<view class="Title">
+			<scroll-view ref="tabbar1" id="tab-bar" class="tab-bar" :scroll="false" :scroll-x="true" :show-scrollbar="false"
+			  :scroll-into-view="scrollInto">
+			  <view style="flex-direction: column;">
+			    <view style="flex-direction: row;">
+			      <view class="uni-tab-item" v-for="(tab,index) in tabList" :key="tab.id" :id="tab.id" :ref="'tabitem'+index"
+			        :data-id="index" :data-current="index" @click="ontabtap">
+			        <text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+			      </view>
+			    </view>
+			    <view class="scroll-view-indicator">
+			      <view ref="underline" class="scroll-view-underline" :class="isTap ? 'scroll-view-animation':''" :style="{left: indicatorLineLeft + 'px', width: indicatorLineWidth + 'px'}"></view>
+			    </view>
+			  </view>
+			</scroll-view>
+			
+			
+			<!-- <view class="Title">
 				<view class="TitleList">
 					<titleLine :number='number' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine>
 				</view>
@@ -13,7 +29,7 @@
 						<image src="@/static/images/load-app.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/game/children/gameList')" ></image>
 					</view>
 				</view>
-			</view>
+			</view> -->
 	
 
 			<view class="swiper" @touchstart='touchstart'>
