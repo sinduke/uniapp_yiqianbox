@@ -1,15 +1,21 @@
+<!-- 意见反馈 -->
 <template>
-	<view>
+	<view style="flex: 1;background: #fff;">
+		<myNavbar title='我的积分' right radius router='/pages/my/integral/integral1' src='@/static/images/wen-icon.png'></myNavbar>
 		
 	</view>
 </template>
 
 <script>
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
 	export default {
 		data() {
 			return {
 				
 			}
+		},
+		components: {
+			myNavbar
 		},
 		methods: {
 			

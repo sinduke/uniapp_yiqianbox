@@ -69,7 +69,7 @@
 						   cont = this.detailList.content;
 						   var reg = /<[^<>]+>/g 
 						    this.content=cont.replace(reg,'')
-							console.log()
+							console.log(1)
                         
 					
 	

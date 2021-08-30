@@ -203,7 +203,7 @@
 					{
 						url: '../../static/images/my/yjfk.png',
 						name: '意见反馈',
-						router: '/pages/my/comprehensive/feedback/feedback',
+						router: '/pages/my/comprehensive/feedback/feedback1',
 						type: 1,
 					},
 					{
