@@ -1,8 +1,7 @@
+<!-- 试玩游戏 -->
 <template>
 	<view class="demoGame">
-		<view class="lineShowdow">
-			
-		</view>
+		<view class="lineShowdow"></view>
 		<view class="bottom" :style="{height:$store.state.mysHeight-160+'rpx'}" >
 			<list :show-scrollbar='false' :style="{height:$store.state.mysHeight-160+'rpx'}" v-if="pageData.length">
 				<cell>
@@ -179,6 +178,7 @@
 
 <style scoped>
 	.demoGame{
+		flex: 1;
 		background-color: #fff;
 	}
 	.lineShowdow{

@@ -1,0 +1,243 @@
+<!-- 交易须知 -->
+<template>
+	<view class="tradeNotes">
+		<view class="shadow" style=" box-shadow: 0px 0px 8rpx 0px rgba(210, 210,210, 0.8);"/>
+		<view class="body">
+			<scroller :show-scrollbar='false' :style="{height:myHeight-32+'rpx',width:myWidth-32+'px'}">
+				<view class="title" style="margin-top: 20rpx;">
+					<text class="title_text">抵制不良游戏，拒绝盗版游戏，注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身，合理安排时间，享受健康生活。</text>
+				</view>
+				<view class="purchase" style="margin-bottom: 64rpx;">
+					<text class="my_title" style="margin-bottom: 64rpx;">购买流程</text>
+				    <view class="purchase_body">
+						<view class="purchase_Back">
+							<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+							<text class="purchase_Back_text">选择商品</text>
+						</view>
+						<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" style="transform:rotate(180deg);"></image>
+						<view class="purchase_Back"> 
+							<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+							<text class="purchase_Back_text">浏览或搜索角色</text>
+						</view>
+						<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" style="transform:rotate(180deg);"></image>
+						<view class="purchase_Back">
+							<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+							<text class="purchase_Back_text">下单购买</text>
+						</view>
+						<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" style="transform:rotate(180deg);"></image>
+						<view class="purchase_Back">
+							<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+							<text class="purchase_Back_text">支付完成</text>
+						</view>
+				    </view>
+					<view class="purchase_bottom" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" style="transform:rotate(-90deg);margin-bottom: 12rpx;"></image>
+						<text class="text purchase_but" style="color: #FF5927;">选择购买的小号登录游戏</text>
+					</view>
+				</view>
+				<view class="nodes" style="margin-bottom: 32rpx;">
+					<text class="my_title" style="margin-bottom: 32rpx;">买家须知</text>
+				   <view class="nodes_body">
+				    <view class="nodes_tlt"> 
+					<text class="nodes_raidus">1</text> 
+						<text class="text" :style="{width:myWidth-72+'px'}">购买后，角色小号自动转入你的app账号，登录游戏即可查收角色。</text>
+				    </view>
+				    <view class="nodes_tlt"> 
+					<text class="nodes_raidus">2</text> 
+						<text class="text" :style="{width:myWidth-72+'px'}">交易账号审核时间一般是工作日24小时之内，节假日可能会有延时。</text>
+					</view>
+				    <view class="nodes_tlt"> 
+					<text class="nodes_raidus">3</text> 
+						<text class="text" :style="{width:myWidth-72+'px'}">交易账号所获取的金额为平台币（平台币不支持提现），卖家可在《我的》-《平台币》-《我的钱包》-查看明细。</text>
+					</view>
+				    	<view class="nodes_tlt"> 
+						<text class="nodes_raidus">4</text> 
+						<text class="text" :style="{width:myWidth-72+'px'}">因为平台币的特殊性和各方面的因素，决定了平台币不能购买账号，请悉知。</text>
+					</view>
+				    </view>
+				</view>
+				<view class="purchase" style="margin-bottom: 32rpx;">
+					<text class="my_title" style="margin-bottom: 32rpx;">出售流程</text>
+				    	<view class="purchase_body">
+							<view class="purchase_Back">
+								<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+								<text class="purchase_Back_text">进入交易</text>
+							</view>
+				    		<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" style="transform:rotate(180deg);"></image>
+				    		<view class="purchase_Back"> 
+								<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+								<text class="purchase_Back_text">选择游戏</text>
+							</view>
+				    		<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" style="transform:rotate(180deg);"></image>
+				    		<view class="purchase_Back">
+								<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+								<text class="purchase_Back_text">选中小号</text>
+							</view>
+				    		<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" style="transform:rotate(180deg);"></image>
+				    		<view class="purchase_Back">
+								<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+								<text class="purchase_Back_text">填写角色信息</text>
+							</view>
+				    	</view>
+						<view class=""style="flex-direction: row;justify-content: flex-end;" :style="{width:myWidth-50+'px'}">					
+						<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" style="transform:rotate(-90deg);margin: 12rpx 62rpx;"></image>
+						</view>
+						<view class="purchase_body" >
+							<view class="purchase_Back">
+								<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+								<text class="purchase_Back_text">收到平台币</text>
+							</view>
+							<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" ></image>
+							<view class="purchase_Back"> 
+								 <image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+								 <text class="purchase_Back_text">买家购买</text>
+							</view>
+							<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" ></image>
+							<view class="purchase_Back">
+								<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+								<text class="purchase_Back_text">上架出售</text>
+							</view>
+							<image src="@/static/images/transaction/nodes_left.png" mode="widthFix" class="purchase_image" ></image>
+							<view class="purchase_Back">
+								<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
+								<text class="purchase_Back_text">提交审核</text>
+							</view>
+						</view>
+				
+				</view>
+				<view class="nodes" style="margin-bottom: 12rpx;">
+					<text class="my_title" style="margin-bottom: 32rpx;">回收须知</text>
+				    <view class="nodes_body">
+				    	<view class="nodes_tlt">
+							<text class="nodes_raidus">1</text> 
+							<text class="text" :style="{width:myWidth-72+'px'}">具有实际充值记录的小号，可按照实际充值5%金额回收平台币，平台币可用于其他游戏充值。</text>
+							</view>
+				    	<view class="nodes_tlt"> 
+						<text class="nodes_raidus">2</text> 
+						<text class="text" :style="{width:myWidth-72+'px'}">部分较老或者已经关服很久的游戏不支持回收功能，回收后24小时可赎回，逾期不可赎回。</text>
+						</view>
+				    	<view class="nodes_tlt"> 
+						<view style="width: 60rpx;margin-right: 24rpx;"></view> 
+						<text class="text" :style="{width:myWidth-72+'px'}" style="color:#FF4810">仅支持平台币赎回，回收后，请手动退出游戏，切勿再往角色充值！</text>
+						</view>
+				
+				    </view>
+				</view>
+			</scroller>
+		    </view>
+	</view>
+</template>
+
+<script>
+	export default {
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			},
+			
+		},
+
+	}
+</script>
+
+<style  scoped>
+  .tradeNotes{
+	  background-color: #FFFFFF;
+	  flex: 1;
+    }
+	  .shadow{
+		  height: 10rpx;
+		  margin-bottom: 12rpx;	
+	  }
+	  .body{
+		  padding: 0 32rpx;
+	  }
+	  .title{
+		  background-color: #fff;
+		  padding-bottom: 40rpx;
+		  margin-bottom: 32rpx;
+          border-bottom:1px solid #efefef;
+		 }
+		  .title_text{
+			  font-size: 32rpx;
+			  font-weight: 700;
+			  /* font-family: PingFang SC; */
+		  }
+	 
+	  .my_title{
+		font-size:34rpx;
+		font-weight: 700;
+	  }
+	  .purchase_body{
+		 flex-direction: row;
+		 align-items: center;
+		 flex-wrap: nowrap;
+		 } 
+		  .purchase_Back{
+			 width: 140rpx;
+			  height: 140rpx;
+			 flex-direction: row;
+			 align-items: center;
+			  justify-content: center;
+			  padding:0 24rpx;  
+		 
+	  }
+	  .purchase_Back_text{
+		  position: absolute;
+		  font-size: 24rpx;
+		  color: #FF5927;
+		  lines: 2;
+		  width: 100rpx;
+		  text-align: center;
+	  }
+	  .purchase_bottom{
+		 align-items: center;
+		 }
+		  .purchase_but{
+			 font-size: 32rpx;
+			 font-weight:700;
+			 border-radius: 60rpx;
+			 padding: 26rpx 64rpx;
+			 border: 1px solid #efefef;
+		
+		  }
+		  
+	  
+	  .purchase_image{
+	  	 width: 32rpx;
+	     height: 32rpx;
+	  }
+	  .nodes_body{
+		  padding-bottom:14rpx;
+		 } 
+		  .nodes_raidus{
+			  color: #ff5927;
+			  font-size: 26rpx;
+			  margin-right: 24rpx;
+			  padding: 3rpx 15.5rpx;
+			  border-radius: 50rpx;
+			  border: 1px solid #EFEFEF;
+		  }
+		  .nodes_tlt{
+			  margin-bottom: 24rpx;
+			  flex-direction: row;
+			  align-items: flex-start;
+		  }
+	  
+	  .text{
+		 font-size: 28rpx;
+		  font-weight: 400;
+		  color: #666;
+		  lines: 2;
+	  }
+  
+</style>

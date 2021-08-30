@@ -17,12 +17,16 @@
         	<image :src="pageData.new_icon||pageData.icon" style="width: 80rpx;height:80rpx;margin: 0 20rpx;"></image>
         	<text style="color: #FEFEFE;font-size: 36rpx;">{{pageData.gamename.length>10?pageData.gamename.slice(0,8)+'..':pageData.gamename}}</text>
         </view>
-		<view class="downLoad" ref="downLoad" >
+		<!-- android -->
+		<view class="downLoad" ref="downLoad" v-if="pageData.classify==3">
+			<text style="color: #fff;font-size: 26rpx;"  @click="handleDownLoad" v-if="status">{{status}}</text>
+		</view> 
+           <!-- <downLoadButton ref="downLoad" class="downLoad"   @getData='myGetData' :item='item' :sort='0' :getData='getDatas'></downLoadButton> -->
+		<view class="downLoad" ref="downLoad" v-else>
 			<text style="color: #fff;font-size: 26rpx;" v-if="pageData.classify==5" @click="handleh5play">开玩</text>
-			<text style="color: #fff;font-size: 26rpx;" v-else-if="pageData.classify==3" @click="handleDownLoad">{{status}}</text>
 			<text style="color: #fff;font-size: 26rpx;" v-else  @click="handleIOSDown">{{opUrl?'安 装':'下 载'}}</text>
 		</view>  
-        
+       
 		<view class="myList" :style="{height:myHeight+'rpx'}">
 			<!-- @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend' -->
 			<list  @scroll='scroll' @scrollstart='scrollstart' @scrollend='scrollend'  ref="list" fixFreezing="true" :style="{height:myHeight +'rpx'}" :show-scrollbar='false' >
@@ -98,16 +102,18 @@
 			  	</view>
 				<!-- 下载  -->		
 				<!-- android -->
-				<view class="cards" ref="down" v-if="pageData.classify==3" @click="handleDownLoad">
-				<view class="down">
+				<view class="cards" ref="down" v-if="pageData.classify==3" @click="handleDownLoad" style="height: 80rpx;">
+				<!-- <view class="down">
 					<image class="operation-item_image" src="@/static/images/dwonLoad.png" mode="widthFix" style="margin-right: 12rpx;"  v-if="status=='下 载'"></image>
 					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"  v-else></image>
 					    <text class="down_text"  v-if="pageData.game_task_content" >试玩</text>
 							<text class="down_text" v-else>{{status}}</text>
 							<text class="down_text" v-if="status=='下 载'">{{pageData.size}}</text>
 				     	</view>
-						<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
+						<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text> -->
+					<downLoadButton ref="downLoad"  v-if="item" :borders='false'   @getData='myGetData' :item='item' :sort='0' :getData='getDatas'></downLoadButton>	
 				</view>
+				
 				<!-- h5 -->
 	         <view class="cards" ref="down" v-else-if="pageData.classify==5" @click="handleh5play">
 				<view class="down"  >
@@ -155,9 +161,7 @@
 						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;">资讯攻略</text>
 						 		</view>
 						 	</view>
-
 						 </view>
-
 				</header>
 				<!--  -->
                    <cell class="slot">
@@ -343,15 +347,20 @@
 	import iosDownLoad from "./children/iosDownLoad/index.nvue";
 	const BindingX = uni.requireNativePlugin('bindingx');
 	import common from '@/common/js/common.js';
+	import downLoadButton from '@/components/xw-downLoadButton/xw-downLoadButton.nvue';
 	export default {
 		data() {
 			return {
+				/*  下载 */
+				getDatas:0,
+				item:null,
 				isAndroid: uni.getSystemInfoSync().platform == "android",
 				pageData: null,
 				shareData: null,
 				isBlur:false,
 				iosStatus: 0,
 				iosShow:false,
+				progress:0,
 				opUrl:'',
 				//开服
 				IsServeShow:false,
@@ -384,7 +393,8 @@
 			gameicon,
 			gameporp,
 			serveShow,
-			iosDownLoad
+			iosDownLoad,
+			downLoadButton
 	
 		},
 		mounted() {
@@ -422,7 +432,17 @@
 			setTimeout(()=>{
 				this.getEvaluate()
 			},300)
-	
+			console.log(uni.getStorageSync('downList'),"uni.getStorageSync('downList')")
+			if(uni.getStorageSync('downList').length>0){
+				uni.getStorageSync('downList').map(item=>{
+				    if(item.game_id==this.game_id){
+						this.item = item
+					}
+				})
+			}else{
+				this.item = null
+			}
+	     
 		 
 		},
 		onReady() {
@@ -435,6 +455,15 @@
 			})
 		},
 		methods: {
+			/* 下载 */
+			myGetData(list){
+				
+				this.pageList = list[0]
+				this.$store.commit('setDownTasksList', list[1])
+				
+			},
+			
+			
 			//跳转游戏列表
 			handleCates(i,name){
 				let id = this.pageData.category_id[i]
@@ -626,7 +655,7 @@
 				}
 	
 			},
-			//下载
+			// ios 下载
 			handleDownLoad(){
 			  let networkType = ''
 				uni.getNetworkType({
@@ -638,13 +667,9 @@
 					plus.runtime.openURL(this.down_url);
 					return
 				}
-				
-				
 				if(this.status=='打 开'){
 					plus.runtime.launchApplication( {pname:this.pageData.package_name}, err => {uni.showToast({ title:'打开失败',icon:'none'	})} );
-					
-					return
-					
+					return	
 				}
 			
 				if(this.wifiDown&&networkType!='wifi'){
@@ -663,9 +688,9 @@
 					this.getDownLoad()
 				}
 			},
+			//andriod 下载 
 			getDownLoad(){
 				//将数据存入数组
-
 					let arrList = uni.getStorageSync('downList')||[]
 					let downList = this.$store.state.downTasksList
 					console.log(arrList.length,this.pageData.down_url,'arrList.lengtharrList.length')
@@ -690,7 +715,7 @@
 								game_id:this.pageData.game_id,
 								downTasks:null
 							})
-							
+							this.item = arrList[0]
 							
 						}else{
 							console.log('数据已存在')
@@ -717,14 +742,22 @@
 							downTasks:null,
 							status:0
 						})
+						let Mylist = []
+						arrList.map(item=>{
+							if(item.game_id == this.game_id){
+								Mylist.push(item)
+							}
+					
+						})
+						
+						this.item = Mylist[0]
 					}
-					console.log(downList,'downListdownLists')
+					console.log(downList,this.item ,'downListdownLists')
 				this.$store.commit('setDownTasksList',[]) 
 				this.$store.commit('setDownTasksList',downList) 
 				uni.setStorageSync('downList',[])
 				uni.setStorageSync('downList',arrList)
-				this.handleRouter('/pages/view/downLoad/downLoad')
-				
+				// this.handleRouter('/pages/view/downLoad/downLoad')
 			},
 			
 			

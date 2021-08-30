@@ -1,0 +1,141 @@
+<!-- 买号 -->
+<template>
+	<view class="buynumber">
+		<view class="search">
+			<view class="inputs">
+				<image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+				<input class="input"
+				  type="text"
+				   v-model="params.game_name"
+	              placeholder='去找你的想要的游戏'
+				  placeholder-style='font-size:16px;color:#c1c1c1'
+				  @input='search'
+				  :style="{width:myWidth/1.4+'px'}"
+				></input>
+			</view>
+		</view>
+		<view class="list">
+			<list :style="{height:myHeight-176-200+'rpx',width: myWidth+'px'}" :show-scrollbar='false'  class="list"  @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="pageData.length">
+			<refresh @refresh="onrefresh" :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
+					<view class="refreshImages" :style="{width:myWidth-6+'px'}">
+						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
+					</view>
+				</refresh>
+			  <cell :style="{width: myWidth+'px',height: '64rpx'}" />
+			   <cell v-for="(item,index) in pageData" :key='index'>
+				   <view class="item" >
+				   	<transaItem :item="item"></transaItem>
+				   </view>
+			   </cell>			
+			</list>
+			<myloading v-else :isNoData='isNoData'></myloading>
+		</view>
+	</view>
+</template>
+<script>
+	import { $api } from '@/config/api.js';
+	import transaItem from '@/components/box-transaItem/box-transaItem'
+	import myloading from '@/components/nvue-loading/nvue-loading'
+
+	export default {
+		components:{
+			transaItem,
+			myloading
+		},
+		data() {
+			return {
+				myinput: '',
+				refreshing:false,
+				isNoData:false,
+				params: {
+					page: 1,
+					offset: 20,
+					status: 2,
+					sort_type: 1,
+					game_name: ''
+				},
+				pageData: [],
+				count: 0,
+				ishow: false
+
+			}
+		},
+		computed: {
+				myHeight() {
+					return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+				},
+				myWidth() {
+					return uni.getSystemInfoSync().windowWidth
+				},
+		
+			},
+		methods: {
+			loadmore(){
+				
+			},
+			//下拉刷新
+			onrefresh() {
+				this.refreshing = true
+				setTimeout(() => {
+				this.pageData = []
+				this.getData()
+				this.refreshing = false;
+				}, 1000)
+			},
+			getData() {			
+				if (this.params.game_name == '') {
+					delete this.params.game_name
+				}
+			     $api.get("account/goods/list", {
+					...this.params
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.pageData = this.pageData.concat(res.data.data.list) 
+						this.count = res.data.data.count
+                        this.isNoData = true
+					}
+				})
+			},
+			search() {
+				this.pageData = []
+				this.count = 0
+				this.getData()
+			}
+		},
+		mounted() {
+			this.getData()
+		}
+		
+	}
+</script>
+
+<style scoped>
+		@import '@/common/css/nvue-whith.css';
+
+	.buynumber {
+		}
+		.search {
+			margin-top: 32rpx;
+			padding: 4rpx 32rpx;
+           }
+			.inputs {
+				flex-direction: row;
+				align-items: center;
+				background-color: #F4F4F4;
+				border-radius: 40rpx;
+				padding: 12rpx 32rpx;
+			}
+
+			.input {
+				font-size: 28rpx;
+
+				margin-left: 12rpx;
+			
+			}
+		
+		.item {
+			padding: 0 32rpx;
+			margin-bottom: 48rpx;
+		}
+	
+</style>

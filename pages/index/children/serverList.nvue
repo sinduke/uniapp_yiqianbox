@@ -7,7 +7,7 @@
 			</view>
 		</view>
 		<view class="myList" :style="{height:myHeight-320+'rpx',width:myWidth+'px'}">
-			<list class="list" :style="{height:myHeight-320+'rpx'}" loadmoreoffset='10' :show-scrollbar='false' ref="list">
+			<list class="list" :style="{height:myHeight-320+'rpx'}" loadmoreoffset='10' :show-scrollbar='false' ref="list" @loadmore='loadmore'>
 				<refresh @refresh="onrefresh" :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
 					<view class="refreshImages" :style="{width:myWidth-32+'px'}">
 						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
@@ -62,14 +62,16 @@
 					<view  v-if="typeof myList[0].game_start_time=='number'" class="" @disappear='dispall($event,getmonth(myList[0].game_start_time),myList[0].game_start_time)'></view>
 					<view  v-else class="" @disappear='dispall($event,getmonth(myList[0].game_start_time),myList[0].game_start_time)'></view>
 				</cell>
-				<cell v-if="pageData.length>0">
-					<text class="loadmoreText">{{'——— 没有更多了 ———'}}</text>
+				<cell v-if="loadinging">
+					<view class="" style="margin-bottom: 120rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth+'px'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
 				</cell>
 			</list>
-			<view v-if="pageData.length==0&&islogin" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
+		</view>
+			<view v-if="Object.keys(pageData).length==0&&islogin" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
 				<myloading :isrefre='isrefre' :isNoData='isNoData' @Refresh='Refresh'></myloading>
 			</view>
-		</view>
 	</view>
 </template>
 
@@ -98,9 +100,11 @@
 		},
 		data() {
 			return {
-				pageData: [],
+				page:1,
+				loadinging:false,
+				pageData: {},
 				isNoData:false,
-				count: 0,
+				count: 99,
 				weekday: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
 				active: 0,
 				active1: 0,
@@ -135,6 +139,14 @@
 					this.isrefre = false
 				}, 4000)
 			},
+			//加载
+			loadmore(){
+			  if(this.count>Object.keys(this.pageData).length){
+			   this.loadinging = true
+			     this.page++
+			      this.getpageData()
+			  	}
+			},
 			onrefresh() {
 				this.refreshing = true
 				this.getpageData()
@@ -145,23 +157,28 @@
 			},
 			// 重置 loadmore
 			resetLoadMore() {
-				this.loadinging = false
+				// this.loadinging = false
 			},
 			//获取开服数据
 			getpageData() {
 				$api.get('/gameserver/newlist', {
-					days: 'seven',
+					page: this.page,
 					client_id:this.$store.state.client_id
 				}).then(res => {
-					this.pageData = res.data.data.list    
+					if(Object.keys(this.pageData).length){
+					this.pageData = Object.assign(this.pageData, res.data.data.list)
+						
+					}else{
+						this.pageData = res.data.data.list
+					}
 						for (let keys in this.pageData) {
 							if(Object.keys(this.pageData).length){
 								this.timeList.push(keys)
 							}
 							
 						}
+					this.loadinging = false
 					this.isNoData = true
-					this.count = res.data.data.count
 
 				})
 			},

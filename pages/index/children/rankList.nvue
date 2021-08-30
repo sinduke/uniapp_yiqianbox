@@ -28,9 +28,10 @@
 				</cell>
 				
 			</list>
-			<view v-if="pageData.length==0&&islogin" :style="{width:myWidth-32+'px'}" style="position: absolute;top: 300rpx;">
-				<myloading :isrefre='isrefre' @Refresh='Refresh'></myloading>
-			</view>
+			
+		</view>
+		<view v-if="pageData.length==0&&islogin" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
+			<myloading :isrefre='isrefre' :isNoData='isNoData'  @Refresh='Refresh'></myloading>
 		</view>
 	</view>
 </template>
@@ -66,6 +67,7 @@
 		data() {
 			return {
 				islogin:false,
+				isNoData:false,
 				scrollLeft:0,
 				loadinging:false,
 				tabList: [{
@@ -185,6 +187,7 @@
 			       	this.loadinging = false;
 					this.bind();
 					},100)
+					this.isNoData = true
 				})
 
 			},

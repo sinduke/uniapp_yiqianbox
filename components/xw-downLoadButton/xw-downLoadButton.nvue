@@ -1,25 +1,28 @@
 <template>
 	<view class="xw-downLoadButton">
 		<view class="" v-if="item">
-			<view class="buttons"  v-if="downtype==3">
-				<view class="button" @click="handleOpenApp">启 动</view>
+			<view class="buttons" :style="{border:borders?'1px solid #efefef':'none'}" v-if="downtype==3">
+				<text class="button" @click="handleOpenApp">启&nbsp&nbsp动</text>
 			</view>
-			<view class="buttons"  v-else-if="downtype==4">
-				<view class="button" @click="installApp(item.filename)">未安装</view>
+			<view class="buttons" :style="{border:borders?'1px solid #efefef':'none'}"  v-else-if="downtype==4">
+				<text class="button" @click="installApp(item.filename)">未安装</text>
 			</view>
-			<view class="buttons" v-else-if="isTrue&&!downtype" @click="handleStop"
-				style="padding:24rpx 16rpx ; border: 2rpx solid #efefef;border-radius: 28rpx;">
-				<nvue-progress :loadLoading='progress' :mheight='8' :wNumber='2.5' :type='1'></nvue-progress>
+			<view class="buttons" :style="{border:borders?'1px solid #efefef':'none'}" v-else-if="isTrue&&!downtype" @click="handleStop" style="padding:10rpx 28rpx;">
+				<myProgress :loadLoading='progress' :mheight='8' :wNumber='3' :type='1' style="margin: 18rpx 0;"></myProgress>
 			</view>
-			<view class="buttons" v-else>
-				<view class="button" @click="handleResume">继 续</view>
+			<view class="buttons" :style="{border:borders?'1px solid #efefef':'none'}" v-else>
+				<text class="button" @click="handleResume">继&nbsp&nbsp续</text>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import myProgress from '@/components/nvue-progress/nvue-progress.nvue';
 	export default{
+		components: {
+			myProgress
+		},
 		data(){
 			return{
 				downtype:0,
@@ -39,6 +42,9 @@
 			getData:{
 				type:Number,
 				default:0
+			},
+			borders:{
+			 default:true
 			}
 		},
 		computed: {
@@ -239,17 +245,17 @@
 
 <style scoped>
 	.buttons {
-          flex-direction: row;
-		 align-items: center;
-		  justify-content: center;
-		width: 140rpx;
+        flex-direction: row;
+	    align-items: center;
+		justify-content: center;
 		padding: 10rpx 32rpx;
 		border-radius: 32rpx;
-	
 		
+	
 	}
 	.button {
 		lines: 1;
 		font-size: 24rpx;
+		color: #FF5927;
 	}
 </style>

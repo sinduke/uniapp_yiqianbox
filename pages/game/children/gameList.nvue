@@ -419,7 +419,7 @@
 			//新服
 			getServerList() {
 				$api.get('/gameserver/newlist', {
-					days: 'one',
+					page: 1,
 					...this.params,
 					client_id:this.$store.state.client_id
 				}).then(res => {

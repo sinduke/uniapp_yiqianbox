@@ -168,7 +168,7 @@
 					image: this.fileList.toString(),
 					...this.feedbackData
 				}
-				console.log(8888, data, typeof data.image)
+				// console.log(8888, data, typeof data.image)
 				this.$api.get('/game/feedback', {
 					...data
 				}).then(res => {

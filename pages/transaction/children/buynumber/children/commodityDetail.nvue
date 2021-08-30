@@ -1,0 +1,236 @@
+<!-- 商品详情 -->
+<template>
+	<view class="commodityDetail">
+	<!-- <view class="myshadowLine"/> -->
+	<view  class="container" v-if="pageData">
+		<view class="game" @click="handleRouter('/pages/view/gamedetail/gamedetail?gameid='+pageData.game_id)">
+			<view class="game_left">
+			<image :src="pageData.game_icon||pageData.game_new_icon" mode="widthFix" style="width: 176rpx;height: 176rpx;margin-right: 16rpx;"></image>
+			<view class="h2 gamename">{{pageData.gamename}}</view>
+			</view>
+			<view  >
+				<image src="@/static/images/right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+				<!-- <u-icon name="arrow-right" color="#888" size="28"></u-icon> -->
+			</view>
+		</view>
+		<view class="xiaohao" >
+		<view class="flex" style="margin-bottom: 24rpx;" >
+			<text class="text">区服：</text>	
+			<text class="text">{{pageData.server_id}}</text>
+		</view>
+		<view  class="flex" style="margin-bottom: 24rpx;" >
+			<text class="text">小号ID：</text> 
+			<text class="text">{{pageData.role_id}}</text>
+		</view>
+		<view  class="flex" style="justify-content: space-between;"> 
+		<view class="flex" style="align-items: flex-end;">
+			<text style="font-weight: 700;color: #1C1C1C;font-size: 32rpx;">￥{{pageData.price}}</text>
+			<text style="font-weight: 700;color: #1C1C1C;font-size: 26rpx;">.00</text>
+		</view>
+			<text class="buttons"  @click="show = true">购买</text>
+		</view>
+		</view>
+		<view class="leiji">
+			 <text class="text" style="margin-bottom: 24rpx;"> 累计充值：{{pageData.sum_money}}元</text>
+			 <text class="text">上架时间：{{pageData.create_time | dateFormat("yyyy-MM-dd hh:mm")}} </text>
+		</view>
+		
+		
+		
+		<view class="desc">
+			<text class="h3">卖家描述</text>
+			<text class="text" style="margin-bottom: 24rpx;font-size: 30rpx;">{{pageData.description}}</text>
+			<view  class="imageList" :style="{width:myWidth+'px'}">
+			<image :src="item" v-for="(item,index) in images" :key="index" class="imageItem" :style="{width:myWidth/2.4+'px'}" @click="handleImage(index,images)"></image>
+			</view>
+		</view>
+
+		<!-- 买家须知 -->
+		  
+		   <shModal title="买家须知" :textType="false" :isShow="show" @confirm="confirm" @remove="show = false">
+			   <view class="slot-content">
+			   	<text class="content_text">1.角色信息已经通过官方核验；</text>
+			   	<text class="content_text">2.购买角色直接转入您的账号，购买后登录游戏即可查收角色；若未见请在悬浮球内切换小号。</text>
+			   	<text class="content_text">3.因时间因素造成的角色数据变化（如排行榜），玩家需理解并接受；</text>
+			   	<text class="content_text">4.购买后不可退货</text>
+			   </view>	   
+		   </shModal>
+	       </view>
+		</view>
+</template>
+
+<script>
+    // const globalData = getApp().globalData
+	import shModal from '@/components/nvue-shModal/nvue-shModal.nvue';
+    import common from "@/common/js/common.js";
+	import { $api } from '@/config/api.js';
+	export default {
+		components:{
+			shModal
+		},
+		data() {
+			return {
+				pageData: null,
+				show: false,
+				type:0,
+			}
+		},
+		computed: {
+			i18n() {
+					return globalData.$t('my')
+				},
+			images() {
+				if (JSON.parse(this.pageData.image).length == 1) {
+					return JSON.parse(this.pageData.image)[0].split(",")
+				} else {
+					return JSON.parse(this.pageData.image)
+				}
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
+		// onReady() {
+		// 	uni.setNavigationBarTitle({
+		// 		title: this.$t('Productdetails')
+		// 	})
+		// },
+		methods: {
+			getData(params) {
+			 $api.get( "account/goods/detail",{
+					...params
+				}).then(res => {
+					this.pageData = res.data.data;
+				})
+			},
+			handleRouter(url){
+				uni.navigateTo({
+					url
+				})
+			},
+			confirm(){
+				uni.navigateTo({
+					url:`/pages/view/payMethods/index?goods_id=${this.pageData.goods_id}`
+				})
+				this.show = false
+			},
+			handleImage(index,images){
+				
+			 common.previewImage(index, images)
+			}
+		},
+		onLoad(options) {
+			this.getData({
+				goods_id: options.goods_id
+			})
+			// this.type = options.type
+		}
+	}
+</script>
+
+
+<style  scoped>
+	.flex{
+		flex-direction: row;
+		align-items: center;
+	}
+	.commodityDetail{
+		background-color: #fff;
+		flex: 1;
+	}
+	.myshadowLine {
+		width: 100%;
+		height: 10rpx;
+		box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8);
+		margin-bottom: 60rpx;
+	
+	}
+	.container {
+		padding: 0 32rpx;
+		position: relative;
+    }
+		.game {
+		  flex-direction: row;
+		  align-items: center;
+		  justify-content: space-between;
+		  margin: 32rpx 0;
+        }
+		.game_left{
+			flex-direction: row;
+			align-items: center;
+		}
+			.gamename {
+				lines: 1;
+				font-size: 30rpx;
+				font-weight: 700;
+			}
+		
+
+		.xiaohao {
+			padding-bottom: 48rpx;
+			border-bottom: 1px solid #efefef;
+			}
+               .text{
+				   font-size: 28rpx;
+				   color: #666;
+				   
+			   }
+			   .buttons{	 
+				   font-weight: 700;
+				   font-size: 28rpx;
+				   color: #FF5927;
+				   border: 1px solid #efefef;
+				   padding: 8rpx 32rpx;
+				   border-radius: 32rpx;
+			   }
+			.role_id {
+				 lines: 1;
+				}
+
+				.fw {
+					font-weight: 700;
+				}
+		
+
+	
+		.leiji{
+			margin-top: 48rpx;
+			padding-bottom: 48rpx;
+			border-bottom: 1px solid #efefef;
+		}
+
+		.desc {
+			margin-top: 48rpx;
+			}
+			.h3{
+				margin: 24rpx 0;
+				font-weight: 700;
+			}
+			.image {
+				margin-bottom: 40rpx;
+			}
+			.imageList{
+				flex-direction: row;
+				align-items: center;
+				justify-content: flex-start;
+				flex-wrap: wrap;
+			}
+		  .imageItem{
+			height: 172rpx;
+			border-radius: 20rpx;
+			margin:0 0 24rpx 24rpx;
+	    	}
+			.slot-content{
+				margin-bottom: 32rpx;
+			}
+			.content_text{
+				color: #999;
+				font-size: 30rpx;
+				lines: 2;
+				margin-bottom: 4rpx;
+			}
+</style>
+			

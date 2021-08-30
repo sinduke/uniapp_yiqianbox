@@ -1,0 +1,32 @@
+{
+	"name": "多任务下载管理",
+	"id": "Karma617-DownloaderManager",
+	"version": "1.0",
+	"description": "多任务下载管理，可同时下载多个文件，对每个下载任务进行管理。",
+	"_dp_type":"nativeplugin",
+	"_dp_nativeplugin":{
+		"android": {
+			"plugins": [
+				{
+					"type": "module",
+					"name": "Karma617-DownloaderManager",
+					"class": "com.qdapi.downloaderManager.Downloader"
+				}
+			],
+			"integrateType": "aar",
+			"minSdkVersion": "16",
+			"permissions": [
+				"android.permission.INTERNET"
+			],
+			"dependencies": [  
+				"com.android.support:recyclerview-v7:28.0.0",
+				"com.android.support:support-v4:28.0.0",
+				"com.android.support:appcompat-v7:28.0.0",
+				"com.alibaba:fastjson:1.1.46.android",
+				"com.facebook.fresco:fresco:0.12.0",
+				"com.j256.ormlite:ormlite-android:4.48",
+				"com.xwdz:QuietDownloader:1.0.7"
+			]
+		}
+	}
+}

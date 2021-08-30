@@ -79,11 +79,11 @@
 		watch: {
 			actives(val) {
 				if (val == 2) {
+					console.log(val,'val')
 					this.getData()
 				}
 			},
 			activs(val) {
-			  console.log(val,';sssssssssssssss')
 			  this.active = 0
 			}
 		},

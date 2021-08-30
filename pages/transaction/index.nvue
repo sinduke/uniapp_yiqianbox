@@ -1,0 +1,191 @@
+	<template>
+		<view class="index" :style="{width:myWidth+'px'}">
+			<view  :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
+			<view class="Title">
+				<view class="TitleList">
+					<titleLine :number='number' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine>
+				</view>  
+				<view class="TitleRight" style="flex-direction: row;align-items: center;height: 80rpx;margin-bottom: 8rpx;">
+					<view elevation="5px" class="Righticon">
+						<image src="@/static/images/my_details.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/transactionRecords/index')" ></image>
+					</view>
+					<view class="Righticon" elevation="5px" style="margin:0 6rpx 0 24rpx;">
+						<image src="@/static/images/wen-icon.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/tradeNotes/index')" ></image>
+					</view>
+				</view>
+			</view>
+	
+			<view class="swiper" @touchstart='touchstart'>
+			<swiper @change='swiperChange' @transition='transition'  :current="active" @animationfinish='animationfinish' :style="{height:myHeight-120+'rpx',width:myWidth+'px'}" ref="swiper">
+				<swiper-item>
+					<view class="swiper-item">
+						<buynumber></buynumber>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						<!-- <Sellingnumber ref="Sellingnumber" :actives='active'></Sellingnumber> -->
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						<!-- <recovery :actives='active'></recovery> -->
+					</view>
+				</swiper-item>
+			</swiper>
+			</view>
+		</view>
+	</template>
+	<script>
+		import { $api } from '@/config/api.js';
+		import common from "@/common/js/common.js";
+		import buynumber from './children/buynumber'
+		import Sellingnumber from './children/Sellingnumber'
+		import recovery from './children/recovery'
+		import titleLine from '@/components/nuve-titleLine/nuve-titleLine'
+
+		const BindingX = uni.requireNativePlugin('bindingx');
+		const globalData = getApp().globalData
+		export default {
+			components: {
+				buynumber,
+				Sellingnumber,
+				recovery,
+				titleLine
+			},
+		data() {
+			return {
+				wifiAuto:false,
+				pageData: null,
+				isRank: false,
+				isServer: false,
+				lineRotate: 1,
+				isActive: false,
+				networkType:'',
+				scrollMove: 0,
+				number: 0,
+				isalign: 'felx-start',
+				TitleList: [{
+						id: 0,
+						name: '买号'
+					},
+					{
+						id: 1,
+						name: '卖号'
+					},
+					{
+						id: 2,
+						name: '回收'
+					}
+				],
+					active: 0,
+					myinput: '',
+			}
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			},
+			
+		},
+		onLoad() {
+
+			
+		},
+		methods: {
+			//路由跳转
+			handleRouter(id) {
+				uni.navigateTo({
+					url: `/pages/index/children/videoDetail?id=${id}`
+				})
+			},
+			handleRouters(url){
+				uni.navigateTo({
+					url: url
+				})
+			},
+			// 切换
+			touchstart(e) {
+				this.isActive = true
+			},
+			isactive(e){
+				this.isActive = false
+			},
+			handleActive(e) {
+				this.active = e
+			},
+			animationfinish(e) {
+				this.number = e.detail.current
+				
+			},
+			//滑动监听
+			transition(e) {
+				if(Math.abs(Math.round(e.detail.dx))==this.$store.state.myWidth){
+					setTimeout(()=>{
+					},400)
+				}else{
+					this.scrollMove = Math.round(e.detail.dx)
+				}
+			},
+			swiperChange(e) {
+				this.active = e.detail.current
+				if(this.$refs.recommend){
+					this.$refs.recommend.clearMove()
+				}
+			},
+	
+		},
+		watch: {
+			
+		}
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+
+
+	.index {
+		overflow: hidden;
+		flex: 1;
+		background-color: #FFFFFF;
+
+	}
+
+	.Title {
+		flex-direction: row;
+		padding: 0rpx 32rpx;
+		align-items: center;
+		margin-top: 20rpx;
+		justify-content: space-between;
+		height: 90rpx;
+
+	}
+
+	.TitleList {
+		position: relative;
+	}
+
+	.Righticon {
+		margin-left: 20rpx;
+		height: 64rpx;
+		width: 64rpx;
+		border-radius: 64rpx;
+		background-color: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+	}
+</style>

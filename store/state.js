@@ -4,8 +4,8 @@
 // 版本环境
 export default {
 	// api请求头
-	httpAPI: "http://api.sy12306.com/",   // sy12306.com
-	// httpAPI: "http://api.hnyfqj.cn/", // hnyfqj.cn
+	// httpAPI: "http://api.sy12306.com/",   // sy12306.com
+	httpAPI: "http://api.hnyfqj.cn/", // hnyfqj.cn
 	// app运行的平台
 	platform: uni.getSystemInfoSync().platform,
 	// 热更最后一位
