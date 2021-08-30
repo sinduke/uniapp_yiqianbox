@@ -6,6 +6,7 @@
 					<titleLine :number='number' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine>
 				</view>  
 				<view class="TitleRight" style="flex-direction: row;align-items: center;height: 80rpx;margin-bottom: 8rpx;">
+					
 					<view elevation="5px" class="Righticon">
 						<image src="@/static/images/my_details.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/transactionRecords/index')" ></image>
 					</view>
@@ -19,7 +20,7 @@
 			<swiper @change='swiperChange' @transition='transition'  :current="active" @animationfinish='animationfinish' :style="{height:myHeight-120+'rpx',width:myWidth+'px'}" ref="swiper">
 				<swiper-item>
 					<view class="swiper-item">
-						<buynumber></buynumber>
+						<!-- <buynumber></buynumber> -->
 					</view>
 				</swiper-item>
 				<swiper-item>
@@ -39,18 +40,18 @@
 	<script>
 		import { $api } from '@/config/api.js';
 		import common from "@/common/js/common.js";
-		import buynumber from './children/buynumber'
-		import Sellingnumber from './children/Sellingnumber'
-		import recovery from './children/recovery'
+		// import buynumber from './children/buynumber'
+		// import Sellingnumber from './children/Sellingnumber'
+		// import recovery from './children/recovery'
 		import titleLine from '@/components/nuve-titleLine/nuve-titleLine'
 
 		const BindingX = uni.requireNativePlugin('bindingx');
 		const globalData = getApp().globalData
 		export default {
 			components: {
-				buynumber,
-				Sellingnumber,
-				recovery,
+				// buynumber,
+				// Sellingnumber,
+				// recovery,
 				titleLine
 			},
 		data() {
