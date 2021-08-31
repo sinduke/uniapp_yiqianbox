@@ -20,7 +20,7 @@
 			<swiper @change='swiperChange' @transition='transition'  :current="active" @animationfinish='animationfinish' :style="{height:myHeight-120+'rpx',width:myWidth+'px'}" ref="swiper">
 				<swiper-item>
 					<view class="swiper-item">
-						<!-- <buynumber></buynumber> -->
+						<buynumber></buynumber>
 					</view>
 				</swiper-item>
 				<swiper-item>
@@ -30,7 +30,7 @@
 				</swiper-item>
 				<swiper-item>
 					<view class="swiper-item">
-						<!-- <recovery :actives='active'></recovery> -->
+						<recovery :actives='active'></recovery>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -40,18 +40,18 @@
 	<script>
 		import { $api } from '@/config/api.js';
 		import common from "@/common/js/common.js";
-		// import buynumber from './children/buynumber'
-		// import Sellingnumber from './children/Sellingnumber'
-		// import recovery from './children/recovery'
+		import buynumber from './children/buynumber'
+		import Sellingnumber from './children/Sellingnumber'
+		import recovery from './children/recovery'
 		import titleLine from '@/components/nuve-titleLine/nuve-titleLine'
 
 		const BindingX = uni.requireNativePlugin('bindingx');
 		const globalData = getApp().globalData
 		export default {
 			components: {
-				// buynumber,
-				// Sellingnumber,
-				// recovery,
+				buynumber,
+				Sellingnumber,
+				recovery,
 				titleLine
 			},
 		data() {

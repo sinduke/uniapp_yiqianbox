@@ -1,0 +1,105 @@
+<template>
+	<view class="xw-recycle400" :style="{width:myWidth+'px'}">
+		<view class="body">
+				<text class="title">{{active?'暂无小号可赎回':'暂无小号可回收'}}</text>
+				<image class="image" src="@/static/images/transaction/transaction-nodata.png" mode="widthFix"></image>
+		</view>
+		<view class="foots">
+			<image src="@/static/images/transaction/quans.png" mode="widthFix" :style="{width:myWidth+'px',height:'200rpx'}"></image>
+			<view class="footItem">
+				<view class="ditl">
+					<text class="title">{{active?'赎回说明':'回收说明'}}</text>
+				</view>
+				<view class="number">
+					<view class="">
+						<text class="tit">{{active?'选择可赎回的小号':'选择不玩的小号'}}</text>
+						<text style="font-size: 22rpx;color: #FF8500;	margin-bottom:10rpx ;">{{active?'未回收小号不可赎回':'未充值小号不可回收'}}</text>
+					</view>
+					<view class="">
+						<text class="tit">{{active?'赎回后消耗平台币':'回收后获得平台币'}}</text>
+						<text style="font-size: 22rpx;color: #a1a1a1;">平台币全平台通用</text>
+					</view>
+				</view>
+			</view>
+		
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			
+		},
+		props:{
+			active:{
+				default:0,
+				type:Number
+			}
+		}
+	}
+</script>
+
+<style scoped>
+
+	.body {
+		margin-top: 80rpx;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.textTit {
+		letter-spacing: 5rpx;
+		font-size: 32rpx;
+		color: #a1a1a1;
+		font-weight: 600;
+		margin: 60rpx 0;
+	}
+
+	.image {
+		width: 400rpx;
+		height: 400rpx;
+	   margin-top: 30rpx;
+	}
+   
+	.title {
+		font-weight: 600;
+		font-size: 34rpx;
+		color: #a1a1a1;
+	}
+
+
+	.foots {
+		padding: 10rpx;
+		margin-top: 50rpx;
+		position: relative;
+	}
+   .footItem{
+	   position: absolute;
+	   left: 70rpx;
+	   top: 120rpx;
+	   flex-direction: row;
+	   align-items: center;
+	   justify-content: space-between;
+   }
+
+	.tit {
+		font-weight: 700;
+		margin: 12rpx auto;
+		font-size: 38rpx;
+		letter-spacing: 5rpx;
+		lines: 1;
+	}
+
+	.ditl {
+		margin: 0 180rpx 0 70rpx;
+		width: 40rpx;
+  }
+
+</style>

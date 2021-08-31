@@ -1,0 +1,574 @@
+	<template>
+		<view class="index" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
+			<view  :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
+			<view class="Title">
+				<view class="TitleList">
+					<!-- <titleLine :number='number' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine> -->
+				<scroll-view ref="tabbar1" id="tab-bar" class="tab-bar" :scroll="false" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
+				  <view style="flex-direction: column;">
+				    <view style="flex-direction: row;">
+				      <view class="uni-tab-item" v-for="(tab,index) in tabList" :key="tab.id" :id="tab.id" :ref="'tabitem'+index"  :data-id="index" :data-current="index" @click="ontabtap">
+				        <text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+				      </view>
+				    </view>
+				    <view class="scroll-view-indicator">
+				      <view ref="underline" class="scroll-view-underline" :class="isTap ? 'scroll-view-animation':''" :style="{left: indicatorLineLeft + 'px', width: indicatorLineWidth + 'px'}"></view>
+				    </view>
+				  </view>
+				</scroll-view>
+				
+				
+				
+				</view>
+				<view class="TitleRight" style="flex-direction: row;align-items: center;height: 80rpx;margin-bottom: 8rpx;">
+					<view elevation="5px" class="Righticon">
+						<image src="@/static/images/search-black.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/view/search/search')" ></image>
+					</view>
+					<view class="Righticon" elevation="5px" style="margin:0 6rpx 0 24rpx;">
+						<image src="@/static/images/load-app.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/game/children/gameList')" ></image>
+					</view>
+				</view>
+			</view>
+	
+
+			<view class="swiper" @touchstart='touchstart'>
+			<swiper @change='swiperChange' @transition='transition'  :current="tabIndex" @animationfinish='animationfinish' :style="{height:myHeight-120+'rpx',width:myWidth+'px'}" ref="swiper">
+				<swiper-item>
+					<view class="swiper-item">
+						<recommend :wifiAuto='wifiAuto' ref='page0' :myWidth='myWidth' :myHeight='myHeight'></recommend>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						<rankList ref='page1' :myWidth='myWidth' :myHeight='myHeight' :isRank='isRank'></rankList>
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						<serverList ref='page2' :myWidth='myWidth' :myHeight='myHeight' :isServer='isServer'></serverList>
+					</view>
+				</swiper-item>
+			</swiper>
+			</view>
+		</view>
+	</template>
+	<script>
+		import {	$api	} from '@/config/api.js';
+		import common from "@/common/js/common.js";
+		import recommend from './children/recommend'
+		import rankList from './children/rankList'
+		import serverList from './children/serverList'
+		import titleLine from '@/components/nuve-titleLine/nuve-titleLine'
+			  const dom = uni.requireNativePlugin('dom');
+		const BindingX = uni.requireNativePlugin('bindingx');
+		// Get the globalData
+		const globalData = getApp().globalData
+		// 缓存每页最多
+		const MAX_CACHE_DATA = 100;
+		// 缓存页签数量
+		const MAX_CACHE_PAGE = 3;
+		const TAB_PRELOAD_OFFSET = 1;
+		
+		export default {
+			components: {
+				recommend,
+				rankList,
+				serverList,
+				titleLine
+			},
+		data() {
+			return {
+				wifiAuto:false,
+				pageData: null,
+				isRank: false,
+				isServer: false,
+				lineRotate: 1,
+				isActive: false,
+				networkType:'',
+				scrollMove: 0,
+				number: 0,
+				 isTap: false,
+				 indicatorLineLeft: 0,
+				 indicatorLineWidth: 0,
+				 scrollInto:0,
+				 tabIndex:0,
+				 
+			tabList: [{
+			  id: "tab01",
+			  name: '最新',
+			  newsid: 0
+			}, {
+			  id: "tab02",
+			  name: '大公司',
+			  newsid: 23
+			}, {
+			  id: "tab03",
+			  name: '内容',
+			  newsid: 223
+			}],
+				active: 0,
+			updata: {
+					type: 1,
+					show_type: 1, // 热更：1，正常更新；2，静默更新；   整包升级：1，正常升级；2，强制升级；
+					app_extra_flag: 2, // 用于判断是否为第三方：1，是第三方，需要特殊对待；2，不是第三方，走正常流程
+					data: null,
+				},
+			}
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			},
+		   subNvue() {
+				return uni.getSubNVueById('popup')
+			},
+			
+		},
+		// beforeCreate() {
+		// 	let fontSrc = plus.io.convertLocalFileSystemURL('/static/fonts/iconfont.ttf')
+		// 	var domModule = weex.requireModule("dom");
+		// 	domModule.addRule('fontFace', {
+		// 		'fontFamily': 'iconfont',
+		// 		'src': "url('file:/" + fontSrc + "')"
+		// 	})
+		// },
+		onHide() {
+			if(this.$refs.recommend){
+				this.$refs.recommend.clearMove()
+			}
+		},
+		onReady() {
+			this._lastTabIndex = 0;
+			this.swiperWidth = 0;
+			this.tabbarWidth = 0;
+			this.tabListSize = {};
+			this._touchTabIndex = 0;
+			this.pageList = [];
+			
+			for (var i = 0; i < this.tabList.length; i++) {
+				let item = this.$refs['page' + i]
+				if (Array.isArray(item)) {
+					this.pageList.push(item[0])
+				} else {
+						this.pageList.push(item)
+				}
+			}
+			console.log(this.pageList,'this.pageList')
+			// this.switchTab(this.tabIndex);
+		
+			
+			uni.$once('close', data => {
+					if (data) {
+						this.subNvue.hide()
+						uni.$off()
+					}
+			
+				})
+		    this.selectorQuery();
+	    	},
+		
+		
+		onLoad() {
+			this.checkHotUpdate()
+		    this.getWifi()
+			
+		},
+		mounted() {
+		
+			uni.onNetworkStatusChange(res=> {
+				if(!res.isConnected){
+					uni.showToast({
+						title:'没有网络连接，请检查网络',
+						icon:'none'
+					})
+					 this.wifiAuto = true
+					return 
+				}
+				this.getWifi()
+			});
+		},
+		methods: {
+			ontabtap(e) {
+			  let index = e.target.dataset.current || e.currentTarget.dataset.current;
+			  this.isTap = true;
+			  console.log(this.tabListSize,'this.tabListSize')
+			  // var currentSize = this.tabListSize[index];
+			  // this.updateIndicator(currentSize.left, currentSize.width);
+			  this._touchTabIndex = index;
+			  this.switchTab(index);
+			},
+			
+			updateIndicator(left, width) {
+			  this.indicatorLineLeft = left;
+			  this.indicatorLineWidth = width;
+			},
+			switchTab(index) {
+			  if (this.pageList[index].dataList.length === 0) {
+			    this.loadTabData(index);
+			  }
+			  if (this.tabIndex === index) {
+			    return;
+			  }
+			  this.tabIndex = index;
+			  this.scrollTabTo(index);
+			},
+			selectorQuery() {
+
+				dom.getComponentRect(this.$refs.tabbar1, res => {
+				  this.tabbarWidth = res.size.width;
+				});
+				dom.getComponentRect(this.$refs['swiper'], res => {
+				  this.swiperWidth = res.size.width;
+				});
+				
+				// 因 nvue 暂不支持 class 查询
+				var queryTabSize = uni.createSelectorQuery().in(this);
+				for (var i = 0; i < this.tabList.length; i++) {
+				  queryTabSize.select('#' + this.tabList[i].id).boundingClientRect();
+				}
+				// console.log(this.tabListSize,'tabListSize')
+				queryTabSize.exec(rects => {
+				 console.log(rects,'rectrectrectrectrectrect')
+				  rects.forEach((rect) => {
+					this.tabListSize[rect.dataset.id] = rect;
+				  })
+				  console.log(this.tabListSize,'datasetdatasetdatasetdataset')
+				  this.updateIndicator(this.tabListSize[this.tabIndex].left, this.tabListSize[this.tabIndex].width);
+				  this.switchTab(this.tabIndex);
+				});
+			},
+			scrollTabTo(index) {
+			  const el = this.$refs['tabitem' + index][0];
+			  let offset = 0;
+			  // TODO fix ios offset
+			  if (index > 0) {
+			    offset = this.tabbarWidth / 2 - this.tabListSize[index].width / 2;
+			    if (this.tabListSize[index].right < this.tabbarWidth / 2) {
+			      offset = this.tabListSize[0].width;
+			    }
+			  }
+			  // dom.scrollToElement(el, {
+			  //   offset: -offset
+			  // });
+			},
+				//滚动
+				scrollTabTo(index) {
+				  const el = this.$refs['tabitem' + index][0];
+				  let offset = 0;
+				  // TODO fix ios offset
+				  if (index > 0) {
+				    offset = this.tabbarWidth / 2 - this.tabListSize[index].width / 2;
+				    if (this.tabListSize[index].right < this.tabbarWidth / 2) {
+				      offset = this.tabListSize[0].width;
+				    }
+				  }
+				  // dom.scrollToElement(el, {
+				  //   offset: -offset
+				  // });
+				},
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			//判断是否wifi
+			getWifi(){
+			let isWifi = uni.getStorageSync('isWifi')
+			uni.getNetworkType({
+			  	success: (res) => {
+				  this.networkType =  res.networkType
+			  	}
+			}) 	
+			if(!isWifi.status&& this.networkType!='wifi'){
+			this.wifiAuto = true
+			uni.showToast({
+				title: '当前网络状态为'+ this.networkType+'，已启用省流量模式',
+				icon:'none'
+			})			
+		   }else{
+			   this.wifiAuto = false
+		   }
+				
+		},	
+			//路由跳转
+			handleRouter(id) {
+				uni.navigateTo({
+					url: `/pages/index/children/videoDetail?id=${id}`
+				})
+			},
+			handleRouters(url){
+				uni.navigateTo({
+					url: url
+				})
+			},
+			// 切换
+			touchstart(e) {
+				this.isActive = true
+			},
+			isactive(e){
+				this.isActive = false
+			},
+			handleActive(e) {
+				this.active = e
+			},
+			animationfinish(e) {
+				this.number = e.detail.current
+				
+			},
+			//滑动监听
+			transition(e) {
+				if (this.isTap) {
+				    return;
+				  }				
+				  var offsetX = e.detail.dx;
+				  var preloadIndex = this._lastTabIndex;
+				  if (offsetX > TAB_PRELOAD_OFFSET) {
+				    preloadIndex++;
+				  } else if (offsetX < -TAB_PRELOAD_OFFSET) {
+				    preloadIndex--;
+				  }
+				  if (preloadIndex === this._lastTabIndex || preloadIndex < 0 || preloadIndex > this.pageList.length - 1) {
+				    return;
+				  }
+				  if (this.pageList[preloadIndex].dataList.length === 0) {
+				    this.loadTabData(preloadIndex);
+				  }
+				  var percentage = Math.abs(this.swiperWidth / offsetX);
+				  var currentSize = this.tabListSize[this._lastTabIndex];
+				  var preloadSize = this.tabListSize[preloadIndex];
+				  var lineL = currentSize.left + (preloadSize.left - currentSize.left) / percentage;
+				  var lineW = currentSize.width + (preloadSize.width - currentSize.width) / percentage;
+				  this.updateIndicator(lineL, lineW);
+	
+
+			},
+			swiperChange(e) {
+				let index = e.target.current || e.detail.current;
+				this.switchTab(index);
+				
+				// this.active = e.detail.current
+				// if(this.$refs.recommend){
+				// 	this.$refs.recommend.clearMove()
+				// }
+			},
+
+			
+			// change() {
+			// 	console.log('语言切换')
+			// 	let language = uni.getStorageSync('CURRENT_LANG')
+			// 	if (language === 'en') {
+			// 		language = globalData.$i18n.locale = 'zh-CN'
+			// 	} else {
+			// 		language = globalData.$i18n.locale = 'en'
+			// 	}
+			// 	uni.setStorageSync('CURRENT_LANG', language)
+			// 	uni.reLaunch({
+			// 		url: 'index'
+			// 	})
+			// },
+			// getInitData() {
+
+			// }
+			
+			
+		// 检查热更
+			checkHotUpdate() {
+				// #ifdef APP-PLUS
+				let that = this;
+				plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {
+					uni.request({
+						url: `${that.$store.state.httpAPI}app/update`,
+						data: {
+							client_id: that.$store.state.client_id,
+							// client_id: 4231,
+							// ver: '2.0.1',
+							ver: plus.runtime.version + "." + that.$store.state.sp, // 每次要热更是，最后一位要加一
+							format: "json",
+							app_id: that.$store.state.app_id,
+						},
+						success: (result) => {
+							console.log(plus.runtime.version + "." + that.$store.state.sp);
+							// console.log(result);
+							that.updata.data = result.data.data;
+							uni.$emit('update', {
+								msg: JSON.stringify(that.updata.data)
+							})
+							// 用于检测是否强制更新
+							that.updata.show_type = result.data.data.show_type || 1;
+							// 用于判断是否为第三方
+							that.updata.app_extra_flag = result.data.data.app_extra_flag || 2;
+							// 热更
+							if (that.updata.data.status == 1 && that.updata.data.wdg_url) {
+								that.subNvue.show()
+							}
+							// 整包升级
+							else if (
+								that.updata.data.status == 1 &&
+								!that.updata.data.wdg_url &&
+								that.updata.data.app_url
+							) {
+								that.subNvue.show()
+
+							}
+
+						},
+					});
+				});
+				// #endif
+			},	
+			loadTabData(index) {
+			  this.pageList[index].loadData();
+			},
+			clearTabData(index) {
+			  this.pageList[index].clear();
+			}
+			
+		},
+		watch: {
+			active(val) {
+				if (val == 1) {
+					this.isRank = true
+				} else if (val == 2) {
+					this.isServer = true
+				}
+
+			},
+		}
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+
+
+	.index {
+		overflow: hidden;
+		flex: 1;
+		background-color: #FFFFFF;
+
+	}
+
+	.Title {
+		flex-direction: row;
+		padding: 0rpx 32rpx;
+		align-items: center;
+		margin-top: 20rpx;
+		justify-content: space-between;
+		height: 90rpx;
+
+	}
+
+	.TitleList {
+		position: relative;
+	}
+
+	.Righticon {
+		margin-left: 20rpx;
+		height: 64rpx;
+		width: 64rpx;
+		border-radius: 64rpx;
+		background-color: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+	}
+</style>
+<style>
+
+  .tab-bar {
+    width: 450rpx;
+    height: 42px;
+    flex-direction: row;
+  }
+
+
+  .scroll-view-indicator {
+    position: relative;
+    height: 6rpx;
+    /* background-color: #007AFF; */
+  }
+
+  .scroll-view-underline {
+    position: absolute;
+	border-radius: 20rpx;
+	/* height: 6rpx; */
+    top: 0;
+    bottom: 0;
+    /* width: 200rpx; */
+    background-color: #FF5927;
+  }
+
+  .scroll-view-animation {
+    transition-duration: 0.2s;
+    transition-property: left;
+  }
+
+  .tab-bar-line {
+    height: 1px;
+    background-color: #cccccc;
+  }
+
+  .tab-box {
+    flex: 1;
+  }
+
+  .uni-tab-item {
+    /* #ifndef APP-PLUS */
+    display: inline-block;
+    /* #endif */
+    flex-wrap: nowrap;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .uni-tab-item-title {
+    color: #555;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    flex-wrap: nowrap;
+    /* #ifndef APP-PLUS */
+    white-space: nowrap;
+    /* #endif */
+  }
+
+  .uni-tab-item-title-active {
+    color: #007AFF;
+  }
+
+  .swiper-item {
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .page-item {
+    flex: 1;
+    flex-direction: row;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+</style>

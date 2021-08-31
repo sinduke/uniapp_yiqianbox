@@ -141,13 +141,13 @@
 		background-color: #fff;
 		flex: 1;
 	}
-	.myshadowLine {
+/* 	.myshadowLine {
 		width: 100%;
 		height: 10rpx;
 		box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8);
 		margin-bottom: 60rpx;
 	
-	}
+	} */
 	.container {
 		padding: 0 32rpx;
 		position: relative;

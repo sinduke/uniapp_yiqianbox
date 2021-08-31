@@ -1,250 +1,355 @@
 <template>
-    <view class="content">
-        <view>
-            <image class="logo" src="/static/logo.png"></image>
-        </view>
-        <view class="uni-list-cell-db">
-            <picker @change="bindPickerChange" :value="index" :range="info" :range-key="'saveName'">
-                <view class="uni-input">{{info[index].saveName}}</view>
-            </picker>
-        </view>
-        <view style="margin-top: 50px;">
-            <button @click="start">创建下载</button>
-        </view>
-        <view>
-            <button @click="queryAll">查询下载列表</button>
-        </view>
-        <view>
-            <button @click="recoverAll">开始所有下载</button>
-        </view>
-        <view>
-            <button @click="pauseAll">暂停所有下载</button>
-        </view>
-        <view>
-            <button @click="listener">开始监听</button>
-        </view>
-        <view>
-            <button @click="stopListener">停止监听</button>
-        </view>
-        <view>
-            <button @click="deleteAll">删除全部</button>
-        </view>
-        <view v-for="(item,index) in downloadList" :key="index">
-            <text>{{item.name}}</text>
-            <text>{{item.status}}</text>
-            <text>{{item.currentLength}}/{{item.totalLength}}</text>
-            <progress :percent="(item.currentLength / item.totalLength) * 100" :active="false" stroke-width="3" />
-            <button type="primary" @click="pauseById(item.id)">暂停</button>
-            <button type="primary" @click="resumeById(item.id)">恢复</button>
-            <button type="primary" @click="cancelById(item.id)">取消</button>
-            <button type="primary" @click="deleteById(item.id)">删除</button>
-        </view>
-    </view>
+	<view class="downLoad">
+		<u-navbar title="" :border-bottom='false' class="u-navbar">
+			<slot>
+				<view class="title">
+					<view class="slot-wrap">
+						<text class="customer" style="font-size: 32rpx;font-weight: 400;margin-left: -20rpx;">下载管理</text>
+					</view>
+					<view class="slot-right">
+						<view class="radius">
+							<text class="iconfont" style="font-weight: 400;font-size: 32rpx;" @click="isActive=false"
+								v-if="isActive">&#xe608;</text>
+							<text class="iconfont" style="font-weight: 400;font-size: 32rpx;" @click="handleDelete"
+								v-else>&#xe8b0;</text>
+						</view>
+					</view>
+				</view>
+			</slot>
+		</u-navbar>
+		<view class="Body">
+			<view class="cards" v-for="(item,index) in pageList" :key='item.game_id'>
+				<view class="" v-if="isActive" style="margin-right: 12rpx;width: 40rpx;height: 40rpx;"	@click="handleDel(index)">
+					<view v-if="!item.noActive" style="width: 40rpx;height: 40rpx;border-radius: 40rpx;border: 1px solid #EFEFEF;"></view>
+					<image v-else src="@/static/images/view/down_acitve.png" mode="widthFix" style="width: 40rpx;height: 40rpx;"></image>
+				</view>
+				<view class="">
+					<image  @click="toDetail(item)" @longpress='longpress(index)' :src="item.icon" mode="widthFix" :style="{height:isActive?'140rpx':'167rpx',width:isActive         ?'140rpx':'167rpx'}" style="margin-right: 12rpx;margin-bottom: 20rpx;"></image>
+				</view>
+				
+				<view class="gameRight" >
+					<view class="gameDetail" @longpress='longpress(index)'>
+						<text class="gamename"  @click="toDetail(item)">{{item.gamename}}</text>
+						<view class="" style="margin-bottom: 16rpx;">
+							<text class="text" v-for="(v,i) in item.type" :key="i" v-if="i<3">{{v}}</text>
+							<!-- <text class="text">|</text> -->
+							<!-- <text class="text">{{item.popularity_cnt}}人在玩</text> -->
+						</view>
+						<view class="size"  @click="toDetail(item)">
+							<text style="color: #FF5927;" v-if="item.myloading">{{item.myloading}}</text>
+							<text style="margin: 0 12rpx;" v-if="item.myloading">/</text>
+							<text>{{item.myTotalData}}</text>
+						</view>
+					</view>
+					<xw-downLoadButton @getData='myGetData' :item='item' :sort='index' :getData='getData'></xw-downLoadButton>
+				</view>
+
+			</view>
+
+		</view>
+		<view class="bottom" v-if="isActive">
+			<view class="Botradius" style="display: flex;align-items: center;">
+				<image v-if="selectAll" src="@/static/images/view/down_acitve.png" mode="widthFix"	style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
+				<view v-else @click="handleAll"
+					style="height: 40rpx;width: 40rpx;border-radius: 32rpx;border: 1rpx solid #efefef;margin-right: 16rpx;">
+				</view>
+				<text class="text" @click="handleNotall" v-if="selectAll">全不选</text>
+				<text class="text" @click="handleAll" v-else>全选</text>
+			</view>
+			<view class="button" @click="handleconfirm">已选择{{isNumber}}个游戏清除下载痕迹</view>
+		</view>
+		
+		<nvue-loading v-if="pageList.length==0" :isNoData='pageList.length==0?true:false' style="margin-top: 400rpx;"></nvue-loading>
+		
+	</view>
 </template>
 
 <script>
-    const DownloaderManager = uni.requireNativePlugin('Karma617-DownloaderManager');
-    export default {
-        data() {
-            return {
-                downUrl: "http://dldir1.qq.com/weixin/android/weixin708android1540.apk",
-                saveName: "微信.apk",
-                downloadList:[],
-                info: [
-                    {
-                        downUrl: "http://dldir1.qq.com/weixin/android/weixin708android1540.apk",
-                        saveName: "微信.apk",
-                    },
-                    {
-                        downUrl: "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_6.8.4.1.exe",
-                        saveName: "百度网盘.exe",
-                    },
-                    {
-                        downUrl: "http://issuecdn.baidupcs.com/issue/netdisk/apk/BaiduNetdisk_10.0.101.apk",
-                        saveName: "百度网盘.apk",
-                    },
-                    {
-                        downUrl: "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe",
-                        saveName: "微信.exe",
-                    },
-                    {
-                        downUrl: "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk",
-                        saveName: "qq.apk",
-                    }
-                ],
-                index: 0,
-                isListener: false,
-                taskList: [],
-                taskIdList: [],
-                taskStart:false
-            }
-        },
-        onReady() {
-            var _this = this;
-            DownloaderManager.init({
-                maxDownloadTasks: 3,        // 最大同时下载任务数
-                downloadDir: '/storage/emulated/0/Android/data/com.qdapi.downloader/cache/myDownloader', // 下载文件路径
-                maxDownloadThreads: 3,      // 最大下载线程数
-                autoRecovery: false,        // 是否自动恢复下载
-                openRetry: true,            // 下载失败是否打开重试
-                maxRetryCount: 2,           // 重试次数
-                retryIntervalMillis: 1000   // 每次重试时间间隔（毫秒）
-            }, function(res){
-                if(0 == res.code){
-                    uni.showToast({
-                        title: res.msg,
-                        icon: "none"
-                    })
-                    // 显示下载列表
-                    _this.queryAll();
-                }
-            });
-        },
-        methods: {
-            bindPickerChange (e){
-                this.downUrl = this.info[e.target.value].downUrl;
-                this.saveName = this.info[e.target.value].saveName;
-                this.index = e.target.value;
-            },
-            start () {
-                var _this = this;
-                // 文件保存目录，应用目录下的cache/quietDownload/this.saveName
-                DownloaderManager.createDownloadTask({
-                    downUrl: 'http://xwweb.sy12306.com/game/down_apk?id=66wg',
-                    saveName: 'this.saveName'  // 此处可改成根据下载地址自动获取文件名及文件格式
-                }, function(res){
-                    if(0 == res.code){
-                        _this.listener();
-                    }
-                });
-            },
-            queryAll () {
-                var _this = this;
-                DownloaderManager.queryAll(function(res){
-                    _this.downloadList = JSON.parse(res.data);
-                });
-            },
-            recoverAll () {
-                DownloaderManager.recoverAll();
-                this.queryAll();
-            },
-            pauseAll () {
-                DownloaderManager.pauseAll();
-            },
-            listener () {
-                var _this = this;
-                if(!_this.isListener){
-                    // 如果有正在进行中的下载任务，此方法将返回下载中的任务信息
-                    // 回调频率为 1秒
-                    DownloaderManager.listener(function(res){
-						console.log(res,'resresresres')
-                        _this.isListener = true;
-                        // 注意 res.data 这个是字符串，需要手动转为object
-                        // 观察者模式监听下载状态，需手动赋值，
-                        // 小弟才疏学浅~写的很混乱，希望大佬能优化一下这个方法，感激不尽
-                        let _res = JSON.parse(res.data);
-                        if (_res instanceof Object) {
-                            let obj = {
-                                id: _res.id,
-                                name: _res.save_name,
-                                status: _res.status,
-                                currentLength: _res.current_size,
-                                totalLength: _res.total_size
-                            };
-                            // 添加进下载队列
-                            _this.taskList.push(obj);
-                            // 查询队列id里是否已有此任务id，没有则在下载列表里追加一条任务
-                            if (_this.taskIdList.indexOf(obj.id) == -1) {
-                                _this.taskIdList.push(_res.id);
-                                _this.downloadList.push(obj);
-                            }
-                            // 渲染列表
-                            if(!_this.taskStart){
-                                _this.taskStart = true;
-                                _this.doTask();
-                            }
-                        }
-                    });
-                }
-            },
-            stopListener () {
-                this.isListener = false;
-                DownloaderManager.stopListener();
-            },
-            deleteAll() {
-                // 删除之前若有任务在进行中，请先暂停全部任务再进行删除操作
-                DownloaderManager.deleteAll(true);
-                this.queryAll();
-                this.taskList = [];
-                this.taskIdList= [];
-                this.taskStart= false;
-            },
-            deleteById(id) {
-                // 删除之前若任务在进行中，请先暂停任务再进行删除操作
-                // deleteById 参数1：任务id 参数2：是否同时删除文件 参数3：要删除的文件名
-                DownloaderManager.deleteById(id, true, "微信.apk");
-                this.queryAll();
-            },
-            pauseById(id) {
-                DownloaderManager.pauseById(id);
-            },
-            resumeById(id) {
-                DownloaderManager.resumeById(id);
-            },
-            cancelById(id) {
-                DownloaderManager.cancelById(id);
-            },
-            doTask () {
-                var _this = this;
-                let taskTimer = setInterval(function(){
-                    let obj = _this.taskList[0];
-                    // 查询任务id列表内是否有下载id并返回索引
-                    let index = _this.taskIdList.indexOf(obj.id);
-                    // 更新下载列表数据
-                    _this.downloadList.find(function(value, index){
-                        if (value.id == obj.id) {
-                            _this.$set(_this.downloadList, index, obj);
-                        }
-                    })
-                    // 剔除一条下载任务
-                    _this.taskList.shift();
-                    // 下载任务列表为空，停止数据更新
-                    if(_this.taskList.length == 0){
-                        _this.taskStart = false;
-                        // 从数据库中查询任务列表，保证下载任务是最新并准确的
-                        _this.queryAll();
-                        clearInterval(taskTimer);
-                    }
-                }, 400);
-            }
-        }
-    }
+	export default {
+		data() {
+			return {
+				pageList: [],
+				isTrue: true,
+				//总数据
+				progress: 0,
+				isActive: false,
+				getData: 0,
+				isNumber: 0,
+				selectAll: false,
+			}
+		},
+		computed: {
+			myDownList() {
+				return uni.getStorageSync('downList')
+			}
+		},
+		methods: {
+			toDetail(item) {
+				uni.navigateTo({
+					url: "/pages/view/gamedetail/gamedetail?gameid=" + item.game_id
+				})
+			},
+			//删除
+			handleDelete() {
+				uni.vibrateShort({
+					success: () => {
+						this.isActive = true
+						this.isNumber = this.pageList.filter(item => {
+							return item.noActive == true
+						}).length
+					}
+				})
+			},
+			//确认删除
+			handleconfirm() {
+				if (this.isNumber > 0) {
+					uni.showModal({
+						title: '删除任务',
+						content: '清除当前选择的任务？',
+						success: (res) => {
+							if (res.confirm) {
+								let arrList = []
+								let downList = []
+								let array = []
+								downList = this.$store.state.downTasksList
+								arrList = this.pageList.filter((item) => {
+									return !item.noActive
+								})
+								
+								this.pageList = arrList
+								if(arrList.length==0){
+									this.isActive = false
+									uni.setStorageSync('downList', [])
+									this.$store.commit('setDownTasksList', [])
+									return 
+								}
+								// console.log(this.pageList,'this.pageListthis.pageList')
+								
+								 downList.map(item => {
+									arrList.map(v => {
+										 if( item.game_id == v.game_id){
+											 array.push(item)
+										 }			
+									})
+									// console.log(array,'arrayarrayarrayarrayarray')
+									return array
+
+								})
+								console.log(array,'listlistlist')
+								this.$store.commit('setDownTasksList', [])
+								this.$store.commit('setDownTasksList', array)
+								uni.setStorageSync('downList', [])
+								uni.setStorageSync('downList', arrList)
+
+							}
+							this.isActive = false
+						}
+					})
+				}
+
+			},
+			//全选
+			handleAll() {
+				this.isNumber = 0
+				this.pageList.map(item => {
+					item.noActive = true
+					if (item.noActive) {
+						this.isNumber++
+					}
+				})
+				this.selectAll = true
+				uni.setStorageSync('downList', [])
+				uni.setStorageSync('downList', this.pageList)
+				
+			},
+			//全不选
+			handleNotall(){
+				this.isNumber = this.pageList.length
+					this.pageList.map(item => {
+						item.noActive = false
+						if (!item.noActive) {
+							this.isNumber--
+						}
+					})
+					this.selectAll = false
+					uni.setStorageSync('downList', [])
+					uni.setStorageSync('downList', this.pageList)
+					
+				},
+			//筛选
+			handleDel(i) {
+				this.pageList[i].noActive = !this.pageList[i].noActive
+				this.isNumber = this.pageList.filter(item => {
+					return item.noActive == true
+				}).length
+				if (this.isNumber == this.pageList.length) {
+					this.selectAll = true
+				} else {
+					this.selectAll = false
+				}
+
+
+			},
+
+			handleStop() {
+				this.isTrue = false
+				this.downTasks.pause();
+
+			},
+			myGetData(list){
+	
+				this.pageList = list[0]
+				this.$store.commit('setDownTasksList', list[1])
+				
+			},
+			//长按删除
+			longpress(i) {
+				uni.vibrateShort({
+					success: () => {
+						this.isActive = true
+						this.pageList.map(item => {
+							item.noActive = false
+						})
+						this.pageList[i].noActive = true
+						this.isNumber = this.pageList.filter(item => {
+							return item.noActive == true
+						}).length
+					}
+				});
+			},
+		},
+		onLoad() {
+			// uni.showToast({
+			// 	title:'正在分包中，请耐心等待...',
+			// 	icon:'none',
+			// 	success: () => {
+			// 		setTimeout(()=>{
+
+			// 		},1000)
+			// 	}
+			// })
+
+		},
+		watch:{
+			myDownList:{
+				handler(val){
+					this.pageList = val
+					this.getData++
+				},
+				immediate:true
+			}
+		},
+
+		onShow() {
+			this.pageList = uni.getStorageSync('downList')
+			this.getData++
+			// console.log(this.pageList,'pageListpageListpageList')
+
+		}
+	}
 </script>
 
-<style>
-    .content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
+<style lang="scss" scoped>
+	.downLoad {
 
-    .logo {
-        height: 200rpx;
-        width: 200rpx;
-        margin-top: 200rpx;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 50rpx;
-    }
+		.u-navbar {
+			box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.16);
 
-    .text-area {
-        display: flex;
-        justify-content: center;
-    }
+		}
 
-    .title {
-        font-size: 36rpx;
-        color: #8f8f94;
-    }
+		.title {
+			flex: 1;
+			padding: 0 $xw-padding;
+			@include flex;
+		}
+
+		.customer {
+			color: $xw-black-dark;
+		}
+
+		.radius {
+			width: 64rpx;
+			height: 64rpx;
+			border-radius: 50%;
+			box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+			@include flex;
+			justify-content: center;
+		}
+
+		.Body {
+			@include padding;
+
+		}
+
+		.cards {
+			@include flex;
+			margin: 48rpx auto;
+
+			.gameRight {
+				@include flex;
+				justify-content: space-between;
+				@include border_box;
+				padding-bottom: 40rpx;
+
+				.buttons {
+					.button {
+						white-space: nowrap;
+						@include button(32rpx, 10rpx, 32rpx);
+						font-size: $xw-font;
+					}
+				}
+			}
+
+			.gameDetail {
+				width:350rpx;
+				@include flex-column;
+				align-items: flex-start;
+
+
+				.gamename {
+					color: $xw-black-dark;
+					font-size: $xw-h3-font;
+					font-weight: 700;
+					margin-bottom: 8rpx;
+					@include overflow;
+					max-width: 350rpx;
+
+				}
+
+				.size {
+					text {
+						font-size: $xw-font;
+						color: $xw-color;
+					}
+				}
+			}
+
+		}
+
+		.text {
+			font-size: $xw-font;
+			color: $xw-color;
+			margin-right: 8rpx;
+		}
+
+		.bottom {
+			position: fixed;
+			bottom: 0;
+			height: 120rpx;
+			width: 100%;
+			@include padding;
+			@include flex;
+			background-color: #fff;
+
+			.button {
+				@include button(32rpx, 12rpx, 100rpx);
+				font-size: $xw-font;
+				font-weight: 500;
+				@include overflow;
+			}
+		}
+		.img_left{
+			margin-left: 1rpx;
+		}
+	}
 </style>

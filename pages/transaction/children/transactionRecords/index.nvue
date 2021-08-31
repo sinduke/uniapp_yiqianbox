@@ -1,38 +1,46 @@
 <!-- 交易记录 -->
 <template>
-	<view class="transactionRecords">
+	<view class="transactionRecords" :style="{height:myHeight+'rpx'}">
 		<view class="mygameList">
 			<view class="listitem" v-for="(item,index) in myGame" :key='index' @click="handleClick(index)">
 				<text class="mygametext" :class="{mygametext1:active==index}">{{item}}</text>
 				<view class="lines" :class="{line:active==index}" />
 			</view>
 		</view>
-		<swiper @change='swiperChange' :current="active" :style="{height:myHeight-400+'rpx'}">
+		<swiper @change='swiperChange' :current="active" :style="{height:myHeight-60+'rpx',width:myWidth+'px'}">
 			<!-- 已购买 -->
 			<swiper-item>
-					<list v-if="pageData.length" @scrolltolower="loadMore" :style="{height:myHeight-500+'rpx'}" class="list">
-						<cell :style="{width:myWidth+'px',height:'60rpx'}">
-						</cell>
-						<cell v-for="(item,index) in pageData" :key='index' style="margin-bottom: 60rpx;">
-					   <view >
-						<box-transaItem :item='item' :status="2"></box-transaItem>
-					   </view>
-						</cell>
-					</list>
-					<myloading v-else></myloading>
+				<list :show-scrollbar='false'  class="list" :style="{height:myHeight-60+'rpx',width:myWidth+'px'}" @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="pageData.length">
+					<cell :style="{width:myWidth+'px',height:'60rpx'}">
+					</cell>
+					<cell v-for="(item,index) in pageData" :key='index' style="margin-bottom: 60rpx;">
+						<view>
+							<transaItem :item='item' :status="2"></transaItem>
+						</view>
+					</cell>
+					<cell v-if="loadinging">
+						<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+						   <image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+						</view>
+					</cell>
+				</list>
+				<myloading v-else></myloading>
 			</swiper-item>
 			<swiper-item>
-					<list v-if="pageData.length" @scrolltolower="loadMore"	:style="{height:myHeight-200+'rpx'}" class="list">
-					   <cell :style="{width:myWidth+'px',height:'60rpx'}">
-					   </cell>
-					   <cell v-for="(item,index) in pageData" :key='index' style="margin-bottom: 60rpx;">
-						   <view >
-						   	<box-transaItem :item='item' :status="3"></box-transaItem>
-						   </view>
-					   </cell>
-						
-					</list>
-					<myloading v-else></myloading>
+			   <list :show-scrollbar='false'  class="list" :style="{height:myHeight-60+'rpx',width:myWidth+'px'}" @loadmore='loadmore1' loadmoreoffset='10'  ref="list" v-if="pageData1.length">
+					<cell :style="{width:myWidth+'px',height:'60rpx'}">	</cell>
+					<cell v-for="(item,index) in pageData1" :key='index' style="margin-bottom: 60rpx;">
+						<view>
+							<transaItem :item='item' :status="3"></transaItem>
+						</view>
+					</cell>
+                     <cell v-if="loadinging1">
+						<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+						   <image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+						</view>
+					</cell>
+				</list>
+				<myloading v-else></myloading>
 			</swiper-item>
 		</swiper>
 	</view>
@@ -40,12 +48,17 @@
 </template>
 
 <script>
-	import { $api } from '@/config/api.js';
+	import {
+		$api
+	} from '@/config/api.js';
 	import common from "@/common/js/common.js";
 	import myloading from '@/components/nvue-loading/nvue-loading'
+	import transaItem from '@/components/box-transaItem/box-transaItem'
+
 	export default {
-		components:{
-			myloading
+		components: {
+			myloading,
+			transaItem
 		},
 		data() {
 			return {
@@ -55,23 +68,26 @@
 				],
 				params: {
 					page: 1,
-					offset: 20,
+					offset: 15,
 					status: 0
 				},
 				params1: {
 					page: 1,
-					offset: 20,
+					offset: 15,
 					status: 0
 				},
 				count: 0,
+				count1:0,
 				pageData: [],
-				pageData1: []
+				pageData1: [],
+				loadinging:false,
+				loadinging1:false,
 
 			}
 		},
 		computed: {
 			myHeight() {
-				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
@@ -109,36 +125,30 @@
 					...this.params,
 					is_me_sell: 2,
 				}).then(res => {
-					this.pageData1 =  res.data.data.list;
-					this.count = res.data.data.count
-				
+					this.pageData1 = res.data.data.list;
+					this.count1 = res.data.data.count
+					
+
 				})
 			},
 
 			// 加载更多
 			loadMore() {
-				this.params.page++;
-				switch (this.active) {
-					case 0:
-						this.getpurchaseData()
-						break;
-					case 1:
-						this.getSellData()
-						break;
-					default:
-						break;
+				if(this.count>this.pageData.length){
+					this.params.page++;
+					this.loadinging = true
+					this.getpurchaseData()
 				}
-
-
+				
 
 			},
-			reset() {
-				this.params.page = 1
-				this.pageData = []
-				this.count = 0
-			}
-
-
+			loadmore1(){
+				if(this.count1>this.pageData1.length){
+					this.params1.page++;
+					this.loadinging1 = true
+					this.getSellData()
+				}
+			},
 		},
 
 		onLoad() {
@@ -150,49 +160,35 @@
 <style scoped>
 	@import '@/common/css/nvue-whith.css';
 
-	.transactionRecords {
-		flex: 1;
+	.transactionRecords{
+		background-color: #fff;
+		flex:1;
+	}
+	.mygameList {
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 0 32rpx;
+	}
 
-}
-		.mygameList {
-				
-			/* width: 100%; */
-			flex-direction: row;
-			align-items: center;
-			justify-content: flex-start;
- }
-			.listitem {
-				
-				margin-right: 80rpx;
-			}
-			.list{
-				padding: 0 32rpx;
-			}
+	.listitem {
+		margin-right: 80rpx;
+		align-items: center;
+	}
 
-			.mygametext {
-				margin-bottom: 18rpx;
-				color: #999999;
-				font-size: 30rpx;
-			}
+	.list {
+		padding: 0 32rpx;
+	}
 
-			.mygametext1 {
-				color: #1C1C1C;
-				font-weight: 700;
-				font-size: 34rpx;
-			}
+	.mygametext {
+		margin-bottom: 18rpx;
+		color: #999999;
+		font-size: 30rpx;
+	}
 
-
-
-		.buttons {
-			margin-top: 100rpx;
-			/* @include flex; */
-			justify-content: center;
-         }
-			.mybutton {
-				/* @include button(60rpx, 20rpx, 120rpx); */
-				font-size: 34rpx;
-
-			}
-		
-	
+	.mygametext1 {
+		color: #1C1C1C;
+		font-weight: 700;
+		font-size: 34rpx;
+	}
 </style>

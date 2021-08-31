@@ -1,24 +1,33 @@
 <!-- 回收 -->
 <template>
-	<view class="buynumber">
+	<view class="buynumber" :style="{width:myWidth+'px'}">
 		<view class="search">
-			<view v-for="(item,index) in Data" :key='index' :class="{isacivte:active==index}"	@click="handleClick(index)">{{item}}</view>
+			<text  class="search_item" v-for="(item,index) in Data" :key='index' :class="{isacivte:active==index}"	@click="handleClick(index)">{{item}}</text>
 		</view>
 		<view class="list">
-			<scroll-view scroll-y="true" :style="{height: $store.state.myHeight-176-200+'rpx',width: '100%'}"
-				v-if="pageData.length">
-				<view style="width: 100%;margin-top: 64rpx;" />
-				<view class="item" v-for="(item,index) in pageData" :key='index'>
-					<box-transaItem :item="item" status='1' :active='active'></box-transaItem>
-				</view>
-			</scroll-view>
-			<xw-recycle400 v-else></xw-recycle400>
+			<list  :style="{height:myHeight-232+'rpx',width:myWidth+'px'}" @loadmore='loadmore'	 loadmoreoffset='20' :show-scrollbar='false'   class="list" ref="list"  v-if="pageData.length">
+				<cell :style="{width:myWidth+'px',height: '64rpx'}" />
+				<cell class="item" v-for="(item,index) in pageData" :key='index'>
+					<transaItem :item="item" status='1' :active='active'></transaItem>
+				</cell>
+			</list>
+			<recycle400 v-else :active='active'></recycle400>
 
 		</view>
 	</view>
 </template>
 <script>
+	import myloading from '@/components/nvue-loading/nvue-loading'
+	import recycle400 from '@/components/xw-recycle400/xw-recycle400'
+	import transaItem from '@/components/box-transaItem/box-transaItem'
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
 	export default {
+		components: {
+			myloading,
+			recycle400,
+			transaItem
+		},
 		data() {
 			return {
 				myinput: '',
@@ -44,13 +53,21 @@
 				type: Number
 			}
 		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			
+		},
 		methods: {
 			getData() {
-				this.$api.get('app/recycle/mg_list', {
+				$api.get('app/recycle/mg_list', {
 					...this.params
 				}).then(res => {
 					if (res.data.data.list) {
-
 						this.pageData = res.data.data.list
 					} else {
 						this.pageData = []
@@ -59,7 +76,7 @@
 				})
 			},
 			getshData() {
-				this.$api.get('app/recycle/order_list', {
+				$api.get('app/recycle/order_list', {
 					classify: this.$store.state.app_id == 100 ? 3 : 4
 				}).then(res => {
 					this.pageData = res.data.data.list
@@ -74,6 +91,9 @@
 				} else {
 					this.getData()
 				}
+			},
+			loadmore(){
+				
 			}
 		},
 		watch: {
@@ -90,25 +110,29 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 	.buynumber {
+		flex: 1;
+		overflow:hidden;
+		}
 		.search {
-			width: 100%;
 			margin-top: 32rpx;
 			padding: 4rpx 32rpx;
-			@include flex;
+            flex-direction: row;
+			align-items: center;
 			justify-content: flex-start;
-
-			view {
+}
+			.search_item {
 				margin-right: 32rpx;
 				background-color: #F4F4F4;
-				border-radius: 24rpx;
+				border-radius: 32rpx;
 				padding: 12rpx 32rpx;
 				color: #666666;
 				border: 1px solid #F4F4F4;
+				font-size: 32rpx;
 			}
 
-		}
+		
 
 		.item {
 			padding: 0 32rpx;
@@ -118,7 +142,7 @@
 		.isacivte {
 			background-color: #fff !important;
 			border: 1px solid #FF5927 !important;
-			color: $xw-color-z !important;
+			color: #FF5927 !important;
 		}
-	}
+	
 </style>
