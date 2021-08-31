@@ -54,10 +54,36 @@
 		</showpop>
 		<showpop :isShow="handleShow" :textType="false" :titleType="false" :paddingType="true" :buttonType="false" @remove="remove">
 			<image src="@/static/images/my/jfsc-qrdh.png" mode="widthFix" class="showimg">
-				<view class="img_box" style="position:absolute" :style="{width:($store.state.myWidth-32)*0.7,left:($store.state.myWidth-32)*0.05,bottom:($store.state.myWidth-32)*0.05}">
-					<view class="" style="background: #F7F7FF;height: 150rpx;" :style="{width:($store.state.myWidth-32)*0.7}" >
-						
+				<view class="img_box" style="position:absolute" :style="{width:$store.state.myWidth*0.7,left:$store.state.myWidth*0.05,bottom:$store.state.myWidth*0.05}">
+					<view style="background: #F7F7FF;flex-direction: row;padding:30rpx;border-radius:10rpx;" :style="{width:$store.state.myWidth*0.7}" >
+						<image style="width: 90rpx;height: 90rpx;border-radius:45rpx " src="../../../../static/images/ptbicon.png" mode="widthFix"></image>
+						<view style="margin-left:30rpx ;">
+							<text style="color:#252525;font-weight: bold;font-size: 30rpx; ">{{subData.goods_name}}</text>
+							<text style="color:#FF4810;font-size:28rpx;font-weight: 400;margin-top: 10rpx;">您将消耗{{subData.integral}}积分</text>
+						</view>
 					</view>
+					<view v-if="userInfo.my_integral<subData.integral" class="img_text2" style="margin-top:10rpx ;border-radius: 10rpx;background: #F7F7FF;flex-direction: row;align-items: center;">
+						<view class="" style="width: 28rpx;height: 28rpx;border-radius:28rpx;background:#19BFFF ;margin-right:15rpx;">
+							<text style="color: #fff;font-size: 20rpx;font-weight:400 ;text-align: center;">!</text>
+						</view>
+						<text style="color: #19BFFF;font-size: 26rpx;font-weight: 400;">您的积分不足，快去完成任务赚取吧</text>
+					</view>
+					<view class="img_text3" style="margin-top:10rpx ;border-radius: 10rpx;background: #F7F7FF;">
+						<text style="text-align: center;font-size: 28rpx;color:#999999;font-weight:400;">可兑换数量 {{subData.remain_cnt-subData.change_cnt}}/{{subData.remain_cnt}}</text>
+					</view>
+					<view  style="margin-top: 24rpx;border-radius: 35rpx;height: 70rpx;background:#F0F0F0;flex-direction: row;" :style="{width:$store.state.myWidth*0.7}">
+						<view  @click="remove" class="" style="border-radius: 35rpx 0 0 35rpx;border:1rpx solid #F0F0F0;" :style="{width:$store.state.myWidth*0.35}">
+							<text style="color: #666666;font-size: 26rpx;font-weight: 400;text-align: center;line-height: 70rpx;">我再想想</text>
+						</view>
+						<view @click="subPtb" class="con" style="background:#fff;border:1rpx solid #FF4810;" :style="{width:$store.state.myWidth*0.35}">
+							<text style="color: #666666;font-size: 26rpx;font-weight: 400;text-align: center;line-height: 70rpx;">确认兑换</text>
+						</view>
+					</view>
+					<text style="color: #252525;font-size: 28rpx;font-weight: 400;margin:20rpx 0;">商品说明：</text>
+					<text class="text_img">确认兑换，不予退还</text>
+					<text class="text_img">兑换的平台币可以于平台任何游戏的充值</text>
+					<text class="text_img">部分商品出现无法兑换等问题，请联系平台客服</text>
+					<text class="text_img">在法律允许范围内，本平台拥有最终解释权</text>
 				</view>
 			</image>
 		</showpop>
@@ -111,12 +137,13 @@
 			},
 			remove(){
 				this.isShow = false
+				this.handleShow =false
 			},
 			handleClick(item) {
 				if (item.mem_times == 1 && item.is_exchange == 1) {
 					uni.showToast({
 						icon: "none",
-						title: this.$t('index.pointMall24'),
+						title: "该商品只能兑换一次!",
 					});
 					return;
 				} else {
@@ -136,6 +163,61 @@
 					this.pageData = this.pageData.concat(res.data.data.list);	
 					}
 				});
+			},
+			//确认兑换
+			subPtb() {
+				if (this.clickShow) {
+					this.clickShow = false;
+					$api.get("app/shop/exchange_ptb", {
+						ptb_cnt: this.subData.exchange_amount,
+						integral: this.subData.integral,
+						good_id: this.subData.id,
+					}).then((res) => {
+						
+						if (res.data.code == 200) {
+							if (this.subData.exchange_type == 1) {
+								uni.showToast({
+									icon: "none",
+									title: "兑换成功",
+									success: () => {
+										setTimeout(() => {
+											this.pageData = [];
+											this.handleShow = false;
+											common.getuserInfo();
+											this.getPageData();
+											this.clickShow = true;
+										}, 300);
+									},
+								});
+							} else {
+								uni.showToast({
+									icon: "none",
+									title: "已确认兑换，请联系客服兑换",
+									success: () => {
+										setTimeout(() => {
+											this.pageData = [];
+											this.handleShow = false;
+											common.getuserInfo();
+											this.getPageData();
+											this.clickShow = true;
+											uni.navigateTo({
+												url: '/pages/my/children/myService/index'
+											})
+										}, 300);
+									},
+								});
+							}
+						}else{
+							uni.showToast({
+								icon: "none",
+								title: res.data.msg,
+							});
+							this.clickShow = true;
+							return;
+							
+						}
+					});
+				}
 			},
 		},
 		onLoad(){
@@ -263,5 +345,19 @@
 	color: #FF4810;
 	font-size: 30rpx;
 	font-weight: 500;
+}
+.img_text2{
+	padding: 10rpx 30rpx;
+}
+.img_text3{
+	padding: 10rpx 0;
+}
+.con{
+	border-radius: 0 35rpx 35rpx 35rpx;
+}
+.text_img{
+	font-size: 24rpx;
+	color: #999999;
+	font-weight: 400;
 }
 </style>
