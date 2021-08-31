@@ -103,15 +103,15 @@
 				<!-- 下载  -->		
 				<!-- android -->
 				<view class="cards" ref="down" v-if="pageData.classify==3" @click="handleDownLoad" style="height: 80rpx;">
-				<!-- <view class="down">
+				<view class="down">
 					<image class="operation-item_image" src="@/static/images/dwonLoad.png" mode="widthFix" style="margin-right: 12rpx;"  v-if="status=='下 载'"></image>
 					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"  v-else></image>
 					    <text class="down_text"  v-if="pageData.game_task_content" >试玩</text>
 							<text class="down_text" v-else>{{status}}</text>
 							<text class="down_text" v-if="status=='下 载'">{{pageData.size}}</text>
 				     	</view>
-						<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text> -->
-					<downLoadButton ref="downLoad"  v-if="item" :borders='false'   @getData='myGetData' :item='item' :sort='0' :getData='getDatas'></downLoadButton>	
+						<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
+					<!-- <downLoadButton ref="downLoad"  v-if="item" :borders='false'   @getData='myGetData' :item='item' :sort='0' :getData='getDatas'></downLoadButton>	 -->
 				</view>
 				
 				<!-- h5 -->

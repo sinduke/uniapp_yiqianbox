@@ -1,13 +1,13 @@
 <template>
 	<view class="nuve-titleLine">
-		<view   ref="scroller">
+		<scroller   ref="scroller">
 			<view class="titleItem" style="flex-direction: row;">
 				<view v-for="(item,index) in TitleList" :key='index' style="align-items: center;width: 50px;" :style="{marginRight:(myWidth / 3)-100-13+'px'}">
 					<text class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
 				</view>
 			</view>
 			<view :style="{transform:'translateX('+widthLine+'rpx)'}" class="lines" ref="lines"></view>
-		</view>
+		</scroller>
 
 	</view>
 </template>
@@ -138,7 +138,7 @@
 	.TitleName1 {
 		color: #1c1c1c;
 		font-weight: 700;
-		font-size: 40rpx;
+		/* font-size: 40rpx; */
 	
 
 

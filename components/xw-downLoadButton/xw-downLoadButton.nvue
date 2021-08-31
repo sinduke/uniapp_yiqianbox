@@ -1,28 +1,25 @@
 <template>
 	<view class="xw-downLoadButton">
 		<view class="" v-if="item">
-			<view class="buttons" :style="{border:borders?'1px solid #efefef':'none'}" v-if="downtype==3">
-				<text class="button" @click="handleOpenApp">启&nbsp&nbsp动</text>
+			<view class="buttons"  v-if="downtype==3">
+				<text class="button" @click="handleOpenApp">启 动</text>
 			</view>
-			<view class="buttons" :style="{border:borders?'1px solid #efefef':'none'}"  v-else-if="downtype==4">
+			<view class="buttons"  v-else-if="downtype==4">
 				<text class="button" @click="installApp(item.filename)">未安装</text>
 			</view>
-			<view class="buttons" :style="{border:borders?'1px solid #efefef':'none'}" v-else-if="isTrue&&!downtype" @click="handleStop" style="padding:10rpx 28rpx;">
-				<myProgress :loadLoading='progress' :mheight='8' :wNumber='3' :type='1' style="margin: 18rpx 0;"></myProgress>
+			<view class="buttons" v-else-if="isTrue&&!downtype" @click="handleStop"
+				style="padding:24rpx 16rpx ; border: 2rpx solid #efefef;border-radius: 28rpx;">
+				<nvue-progress :loadLoading='progress' :mheight='8' :wNumber='2.5' :type='1'></nvue-progress>
 			</view>
-			<view class="buttons" :style="{border:borders?'1px solid #efefef':'none'}" v-else>
-				<text class="button" @click="handleResume">继&nbsp&nbsp续</text>
+			<view class="buttons" v-else>
+				<text class="button" @click="handleResume">继 续</text>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import myProgress from '@/components/nvue-progress/nvue-progress.nvue';
 	export default{
-		components: {
-			myProgress
-		},
 		data(){
 			return{
 				downtype:0,
@@ -42,9 +39,6 @@
 			getData:{
 				type:Number,
 				default:0
-			},
-			borders:{
-			 default:true
 			}
 		},
 		computed: {
@@ -60,7 +54,7 @@
 			},
 			//安装
 			installApp(name){
-				plus.runtime.install(name);
+				plus.runtime.openFile(name);
 			},
 			//暂停App
 			handleStop(){
@@ -154,7 +148,7 @@
 				     this.item.myloading =  (res.downloadedSize / 1024 / 1024) .toFixed(2)+ 'MB'
 					 this.item.myTotalData = (res.totalSize / 1024 / 1024).toFixed(2) +'MB'
 					 this.progress = Math.round(res.downloadedSize / res.totalSize * 100)  
-                     // console.log( this.item.myloading, this.item.myTotalData,'down_url, indexdown_url, index') 
+                     console.log( this.item.myloading, this.item.myTotalData,'down_url, indexdown_url, index') 
 					  
 				}) 
 				//如果是第一次进入
@@ -172,6 +166,9 @@
 			 },
 			//判断App是否存在
 			checkApp(){	
+				
+				
+				
 				// console.log(this.item,this.downTasksItem ,'this.item.package_namethis.item.package_namethis.item.package_names')
 				if(plus.runtime.isApplicationExist({pname:this.item.package_name})){
 						this.downtype = 3
@@ -213,17 +210,29 @@
 	
 		},
 		mounted() {
+			// plus.downloader.enumerate( tanks=>{
+			// console.log(tanks,'tanks')	
+			
+			// this.addEventList(tanks)
+			
+			// } );
+			
 			let arrList = uni.getStorageSync('downList')
 			if(!this.checkApp()&&this.downtype!=4){
 				if(this.downTasksItem){
-					console.log(this.downTasksItem,this.downTasksItem.id,'downTasksItemdownTasksItemdownTasksItemdownTasksItem')
-					this.addEventList(this.downTasksItem)
-					console.log(JSON.stringify(this.downTasksItem) ,'downTasksItemdownTasksItemdownTasksItemdownTasksItem')
+					plus.downloader.enumerate( tanks=>{
+					console.log(tanks,'tanks')	
+					
+					this.addEventList(tanks[0])
+					// tanks[0].addEventList()()
+					console.log(tanks[0].state=3,'tanks')	
+					} );
+					
+					// this.addEventList(this.downTasksItem)
+					// this.isTrue=true
 					this.item.status?this.isTrue=true:this.isTrue=false
-				}else if(this.$store.state.downTasksList[this.sort].status==1){
-						console.log(this.downTasksItem,'this.downTasksItem')
-					this.isTrue=false
 				}else{
+						
 					this.createDownload()
 				}
 				
@@ -243,19 +252,21 @@
 	}
 </script>
 
-<style scoped>
+<style scoped >
 	.buttons {
-        flex-direction: row;
-	    align-items: center;
-		justify-content: center;
-		padding: 10rpx 32rpx;
-		border-radius: 32rpx;
-		
-	
-	}
-	.button {
-		lines: 1;
-		font-size: 24rpx;
-		color: #FF5927;
-	}
+          flex-direction: row;
+		  align-items: center;
+		   justify-content: center;
+			/* width: 140rpx; */
+			border-radius: 32rpx;
+			border: 1px solid #efefef;
+			color: #FF5927;
+			padding: 10rpx 32rpx;
+			/* @include button(32rpx, 10rpx, 32rpx); */
+			}
+		.button {
+			/* white-space: nowrap; */
+			lines: 1;
+			font-size: 28rpx;
+		}
 </style>

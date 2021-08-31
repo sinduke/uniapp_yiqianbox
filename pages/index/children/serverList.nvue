@@ -63,7 +63,7 @@
 					<view  v-else class="" @disappear='dispall($event,getmonth(myList[0].game_start_time),myList[0].game_start_time)'></view>
 				</cell>
 				<cell v-if="loadinging">
-					<view class="" style="margin-bottom: 120rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth+'px'}">
+					<view class="" style="margin-bottom: 120rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
 						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
 					</view>
 				</cell>
