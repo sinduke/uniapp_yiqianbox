@@ -9,25 +9,6 @@
 					style="margin-right: 30rpx;"></u-image>
 			</u-cell-item>
 		</u-cell-group>
-		<!-- 弹出框 -->
-		<!-- <u-popup width='70%' height="30%" v-model="isShow" mode="center" border-radius='14' :mask-close-able='false'>
-			<view class="popup">
-				<view class="popupSub">
-					确认提交
-				</view>
-				<view class="" style="color: red; font-size: 26rpx;">
-					提交后会从您平台币扣取余额！
-				</view>
-				<view class="butter">
-					<u-button shape="circle" type="info" size="mini" style="width: 160rpx;height: 60rpx;"
-						@click="haColse">取消</u-button>
-					<u-button shape="circle" size="mini" @click="hadlSub"
-						style=" height: 60rpx; width: 160rpx; background-color: rgb(255, 89, 39);color: #fff;">
-						提交</u-button>
-					<u-toast ref="uToast" />
-				</view>
-			</view>
-		</u-popup> -->
 	</view>
 </template>
 

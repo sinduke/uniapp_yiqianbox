@@ -1,0 +1,74 @@
+<template>
+	<view class="nvue-group">
+		<view class="item" v-if="noCustom" :style="{borderTop:borderTop?'1px solid #efefef':'',borderBottom:borderBottom?'1px solid #efefef':''}" @click="click">
+			<view class="left">
+				<image :src="src" v-if="src" mode="widthFix" style="width: 60rpx;height: 60rpx;"></image>
+				<view v-else ></view>
+			</view>
+			<view class="center" v-if="center">
+				<text class="text">{{title}}</text>
+			</view>
+			<view class="right" >
+				<image v-if="right" src="@/static/images/right.png" mode="widthFix" style="width: 20rpx;height: 20rpx;"></image>
+				<view v-else ></view>
+			</view>
+		</view>
+		<view class="item" v-else :style="{borderTop:borderTop?'1px solid #efefef':'',borderBottom:borderBottom?'1px solid #efefef':''}"  @click="click">
+			<slot></slot>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		methods:{
+			click(){
+				this.$emit('click')
+			}
+		},
+		props:{
+			right:{
+				default:true
+			},
+			center:{
+				default:true
+			},
+			/* 自定义插槽 */
+			noCustom:{
+				default:true
+			},
+			src:{
+				default:''
+			},
+			title:{
+				default:''
+				
+			},
+			borderTop:{
+				default:true
+			},
+			borderBottom:{
+				default:true
+			}
+		}
+	}
+</script>
+
+<style scoped>
+  .nvue-group{
+	  /* background-color: #F3F3F3; */
+  }
+  .item{
+	  flex-direction: row;
+	  align-items: center;
+	  justify-content: space-between;
+	  padding: 24rpx 32rpx;
+	  border-bottom:1px solid #efefef ;
+	
+  }
+  .text{
+	  color: #1c1c1c;
+	  font-size: 32rpx;
+	  font-weight: 400;
+  }
+</style>

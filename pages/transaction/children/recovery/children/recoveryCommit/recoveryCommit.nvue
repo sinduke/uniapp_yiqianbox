@@ -1,0 +1,274 @@
+<!-- 回收确认 -->
+<template>
+	<view class="recoveryCommit" :style="{width: myWidth+'px',height:myHeight+'rpx'}">
+		<navbar :title="formData.active==0?'回收确认':'赎回确认'" :right='false'></navbar>
+	<view class="Application">
+		<view class="input" >
+			<view class="my-row">
+				<view  class="my-col" :style="{width:myWidth/4+'px'}">
+					<text color='#1c1c1c' class="title">游戏名</text>
+				</view>
+				<view class="my-col">
+					<text class="value">{{formData.game_name}}</text>
+				</view>
+			</view>
+		</view>
+ 		
+		<view class="input" >
+			<view class="my-row">
+				<view  class="my-col" :style="{width:myWidth/4+'px'}">
+					<text color='#1c1c1c' class="title">充值小号</text>
+				</view>
+				<view class="my-col">
+					<text class="value">{{formData.nickname}}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="input">
+			<view class="my-row">
+				<view  class="my-col" :style="{width:myWidth/4+'px'}">
+					<text color='#1c1c1c' class="title">游戏角色</text>
+				</view>
+				<view class="my-col">
+					<text class="value">{{formData.role_name}}</text>
+				</view>
+			</view>	
+		</view>
+		
+	
+		<view class="input">
+			<view class="my-row">
+				<view  class="my-col" :style="{width:myWidth/4+'px'}">
+					<text color='#1c1c1c' class="title">角色ID</text>
+				</view>
+				<view class="my-col">
+					<text class="value">{{formData.role_id}}</text>
+				</view>
+			</view>	
+			
+		</view>
+		
+
+		<view class="input">
+
+			<view class="my-row">
+				<view  class="my-col" :style="{width:myWidth/4+'px'}">
+					<text color='#1c1c1c' class="title">游戏区服</text>
+				</view>
+				<view class="my-col">
+					<text class="value">{{formData.server_name}}</text>
+				</view>
+			</view>	
+			
+		</view>
+		
+		<view class="input">
+			<view class="my-row">
+				<view  class="my-col" :style="{width:myWidth/4+'px'}">
+					<text color='#1c1c1c' class="title">充值金额</text>
+				</view>
+				<view class="my-col" :style="{width:myWidth/2+'px'}">
+					<text class="value">{{formData.sum_money}}</text>
+				</view>
+				<view class="my-col">
+					<text style="color: #666;font-size: 26rpx;">元</text>
+				</view>
+			</view>	
+		</view>
+		
+	
+		<view class="input">
+			<view class="my-row">
+				<view  class="my-col" :style="{width:myWidth/4+'px'}">
+					<text class="title" v-if="formData.active==0">回收可得</text>
+					<text class="title" v-else>赎回扣除</text>
+				</view>
+				<view class="my-col" :style="{width:myWidth/2.2+'px'}">
+					<text class="value">{{formData.amount}}</text>
+				</view>
+				<view class="my-col">
+					<text style="color: #666;font-size: 26rpx;">平台币</text>
+				</view>
+			</view>	
+			
+		</view>
+
+		<view class="Button" :style="{width:myWidth-32+'px'}">
+			<text @click='handleSub' v-if="formData.active==0"  class="mybutton" >确认信息无误，提交回收</text>
+			<text @click='handleShu' class="mybutton" v-else>确认信息无误，提交赎回</text>
+		</view>
+		
+	   </view>
+	</view>
+</template>
+
+<script>
+	import navbar from '@/components/nvue-navbar/nvue-navbar.nvue';
+	import {	$api	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	export default {
+		components:{
+			navbar
+		},
+		data() {
+			return {
+				game_id: '',
+				trumpetShow: false,
+				role_nameShow: false,
+				game_name: '',
+				pageData: [],
+				list: [],
+				roleList: [],
+				nikename: '',
+				role_id: '',
+				recycle_way:1,
+				formData: {
+					id:'',
+					content: '',
+					active:0
+
+				}
+			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			
+		},
+		methods: {
+			//提交
+			handleSub() {
+				
+			$api.get('app/recycle/add_recycle', {
+						mg_mem_id: this.formData.mg_mem_id,
+						recycle_way: this.recycle_way
+					
+				}).then(res => {
+					if (res.data.code == 200) {
+					uni.showToast({
+						title:res.data.msg,
+						success: () => {
+							setTimeout(()=>{
+								common.getuserInfo()
+								uni.navigateBack()
+							},400)
+						}
+					})
+					
+
+					} else {
+						uni.showToast({
+							title:res.data.msg,
+							icon:'none',
+							success: () => {
+								setTimeout(()=>{
+									uni.navigateBack()
+								},400)
+							}
+						})
+					}
+				})
+			},
+			//赎回
+			handleShu(){
+				//预下单信息
+				console.log(this.formData.id);
+			uni.navigateTo({url: `/pages/transaction/children/recovery/children/payRedeem/payRedeem?id=${this.formData.id}`})
+			}
+
+		},
+		onLoad(option) {
+			this.formData = {
+				...option
+			}
+		},
+
+	}
+</script>
+
+<style  scoped>
+	@import '@/common/css/nvue-whith.css';
+	.recoveryCommit{
+		flex: 1;
+		overflow:hidden;
+		background-color: #fff;
+	}
+		.title {
+			flex: 1;
+			flex-direction: row;
+			align-items: center;
+		}
+		
+		.customer {
+			color: #1C1C1C;
+		}
+		
+		.radius {
+			width: 64rpx;
+			height: 64rpx;
+			border-radius: 50%;
+			box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
+			/* @include flex; */
+			justify-content: center;
+		}
+		
+	
+		.Application {
+			margin-top: 188rpx;
+			padding: 40rpx 32rpx;
+		 }
+
+		.input {
+			padding: 0 32rpx;
+			background-color: #fff;
+			margin-bottom: 40rpx;
+			padding-bottom: 32rpx;
+			border-bottom:1px solid #efefef;
+            }
+			.my-row{
+				flex-direction: row;
+				align-items: center;
+				
+			}
+			.my-col{
+				
+			}
+			.title {
+				padding: 20rpx 0;
+				font-size: 32rpx;
+				font-weight: 700;
+				line-height: 1;
+				margin-right: 32rpx;
+			}
+
+			.value {
+				color: #1c1c1c;
+				font-size: 30rpx;
+				
+			}
+
+			.text {
+				font-size: 28rpx;
+
+			}
+
+		.Button{
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			padding:24rpx 32rpx;
+			border-radius: 60rpx;
+			border: 1px solid #efefef;
+			}
+		.mybutton{
+			font-size:32rpx;
+			font-weight: 700;
+			color: #FF5927;
+		}
+	
+</style>
