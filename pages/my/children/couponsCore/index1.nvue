@@ -1,0 +1,119 @@
+<template>
+	<view style="flex: 1;background-color: #F7F7F7;">
+		<myNavbar title='领券中心' :lines="false" right radius router='/pages/my/coupons/coupons1' src='../../../../static/images/my_details.png'></myNavbar>
+		<view class="img" :style="{width:$store.state.myWidth+'px'}">
+			<image :style="{width:$store.state.myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
+		</view>
+		<view class="head">
+			<view class="head_top">
+				<text class="top_text1">2021.06.01</text>
+				<text class="top_text2">2021.06.01</text>
+				<text class="top_text2">2021.06.01</text>
+			</view>
+			<view class="head_bom">
+				<view class="bom_box1">
+					<text style="font-size:28rpx;" class="top_text1">今日</text>
+				</view>
+				<view class="" style="height: 15rpx; background: #F1F1F1;flex:1 ;">
+				</view>
+				<view class="bom_box1">
+					<text style="font-size:28rpx;" class="top_text2">即将开始</text>
+				</view>
+				<view class="" style="height: 15rpx; background: #F1F1F1;flex:1 ;"></view>
+				<view class="bom_box1">
+					<text style="font-size:28rpx;" class="top_text2">即将开始</text>
+				</view>
+			</view>
+		</view>
+		<view class="head1" :style="{width:$store.state.myWidth-32+'px'}">
+			<text class="head_text1">今日好券</text>
+			<scroller scroll-direction="horizontal" :style="{width:$store.state.myWidth-58+'px'}" style="flex-direction: row;">
+				<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;position:relative;" mode="widthFix">
+					<text>13213</text>
+					<view class="img_box">
+						<text >13213</text>
+					</view>
+				</image>
+				
+				<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;" mode="widthFix"></image>
+				<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;" mode="widthFix"></image>		
+			</scroller>
+		</view>
+		<text>133132113131</text>
+	</view>
+</template>
+
+<script>
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		},
+		components: {
+			myNavbar,
+		},
+	}
+</script>
+
+<style scoped>
+	.img{
+		margin-top: 83rpx;
+	}
+	.head{
+		padding:32rpx ;
+	}
+	.head_top{
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.top_text1{
+		color: #FF4810;
+		font-size: 32rpx;
+		font-weight: bold;
+	}
+	.top_text2{
+		color: #999999;
+		font-size: 32rpx;
+		font-weight: bold;
+	}
+	.head_bom{
+		margin-top: 15rpx;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.bom_box1{
+		flex:1 ;
+		background-color: #fff;
+		border: 2rpx solid #E1E1E1;
+		width: 150rpx;
+		height: 60rpx;
+		border-radius: 30rpx;
+		justify-content: center;
+		align-items: center;
+	}
+	.head1{
+		margin-left: 32rpx;
+		padding: 40rpx 24rpx;
+		border-radius: 40rpx;
+		background: #fff;	
+	}
+	.head_text1{
+		color: #000000;
+		font-size: 32rpx;
+		font-weight: bold;
+		margin-bottom: 40rpx;
+	}
+	.img_box{
+		position: absolute;
+		top: 100;
+		left: 100;
+		padding:40rpx 12rpx;
+		background: #fff;
+	}
+</style>

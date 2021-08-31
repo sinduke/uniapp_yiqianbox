@@ -416,6 +416,17 @@
 			}
 
 		},
+		// 领券中心nvue
+		{
+		    "path" : "pages/my/children/couponsCore/index1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }  
+		},
 		// 积分商城
 		{
 			"path": "pages/my/children/pointMall/index",
@@ -1127,6 +1138,7 @@
 			}
 
 		}
+        
     ],
 
 	"easycom": {
