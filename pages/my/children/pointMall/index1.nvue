@@ -52,6 +52,15 @@
 				</view>
 			</image>
 		</showpop>
+		<showpop :isShow="handleShow" :textType="false" :titleType="false" :paddingType="true" :buttonType="false" @remove="remove">
+			<image src="@/static/images/my/jfsc-qrdh.png" mode="widthFix" class="showimg">
+				<view class="img_box" style="position:absolute" :style="{width:($store.state.myWidth-32)*0.7,left:($store.state.myWidth-32)*0.05,bottom:($store.state.myWidth-32)*0.05}">
+					<view class="" style="background: #F7F7FF;height: 150rpx;" :style="{width:($store.state.myWidth-32)*0.7}" >
+						
+					</view>
+				</view>
+			</image>
+		</showpop>
 	</view>
 </template>
 
