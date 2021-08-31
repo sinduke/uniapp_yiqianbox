@@ -1,23 +1,30 @@
 <!-- 支付方式 -->
 <template>
-	<view class="container">
-		<view class="myshadowLine"/>
-		<view class="" style="width: 100%;display: flex;justify-content: center;margin-bottom: 48rpx;">
-			
-		<view class='text'>请选择你的支付方式</view>
+	<view class="container" :style="{width:myWidth+'px'}"> 
+		<!-- <view class="myshadowLine" /> -->
+		<view class="Title" :style="{width:myWidth+'px'}">
+			<text class='text'>请选择你的支付方式</text>
 		</view>
-		<u-cell-group v-if="payMethods">
-			<u-cell-item :title="item.name" :title-style="{color:'#999'}" bg-color="#fff" :center="true" @click="handlePay(item.payway)"
-				v-for="(item,index) in payMethods" :key="index">
-				<u-image :lazy-load="false" :src="item.icon" slot="icon" width="70" height="70" border-radius="50" style="margin-right: 30rpx;"></u-image>
+		<!-- <u-cell-group v-if="payMethods">
+			<u-cell-item :title="item.name" :title-style="{color:'#999'}" bg-color="#fff" :center="true"
+				@click="handlePay(item.payway)" v-for="(item,index) in payMethods" :key="index">
+				<u-image :lazy-load="false" :src="item.icon" slot="icon" width="70" height="70" border-radius="50"
+					style="margin-right: 30rpx;"></u-image>
 			</u-cell-item>
-		</u-cell-group>
-		<!-- <web-view :src="payitem"></web-view> -->
+		</u-cell-group> -->
+		<group :src="item.icon" v-for="(item,index) in payMethods" :title="item.name" :key='index' :borderTop="index>0?false:true"  @click="handlePay(item.payway)"></group>
 	</view>
 </template>
 
 <script>
+	import group from '@/components/nvue-group/nvue-group.nvue';
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+
 	export default {
+		components:{
+			group
+		},
 		onLoad(options) {
 			this.goods_id = options.goods_id;
 			this.order_id = options.order_id || "";
@@ -35,15 +42,24 @@
 				order: {} // 下单之后的返回值
 			}
 		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
 		methods: {
 			// 获取支付方式
 			getPayMethods() {
-				this.$api.get( "account/pay/payway").then(res => {
+				$api.get("account/pay/payway").then(res => {
 					this.payMethods = res.data.data;
 				})
 			},
 			// 点击支付
-			handlePay(payway) { 
+			handlePay(payway) {
+				console.log(111111111)
 				this.payway = payway;
 				if (!this.order_id) {
 					this.placeOrder();
@@ -53,10 +69,10 @@
 			},
 			// 第一步：下单
 			placeOrder() {
-				this.$api.get( "account/goods/buy",{
-						payway: this.payway,
-						goods_id: this.goods_id
-					
+				$api.get("account/goods/buy", {
+					payway: this.payway,
+					goods_id: this.goods_id
+
 				}).then(res => {
 					console.log(res, 'account')
 					if (res.data.code == 200) {
@@ -71,11 +87,11 @@
 			},
 			// 第二步：发起支付
 			initiatePay(order_id, order_token) {
-				this.$api.get("account/goods/pay?goods_id=81",{
-						goods_id: this.goods_id,
-						payway: this.payway,
-						order_id: order_id,
-						pay_token: order_token
+				$api.get("account/goods/pay?goods_id=81", {
+					goods_id: this.goods_id,
+					payway: this.payway,
+					order_id: order_id,
+					pay_token: order_token
 				}).then(res => {
 					console.log(res, 'goods_id')
 					if ("alipayh5" == res.data.data.pay_type) {
@@ -95,14 +111,14 @@
 						})
 					}
 					this.orderStatus();
-					 this.isShow = true 
+					this.isShow = true
 				})
 			},
 			// 监听订单状态
 			orderStatus() {
-				this.$api.get( "/account/order/queryj", {
-						order_id: this.order.order_id
-					
+				$api.get("/account/order/queryj", {
+					order_id: this.order.order_id
+
 				}).then(res => {
 
 					console.log(res, 'queryj')
@@ -123,32 +139,43 @@
 		},
 		onShow() {
 			var args = plus.runtime.arguments;
-			if(this.isShow){
-				if(args){
-						console.log(args);
-						uni.redirectTo({
-							url:'/pages/transaction/index'
-						})
-					} 
+			if (this.isShow) {
+				if (args) {
+					uni.redirectTo({
+						url: '/pages/transaction/index'
+					})
+				}
 			}
 		}
 
 	}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 	.container {
-		.text {
-			color: #999999;
-			@include padding;
-		}
+		flex: 1;
+		background-color: #fff;
+		overflow: hidden;
 	}
+
+	.Title {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 48rpx;
+	}
+
+	.text {
+		color: #999999;
+		padding: 0 32rpx;
+		font-size: 32rpx;
+	}
+
 	.myshadowLine {
 		width: 100%;
 		height: 10rpx;
 		box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8);
 		margin-bottom: 60rpx;
-	
+
 	}
-	
 </style>

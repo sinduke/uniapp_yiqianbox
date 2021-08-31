@@ -30,7 +30,7 @@
 				</swiper-item>
 				<swiper-item>
 					<view class="swiper-item">
-						<recovery :actives='active'></recovery>
+						<recovery :actives='active' ref='recovery'></recovery>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -139,15 +139,18 @@
 			},
 			swiperChange(e) {
 				this.active = e.detail.current
-				if(this.$refs.recommend){
-					this.$refs.recommend.clearMove()
-				}
 			},
 	
 		},
-		watch: {
+    	onShow() {
+			if(this.active==2){
+				this.$refs.recovery.getData()
+			      this.activ1--
+				 console.log( this.activ1,'   this.activ1   this.activ1   this.activ1')
+			}
 			
-		}
+		},
+
 
 	}
 </script>

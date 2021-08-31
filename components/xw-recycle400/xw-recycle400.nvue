@@ -55,7 +55,6 @@
 	}
 
 	.textTit {
-		letter-spacing: 5rpx;
 		font-size: 32rpx;
 		color: #a1a1a1;
 		font-weight: 600;
@@ -91,9 +90,8 @@
 
 	.tit {
 		font-weight: 700;
-		margin: 12rpx auto;
+		margin: 12rpx 0;
 		font-size: 38rpx;
-		letter-spacing: 5rpx;
 		lines: 1;
 	}
 
