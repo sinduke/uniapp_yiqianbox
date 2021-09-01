@@ -1,0 +1,123 @@
+<template>
+	<view class="scanCode">
+		<view class="scanCodeBox">
+			<view class="codeBorder" :style="{width:myWidth+'px'}">
+				<view class="avatar">
+					<image :src="userInfo.avatar" style="width: 140rpx;height: 140rpx;border-radius:140rpx;margin-right: 24rpx;"></image>
+					<text class="userInfo">{{userInfo.nickname}}</text>
+				</view>
+				<text class="ptInfo">{{userFormat.name}}官网请求您的账号登录</text>
+			    <text @click="handleLogin"  class="buttons" >确认登录</text>
+			</view>
+
+		</view>
+	</view>
+</template>
+
+<script>
+	import {	$api	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData
+	export default {
+		data() {
+			return {
+				url: '',
+				key: ''
+			}
+		},
+		computed: {
+			userInfo() {
+				return globalData.store.state.userInfo
+			},
+			client_id() {
+				return globalData.store.state.client_id
+			},
+			userFormat() {
+				return globalData.store.state.userFormat
+			},
+			equipmentCode() {
+				return globalData.store.state.equipmentCode.split(",")[0]
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
+		methods: {
+			handleLogin() {
+				console.log(this.url, 'this.urlthis.url')
+				uni.request({
+					url: this.url,
+					method: 'GET',
+					header: {
+						'Content-Type': 'application/json'
+					},
+					success: res => {
+						console.log(res, 's')
+						if (res.data.code == 200) {
+							uni.showToast({
+								title:'登录成功',
+								icon:'none',
+								success: () => {
+									setTimeout(()=>{
+										uni.switchTab({
+											url: '/pages/my/index',
+										})
+									},300)
+								}
+								
+							})
+						} else {
+							uni.showToast({
+								title:res.data.msg,
+								icon:'none',
+							})
+						}
+					}
+				})
+			},
+		},
+		onLoad(option) {
+			this.key = JSON.parse(option.result).key
+			this.url = JSON.parse(option.result).url +`?key=${this.key}&abc_game_agent_id=${this.client_id}&username=${uni.getStorageSync('mem-username')}&password=${uni.getStorageSync('mem-password')}&format=json&openid=${uni.getStorageSync('openid')?uni.getStorageSync('openid'):''}`;
+		},
+	}
+</script>
+
+<style scoped>
+	.scanCode {
+		flex: 1;
+		align-items: center;
+		background-color: #fff;
+	}
+   .avatar{
+	   margin-top: 300rpx;
+	   flex-direction: row;
+	   align-items: center;
+	   margin-bottom: 42rpx;
+   }
+   .userInfo{
+	   font-size: 40rpx;
+	   color: #1C1C1C;
+	   font-weight: 700;
+   }
+	.codeBorder {
+		align-items: center;
+	}
+	.ptInfo{
+		font-size: 32rpx;
+		color: #999;
+		margin-bottom: 42rpx;
+	}
+
+	.buttons {
+		color: #FF5927;
+		border: 1px solid #efefef;
+		padding:18rpx 82rpx;
+		border-radius: 42rpx;
+		font-size: 32rpx;
+		font-weight: 700;
+	}
+</style>

@@ -1,6 +1,6 @@
 <template>
 	<view class="nvue-group">
-		<view class="item" v-if="noCustom" :style="{borderTop:borderTop?'1px solid #efefef':'',borderBottom:borderBottom?'1px solid #efefef':''}" @click="click">
+		<view class="item" v-if="noCustom" :style="{borderTop:borderTop?'1px solid #ececec':'',borderBottom:borderBottom?'1px solid #ececec':''}" @click="click">
 			<view class="left">
 				<image :src="src" v-if="src" mode="widthFix" style="width: 60rpx;height: 60rpx;"></image>
 				<view v-else ></view>
@@ -13,7 +13,7 @@
 				<view v-else ></view>
 			</view>
 		</view>
-		<view class="item" v-else :style="{borderTop:borderTop?'1px solid #efefef':'',borderBottom:borderBottom?'1px solid #efefef':''}"  @click="click">
+		<view class="item" v-else :style="{borderTop:borderTop?'1px solid #ececec':'',borderBottom:borderBottom?'1px solid #ececec':''}"  @click="click">
 			<slot></slot>
 		</view>
 	</view>

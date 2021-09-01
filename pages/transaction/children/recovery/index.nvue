@@ -6,9 +6,10 @@
 		</view>
 		<view class="list">
 			<list :style="{height:myHeight-232+'rpx',width:myWidth+'px'}" @loadmore='loadmore'	 loadmoreoffset='20' :show-scrollbar='false'   class="list" ref="list"  v-if="pageData.length">
-			    <refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
+			    <refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'" :viewHeight='180'>
 					<view class="refreshImages" :style="{width:myWidth-6+'px'}">
-						<image src="@/static/images/myrefresh.png" mode="widthFix" class="refreshImage"></image>
+						<image src="@/static/images/myrefresh.png" v-if="refreshFlag" mode="widthFix" class="refreshImage"></image>
+						<image src="@/static/images/myrefresh.gif" v-else mode="widthFix" class="refreshImage"></image>
 					</view>
 				</refresh>
 				<cell :style="{width:myWidth+'px',height: '64rpx'}" />
@@ -48,9 +49,7 @@
 				count: 0,
 				countsh: 0,
 				refreshing: false,
-
-
-
+				refreshFlag:true,
 			}
 		},
 		props: {
@@ -71,12 +70,23 @@
 			
 		},
 		methods: {
+			onpullingdown(e){
+				if (Math.abs(e.pullingDistance) > Math.abs(e.viewHeight)){
+					this.refreshFlag = false
+				}
+			},
 	    	onrefresh() {
 				this.refreshing = true
 				setTimeout(() => {
-				// this.getSpecialData()
-					// this.resetLoadMore()
+				    this.pageData = []
+				    if (this.active) {
+				    	this.getshData()
+				    } else {
+				    	this.getData()
+				    }
+					this.$refs.list.resetLoadmore();
 					this.refreshing = false;
+					this.refreshFlag = true
 				}, 1000)
 			},
 			getData() {
@@ -136,11 +146,12 @@
 		watch: {
 			actives(val) {
 				if (val == 2) {
-					console.log(val,'val')
+					this.active = 0
 					this.getData()
 				}
 			},
 			activs(val) {
+			 console.log(val,'aaa')
 			  this.active = 0
 			}
 		},

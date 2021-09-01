@@ -1,19 +1,31 @@
 <!-- 赎回支付 -->
 <template>
-	<view class="container">
-		<view class='text'>请选择你的支付方式</view>
-		<u-cell-group v-if="paylist">
-			<u-cell-item :title="item.name" bg-color="#f5f5f5" :center="true" @click="handlePay(item.payway)"
-				v-for="(item,index) in paylist" :key="index">
-				<u-image :lazy-load="false" :src="item.icon" slot="icon" width="100" height="100"
-					style="margin-right: 30rpx;"></u-image>
-			</u-cell-item>
-		</u-cell-group>
+	<view class="container" :style="{width:myWidth+'px'}">
+		
+		<view class="Title" :style="{width:myWidth+'px'}">
+			<text class='text'>请选择你的支付方式</text>
+		</view>
+		<group :src="item.icon" v-for="(item,index) in paylist"  :title="item.name" :key='index' :borderTop="index>0?false:true"  @click="handlePay(item.payway)"></group>
 	</view>
 </template>
 
 <script>
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import group from '@/components/nvue-group/nvue-group.nvue';
 	export default {
+		components:{
+			group
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			
+		},
 		data() {
 			return {
 				recycle_id: '',
@@ -27,7 +39,7 @@
 			//获取支付接口
 			getdleRecy() {
 				console.log(this.order_id);
-				this.$api.get('app/recycle/pre_order', {
+				$api.get('app/recycle/pre_order', {
 					recycle_id: this.recycle_id
 				}).then(res => {
 					console.log(res.data, 'res.data');
@@ -39,7 +51,6 @@
 							icon: 'none',
 							title: res.data.msg,
 							success: () => {
-								console.log(1111);
 								setTimeout(function() {
 									uni.switchTab({
 										url: '/pages/transaction/index'
@@ -55,13 +66,12 @@
 			},
 			//提交
 			hadlSub() {
-				this.$api.get('app/recycle/pay', {
+				$api.get('app/recycle/pay', {
 					payway: this.payway,
 					order_id: this.order_id
 				}).then(res => {
 					if (res.data.code == 200) {
-						
-						this.$common.getuserInfo()
+					   common.getuserInfo()
 						uni.showToast({
 							title: '赎回成功',
 							success: () => {
@@ -77,8 +87,7 @@
 			},
 			//点击支付
 			handlePay(ip) {
-				this.payway = ip
-				// this.isShow = true
+		    this.payway = ip
 			uni.showModal({
 			    title: '确认提交',
 			    content: '提交后会从您平台币扣取余额！',
@@ -101,30 +110,31 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 	.container {
+		flex: 1;
+		overflow:hidden;
+		background-color: #fff;
+		}
+		.Title {
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			margin: 48rpx 0;
+		}
+		
 		.text {
-			// color: $xw-font-auxiliary-color;
-			padding:32rpx 40rpx;
+			color: #999999;
+			padding: 0 32rpx;
+			font-size: 32rpx;
 		}
+		
 
-		.popup {
-			width: 100%;
-			height: 100%;
-			padding: 12rpx;
-
-			.popupSub {
-				font-size: 44rpx;
-				font-weight: 600;
-				margin: 60rpx auto;
-
-			}
-
-			.butter {
-				display: flex;
-				margin-top: 60rpx;
-			}
+		.butter {
+			flex-direction: row;
+			margin-top: 60rpx;
 		}
+	
 
-	}
+	
 </style>

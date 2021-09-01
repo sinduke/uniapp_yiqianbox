@@ -97,13 +97,8 @@
 <script>
 	import { $api } from '@/config/api.js';
 	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData
 	export default {
-		data() {
-			return {
-				userFormat1: {}
-			}
-
-		},
 		computed:{
 			// 导航栏高度
 			statusBarHeight(){
@@ -114,6 +109,9 @@
 			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
+			},
+			userFormat1() {
+				return globalData.store.state.userFormat
 			},
 			
 		},
@@ -138,11 +136,11 @@
 
 				});
 			},
-			getList() {
-				$api.get(`system/box_front_setup`).then(res => {
-					this.userFormat1 = res.data.data.front_setup
-				})
-			},
+			// getList() {
+			// 	$api.get(`system/box_front_setup`).then(res => {
+			// 		this.userFormat1 = res.data.data.front_setup
+			// 	})
+			// },
 			//微信跳转
 			weixinGo(){
 				common.copyText(this.userFormat1.footer_wechat_number)
@@ -190,9 +188,6 @@
 			},
 			
 		},
-		onShow() {
-			this.getList()
-		}
 	}
 </script>
 

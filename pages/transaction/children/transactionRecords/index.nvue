@@ -101,7 +101,7 @@
 				this.active = e.detail.current
 				switch (this.active) {
 					case 0:
-						this.getpurchaseData()
+						// this.getpurchaseData()
 						break;
 					case 1:
 						this.getSellData()

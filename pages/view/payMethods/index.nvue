@@ -5,13 +5,6 @@
 		<view class="Title" :style="{width:myWidth+'px'}">
 			<text class='text'>请选择你的支付方式</text>
 		</view>
-		<!-- <u-cell-group v-if="payMethods">
-			<u-cell-item :title="item.name" :title-style="{color:'#999'}" bg-color="#fff" :center="true"
-				@click="handlePay(item.payway)" v-for="(item,index) in payMethods" :key="index">
-				<u-image :lazy-load="false" :src="item.icon" slot="icon" width="70" height="70" border-radius="50"
-					style="margin-right: 30rpx;"></u-image>
-			</u-cell-item>
-		</u-cell-group> -->
 		<group :src="item.icon" v-for="(item,index) in payMethods" :title="item.name" :key='index' :borderTop="index>0?false:true"  @click="handlePay(item.payway)"></group>
 	</view>
 </template>

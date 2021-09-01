@@ -41,11 +41,11 @@
 							<text class="box-header-item1" @click="handleRouter('/pages/game/children/gameList')">查看分类</text>
 						</view>
 						<view class="box-content" style="margin-bottom: 40rpx;" v-if="tagsList.length>0">
-							<text class="box-content-item" v-for="(v,i) in tagsList"	@click="handleList('tags',v.id,v.name)">{{v.name}}</text>
+							<text class="box-content-item" v-for="(v,n) in tagsList" :key='n'	@click="handleList('tags',v.id,v.name)">{{v.name}}</text>
 						</view>
 						<view class="box-content" v-if="tagsList.length>0">
 					     	<text class="box-content-item"  @click="handleList('h5',1,'H5')" >H5</text>
-							<text class="box-content-item" v-for="(v,i) in cateList" @click="handleList('cate',v.id,v.name)" v-if="i<2">{{v.name}}</text>
+							<text class="box-content-item" v-for="(v,i) in cateList" :key='i' @click="handleList('cate',v.id,v.name)" v-if="i<2">{{v.name}}</text>
 						</view>
 					</view>
 				</cell>
@@ -64,7 +64,7 @@
 			
 						<view ref="box_icon1" style="height: 500rpx;">
 							<view v-if="rebate" class="box-content-icon">
-								<gameicon v-for="(item,index) in rebate[numbers].game_list" :key='item' v-if="index<6" :iconData='item' style="margin-bottom: 12rpx;"></gameicon>
+								<gameicon v-for="(item,index) in rebate[numbers].game_list" :key='index' v-if="index<6" :iconData='item' style="margin-bottom: 12rpx;"></gameicon>
 							</view>
 						</view>
 						<view class="getnew" v-if="rebate" @click="getrelevantData(1,rebate[numbers].topic_id,numbers)">
@@ -82,7 +82,7 @@
 						</view>
 						<view ref="box_icon4" style="height: 500rpx;">
 							<view class="box-content-icon" v-if="picture">
-								<gameicon  style="margin-bottom: 12rpx;" v-for="(item,index) in picture.game_list" :key='item' v-if="index<6"	:iconData='item'></gameicon>
+								<gameicon  style="margin-bottom: 12rpx;" v-for="(item,index) in picture.game_list" :key='index' v-if="index<6"	:iconData='item'></gameicon>
 							</view>
 						</view>
 						<view class="getnew" @click="getrelevantData(4,picture.topic_id)">
@@ -104,7 +104,7 @@
 						</view>
 						<view ref="box_icon6" style="height:250rpx;">
 							<view class="box-content-icon" v-if="newsdata">
-								<gameicon  style="margin-bottom: 12rpx;" v-for="(item,index) in newsdata.game_list" :key='item' v-if="index<3" :iconData='item'></gameicon>
+								<gameicon  style="margin-bottom: 12rpx;" v-for="(item,index) in newsdata.game_list" :key='index' v-if="index<3" :iconData='item'></gameicon>
 							</view>
 						</view>
 						<view class="getnew" @click="getrelevantData(6,newsdata.topic_id)">
@@ -133,7 +133,7 @@
 						</view>
 						<view ref="box_icon3" style="height: 500rpx;">
 							<view v-if="memory" class="box-content-icon">
-								<gameicon v-for="(item,index) in memory.game_list" :key='item' :iconData='item'  style="margin-bottom: 12rpx;"	v-if="index<6"></gameicon>
+								<gameicon v-for="(item,index) in memory.game_list" :key='index' :iconData='item'  style="margin-bottom: 12rpx;"	v-if="index<6"></gameicon>
 							</view>
 						</view>
 						<view class="getnew" @click="getrelevantData(3,memory.topic_id)">
@@ -217,7 +217,7 @@
 						</view>
 						<view ref="box_icon2" style="height: 500rpx;">
 							<view v-if="boutique" class="box-content-icon">
-								<gameicon v-for="(item,index) in boutique.game_list" :key='item' v-if="index<6"  style="margin-bottom: 12rpx;" :iconData='item'></gameicon>
+								<gameicon v-for="(item,index) in boutique.game_list" :key='index' v-if="index<6"  style="margin-bottom: 12rpx;" :iconData='item'></gameicon>
 							</view>
 						</view>
 						<view class="getnew" @click="getrelevantData(2,boutique.topic_id)">
@@ -241,7 +241,7 @@
 						</view>
 						<view ref="box_icon5" style="height:250rpx;">
 							<view class="box-content-icon" v-if="hotdata">
-								<gameicon  style="margin-bottom: 12rpx;" v-for="(item,index) in hotdata.game_list" :key='item' v-if="index<3"	:iconData='item'></gameicon>
+								<gameicon  style="margin-bottom: 12rpx;" v-for="(item,index) in hotdata.game_list" :key='index' v-if="index<3"	:iconData='item'></gameicon>
 							</view>
 						</view>
 
@@ -253,7 +253,7 @@
 				</cell>
 
 				<!-- 分类 -->
-				<cell v-for="(item,index) in categoryData" :key='index' v-if="categoryData.length">
+				<cell v-for="(item,myindex) in categoryData" :key='myindex' v-if="categoryData.length">
 					<view class="box">
 						<view class="box-header" v-if="item.list">
 							<text class="box-header-item">{{ pageList[item.cate_id]}}</text>
@@ -264,7 +264,7 @@
 								<gameicon  style="margin-bottom: 12rpx;" v-for="(v,i) in item.list" :key='i' v-if="i<6" :iconData='v'></gameicon>
 							</view>
 						</view>
-						<view class="getnew" @click="hanlecategory(index,item.cate_id)">
+						<view class="getnew" @click="hanlecategory(myindex,item.cate_id)">
 							<image src="@/static/images/Refresh-icon.png" ref="categoryicon" class="getnew-icon"  mode="widthFix"></image>
 							<text class='getnew-title'>换一批</text>
 						</view>

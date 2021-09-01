@@ -1,10 +1,16 @@
 <!-- 卖号 -->
 <template>
 	<view class="container">
-		<view class="main">
-			<scroll-view scroll-y="true" :style="{height:$store.state.myHeight-200+'rpx'}">
+			<scroller  :style="{height:myHeight-200+'rpx'}">
 				<view>
-					<u-cell-group :border='false'>
+					<group :noCustom='false'>
+						<view class="left">
+							aaaaaaaaaaaa
+						</view>
+					</group>
+					
+					
+					<!-- <u-cell-group :border='false'>
 						<u-cell-item :title="$t('my.tjyx')" :border-top='false' :value="form.gamename" bg-color="#ffffff"
 							@click="addxh"></u-cell-item>
 						<u-cell-item :title="$t('my.tjxh')" :border-top='false' :value="form.role_name" bg-color="#ffffff"
@@ -24,26 +30,20 @@
 							<u-input v-model="form.price" type="number" :placeholder="$t('my.qtxjezd')+'6元'"
 								placeholder-style="text-align:right;color:#E1E1E1" slot="right-icon" input-align="right" />
 						</u-cell-item>
-					</u-cell-group>
+					</u-cell-group> -->
 					
-					<view>
-						<view class="yxjt" style="margin:24rpx 32rpx; font-weight: 600;">
-							游戏截图
-						</view>
+					
+					
+					
+				<!-- 	<view>
+						<view class="yxjt" style="margin:24rpx 32rpx; font-weight: 600;">游戏截图</view>
 						<view style="padding:0 32rpx;display: flex;justify-content: space-between;">
 							<u-upload ref="uUpload" :action="action" upload-text="最多上传三张" max-count="3"	@on-success="uploadSuccess" @on-remove="uploadRemove"	style="background-color: #fff;border-radius:20rpx;color: #E6E6E6;"></u-upload>
-<!-- 							<u-upload ref="uUpload1" :action="action" upload-text="" max-count="1"
-								@on-success="uploadSuccess" @on-remove="uploadRemove"
-								style="background-color: #fff;border-radius:20rpx;color: #E6E6E6;"></u-upload>
-							<u-upload ref="uUpload2" :action="action" upload-text="" max-count="1"
-								@on-success="uploadSuccess" @on-remove="uploadRemove"
-								style="background-color: #fff;border-radius:20rpx;color: #E6E6E6;"></u-upload> -->
 						</view>
-					
-					</view>
+					</view> -->
 					
 					<!-- 卖家须知 -->
-					<u-modal v-model="showNotice" :title="$t('my.mjxz2')" :show-cancel-button="true"
+				<!-- 	<u-modal v-model="showNotice" :title="$t('my.mjxz2')" :show-cancel-button="true"
 						:confirm-text="$t('confirm1')+'出售'" confirm-color="#ff5927" :cancel-text="$t('my.fqcs')"
 						@confirm="verification">
 						<view class="slot-content">
@@ -53,10 +53,10 @@
 							<view>4.{{$t('my.ydscbkhs')}}。</view>
 							<view>5.{{$t('my.scjhdptb')}}。</view>
 						</view>
-					</u-modal>
+					</u-modal> -->
 					
 					<!-- 短信验证 -->
-					<u-modal v-model="showVerification" :title="$t('my.mjxz2')" :show-cancel-button="true"
+					<!-- <u-modal v-model="showVerification" :title="$t('my.mjxz2')" :show-cancel-button="true"
 						confirm-color="#ff5927" @confirm="handleSellOut">
 						<view class="slot-content">
 							<view>{{$t('my.yjxndsjh')}}：{{userInfo.mobile}}{{$t('sendout')+$t('verificationCode')}}</view>
@@ -70,29 +70,24 @@
 									:end-text="$t('get')+$t('verificationCode')"></u-verification-code>
 							</view>
 						</view>
-					</u-modal>
-					<view class="btns">
+					</u-modal> -->
+				<!-- 	<view class="btns">
 						<text class="mybutton" @click="submitReview">{{$t('my.tjsh')}}</text>
-					</view>
+					</view> -->
 				</view>
-				<view class="" style="width: 100%;height: 100rpx;">
-					
-				</view>
-			</scroll-view>
 
-			
-		</view>
-
-	
-
+			</scroller>
 	</view>
 </template>
 
 <script>
-	import {
-		mapState
-	} from "vuex";
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import group from '@/components/nvue-group/nvue-group.nvue';
 	export default {
+		components:{
+			group
+		},
 		data() {
 			return {
 				form: {
@@ -119,15 +114,30 @@
 			}
 		},
 		computed: {
-			selectedGame() {
-				return this.$store.state.selectedGame;
+			i18n() {
+				return globalData.$t('index')
 			},
-			...mapState({
-				userInfo: "userInfo",
-				client_id: "client_id",
-			}),
-
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight
+			},
+			
 		},
+		// computed: {
+		// 	selectedGame() {
+		// 		return this.$store.state.selectedGame;
+		// 	},
+		// 	...mapState({
+		// 		userInfo: "userInfo",
+		// 		client_id: "client_id",
+		// 	}),
+
+		// },
 		methods: {
 			// 图片上传
 			uploadSuccess(data) {
@@ -215,13 +225,13 @@
 			},
 			// 发送短信验证码
 			getCode() {
-				let that = this;
+			
 				if (this.$refs.uCode.canGetCode) {
 					// 模拟向后端请求验证码
 					uni.showLoading({
 						title: '正在获取验证码',
-						success() {
-							that.$api.get("v8/sms/send", {
+						success:()=>{
+							$api.get("v8/sms/send", {
 								"sms-type": 4,
 								"sms-mobile": that.userInfo.mobile
 
@@ -245,7 +255,7 @@
 			// 确认出售
 			handleSellOut() {
 				console.log(this.form);
-				this.$api.get("account/goods/sell", {
+				$api.get("account/goods/sell", {
 					...this.form,
 					"sms-type": 4,
 					"sms-mobile": this.$store.state.userInfo.mobile,
@@ -317,26 +327,28 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 	.container {
-
+		flex: 1;
+		overflow:hidden;
+   }
 		.btns {
 			width: 100%;
-			display: flex;
+			flex-direction: row;
 			align-items: center;
 			justify-content: center;
-
+          }
 			.mybutton {
-				@include button(60rpx, 20rpx, 120rpx);
+				/* @include button(60rpx, 20rpx, 120rpx); */
 				font-size: 34rpx;
 				margin: 20rpx 0;
 			}
-		}
 
-		// 弹出窗口
+
+	
 		.slot-content {
 			line-height: 40rpx;
-			@include padding;
+			/* @include padding; */
 		}
-	}
+
 </style>
