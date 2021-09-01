@@ -1,46 +1,31 @@
 <!-- 卖号 -->
 <template>
 	<view class="container">
-			<scroller  :style="{height:myHeight-200+'rpx'}">
-				<view>
-					<group :noCustom='false'>
-						<view class="left">
-							aaaaaaaaaaaa
-						</view>
+			<scroller  :style="{height:myHeight-200+'rpx'}" :show-scrollbar="false">
+				<view class="body">
+					<group type='select' title='添加游戏' :borderTop='false' :value="form.gamename" @click="addxh"></group>
+					<group type='select' title='添加小号' :borderTop='false' :value="form.role_name" @click="handleRouter('/pages/transaction/children/Sellingnumber/someNumber/someNumber?game_id='+game_id,1)"></group>
+					<group type='select' title='区服' :borderTop='false' :value="form.server_name" :right="false"></group>
+					
+					<group type='slot' :borderTop='false' :right="false">
+						<text class="title">标题</text>
+					    <input type="text" class="inputs" v-model="form.title" placeholder="请输入核心卖点" maxlength="20" style="width: 200rpx;" placeholder-style="color:#e1e1e1"/>
+					</group>
+					<group type='slot'  :borderTop='false' :right="false">
+						<textarea class="inputs" style="height: 200rpx;" v-model="form.description" maxlength="210" placeholder="可描述角色等级，装备，属性等，10-199字，完善描述可以快速有效的促成交易哦！" placeholder-style="color:#e1e1e1"></textarea>
+					</group>
+					<group type='slot' :borderTop='false' :right="false">
+						<text class="title">售价</text>
+					    <input type="number" class="inputs" v-model="form.price" placeholder="请填写价格最低6元" maxlength="20" style="width: 260rpx;" placeholder-style="color:#e1e1e1"/>
 					</group>
 					
-					
-					<!-- <u-cell-group :border='false'>
-						<u-cell-item :title="$t('my.tjyx')" :border-top='false' :value="form.gamename" bg-color="#ffffff"
-							@click="addxh"></u-cell-item>
-						<u-cell-item :title="$t('my.tjxh')" :border-top='false' :value="form.role_name" bg-color="#ffffff"
-							@click="handleRouter('/pages/transaction/children/Sellingnumber/someNumber/someNumber?game_id='+game_id,1)">
-						</u-cell-item>
-						<u-cell-item title="区服" :border-top='false' :arrow="false" :value="form.server_name" bg-color="#ffffff">
-						</u-cell-item>
-						<u-cell-item :title="$t('title')" :arrow="false" bg-color="#ffffff">
-							<u-input v-model="form.title" type="text" :placeholder="$t('my.qsrhxmd')"
-								placeholder-style="text-align:right;color:#E1E1E1" slot="right-icon" input-align="right" />
-						</u-cell-item>
-						<view style="padding:20rpx 30rpx;margin-bottom:30rpx;">
-							<u-input v-model="form.description" type="textarea" :placeholder="$t('my.kmsjsdjzbd')"
-								placeholder-style="color:#E1E1E1"></u-input>
-						</view>
-						<u-cell-item border-top title="售价" :arrow="false" bg-color="#ffffff">
-							<u-input v-model="form.price" type="number" :placeholder="$t('my.qtxjezd')+'6元'"
-								placeholder-style="text-align:right;color:#E1E1E1" slot="right-icon" input-align="right" />
-						</u-cell-item>
-					</u-cell-group> -->
-					
-					
-					
-					
-				<!-- 	<view>
-						<view class="yxjt" style="margin:24rpx 32rpx; font-weight: 600;">游戏截图</view>
-						<view style="padding:0 32rpx;display: flex;justify-content: space-between;">
-							<u-upload ref="uUpload" :action="action" upload-text="最多上传三张" max-count="3"	@on-success="uploadSuccess" @on-remove="uploadRemove"	style="background-color: #fff;border-radius:20rpx;color: #E6E6E6;"></u-upload>
-						</view>
-					</view> -->
+					<view>
+						<text class="yxjt" >游戏截图</text>
+							<view class="upload" :style="{width:myWidth-32+'px'}">
+								<upLoadImage :max_number='3'  @upLoadSuccess='upLoadSuccess'></upLoadImage>
+							</view>
+							<!-- <u-upload ref="uUpload" :action="action" upload-text="最多上传三张" max-count="3"	@on-success="uploadSuccess" @on-remove="uploadRemove"	style="background-color: #fff;border-radius:20rpx;color: #E6E6E6;"></u-upload> -->
+					</view>
 					
 					<!-- 卖家须知 -->
 				<!-- 	<u-modal v-model="showNotice" :title="$t('my.mjxz2')" :show-cancel-button="true"
@@ -71,11 +56,10 @@
 							</view>
 						</view>
 					</u-modal> -->
-				<!-- 	<view class="btns">
-						<text class="mybutton" @click="submitReview">{{$t('my.tjsh')}}</text>
-					</view> -->
+					<view class="btns" :style="{width:myWidth-32+'px'}">
+						<text class="mybutton" @click="submitReview">提交审核</text>
+					</view>
 				</view>
-
 			</scroller>
 	</view>
 </template>
@@ -84,8 +68,11 @@
 	import { $api } from '@/config/api.js';
 	import common from "@/common/js/common.js";
 	import group from '@/components/nvue-group/nvue-group.nvue';
+	import upLoadImage from '@/components/nvue-upLoadImage/nvue-upLoadImage.nvue';
+	
 	export default {
 		components:{
+			upLoadImage,
 			group
 		},
 		data() {
@@ -140,15 +127,16 @@
 		// },
 		methods: {
 			// 图片上传
-			uploadSuccess(data) {
-				this.fileList.push(data.data.url);
+			upLoadSuccess(data) {
+				this.fileList = data;
+				console.log(data,'this.fileList')
 				this.form.image = JSON.stringify(this.fileList);
 			},
 			// 图片删除
-			uploadRemove(index) {
-				this.fileList.splice(index, 1)
-				this.form.image = JSON.stringify(this.fileList);
-			},
+			// uploadRemove(index) {
+			// 	this.fileList.splice(index, 1)
+			// 	this.form.image = JSON.stringify(this.fileList);
+			// },
 			// 卖家须知
 			submitReview() {
 				let title;
@@ -184,7 +172,6 @@
 								uni.navigateTo({
 									url: '/pages/view/changeMobile/changeMobile'
 								})
-
 							}
 						})
 						return;
@@ -309,8 +296,9 @@
 		watch: {
 			selectedGame: {
 				handler(val) {
+					console.log(val,'sssssss')
 					this.resetForm();
-					if (val.game_id) {
+					if (val&&val.game_id) {
 						this.form.gamename = val.gamename;
 						this.form.role_name = val.role_name || '选择小号';
 						this.form.server_name = val.server_name;
@@ -331,24 +319,44 @@
 	.container {
 		flex: 1;
 		overflow:hidden;
+		background-color: #fff;
+   }
+   .title{
+	   font-size: 32rpx;
+	   color: #1c1c1c;
+	     font-weight: 700;
+   }
+   .inputs{
+	   font-size: 30rpx;
+	 
+   }
+   .body{
+	   padding: 0 32rpx;
+   }
+   .yxjt{
+	 margin:32rpx 0;
+	 font-weight: 700;
+	 font-size: 32rpx;
    }
 		.btns {
-			width: 100%;
 			flex-direction: row;
 			align-items: center;
 			justify-content: center;
           }
 			.mybutton {
-				/* @include button(60rpx, 20rpx, 120rpx); */
+				border-radius: 60rpx;
+				padding: 24rpx 160rpx;
+				color: #FF5927;
+				border: 1px solid #efefef;
 				font-size: 34rpx;
-				margin: 20rpx 0;
+				font-weight: 700;
+				margin: 40rpx 0;
 			}
 
 
 	
 		.slot-content {
 			line-height: 40rpx;
-			/* @include padding; */
 		}
 
 </style>

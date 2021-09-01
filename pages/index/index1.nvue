@@ -23,8 +23,7 @@
 				:style="{height:myHeight-120+'rpx',width:myWidth+'px'}">
 				<swiper-item ref="swiper">
 					<view class="swiper-item">
-						<recommend ref='recommend' :myWidth='myWidth' :myHeight='myHeight' :dataList='pageData'>
-						</recommend>
+						<image src="http://test.download.cycore.cn/edc_zhwk/2021/7/5/3/52/cef77661-75cc-4992-bc08-98e440ae97ae.png"  style="width:200px">
 					</view>
 				</swiper-item>
 				<swiper-item>
