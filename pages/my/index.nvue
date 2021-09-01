@@ -197,7 +197,7 @@
 					{
 						url: '../../static/images/my/czfl.png',
 						name: '充值返利',
-						router: '/pages/customerService/children/rechargeRebate/index',
+						router: '/pages/customerService/children/rechargeRebate/index1',
 						type: 1
 					},
 					{
