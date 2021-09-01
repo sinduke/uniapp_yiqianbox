@@ -1,6 +1,6 @@
 <template>
 	<view class="nvue-group">
-		<view class="item" v-if="noCustom" :style="{borderTop:borderTop?'1px solid #ececec':'',borderBottom:borderBottom?'1px solid #ececec':''}" @click="click">
+		<view class="item" v-if="type=='noCustom'" :style="{borderTop:borderTop?'1px solid #ececec':'',borderBottom:borderBottom?'1px solid #ececec':''}" @click="click">
 			<view class="left">
 				<image :src="src" v-if="src" mode="widthFix" style="width: 60rpx;height: 60rpx;"></image>
 				<view v-else ></view>
@@ -9,10 +9,22 @@
 				<text class="text">{{title}}</text>
 			</view>
 			<view class="right" >
-				<image v-if="right" src="@/static/images/right.png" mode="widthFix" style="width: 20rpx;height: 20rpx;"></image>
+				<image v-if="right" src="@/static/images/999_right.png" mode="widthFix" style="width: 20rpx;height: 20rpx;"></image>
 				<view v-else ></view>
 			</view>
 		</view>
+		
+		<view class="item" v-else-if="type=='select'" :style="{borderTop:borderTop?'1px solid #ececec':'',borderBottom:borderBottom?'1px solid #ececec':''}" @click="click">
+			<view class="left">
+				<text class="text">{{title}}</text>
+			</view>
+			<view class="right" >
+				<text class="right_text">{{value}}</text>
+				<image v-if="right" src="@/static/images/999_right.png" mode="widthFix" style="width: 20rpx;height: 20rpx;margin-left: 18rpx;"></image>
+				<view v-else ></view>
+			</view>
+		</view>
+
 		<view class="item" v-else :style="{borderTop:borderTop?'1px solid #ececec':'',borderBottom:borderBottom?'1px solid #ececec':''}"  @click="click">
 			<slot></slot>
 		</view>
@@ -33,11 +45,16 @@
 			center:{
 				default:true
 			},
-			/* 自定义插槽 */
-			noCustom:{
-				default:true
+				/* 自定义插槽 */
+			type:{
+				default:'noCustom'
 			},
+		
 			src:{
+				default:''
+			},
+			//数据
+			value:{
 				default:''
 			},
 			title:{
@@ -62,13 +79,22 @@
 	  flex-direction: row;
 	  align-items: center;
 	  justify-content: space-between;
-	  padding: 24rpx 32rpx;
+	  padding: 32rpx 24rpx 36rpx 24rpx;
 	  border-bottom:1px solid #efefef ;
 	
   }
   .text{
 	  color: #1c1c1c;
 	  font-size: 32rpx;
+	  font-weight: 700;
+  }
+  .right{
+	  flex-direction: row;
+	  align-items: center;
+  }
+  .right_text{
+	  color: #999;
+	  font-size: 30rpx;
 	  font-weight: 400;
   }
 </style>

@@ -1,0 +1,186 @@
+<template>
+	<view class="nvue-upLoadImage">
+		<view class="uploadList" :style="{width:myWidth-32-24+'px'}">
+			<view class="border" :style="{width:myWidth/3-32+'px',height:myWidth/3-32+'px'}"  v-for="(src,index) in imageList" :key='index'  bubble="true">
+				<image @click="upLoadImage" v-if="!src" src="@/static/images/jia.png" mode="widthFix" :style="{width:myWidth/3-80+'px',height:myWidth/3-80+'px',margin:'24rpx 0'}"></image>
+				<text  v-if="!src" class="text">最多上传{{max_number-imageList.length+1}}张</text>
+				<image @click="imageClick(index)" v-if="src" :src="src" class="image" mode="scaleToFill" :style="{width:myWidth/3-32+'px',height:myWidth/3-32+'px'}"></image>
+				<image v-if="src" src="@/static/images/close.png" mode="widthFix" style="width: 40rpx;height: 40rpx;position: absolute;right: 10rpx;top:10rpx"></image>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				// src: '',
+			    lists:[],
+				imageList:['']
+			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			}
+		},
+		props: {
+			//最多
+			max_number: {
+				default: 3,
+				type: Number
+			},
+			upload_text:{
+				default: '',
+				type:String
+			},
+			name: {
+				default: 'up_load'
+			},
+			action:{
+				default:'https://api.sy12306.com/asset/upload',
+				type:String
+			},
+			formData: {
+				default: () => {},
+				type: Object,
+			},
+			header: {
+				default: () => {},
+				type: Object,
+			}
+
+		},
+		methods: {
+			//删除图片
+			imageClick(index){
+				uni.showModal({
+				    title: '提示',
+				    content: '确认删除？',
+				    success: res=> {
+				        if (res.confirm) {
+				           this.imageList.splice(index,1)
+						   if(this.imageList.length>1&&!this.imageList.includes('')){
+							   this.imageList.push('')
+						   }
+				           this.$emit('upLoadSuccess',this.imageList)	   
+				        } 
+				    }
+				});
+
+			},
+			upLoadImage() {
+				uni.chooseImage({
+					count: this.max_number-this.imageList.length+1,
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					success: (res) => {
+						console.log(tempFilePaths, 'resssss')
+						// console.log(JSON.stringify(res.tempFilePaths));
+						const tempFilePaths = res.tempFilePaths;
+						// this.src  = res.tempFilePaths[0]
+						// console.log(tempFilePaths[0], 'resssss')
+						tempFilePaths.forEach(item=>{
+							this.uploadFile(item)
+						})
+                           
+					}
+				})
+			},
+			uploadFile(url){
+				// 创建上传对象
+				const task = uni.uploadFile({
+					url: this.action,
+					filePath:url,
+					name: 'file',
+					formData: this.formData,
+					header: this.header,
+					success: res => {
+					    const data =  JSON.parse(res.data)
+						console.log(data,'data')
+						// 判断是否json字符串，将其转为json格式
+						if (data.code!==200) {
+							// this.uploadError(index, data);
+						} else {
+							this.imageList.unshift(data.data.url)
+							if(this.imageList.length>this.max_number){
+							  this.imageList.splice(this.imageList.length-1,1)
+							  this.$emit('upLoadSuccess',this.imageList)
+							}
+							
+							console.log(this.imageList,'this.imageList this.imageList this.imageList')
+							// this.src  = data.data.url
+							// 上传成功
+						     uni.showToast({
+						     	title:'上传成功',
+								icon:'none'
+						     })
+							// this.lists[index].response = data;
+							// this.lists[index].progress = 100;
+							// this.lists[index].error = false;
+							// this.$emit('on-success', data, index, this.lists, this.index);
+						}
+					},
+					fail: e => {
+						this.uploadError(index, e);
+					},
+					complete: res => {
+						// uni.hideLoading();
+						// this.uploading = false;
+						// this.uploadFile(index + 1);
+						// this.$emit('on-change', res, index, this.lists, this.index);
+					}
+				});
+			},
+			
+			
+			// 上传失败
+			uploadError(index, err) {
+				this.lists[index].progress = 0;
+				this.lists[index].error = true;
+				this.lists[index].response = null;
+				this.$emit('on-error', err, index, this.lists, this.index);
+				uni.showToast({
+					title:'上传失败，请重试',
+					icon:'none'
+				})
+			},
+		}
+	}
+</script>
+
+<style scoped>
+	.nvue-upLoadImage {
+        flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.uploadList{
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+	}
+
+	.border {
+		background-color: #f4f4f4;
+		border-radius: 20rpx;
+		align-items: center;
+		margin:0 24rpx 32rpx  0; 
+		overflow:hidden;
+		position:relative;
+		
+	}
+
+	.text {
+		font-size: 26rpx;
+		color: #c6c6c6;
+		lines: 1;
+	}
+	.image{
+		position: absolute;
+		border-radius: 20rpx;
+		
+	}
+</style>
