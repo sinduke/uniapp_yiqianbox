@@ -93,7 +93,7 @@
 				formData: {
 					page: 1,
 					offset: 15,
-					is_h5: 0,
+					is_h5: 2,
 					/*, 是否H5游戏*/
 					sort: 1,
 					/* 热门榜还是新游榜 */
@@ -140,7 +140,7 @@
 				this.formData = {
 					page: 1,
 					offset: 15,
-					is_h5: 0,
+					is_h5: 2,
 					sort: 1,
 				}
 					this.scrollLeft = 10

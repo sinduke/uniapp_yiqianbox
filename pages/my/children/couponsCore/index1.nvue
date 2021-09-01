@@ -1,14 +1,14 @@
 <template>
-	<view style="flex: 1;background-color: #F7F7F7;">
+	<view >
 		<myNavbar title='领券中心' :lines="false" right radius router='/pages/my/coupons/coupons1' src='../../../../static/images/my_details.png'></myNavbar>
-		<view class="img" :style="{width:$store.state.myWidth+'px'}">
-			<image :style="{width:$store.state.myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
+		<view class="img" :style="{width:myWidth+'px'}">
+			<image :style="{width:myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
 		</view>
 		<view class="head">
 			<view class="head_top">
-				<text class="top_text1">2021.06.01</text>
-				<text class="top_text2">2021.06.01</text>
-				<text class="top_text2">2021.06.01</text>
+				<text class="top_text1">{{new Date()/1000|dateFormat('yyyy.MM.dd')}}</text>
+				<text class="top_text2">{{new Date()/1000+86400|dateFormat('yyyy.MM.dd')}}</text>
+				<text class="top_text2">{{new Date()/1000+(86400*2)|dateFormat('yyyy.MM.dd')}}</text>
 			</view>
 			<view class="head_bom">
 				<view class="bom_box1">
@@ -25,38 +25,143 @@
 				</view>
 			</view>
 		</view>
-		<view class="head1" :style="{width:$store.state.myWidth-32+'px'}">
+		<view class="head1" :style="{width:myWidth-32+'px'}">
 			<text class="head_text1">今日好券</text>
-			<scroller scroll-direction="horizontal" :style="{width:$store.state.myWidth-58+'px'}" style="flex-direction: row;">
-				<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;position:relative;" mode="widthFix">
-					<text>13213</text>
-					<view class="img_box">
-						<text >13213</text>
-					</view>
-				</image>
-				
-				<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;" mode="widthFix"></image>
-				<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;" mode="widthFix"></image>		
+			<scroller scroll-direction="horizontal" :style="{width:myWidth-58+'px'}" style="flex-direction: row;" v-if="lengthList">
+				<view v-for="(item,index) in onpage" :key='index' >
+					<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;position:relative;" mode="widthFix">
+						<view class="img_box" @click="toDetail(item.game_id)">
+							<view class="" style="flex-direction: row;">
+								<text class="img_text">￥</text>
+								<text class="img_text1">{{item.coupons_amount}}</text>
+							</view>
+							<text class="img_text2">{{item.title}}</text>
+							<text class="img_text3">{{item.name}}</text>
+						</view>
+						<view class="img_btn" v-if="!item.have_got" @click.stop="handleClick(item.id,item.period_type)">
+							<text class="img_text4">立即领取</text>
+						</view>
+						<view class="img_btn" v-else >
+							<text class="img_text4">已领取</text>
+						</view>
+					</image>	
+				</view>
 			</scroller>
+			<nloading v-else style="margin-top: -60rpx;" :isNoData="isNoData"  :style="{width:myWidth-32+'px',height:450+'rpx'}"></nloading>
 		</view>
-		<text>133132113131</text>
+		<view class="head1" :style="{width:myWidth-32+'px'}">
+			<text class="head_text1">优选好券</text>
+		</view>
+		<couplist1></couplist1>
 	</view>
 </template>
 
 <script>
+	import {$api} from '@/config/api.js';
+	import common from "@/common/js/common.js";
 	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
+	import nloading from '@/components/nvue-loading/nvue-loading';
+	import couplist1 from './children/couplist1.nvue'
 	export default {
 		data() {
 			return {
-				
+				isNoData:false,
+				onpage:null,
+				lengthList:0,
 			}
 		},
-		methods: {
-			
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		filters:{
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			},
 		},
 		components: {
 			myNavbar,
+			nloading,
+			couplist1,
 		},
+		onLoad() {
+		 	this.getOneData()
+		},
+		methods: {
+			toDetail(id){
+				uni.navigateTo({
+					url: `/pages/view/gamedetail/gamedetail?gameid=${id}`
+				})
+			},
+			//今日优惠券
+			getOneData(){
+				$api.get('/user/coupons/today_list').then(res=>{
+					if(res.data.code==200){
+						this.isNoData = true
+						this.onpage = res.data.data.list
+						this.lengthList = res.data.data.list.length
+					}else{
+						uni.showToast({
+							title:res.data.msg,
+							icon:'none',
+						})
+						return
+					}
+				
+				})
+			},
+			//点击领取
+			handleClick(id,period_type){
+			$api.get("user/coupons/add",{coupon_id: id,period_type		
+				}).then(res=>{
+					if(res.data.code == 200){
+						uni.showToast({
+						  icon: "none",
+						  title: res.data.msg
+						})
+					}else{
+						uni.showToast({
+						  icon: "none",
+						  title: res.data.msg
+						})
+					}
+					this.getOneData()
+				})
+			},
+			
+		},
+		
 	}
 </script>
 
@@ -102,18 +207,59 @@
 		padding: 40rpx 24rpx;
 		border-radius: 40rpx;
 		background: #fff;	
+		margin-bottom: 40rpx;
 	}
 	.head_text1{
 		color: #000000;
 		font-size: 32rpx;
-		font-weight: bold;
 		margin-bottom: 40rpx;
 	}
 	.img_box{
 		position: absolute;
-		top: 100;
-		left: 100;
+		top: 0;
+		left: 0;
 		padding:40rpx 12rpx;
-		background: #fff;
+		width: 280rpx;
+		flex-direction: column;
+		align-items: center;
+	}
+	.img_text{
+		color: #252525;
+		font-size: 28rpx;
+		font-weight: bold;
+		margin-top: 20rpx;
+	}
+	.img_text1{
+		color: #252525;
+		font-size: 48rpx;
+		font-weight: bold;
+		font-family: PingFang SC;
+		margin-bottom: 20rpx;
+	}
+	.img_text2{
+		color: #666666;
+		font-size: 28rpx;
+		font-weight: 500;
+		margin-bottom: 20rpx;
+	}
+	.img_text3{
+		color: #C1C1C1;
+		font-size: 32rpx;
+		font-weight: 400;
+		text-overflow:ellipsis;
+		lines: 1;
+	}
+	.img_btn{
+		width: 280rpx;
+		position: absolute;
+		bottom: 12rpx;
+		left: 0;
+		flex-direction: column;
+		align-items: center;
+	}
+	.img_text4{
+		color: #FF4810;
+		font-size: 30rpx;
+		font-weight: bold;
 	}
 </style>
