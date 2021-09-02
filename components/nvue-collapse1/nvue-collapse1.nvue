@@ -1,8 +1,8 @@
 <template>
 	<view class="container" :style="{width:$store.state.myWidth+'px'}">
 		<view class="box">
-			<view class="head"  :style="{width:myWidth-32+'px',height:active?93+downHeight+'rpx':93+'rpx'}">
-				<view @click="show" class="input_box" :style="{width:$store.state.myWidth-32-20+'px'}">
+			<view class="head" @click="show" :style="{width:myWidth-32+'px',height:active?93+downHeight+'rpx':93+'rpx'}">
+				<view  class="input_box" :style="{width:$store.state.myWidth-32-20+'px'}">
 					<view style="flex-direction: row;align-items: center;">
 						<text class="input_img" >{{number}}</text>
 						<text class="input_text" >{{title}}</text>

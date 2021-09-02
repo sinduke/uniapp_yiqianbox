@@ -1,0 +1,199 @@
+<!-- 客服通知 -->
+<template>
+	<view class="container">
+		<view class="lineShowdow"></view>
+		<view class="box">
+			<list :style="{height:myHeight-1+'rpx'}" :show-scrollbar="false" >
+				<cell  style="height: 32rpx;"></cell>
+				<cell v-for="(item,index) in pageData['account_sell']" :key='index' >
+					<view class="head" :style="{width:myWidth-32+'px'}">
+						<view class="head_1">
+							<text class="text1" >小号出售提醒</text>
+							<text class="text2" :style="{color:item.status==1?'#19BFFF':item.status==2?'#FF4810':'#666666',fontSize:'28rpx'}">{{item.status==1?'待支付':item.status==2?'已支付':'支付失败'}}</text>
+						</view>
+						<text class="text3">{{item.gamename}}</text>
+						<text class="text3">当前区服：{{item.server_name}}</text>
+						<view class="head_2">
+							<text class="text3">小号ID：{{item.mg_mem_id}}</text>
+							<text class="text1">￥{{item.price}}</text>
+						</view>
+						<text class="text3" style="font-size: 26rpx;color: #999999;">{{item.create_time|dateFormat('yyyy/MM/dd hh:mm:ss')}}</text>
+					</view>
+				</cell>
+				<cell v-for="(item,index) in pageData['account_buy']" :key='index' >
+					<view class="head" :style="{width:myWidth-32+'px'}">
+						<view class="head_1">
+							<text class="text1" >小号购买提醒</text>
+							<text class="text2" :style="{color:item.status==1?'#19BFFF':item.status==2?'#FF4810':'#666666',fontSize:'28rpx'}">{{item.status==1?'待支付':item.status==2?'已支付':'支付失败'}}</text>
+						</view>
+						<text class="text3">{{item.gamename}}</text>
+						<text class="text3">当前区服：{{item.server_name}}</text>
+						<view class="head_2">
+							<text class="text3">小号ID：{{item.mg_mem_id}}</text>
+							<text class="text1">￥{{item.price}}</text>
+						</view>
+						<text class="text3" style="font-size: 26rpx;color: #999999;">{{item.create_time|dateFormat('yyyy/MM/dd hh:mm:ss')}}</text>
+					</view>
+				</cell>
+				<cell v-for="(item,index) in pageData['rebate_list']" :key='index' >
+					<view class="head" :style="{width:myWidth-32+'px'}">
+						<view class="head_1">
+							<text class="text1" >返利发放提醒</text>
+							<text class="text2" :style="{color:item.status==1?'#19BFFF':item.status==2?'#FF4810':'#666666',fontSize:'28rpx'}">{{item.status==1?'待支付':item.status==2?'已支付':'支付失败'}}</text>
+						</view>
+						<text class="text3">{{item.name}}</text>
+						<text class="text3">当前区服：{{item.server_name}}</text>
+						<view class="head_2">
+							<text class="text3">小号ID：{{item.mg_mem_id}}</text>
+						</view>
+						<text class="text3" style="font-size: 26rpx;color: #999999;">{{item.create_time|dateFormat('yyyy/MM/dd hh:mm:ss')}}</text>
+					</view>
+				</cell>
+				<cell v-for="(item,index) in pageData['feedback']" :key='index' >
+					<view class="head" :style="{width:myWidth-32+'px'}">
+						<view class="head_1">
+							<text class="text1" >我的反馈</text>
+							<text class="text2" :style="{color:item.status==1?'#19BFFF':item.status==2?'#FF4810':'#666666',fontSize:'28rpx'}">{{item.status==1?'待支付':item.status==2?'已支付':'支付失败'}}</text>
+						</view>
+						<text class="text3">{{item.content}}</text>
+						<text class="text3">官方回复：{{item.reply_content}}</text>
+						<view class="head_2">
+							<text class="text3">小号ID：{{item.mg_mem_id}}</text>
+							<text class="text1">￥{{item.price}}</text>
+						</view>
+						<text class="text3" style="font-size: 26rpx;color: #999999;">{{item.create_time|dateFormat('yyyy/MM/dd hh:mm:ss')}}</text>
+					</view>
+				</cell>
+				<!-- <loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+				</loading> -->
+			</list>
+			<nloading  :isNoData="isNoData"></nloading>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import nloading from '@/components/nvue-loading/nvue-loading'
+	import common from "@/common/js/common.js";
+	export default {
+		data() {
+			return {
+				pageData:null,
+				isActive:false,
+				params:{
+					page:1,
+					count:0,
+					offset:10 
+				},
+				isNoData:false,
+			}
+		},
+		methods: {
+			getPageData(){
+				$api.get("service/service_notice",{
+					...this.params
+				}).then(res=> {
+					if(res.data.code==200){
+						this.pageData = res.data.data
+						console.log(this.pageData['account_sell'])
+					}  
+				})
+			}
+		},
+		onLoad(){
+			this.getPageData()
+		},
+		components:{
+			nloading
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		filters:{
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			},
+		}
+	}
+</script>
+
+<style scoped>
+	.container{
+		flex: 1;
+		background: #fff;
+	}
+	.box{
+		padding:0rpx 36rpx ;
+	}
+	.lineShowdow{
+		height:4rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	.head{
+		margin-bottom: 40rpx;
+		padding: 24rpx;
+		background: #F4F4F4;
+		border-radius: 40rpx;
+	}
+	.head_1{
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.text1{
+		color: #1C1C1C;
+		font-size: 32rpx;
+		font-weight: bold;
+	}
+	.text2{
+		color: #666666;
+		font-size: 30rpx;
+		font-weight: bold;
+		line-height: 45rpx;
+	}
+	.text3{
+		color: #666666;
+		font-size: 28rpx;
+		line-height: 45rpx;
+		font-weight: bold;
+	}
+	.head_2{
+		padding-bottom: 15rpx;
+		flex-direction: row;
+		justify-content: space-between;
+		border-bottom: 1rpx solid #E9E9E9;
+	}
+</style>

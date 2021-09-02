@@ -1,23 +1,199 @@
 <!-- 消息 -->
 <template>
-	<view>
-		
+	<view class="container">
+		<view class="lineShowdow"></view>
+		<view class="box" v-if="pageData">
+			<view class="head" @click="handleRouter('/pages/my/myMessage/children/officialMess/index1')">
+				<image class="left" src="@/static/images/view/gftz.png"  mode="widthFix"></image>
+				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
+					<view class="right_le">
+						<text class="text1">官方通知</text>
+						<text class="text2">{{pageData.title}}</text>
+					</view>
+					<text class="text3">{{pageData.create_time|dateFormat('yyyy/MM/dd')}}</text>
+				</view>
+			</view>
+			<view class="head"  @click="handleRouter('/pages/my/myMessage/children/activeMessage/activeMessage')">
+				<image class="left" src="@/static/images/view/hdxx.png" mode="widthFix" style="position: relative;">
+					<view v-if="likeDate.is_comment_read" style="position: absolute;top: 25rpx;left: 65rpx;width: 30rpx;height: 30rpx;background: #FF5927;border-radius: 30rpx;">
+						<text style="font-size:20rpx ;font-weight: 300;color: #fff;text-align: center;">{{likeDate.is_comment_read}}</text>
+					</view>
+				</image>
+				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
+					<view class="right_le">
+						<text class="text1">互动消息</text>
+						<text class="text2" v-if="likeDate.is_comment_read">您有新消息</text>
+						<text class="text2" v-else>您未有新消息</text>
+					</view>
+					<text class="text3">{{page2Data.time_str}}</text>
+				</view>
+			</view>
+			<view class="head" @click="handleRouter('/pages/my/myMessage/children/customerNotice/index1')">
+				<image class="left" src="@/static/images/view/kftz.png" mode="widthFix" ></image>	
+				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
+					<view class="right_le">
+						<text class="text1">客服通知</text>
+						<text class="text2">[消息列表]</text>
+					</view>
+					<text class="text3">今天</text>
+				</view>
+			</view>
+			<view class="head" @click="handleRouter('/pages/customerService/children/problem/index')">
+				<image class="left" src="@/static/images/view/cjwt.png" mode="widthFix" ></image>
+				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
+					<view class="right_le">
+						<text class="text1">常见问题</text>
+						<text class="text2">HI，您好，请在底部选择你要咨询的...</text>
+					</view>
+					<text class="text3">今天</text>
+				</view>
+			</view>
+		</view>
+		<nloading v-else :isNoData="isNoData"></nloading>
 	</view>
 </template>
 
 <script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import nloading from '@/components/nvue-loading/nvue-loading'
+	import common from "@/common/js/common.js";
 	export default {
 		data() {
 			return {
+				isNoData:false,
+				isMessage:false,
+				params: {
+					page: 1,
+					offset: 1,
+					type: 2
+				},
+				pageData:null,
+				page2Data:[],
+				likeDate:[],
+			}
+		},
+		components:{
+			nloading
+		},
+		onShow(){
+			this.isMessage = uni.getStorageSync('isMessage').status
+			this.getPage2Date()	
+		},
+		onLoad(){
+			this.getPageData()
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		methods: {
+			// 官方通知
+			getPageData() {
+				$api.get("msg/list", {
+					...this.params
+				}).then(res => {
+					this.isNoData = true
+					this.pageData = res.data.data.list[0];
+				})
+			},
+			getPage2Date(){
+				$api.get("v8/comments/message_list",{	
+					offset:1,
+				}).then(res=> {
+					this.page2Data = res.data.data.list[0]
+					this.likeDate = res.data.data
+				})
+			},
+			handleRouter(url){
+				uni.navigateTo({
+					url
+				})
 				
 			}
 		},
-		methods: {
-			
+		filters:{
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			},
 		}
 	}
 </script>
 
-<style>
-
+<style scoped>
+	.container{
+		flex: 1;
+		background: #fff;
+	}
+	.box{
+		padding:0rpx 32rpx ;
+	}
+	.lineShowdow{
+		height:6rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	.head{
+		flex-direction: row;
+		align-items: center;
+		
+	}
+	.left{
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 100rpx;
+		margin-right: 32rpx;
+	}
+	.right{
+		padding:32rpx 0rpx 32rpx 0rpx;
+		flex-direction: row;
+		justify-content: space-between;
+		border-bottom:1rpx solid #EFEFEF ;
+	}
+	.text1{
+		color: #1C1C1C;
+		font-weight: bold;
+		font-size: 32rpx;
+		margin-bottom: 15rpx;
+	}
+	.text2{
+		color: #666666;
+		font-weight: 400;
+		font-size: 30rpx;
+	}
+	.text3{
+		color: #C1C1C1;
+		font-weight: 400;
+		font-size: 28rpx;
+	}
 </style>

@@ -296,17 +296,6 @@
 				}
 			}
 		},
-		//消息
-		{
-			"path": "pages/my/myMessage/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		},
 		//消息nvue
 		{
 		    "path" : "pages/my/myMessage/index1",
@@ -333,6 +322,22 @@
 				}
 			}
 		},
+		//消息-客服通知nvue
+		{
+		    "path" : "pages/my/myMessage/children/customerNotice/index1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "客服通知"
+		    		}
+		    	}
+		    }
+		    
+		},
 		//消息-互动消息
 		{
 			"path": "pages/my/myMessage/children/activeMessage/activeMessage",
@@ -344,7 +349,6 @@
 				}
 			}
 		},
-
 		//消息-我的赞
 		{
 			"path": "pages/my/myMessage/children/activeMessage/Myzan",
@@ -357,34 +361,21 @@
 			}
 
 		},
-		//官方通知
+		//官方通知nvue
 		{
-			"path": "pages/my/myMessage/children/officialMess/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		},
-		// 官方通知-消息详情
-		{
-			"path": "pages/my/myMessage/children/officialMess/detail",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "详情",
-						"titleAlign": "left",
-						"fontWeight": "bold"
-
-					}
-				}
-			}
-
+		    "path" : "pages/my/myMessage/children/officialMess/index1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleText": "官方通知",
+		    			"titleAlign": "left",
+		    			"fontWeight": "bold"
+		    		}
+		    	}
+		    }   
 		},
 		//账号管理
 		{
@@ -568,7 +559,7 @@
 		    
 		},
 		
-		//提现信息nvue
+		//提现信息-账号信息nvue
 		{
 		    "path" : "pages/my/myAdministration/children/withdrawal/index1",
 		    "style": {
@@ -1125,7 +1116,7 @@
 				}
 			}
 
-		}
+		} 
     ],
 
 	"easycom": {
