@@ -307,6 +307,21 @@
 				}
 			}
 		},
+		//消息nvue
+		{
+		    "path" : "pages/my/myMessage/index1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "消息"
+		    		}
+		    	}
+		    }
+		},
 		//消息-客服通知
 		{
 			"path": "pages/my/myMessage/children/customerNotice/index",
@@ -1111,7 +1126,6 @@
 			}
 
 		}
-       
     ],
 
 	"easycom": {

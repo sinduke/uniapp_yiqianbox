@@ -19,7 +19,7 @@
 				<view>
 				<text class="Bodytitle">在使用中遇到任何问题请联系在线客服</text>
 					<view class="Body__back">
-						<view class="Body__back__left backimg" @click="handleRouter('/pages/customerService/children/problem/index')" :style="{width:myWidth/2+'px',height:'240rpx'}">
+						<view class="Body__back__left backimg" @click="handleRouters('/pages/customerService/children/problem/index')" :style="{width:myWidth/2+'px',height:'240rpx'}">
 							<image src="@/static/images/customerService/serverBackgorund1.png" :style="{width:myWidth/2+'px',height:'240rpx'}"></image>
 							<view class="body_absloute" :style="{width:myWidth/2-46+'px'}">
 								<view class="backitem">
@@ -32,7 +32,7 @@
 							</view>
 							
 						</view>
-						<view class="Body__back__right backimg"  @click="handleRouter('/pages/customerService/children/rechargeRebate/index1')">
+						<view class="Body__back__right backimg"  @click="handleRouters('/pages/customerService/children/rechargeRebate/index1')">
 							<image src="@/static/images/customerService/serverBackgorund2.png"  :style="{width:myWidth/2+'px',height:'240rpx'}"></image>
 							<view class="body_absloute" :style="{width:myWidth/2-46+'px'}">
 								<view class="backitem">
