@@ -1,0 +1,93 @@
+<!-- 验证码 -->
+<template>
+	<view class="nvue-verificationCode">
+		<text class="text" @click="handleCode"  :style="{width:width}">{{my_text}}</text>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				my_text: '发送验证码',
+				myTimer: '',
+
+			}
+		},
+		props: {
+			contentCode: {
+				default: 0,
+				type: Number
+			},
+			width:{
+				default: '140rpx',
+				type: String
+			},
+			timer: {
+				default: 60,
+				type: Number
+			}
+
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
+		methods: {
+			handleCode() {
+				if(this.my_text==='发送验证码'){
+					
+				this.$emit('click')
+				}
+			},
+			getTimer() {
+				let timers = this.timer
+				this.myTimer = setInterval(() => {
+					timers--
+					this.my_text = timers+'s'
+					if (timers < 1) {
+						this.clearTimer()
+					}
+
+				}, 1000)
+			},
+			clearTimer(){
+				this.my_text = '发送验证码'
+				clearInterval(this.myTimer)
+			}
+		},
+		watch: {
+			contentCode(val) {
+				console.log(val)
+				if (val) {
+					uni.showToast({
+						title: '已发送',
+						icon: 'none',
+						success: () => {
+							this.getTimer()
+						}
+					})
+
+				}
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	.myInput {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.text {
+		color: #999;
+		font-size: 28rpx;
+		text-align: center;
+		lines: 1;
+	}
+</style>

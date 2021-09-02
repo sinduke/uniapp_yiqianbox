@@ -1,7 +1,7 @@
 <template>
 	<view class="card">
 		<view>
-			<video :direction="direction" :src="item.mp4_url" :loop="loop" @click="handleClick(index)"
+			<video  :src="item.mp4_url" :loop="loop" @click="handleClick(index)"
 				:id="'video'+index" :controls='false' muted :poster='item.hot_image' :show-center-play-btn='false'
 				ref="chunleiVideo" class="video" objectFit="fill" v-if="item.mp4_url"></video>
 			<image class="images" :src="item.hot_image" v-else></image>

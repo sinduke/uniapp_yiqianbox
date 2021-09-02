@@ -1,0 +1,126 @@
+<!-- 添加游戏 -->
+<template>
+	<view class="container">
+		<view class="body" :style="{width:myWidth+'px'}">
+				<view class="u-col"  v-for="(item,index) in pageData" :key="index" :style="{width:myWidth/2.4+'px'}">
+					<view class="u-row">
+						<view class="row_left"  @click="handleRouter(item.game_id, item.gamename)">
+							<image style="width: 140rpx;height: 140rpx;margin-right: 12rpx;" :src="item.game_new_icon||item.game_icon" ></image>
+						</view>
+						<view  class="row_right"  @click="handleRouter(item.game_id, item.gamename)">
+							<text class="gamename"  style="width: 160rpx;">{{item.gamename}}</text>
+							<text class="xiaohao">小号数：{{item.account_cnt}}</text>
+						</view>
+					</view>
+				</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	export default {	
+		data() {
+			return {
+				params: {
+					page: 1,
+					offset: 20,
+					is_seft: 1
+				},
+				pageData: []
+
+			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			
+		},
+		methods: {
+			getData(params) {
+			 $api.get( "user/account/game/list",
+				{	...params
+				}).then(res => {
+					if(res.data.code==200){
+						this.pageData = res.data.data.list;
+					}else{
+						uni.showToast({
+							title:res.data.msg,
+							icon:'none',
+							success: () => {
+								setTimeout(()=>{
+									uni.navigateTo({
+										url:'/pages/my/children/login'
+									})
+								},200)
+							}
+						})
+					}
+					
+				})
+			},
+			handleRouter(game_id, gamename) {
+				// 把game_id和gamename存起来
+				// this.$store.commit('setSelectedGame',{
+				// 	game_id,
+				// 	gamename
+				// })
+				uni.$emit('selectedGame',{
+					game_id,
+					gamename
+				})
+				
+				uni.navigateBack();
+			}
+		},
+		onShow() {
+			this.getData(this.params)
+		},
+		onLoad() {
+			this.getData(this.params);
+		}
+	}
+</script>
+
+<style  scoped>
+	.container {
+		background-color: #fff;
+
+   }
+   .body{
+	   margin: 60rpx 0;
+	   padding: 0 32rpx;
+	   flex-direction: row;
+	   align-items: center;
+	   flex-wrap: wrap;
+   }
+   .u-col{
+	   margin: 0 32rpx 32rpx 0;
+	   
+   }
+   .u-row{
+	   flex-direction: row;
+	   align-items: center;
+	   
+   }
+		.gamename {
+			flex-direction: row;
+			align-items: center;
+			font-size: 26rpx;
+			font-weight: 700;
+			lines: 1;
+			text-overflow: ellipsis;
+			overflow:hidden;
+	
+		}
+
+		.xiaohao {
+			font-size: 32rpx;
+			color: #1c1c1c;
+		}
+	
+</style>

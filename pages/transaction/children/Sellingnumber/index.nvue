@@ -12,7 +12,7 @@
 					    <input type="text" class="inputs" v-model="form.title" placeholder="请输入核心卖点" maxlength="20" style="width: 200rpx;" placeholder-style="color:#e1e1e1"/>
 					</group>
 					<group type='slot'  :borderTop='false' :right="false">
-						<textarea class="inputs" style="height: 200rpx;" v-model="form.description" maxlength="210" placeholder="可描述角色等级，装备，属性等，10-199字，完善描述可以快速有效的促成交易哦！" placeholder-style="color:#e1e1e1"></textarea>
+						<textarea style="height: 200rpx;font-size: 30rpx;" v-model="form.description" maxlength="210" placeholder="可描述角色等级，装备，属性等，10-199字，完善描述可以快速有效的促成交易哦！" placeholder-style="color:#e1e1e1"></textarea>
 					</group>
 					<group type='slot' :borderTop='false' :right="false">
 						<text class="title">售价</text>
@@ -22,40 +22,32 @@
 					<view>
 						<text class="yxjt" >游戏截图</text>
 							<view class="upload" :style="{width:myWidth-32+'px'}">
-								<upLoadImage :max_number='3'  @upLoadSuccess='upLoadSuccess'></upLoadImage>
+								<upLoadImage :max_number='3'  @upLoadSuccess='upLoadSuccess' :clearImageList="clearImageList"></upLoadImage>
 							</view>
-							<!-- <u-upload ref="uUpload" :action="action" upload-text="最多上传三张" max-count="3"	@on-success="uploadSuccess" @on-remove="uploadRemove"	style="background-color: #fff;border-radius:20rpx;color: #E6E6E6;"></u-upload> -->
 					</view>
 					
 					<!-- 卖家须知 -->
-				<!-- 	<u-modal v-model="showNotice" :title="$t('my.mjxz2')" :show-cancel-button="true"
-						:confirm-text="$t('confirm1')+'出售'" confirm-color="#ff5927" :cancel-text="$t('my.fqcs')"
-						@confirm="verification">
-						<view class="slot-content">
-							<view>1.{{$t('my.tjcssqh')}}；</view>
-							<view>2.{{$t('my.sjdxhkyz')}}。</view>
-							<view>3.{{$t('my.kfzshgcz')}}。</view>
-							<view>4.{{$t('my.ydscbkhs')}}。</view>
-							<view>5.{{$t('my.scjhdptb')}}。</view>
-						</view>
-					</u-modal> -->
+					 <shModal title="出售确认" :textType="false" :isShow="showNotice" @confirm="verification" @remove="showNotice = false">
+						   <view class="slot-content">
+							<text class="content_text">1.提交出售申请后，该小号在该游戏中所有区服的角色都将移除，无法登陆；</text>
+							<text class="content_text">2.上架的小号可以在买家购买前下架并取消出售，取消后会回到您的账号下;</text>
+							<text class="content_text">3.客服在审核过程中会根据情况对游戏截图，描述进行适当补充；</text>
+							<text class="content_text">4.一旦售出，不可恢复</text>
+							<text class="content_text">5.售出将获得平台币，余款已平台币的形式转至该账号下，平台币不可提现，只能用于平台支付</text>					
+						   </view>	   
+					 </shModal>
 					
 					<!-- 短信验证 -->
-					<!-- <u-modal v-model="showVerification" :title="$t('my.mjxz2')" :show-cancel-button="true"
-						confirm-color="#ff5927" @confirm="handleSellOut">
-						<view class="slot-content">
-							<view>{{$t('my.yjxndsjh')}}：{{userInfo.mobile}}{{$t('sendout')+$t('verificationCode')}}</view>
-							<view>
-								<u-field v-model="form['sms-code']" :placeholder="$t('pleaseInput')+$t('verificationCode')"
-									placeholder-style="color: #c0c4d4;" label-width="0">
-									<text size="mini" slot="right" type="warning" @click="getCode">{{codeText}}</text>
-								</u-field>
-								<u-verification-code style="background: #FF5927;" ref="uCode" @change="codeChange"
-									unique-key="page-2" :start-text="$t('get')+$t('verificationCode')"
-									:end-text="$t('get')+$t('verificationCode')"></u-verification-code>
-							</view>
-						</view>
-					</u-modal> -->
+					<shModal title="短信验证" :textType="false" :isShow="showVerification" @confirm="handleSellOut" @remove="showVerification=false">
+					  <view class="slot-content">
+						<text class="content_text">已经向您的手机号：{{userInfo.mobile}}发送验证码</text>
+						 <view class="" style="flex-direction: row;align-items: center;">
+						 	<input type="number" maxlength="6" v-model="form['sms-code']" class="inputs" placeholder="请输入验证码" :style="{width:myWidth-200+'px'}"/>
+						 	<verificationCode @click="getCode" :contentCode='contentCode'></verificationCode>	
+						 </view>
+					  
+					  </view>
+					</shModal>
 					<view class="btns" :style="{width:myWidth-32+'px'}">
 						<text class="mybutton" @click="submitReview">提交审核</text>
 					</view>
@@ -69,14 +61,20 @@
 	import common from "@/common/js/common.js";
 	import group from '@/components/nvue-group/nvue-group.nvue';
 	import upLoadImage from '@/components/nvue-upLoadImage/nvue-upLoadImage.nvue';
-	
+	import shModal from '@/components/nvue-shModal/nvue-shModal.nvue';
+	import verificationCode from '@/components/nvue-verificationCode/nvue-verificationCode.nvue';
+	const globalData = getApp().globalData
 	export default {
 		components:{
 			upLoadImage,
-			group
+			group,
+			shModal,
+			verificationCode
 		},
 		data() {
 			return {
+				clearImageList:0,
+				contentCode:0,
 				form: {
 					gamename: '选择游戏',
 					role_name: '选择小号',
@@ -113,18 +111,29 @@
 			statusBarHeight() {
 				return uni.getSystemInfoSync().statusBarHeight
 			},
+			userInfo() {
+				return globalData.store.state.userInfo
+			},
+			client_id() {
+				return globalData.store.state.client_id
+			},
 			
 		},
-		// computed: {
-		// 	selectedGame() {
-		// 		return this.$store.state.selectedGame;
-		// 	},
-		// 	...mapState({
-		// 		userInfo: "userInfo",
-		// 		client_id: "client_id",
-		// 	}),
-
-		// },
+		mounted() {
+			 uni.$on('selectedGame',data=>{
+				 this.resetForm();
+				 this.form.gamename = data.gamename;
+				 this.game_id = data.game_id
+				
+			 })
+			 uni.$on('serverName',data=>{
+			 	this.form.role_name = data.role_name || '选择小号';
+			 	this.form.server_name = data.server_name;
+		     	this.form.account_id = data.id
+			 	this.form.mg_mem_id = data.id
+			 	this.form.mg_role_id = data.mg_id			
+			 })
+		},
 		methods: {
 			// 图片上传
 			upLoadSuccess(data) {
@@ -132,11 +141,6 @@
 				console.log(data,'this.fileList')
 				this.form.image = JSON.stringify(this.fileList);
 			},
-			// 图片删除
-			// uploadRemove(index) {
-			// 	this.fileList.splice(index, 1)
-			// 	this.form.image = JSON.stringify(this.fileList);
-			// },
 			// 卖家须知
 			submitReview() {
 				let title;
@@ -211,33 +215,33 @@
 
 			},
 			// 发送短信验证码
-			getCode() {
-			
-				if (this.$refs.uCode.canGetCode) {
-					// 模拟向后端请求验证码
-					uni.showLoading({
-						title: '正在获取验证码',
-						success:()=>{
-							$api.get("v8/sms/send", {
-								"sms-type": 4,
-								"sms-mobile": that.userInfo.mobile
+			getCode() {	
+				$api.get("v8/sms/send", {
+					"sms-type": 4,
+					"sms-mobile": this.userInfo.mobile
+				}).then(res => {
+					if(res.data.code==200){
+					     this.contentCode++
+					}else{
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none"
+						})
+					}	
+				})
+				
 
-							}).then(res => {
-								uni.showToast({
-									title: res.data.msg,
-									icon: "none"
-								})
+				// if (this.$refs.uCode.canGetCode) {
+				// 	// 模拟向后端请求验证码
+				// 	uni.showLoading({
+				// 		title: '正在获取验证码',
+				// 		success:()=>{
 
-								if (res.data.code == 200) {
-									uni.hideLoading();
-									that.$refs.uCode.start();
-								}
-							})
-						}
-					})
-				} else {
-					this.$u.toast('倒计时结束后再发送');
-				}
+				// 		}
+				// 	})
+				// } else {
+				// 	this.$u.toast('倒计时结束后再发送');
+				// }
 			},
 			// 确认出售
 			handleSellOut() {
@@ -249,14 +253,14 @@
 
 				}).then(res => {
 					if (res.data.code == 200) {
-						console.log(res, 'resresresresresres')
-						
+						console.log(res, 'resresresresresres')	
 						this.showVerification = false;
 						uni.showToast({
-							title: "出售成功"
+							title: "出售成功",
+							icon:'none'
 						})
 						this.resetForm();
-						this.clear()
+			
 					} else {
 						uni.showToast({
 							title: res.data.msg,
@@ -280,35 +284,12 @@
 					description: "",
 					image: "",
 					"sms-code": ""
-				};
-
-			},
-			clear() {
-				this.$refs.uUpload.clear()
+				}
+				this.clearImageList++
 			},
 			addxh() {
 				this.resetForm()
-				this.clear()
 				this.handleRouter('/pages/transaction/children/Sellingnumber/addGame/addGame')
-			}
-		},
-
-		watch: {
-			selectedGame: {
-				handler(val) {
-					console.log(val,'sssssss')
-					this.resetForm();
-					if (val&&val.game_id) {
-						this.form.gamename = val.gamename;
-						this.form.role_name = val.role_name || '选择小号';
-						this.form.server_name = val.server_name;
-						this.game_id = val.game_id
-						this.form.account_id = val.id
-						this.form.mg_mem_id = val.id
-						this.form.mg_role_id = val.mg_id
-					}
-				},
-				immediate: true
 			}
 		},
 
@@ -316,6 +297,15 @@
 </script>
 
 <style  scoped>
+	.slot-content{
+		margin-bottom: 32rpx;
+	}
+	.content_text{
+		color: #999;
+		font-size: 30rpx;
+		lines: 3;
+		margin-bottom: 4rpx;
+	}
 	.container {
 		flex: 1;
 		overflow:hidden;
@@ -328,6 +318,7 @@
    }
    .inputs{
 	   font-size: 30rpx;
+	   text-align: right;
 	 
    }
    .body{
@@ -352,11 +343,5 @@
 				font-weight: 700;
 				margin: 40rpx 0;
 			}
-
-
-	
-		.slot-content {
-			line-height: 40rpx;
-		}
 
 </style>
