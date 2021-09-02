@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<navbar title='申请填写' router='/pages/customerService/children/rechargeRebate/children/guide'
+		<navbar title='申请填写' router='/pages/customerService/children/rechargeRebate/children/guide1'
 			src='../../../../../static/images/customerService/time.png'></navbar>
 		<view class="box">
 			<view class="input" :style="{width:myWidth-32+'px'}">

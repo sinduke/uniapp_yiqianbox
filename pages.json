@@ -124,18 +124,6 @@
 				}
 			}
 		},
-		//返利申请
-		{
-			"path": "pages/customerService/children/rechargeRebate/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
-		},
 		//返利申请nvue
 		{
 		    "path" : "pages/customerService/children/rechargeRebate/index1",
@@ -163,22 +151,6 @@
 		    	}
 		    }
 		    
-		},
-		//返利指南
-		{
-			"path": "pages/customerService/children/rechargeRebate/children/guide",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "返利指南"
-
-					}
-				}
-			}
 		},
 		//申请填写nvue
 		{
@@ -450,18 +422,6 @@
 		    		"bounce": "none"
 		    	}
 		    }  
-		},
-		// 积分商城
-		{
-			"path": "pages/my/children/pointMall/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
 		},
 		// 积分商城nvue
 		{
@@ -982,17 +942,6 @@
 						"titleAlign": "left",
 						"titleText": "交易记录"
 					}
-				}
-			}
-		},
-		// 综合功能-意见反馈
-		{
-			"path": "pages/my/comprehensive/feedback/feedback",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
 				}
 			}
 		},

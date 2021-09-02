@@ -1,3 +1,4 @@
+<!-- 返利申请 -->
 <template>
 	<view class="container">
 		<navbar title='返利申请' router='/pages/customerService/children/rechargeRebate/children/applicatRecord1'

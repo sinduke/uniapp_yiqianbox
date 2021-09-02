@@ -1,70 +1,129 @@
+<!-- 返利指南 -->
 <template>
-	<view>
-		<collapse></collapse>
+	<view class="" style="flex: 1;background: #fff;">
+		<view class="lineShowdow"></view>
+		<list :show-scrollbar="false" :style="{height:myHeight+'rpx'}">
+			<cell v-for="(item,index) in itemList" :key="index">
+				<collapse :number="index+1" :title="item.head" :text="item.nodes"></collapse>
+			</cell>
+		</list>
 	</view>
 </template>
 
 <script>
-	import collapse from '@/components/nvue-collapse/nvue-collapse.nvue'
+	import collapse from '@/components/nvue-collapse1/nvue-collapse1.nvue';
+	const dom = uni.requireNativePlugin('dom')
 	export default {
 		data() {
 			return {
 				itemList: [{
 						head: "什么是游戏返利？",
-						body: "返利即您充值后游戏内所获得的游戏货币和道具以外，我们额外赠送给您的充值回馈;通常为一定比例的元宝、钻石、金币及游戏内的道具和奖励等",
-						open: true,
-						// disabled: true
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `返利即您充值后游戏内所获得的游戏货币和道具以外，我们额外赠送给您的充值回馈;通常为一定比例的元宝、钻石、金币及游戏内的道具和奖励等`,
+							}]
+						}],
 					}, {
 						head: "哪些游戏可以申请返利？",
-						body: "我们平台上绝大部分的游戏是可以申请充值返利，最高可获得300%返利金额(周末个别游戏可达到400%)，详情可在游戏介绍页面的返利条件查看!",
-						open: false,
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `我们平台上绝大部分的游戏是可以申请充值返利，最高可获得300%返利金额(周末个别游戏可达到400%)，详情可在游戏介绍页面的返利条件查看!`,
+							}]
+						}],
 					}, {
 						head: "返利是返还到哪里呢？",
-						body: `返利到账形式一般有以下几种：<br/>1、发放在游戏内邮件中，注意查收领取；<br/>2、直接发放在背包中，需要使用后才可获得奖励（如元宝卡、礼包等）<br/>3、在游戏界面某个【领奖】图标中进行领取；<br/>4、激活码形式发放，联系客服获取，然后在游戏内激活；<br/>5、直接发放到角色，需要自己留意金额道具相关变化；`,
-						open: false,
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `返利到账形式一般有以下几种：\n1、发放在游戏内邮件中，注意查收领取；\n2、直接发放在背包中，需要使用后才可获得奖励（如元宝卡、礼包等）\n3、在游戏界面某个【领奖】图标中进行领取；\n4、激活码形式发放，联系客服获取，然后在游戏内激活；\n5、直接发放到角色，需要自己留意金额道具相关变化；`,
+							}]
+						}],
 					},
 					{
 						head: "返利多久会到？",
-						body: "返利到账形式一般有以下几种：<br/>1、发放在游戏内邮件中，注意查收领取；<br/>2、直接发放在背包中，需要使用后才可获得奖励（如元宝卡、礼包等）<br/>3、在游戏界面某个【领奖】图标中进行领取；<br/>4、激活码形式发放，联系客服获取，然后在游戏内激活；<br/>5、直接发放到角色，需要自己留意金额道具相关变化；",
-						open: false,
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `返利到账形式一般有以下几种：\n1、发放在游戏内邮件中，注意查收领取；\n2、直接发放在背包中，需要使用后才可获得奖励（如元宝卡、礼包等）\n3、在游戏界面某个【领奖】图标中进行领取；\n4、激活码形式发放，联系客服获取，然后在游戏内激活；\n5、直接发放到角色，需要自己留意金额道具相关变化；`,
+							}]
+						}],
 					},
 					{
 						head: "充值了，但是返利申请没有可以申请的东西",
-						body: "1、请确保当前申请返利账号和游戏充值账号一致；<br/>2、请核对您单日充值总额是否满足返利活动要求；<br/>3、部分游戏返利仅限充值后48小时内申请，逾期无法申请，请联系客服；",
-						open: false,
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `1、请确保当前申请返利账号和游戏充值账号一致；\n2、请核对您单日充值总额是否满足返利活动要求；\n3、部分游戏返利仅限充值后48小时内申请，逾期无法申请，请联系客服；`,
+							}]
+						}],
 					},
 					{
 						head: "怎么知道会返还多少元宝？",
-						body: "返利计算方式：【充值金额】x【返利比例】x【游戏充值比例】=最终获取元宝数量举例：A游戏充值比例为1：300；您充值100元后，返利比例为10%，那么应得返利元宝：100x10%x300=3000元宝",
-						open: false,
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `返利计算方式：【充值金额】x【返利比例】x【游戏充值比例】=最终获取元宝数量举例：A游戏充值比例为1：300；您充值100元后，返利比例为10%，那么应得返利元宝：100x10%x300=3000元宝`,
+							}]
+						}],
 					},
 					{
 						head: "什么情况下，我的返利无法到账？",
-						body: "1、您提供的返利申请信息错误例如角色名错误,区服不对等,导致无法发放.请一定保证你所提交信息，与你游戏内信息是一一致的；<br/>2、请勿在返利未发放前修改游戏内角色名称，角色名称不对可能导致返利发放失败，甚至发放到其他角色；<br/>3、没有提交返利申请；",
-						open: false,
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `1、您提供的返利申请信息错误例如角色名错误,区服不对等,导致无法发放.请一定保证你所提交信息，与你游戏内信息是一一致的；\n2、请勿在返利未发放前修改游戏内角色名称，角色名称不对可能导致返利发放失败，甚至发放到其他角色；\n3、没有提交返利申请；`,
+							}]
+						}],
 					},
 					{
 						head: "角色ID怎么查看？",
-						body: "不同游戏角色ID查看方法不同，但基本类型如下：<br/>1、点开游戏内角色头像，可查看角色ID；<br/>2、点击游戏内设置选项，可查看角色ID；<br/>3、如果没有id，可不提供；",
-						open: false,
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `不同游戏角色ID查看方法不同，但基本类型如下：\n1、点开游戏内角色头像，可查看角色ID；\n2、点击游戏内设置选项，可查看角色ID；\n3、如果没有id，可不提供；`,
+							}]
+						}],
 					},
 					{
 						head: "道具奖励去哪里申请？",
-						body: "有道具返还的游戏，在申请返利的时候，将要申请的道具内容填写进返利页面的备注栏中（部分自选道具需要注明详细道具名称）；如果已申请返利，但未备注道具，可联系客服协助；",
-						open: false,
+						nodes: [{
+							children: [{
+								type: 'text',
+								text: `有道具返还的游戏，在申请返利的时候，将要申请的道具内容填写进返利页面的备注栏中（部分自选道具需要注明详细道具名称）；如果已申请返利，但未备注道具，可联系客服协助；`,
+							}]
+						}],
 					},
 				],
+			}
+		},
+		components:{
+			collapse
+		},
+		computed:{
+			myWidth(){
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight(){
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			}
 		},
 		methods: {
 			
 		},
-		components:{
-			collapse
-		}
+		
 	}
 </script>
 
-<style>
-
+<style scoped>
+	.container{
+		flex: 1;
+		background: #fff;
+	}
+	.lineShowdow{
+		height:6rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	
 </style>

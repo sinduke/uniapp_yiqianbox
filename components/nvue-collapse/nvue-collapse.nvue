@@ -2,8 +2,9 @@
 	<view class="container" :style="{width:$store.state.myWidth+'px'}">
 		<view class="head" :style="{width:$store.state.myWidth+'px',height:active?downHeight*myHeight+'rpx':93+'rpx'}">
 			<view @click="show" class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
-				<text class="input_text">{{title}}</text>
-				<text class="input_style">{{rightTitle}}</text>
+				<text class="input_text" v-if="iftitle">{{title}}</text>
+				<text class="input_style" v-if="iftitle">{{rightTitle}}</text>
+				<slot></slot>
 				<image class="isimg" :style="{transform:active?'rotate(0deg)':'rotate(90deg)'}" style="width:20rpx ;height:30rpx;transform: ;margin-right:10rpx;" src="@/static/images/view/left-gred.png" mode=""></image>	
 			</view>
 			<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
@@ -32,6 +33,10 @@
 			}
 		},
 		props:{
+			//是否显示标题
+			iftitle:{
+				default:true
+			},
 			// 过渡动画高度
 			downHeight:{
 				type: Number,
