@@ -147,6 +147,17 @@
 			}
 			
 		},
+		watch:{
+			active(val){
+				if(val!==1){
+					console.log(val)
+					uni.$off('selectedGame',(data)=>{
+						console.log(data,'data')
+					})
+				}
+			}
+		}
+
 
 
 	}

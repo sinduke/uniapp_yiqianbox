@@ -67,7 +67,7 @@
 				$api.get("home/slideguid").then((res) => {
 					if (res.data.data) {	
 						this.pageData = res.data.data.hometopper;
-						console.log(this.pageData,'resresres')
+						// console.log(this.pageData,'resresres')
 						if (this.guideFirstya != 1) {
 							this.countDown();
 						}

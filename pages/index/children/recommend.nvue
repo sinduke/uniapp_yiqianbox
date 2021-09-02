@@ -20,7 +20,7 @@
 					@touchstart='touchstart(index,$event)' @touchend='touchend(index,$event)'  >
 					<cover-view class="cover-view" :style="{width:myWidth-34+'px',height:'400rpx'}" >
 						<video :style="{width:myWidth-34+'px',height:'400rpx'}"
-						 @click='handleRouter(item.game_id)' :direction="direction" 
+						 @click='handleRouter(item.game_id)' 
 						 :src="item.mp4_url" :id="'video'+index" :controls='false' muted 
 						 v-if="active==index&&!wifiAuto" autoplay
 						   loop :enable-progress-gesture='false' 

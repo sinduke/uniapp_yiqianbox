@@ -1,0 +1,114 @@
+<template>
+	<view class="someNumber">
+		<view class="mycards" v-if="pageData">
+			<view class="gamedetail">
+				<image :src="pageData[0].game.new_icon||pageData[0].game.icon" mode="widthFix"
+					style="width: 140rpx;height: 140rpx;margin-right: 32rpx;"></image>
+				<text class="game_name">{{pageData[0].game.name}}</text>
+			</view>
+			<view style="flex-direction: row;align-items: center;flex-wrap: wrap;" :style="{width:myWidth+'px'}">
+				<view @click="handleRouter(item.role_name,item.server_name,item.id,item.mg_id)" :style="{width:myWidth/2.3+'px'}" v-for="(item,index) in pageData" :key='index' class="cards">
+					<text class="Rolename">{{item.role_name}}</text>
+					<text class="text">实际充值：{{item.money}}.00</text>
+					<text class="text">区服：{{item.server_name}}</text>
+				</view>
+			</view>
+
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	export default {
+		data() {
+			return {
+				game_id: 0,
+				pageData: null
+			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+
+		},
+		methods: {
+			getData(game_id) {
+				$api.get("/rebate/getTrumpet", {
+					game_id
+				}).then(res => {
+					this.pageData = res.data.data;
+				})
+			},
+			handleRouter(role_name, server_name, id, mg_id) {
+                uni.$emit('serverName',{
+					role_name,
+					server_name,
+					id,
+					mg_id
+				})
+				uni.navigateBack();
+			}
+		},
+		onLoad(option) {
+			this.game_id = option.game_id
+			this.getData(this.game_id)
+		}
+	}
+</script>
+
+<style scoped>
+	.someNumber {
+		background-color: #fff;
+		flex: 1;
+	}
+
+	.gamedetail {
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		margin-bottom: 32rpx;
+	}
+
+
+	.mycards {
+		margin-top: 48rpx;
+		padding: 0 32rpx;
+		border-radius: 20rpx;
+	}
+
+	.game_name {
+		font-size: 38rpx;
+		font-weight: 700;
+		color: #1c1c1c;
+	}
+
+	.cards {
+		border-radius: 30rpx;
+		background-color: #F9F9F9;
+		padding: 12rpx 24rpx;
+		margin: 24rpx 24rpx 24rpx 0;
+		align-items: flex-start;
+
+	}
+
+	.Rolename {
+		font-weight: 700;
+		color: #1C1C1C;
+		margin-bottom: 8rpx;
+		font-size: 32rpx;
+	}
+
+	.text {
+		font-size: 32rpx;
+		color: #999;
+		margin-bottom: 8rpx;
+		lines: 1;
+	}
+</style>

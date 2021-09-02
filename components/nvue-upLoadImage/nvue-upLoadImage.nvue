@@ -15,7 +15,6 @@
 	export default {
 		data() {
 			return {
-				// src: '',
 			    lists:[],
 				imageList:['']
 			}
@@ -41,6 +40,9 @@
 			action:{
 				default:'https://api.sy12306.com/asset/upload',
 				type:String
+			},
+			clearImageList:{
+				default:0
 			},
 			formData: {
 				default: () => {},
@@ -98,7 +100,6 @@
 					header: this.header,
 					success: res => {
 					    const data =  JSON.parse(res.data)
-						console.log(data,'data')
 						// 判断是否json字符串，将其转为json格式
 						if (data.code!==200) {
 							// this.uploadError(index, data);
@@ -108,8 +109,6 @@
 							  this.imageList.splice(this.imageList.length-1,1)
 							  this.$emit('upLoadSuccess',this.imageList)
 							}
-							
-							console.log(this.imageList,'this.imageList this.imageList this.imageList')
 							// this.src  = data.data.url
 							// 上传成功
 						     uni.showToast({
@@ -146,6 +145,15 @@
 					icon:'none'
 				})
 			},
+		},
+		watch:{
+			clearImageList(val){
+				console.log(val,'valvalvalvalvalvalval')
+				if(val){
+					this.imageList = ['']
+					this.$emit('upLoadSuccess',this.imageList)	 
+				}
+			}
 		}
 	}
 </script>
