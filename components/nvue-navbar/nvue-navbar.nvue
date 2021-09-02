@@ -4,7 +4,7 @@
 	 	<view class="statusBarHeight" :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
 		<view class="title">
 			<view class="slot-left" @click="handleback">
-			<image class="right_icon" ref='handleBack' style="margin-right: 12rpx;" src="@/static/images/left.png" ></image>
+			<image class="right_icon" ref='handleBack' style="margin-right: 24rpx;" src="@/static/images/left.png" ></image>
 			<text class="customer" >{{title}}</text>
 			</view>	
 			<view class="slot-center">

@@ -1,0 +1,188 @@
+<!-- 返利申请 -->
+<template>
+	<view class="container">
+		<navbar title='返利申请' router='/pages/customerService/children/rechargeRebate/children/applicatRecord1'
+			src='../../../../static/images/my_details.png'></navbar>
+		<view class="box">
+			<view class="inputs">
+				<image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+				<input class="input" v-model="formData.game_name" type="text"  placeholder='去找你的想要的游戏'
+					placeholder-style='font-size:16px;color:#c1c1c1'  @input='search'
+					:style="{width:myWidth/1.4+'px'}"></input>
+			</view>
+			<list class="list" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" v-if="list.length>0">
+				<cell class="cell" :style="{width:$store.state.myWidth+'px'}" v-for="(item,index) in list" v-if="item.is_recycle!=1" :key='index'>
+					<image class="box_left" mode="widthFix" :src="item.icon"  @click="handleRouter(item)"></image>
+					<view class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
+						<view class="right_1" :style="{width:($store.state.myWidth-128)*0.75+'px'}" @click="handleRouter(item)">
+							<text class="text1">{{item.name}}</text>
+							<text class="text2">当前对应区服：{{item.server_name}}</text>
+							<view style="flex-direction: row;">
+								<text class="text4">当前返利状态：</text>
+								<text class="text3" :style="{color:item.is_rebate==1?'#FC6170':item.is_rebate==2?'#2BC8F9':'#000'}">{{item.is_rebate==1?'可申请返利':item.is_rebate==2?'已申请返利':item.is_rebate==3?'不可申请返利':'返利已发放'}}
+								</text>
+							</view>
+						</view>
+						<image @click="handleRouter(item)" src="../../../../static/images/view/left-gred.png" style="width:18rpx;height: 30rpx;"  mode=""></image>
+					</view>
+				</cell>
+				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+				</loading>
+			</list>
+			<nloading v-else :isNoData="isNoData"></nloading>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import nloading from '@/components/nvue-loading/nvue-loading';
+	import navbar from '@/components/nvue-navbar/nvue-navbar'
+	export default {
+		data() {
+			return {
+				formData: {
+					game_name: '',
+					page: 1,
+					list_rows: 15
+				},
+				list: [],
+				count: 0,
+				isNoData:false,
+				loadinging:false,
+			}
+		},
+		components: {
+			navbar,
+			nloading
+		},
+		computed:{
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
+		onShow() {
+			this.list = []
+			this.formData.page = 1
+			this.getPageData(this.formData)
+		},
+		methods: {
+			//加载更多
+			onloading(e){
+				if(this.count>this.list.length){
+					this.loadinging = true
+					this.formData.page++
+					this.getPageData()
+				}	
+			},
+			search() {
+				this.list = []
+				this.count = 0
+				this.getPageData(this.formData)
+			},
+			handleRouter(data) {
+				if(data.is_rebate==1){
+					uni.navigateTo({
+						url: `/pages/customerService/children/rechargeRebate/children/applicationform1?game_id=${data.app_id}&role_id=${data.role_id}&game_name=${data.name}`
+					})
+				}
+			},
+			getPageData(data = {}) {
+				if (this.formData.game_name == ''||this.formData.game_name == ' ') {
+					delete this.formData.game_name
+				}
+				$api.get('rebate/list',{...data}).then(res => {
+					if (res.data.code == 200) {
+						this.loadinging=false,
+						this.isNoData = true
+						this.list = this.list.concat(res.data.data.list)
+						this.count = res.data.data.count
+					}
+				})
+			},
+		}
+	}
+</script>
+
+<style scoped>
+	.container {
+		flex: 1;
+		background: #fff;
+	}
+	.box {
+		padding: 32rpx;
+		margin-top: 160rpx;
+	}
+	.inputs {
+		flex-direction: row;
+		align-items: center;
+		background-color: #F4F4F4;
+		border-radius: 40rpx;
+		padding: 12rpx 32rpx;
+		margin-bottom: 15rpx;
+	}
+	.input {
+		font-size: 28rpx;
+		margin-left: 12rpx;
+
+	}
+	.item {
+		padding: 0 32rpx;
+		margin-bottom: 48rpx;
+	}
+	/* list */
+	.cell{
+		flex-direction: row;
+		align-items: center;
+	}
+	.box_left{
+		width:160rpx ;
+		height:160rpx ;
+		border-radius: 40rpx;
+		margin-right:32rpx;
+		margin:40rpx 32rpx 40rpx 0;
+	}
+	.box_right{
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 2rpx solid #EFEFEF; 
+		margin-top:40rpx ;
+		padding-bottom: 15rpx;
+	}
+	.text1{
+		margin-top: 10rpx;
+		color: #1C1C1C;
+		font-weight: 500;
+		font-size:32rpx ;
+		lines:1 ;
+		text-overflow: ellipsis;
+	}
+	.text2{
+		font-weight: 400;
+		color: #666666;
+		font-size:26rpx ;
+		margin-top:24rpx ;
+		lines:1 ;
+		text-overflow: ellipsis;
+	}
+	.text4{
+		font-weight: 400;
+		color: #666666;
+		font-size:26rpx ;
+		margin-top:24rpx ;
+	}
+	.text3{
+		color: #FF5927;
+		font-size:26rpx;
+		font-weight: 600;
+		margin-top:24rpx ;
+	}
+</style>

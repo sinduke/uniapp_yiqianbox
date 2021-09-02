@@ -1,0 +1,192 @@
+<template>
+	<view class="container">
+		<navbar title='申请填写' router='/pages/customerService/children/rechargeRebate/children/guide1'
+			src='../../../../../static/images/customerService/time.png'></navbar>
+		<view class="box">
+			<view class="input" :style="{width:myWidth-32+'px'}">
+				<text class="input_text1">游戏名</text>
+				<text class="input_text2">{{game_name}}</text>
+			</view>
+			<view class="input" :style="{width:myWidth-32+'px'}">
+				<text class="input_text1">充值小号</text>
+				<text class="input_text2">{{formData.nickname}}</text>
+			</view>
+			<view class="input" :style="{width:myWidth-32+'px'}">
+				<text class="input_text1">游戏角色</text>
+				<text class="input_text2">{{formData.role_name}}</text>
+			</view>
+			<view class="input" :style="{width:myWidth-32+'px'}">
+				<text class="input_text1">角色ID</text>
+				<text class="input_text2">{{formData.role_id}}</text>
+			</view>
+			<view class="input" :style="{width:myWidth-32+'px'}">
+				<text class="input_text1">游戏区服</text>
+				<text class="input_text2">{{formData.server_name}}</text>
+			</view>
+			<view class="input" :style="{width:myWidth-32+'px'}">
+				<text class="input_text1">充值金额</text>
+				<view class="" :style="{width:myWidth-32-125+'px'}" style="flex-direction: row;justify-content: space-between;">
+					<text class="input_text2">{{formData.money}}</text>
+					<text class="input_text2">元</text>
+				</view>
+			</view>
+			<view class="input1" :style="{width:myWidth-32+'px'}">
+				<text class="input_text1">申请档位内容</text>
+				<view :style="{width:myWidth-32-120+'px'}">
+					<textarea v-model="formData.gear_content" :auto-height="true" :maxlength="100" class="input2" type="text"  placeholder="请按照返利表格里的档位内容填" :placeholder-style="{fontSize:16+'px'}"/>
+				</view>
+			</view>
+			<view class="input1" style="height: 155rpx;" :style="{width:myWidth-32+'px'}">
+				<text class="input_text1">备注</text>
+				<view :style="{width:myWidth-32-120+'px'}">
+					<textarea v-model="formData.content" :maxlength="50" class="input2" type="text"  placeholder="选填，50字以内" :placeholder-style="{fontSize:16+'px'}"/>
+				</view>
+			</view>
+			<view class="input3" @click='handleSub'>
+				<text class="input3_text">确认信息无误，提交申请</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import navbar from '@/components/nvue-navbar/nvue-navbar'
+	export default {
+		data() {
+			return {
+				game_id: '',
+				trumpetShow: false,
+				role_nameShow: false,
+				game_name: '',
+				pageData: [],
+				list: [],
+				roleList: [],
+				nikename: '',
+				role_id: '',
+				formData: {
+					content: '',
+					gear_content:''
+				}
+			}
+		},
+		components: {
+			navbar
+		},
+		computed:{
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
+		onLoad(option) {
+			this.role_id = option.role_id
+			this.game_id = option.game_id
+			this.game_name = option.game_name
+			this.getDetailData()
+		},
+		methods: {
+			getDetailData() {
+				$api.get('rebate/getRoleData',{
+						role_id: this.role_id,
+						game_id: this.game_id
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.pageData = res.data.data[0]
+						this.formData = {
+							...this.pageData
+						}
+					}
+				})
+			},
+			//提交
+			handleSub() {
+				this.formData.game_id = this.game_id
+				$api.get('rebate/addRebate',{	...this.formData})
+				.then(res => {
+					 if(res.data.code == 200) {
+						uni.showToast({
+							title: '申请成功',
+							success: () => {
+								setTimeout(() => {
+									uni.navigateBack({
+										delta: 1
+									})
+								}, 300)
+							}
+						})
+					}else{
+						uni.showToast({
+							title: res.data.msg,
+							icon:'none'
+						})
+						return
+					}
+			
+				})
+			},
+		},
+		
+	}
+</script>
+
+<style scoped>
+	.container {
+		flex: 1;
+		background: #fff;
+	}
+	.box {
+		padding: 32rpx;
+		margin-top: 160rpx;
+	}
+	.input{
+		padding:20rpx ;
+		flex-direction: row;
+		border: 1rpx solid #E4E4E4;
+		border-radius: 36rpx;
+		align-items: center;
+		margin-bottom: 32rpx;
+	}
+	.input_text1{
+		width: 200rpx;
+		color: #1C1C1C;
+		font-size: 32rpx;
+		font-weight: bold;
+	}
+	.input_text2{
+		color: #666666;
+		font-size: 32rpx;
+		font-weight: 400;
+	}
+	.input1{
+		padding:20rpx ;
+		flex-direction: row;
+		border: 1rpx solid #E4E4E4;
+		border-radius: 36rpx;
+		margin-bottom: 32rpx;
+		
+	}
+	.input2{
+		color: #666666;
+		font-size: 28rpx;
+		font-weight: 400;
+	}
+	.input3{
+		padding:30rpx 0;
+		flex-direction: column;
+		border: 1rpx solid #E4E4E4;
+		border-radius: 40rpx;
+		justify-content: center;
+		align-items: center;
+	}
+	.input3_text{
+		color: #FF5927;
+		font-size: 32rpx;
+		font-weight: 400;
+	}
+</style>

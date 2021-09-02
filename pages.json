@@ -124,64 +124,60 @@
 				}
 			}
 		},
-		//返利申请
+		//返利申请nvue
 		{
-			"path": "pages/customerService/children/rechargeRebate/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
+		    "path" : "pages/customerService/children/rechargeRebate/index1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }
 		},
-		//返利指南
+		//返利指南nvue
 		{
-			"path": "pages/customerService/children/rechargeRebate/children/guide",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "返利指南"
-
-					}
-				}
-			}
-
+		    "path" : "pages/customerService/children/rechargeRebate/children/guide1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "返利指南"
+		    
+		    		}
+		    	}
+		    }
+		    
 		},
-		//申请填写
+		//申请填写nvue
 		{
-			"path": "pages/customerService/children/rechargeRebate/children/applicationform",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
+		    "path" : "pages/customerService/children/rechargeRebate/children/applicationform1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    } 
 		},
-		//申请记录
+		//申请记录nvue
 		{
-			"path": "pages/customerService/children/rechargeRebate/children/applicatRecord",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "申请记录"
-					}
-				}
-			}
-
+		    "path" : "pages/customerService/children/rechargeRebate/children/applicatRecord1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "申请记录"
+		    		}
+		    	}
+		    }    
 		},
-
 		//交易
 		{
 			"path": "pages/transaction/index",
@@ -426,18 +422,6 @@
 		    		"bounce": "none"
 		    	}
 		    }  
-		},
-		// 积分商城
-		{
-			"path": "pages/my/children/pointMall/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
 		},
 		// 积分商城nvue
 		{
@@ -961,17 +945,6 @@
 				}
 			}
 		},
-		// 综合功能-意见反馈
-		{
-			"path": "pages/my/comprehensive/feedback/feedback",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		},
 		// 综合功能-意见反馈nvue
 		{
 		    "path" : "pages/my/comprehensive/feedback/feedback1",
@@ -1138,7 +1111,7 @@
 			}
 
 		}
-        
+       
     ],
 
 	"easycom": {

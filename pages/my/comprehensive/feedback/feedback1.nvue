@@ -11,8 +11,8 @@
 			</view>
 			<view class="text_box" :style="{width:myWidth-32+'px'}">
 				<textarea v-model="feedbackData.content" class="box_input"  :placeholder-style="{color:'#E4E4E4',fontSize:13+'px',}" placeholder="提出您宝贵的意见或建议有助于我们为您提供更好的服务" />
-				<view class="upload">
-					
+				<view class="upload" :style="{width:myWidth-32+'px'}">
+					<upLoadImage :max_number='3'  @upLoadSuccess='uploadSuccess'></upLoadImage>
 				</view>
 			</view>
 			<view class="input_p">
@@ -48,6 +48,7 @@
 	import common from "@/common/js/common.js";
 	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
 	import showpop from '@/components/nvue-showpop/nvue-showpop.nvue'
+	import upLoadImage from '@/components/nvue-upLoadImage/nvue-upLoadImage.nvue';
 	export default {
 		data() {
 			return {
@@ -75,7 +76,8 @@
 		},
 		components: {
 			myNavbar,
-			showpop
+			showpop,
+			upLoadImage
 		},
 		methods: {
 			// 隐藏导航栏
@@ -99,11 +101,7 @@
 			},
 			// 图片上传
 			uploadSuccess(data) {
-				this.fileList.push(data.data.url);
-			},
-			// 图片删除
-			uploadRemove(index) {
-				this.fileList.splice(index, 1)
+				this.fileList = data;
 			},
 			// 提交数据
 			submit() {
@@ -195,12 +193,6 @@
 		font-size: 26rpx;
 		font-weight: 400;
 	}
-	.upload{
-		width:220rpx ;
-		height: 220rpx;
-		border-radius:40rpx ;
-		background: #E4E4E4;
-	}
 	.input_p{
 		margin-top:40rpx ;
 		border-radius: 36rpx;
@@ -236,11 +228,13 @@
 	}
 	.title{
 		flex-direction: row;
+		align-items: center;
 	}
 	.title_img{
-		width:48rxp ;
-		height: 48rpx;
-		
+		width:42rpx ;
+		height: 42rpx;
+		border-radius: 42rpx;
+		margin-right: 12rpx;
 	}
 	.title-text{
 		color: #1C1C1C;
