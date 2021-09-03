@@ -1,7 +1,7 @@
 <!-- 意见反馈 -->
 <template>
 	<view style="flex: 1;background: #fff;">
-		<myNavbar :type="1" @click="popClick" class="nav" :style="{opacity:isShow?1:0}" title='我的积分' right radius  src='../../../../static/images/wen-icon.png'></myNavbar>
+		<myNavbar :type="1" @click="popClick" class="nav" :style="{opacity:isShow?1:0}" title='意见反馈' right radius  src='../../../../static/images/wen-icon.png'></myNavbar>
 		<view class="container" :style="{width:myWidth+'px'}">
 			<text class="text1">请选择问题类型</text>
 			<view class="boxAll"  :style="{width:myWidth-32+'px'}">
