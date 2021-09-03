@@ -1,54 +1,36 @@
 <!-- 常见问题 -->
 <template>
 	<view class="myMessage">
-<!-- 		<u-navbar title="" :border-bottom='false' class="u-navbar">
-			<slot>
-				<view class="title">
-					<view class="slot-wrap">
-						<text class="customer">常见问题</text>
-					</view>
-					<view class="slot-right">
-						<view class="radius">
-							<text class="iconfont" style="font-weight: 700;font-size: 48rpx;"
-								@click="clear">&#xe666;</text>
-						</view>
-					</view>
-				</view>
-			</slot>
-		</u-navbar> -->
-		<myNavbar title='常见问题' :lines="false" right radius router='/pages/my/coupons/coupons1' src='../../../../static/images/customerService/kfzx-icon.png'></myNavbar>
+		<myNavbar title='常见问题' right radius @click="clear" src='../../../../static/images/clear-icon.png'></myNavbar>
 		<view class="myshadowLine" />
 
-		<view class="body" :style="{height:myHeight-480+'rpx'}">
-			<list :style="{height:myHeight-460+'rpx'}" :scroll-top="scrollTop">
-			
+		<view class="body" :style="{height:myHeight-360+'rpx'}">
+			<list :style="{height:myHeight-360+'rpx'}" :scroll-top="scrollTop">
 					<!-- 客服回复 -->
 					<cell class="kfItem">
 						<view class="kfItem_left">
 							<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix"></image>
 						</view>
-						<view class="kfItem_Right">
+						<view class="kfItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
 							<text class="kftext">HI，您好，请在底部选择你要咨询的问题！</text>
 						</view>
 					</cell>
-                    <cell style="height: 32rpx;">
-						
-					</cell>
+                    <cell style="height: 32rpx;"></cell>
+					
 					<cell class="cards" :style="{width:myWidth-48+'px'}" >
 						<view class="" v-for="(item,index) in mem_List" :key='index' >
 							<view class="cardsItem" :style="{borderBottom:index<mem_List.length-1?'1px solid #efefef':'',marginBottom:index<mem_List.length-1?'24rpx':''}" @click="handleClik(item.name)">
-							<text class="itemname">{{item.name}}</text> 
+							<text class="itemname" >{{item.name}}</text> 
 							<image src="@/static/images/666_right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 							</view>
 						</view>
 					</cell>
-                    <cell style="height: 32rpx;">
-						
-					</cell>
+					
+                    <cell style="height: 32rpx;"></cell>
 					<!-- 发送问题 -->
 					<cell v-for="(item,index) in serviceList" v-if="serviceList.length>0" @click="isStyle">
 						<view class="yhItem" v-if="item.type==1">
-							<view class="yhItem_Right">
+							<view class="yhItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
 								<text class="yhtext">{{item.content}}</text>
 							</view>
 							<view class="yhItem_left">
@@ -59,20 +41,20 @@
 							<view class="kfItem_left">
 								<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix"></image>
 							</view>
-							<view class="kfItem_Right">
-								<text class="kftitle">	{{item.title}}
-								</text>
+							<view class="kfItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
+								<text class="kftitle" v-if="item.title">{{item.title}}</text>
 								<text class="kftext">{{item.content}}</text>
 							</view>
 						</view>
 						<view class="kfItem" v-if="item.type==3">
-							<view class="kfItem_left">
+							<view class="kfItem_left" >
 								<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix">	</image>
 							</view>
-							<view class="kfItem_Right">
+							<view class="kfItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
 								<view class="" v-for="(v,i) in item.list" :key='i'>
 									<view class="cardsItem" :style="{borderBottom:i<item.list.length-1?'1px solid #efefef':'',marginBottom:i<item.list.length-1?'24rpx':''}"	@click="handleClik(v.title,v.id)">
-										<text class="itemname" style="font-size: 30rpx;">{{v.title}}</text>
+										<text class="itemname" style="font-size: 26rpx;">{{v.title}}</text>
+										<image src="@/static/images/666_right.png" mode="widthFix" style="width: 24rpx;height: 24rpx;"></image>
 									</view>
 								</view>
 
@@ -92,7 +74,7 @@
 			<view class="scroll">
 				<text class="text">您可能想问</text>
 				<scroller scroll-direction="horizontal" class="scroller" :style="{width:$store.state.myWidth-120+'px',marginLeft: '180rpx'}">
-						<text class="problemItem" v-for="(item,index) in problemList" :key='index'	@click="handleClik(item.name)">{{item.name}}</text>
+				<text class="problemItem" v-for="(item,index) in problemList" :key='index'	@click="handleClik(item.name)">{{item.name}}</text>
 				</scroller>
 			</view>
 		</view>
@@ -330,8 +312,7 @@
 
 	.cards {
 		padding: 24rpx;
-	
-		box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.16);
+		border: 1px solid #efefef;
 		border-radius: 20rpx;
 	}
 
@@ -344,7 +325,9 @@
    .itemname{
 	   font-size: 28rpx;
 	   color: #1C1C1C;
-	   font-weight: 400;
+	   font-weight: 700;
+	   text-overflow: ellipsis;
+	   overflow:hidden
    }
    .bottom_ipnut{
 	   flex-direction: row;
@@ -356,8 +339,8 @@
 	   border-radius: 40rpx;
    }
    .scroll{
-	 align-items: center;
 	 flex-direction: row;
+	 align-items: center;
    }
   .scroller{
 	  flex-direction: row;
@@ -389,18 +372,8 @@
 		justify-content: center;
 	}
 
-
-
-	/* 	.myshadowLine {
-		width: 100%;
-		height: 10rpx;
-		box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8);
-		margin-bottom: 20rpx;
-
-	} */
-
 	.body {
-		margin-top:180rpx;
+		margin-top:160rpx;
 		padding: 12rpx 32rpx;
 	}
 
@@ -430,7 +403,6 @@
 	}
 
 	.kfItem_Right {
-		/* box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8); */
 		border: 1px solid #efefef;
 		border-radius: 20rpx;
 		padding: 16rpx 32rpx;
@@ -439,7 +411,6 @@
 	.kftitle {
 		font-size: 32rpx;
 		color: #1C1C1C;
-		line-height: 1.5;
 		font-weight: 700;
 		margin-bottom: 20rpx;
 	}
