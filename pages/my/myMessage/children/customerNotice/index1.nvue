@@ -3,7 +3,7 @@
 	<view class="container">
 		<view class="lineShowdow"></view>
 		<view class="box">
-			<list :style="{height:myHeight-1+'rpx'}" :show-scrollbar="false" v-if="pageData">
+			<list :style="{height:myHeight-1+'rpx'}" :show-scrollbar="false" v-if="pageData['account_sell'].length&&pageData['account_buy']&&pageData['rebate_list']&&pageData['feedback']">
 				<cell  style="height: 32rpx;"></cell>
 				<cell v-for="(item,index) in pageData['account_sell']" :key='index' >
 					<view class="head" :style="{width:myWidth-32+'px'}">
@@ -64,7 +64,7 @@
 				<!-- <loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
 				</loading> -->
 			</list>
-			<nloading  :isNoData="isNoData"></nloading>
+			<nloading v-else :isNoData="isNoData"></nloading>
 		</view>
 	</view>
 </template>
