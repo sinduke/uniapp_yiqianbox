@@ -67,6 +67,7 @@ export default {
 	// },
 	// 判断是否登录，评论时需要先登录
 	isLogin() {	
+			console.log(getApp().globalData.store.state.userInfo,1111111111111111)
 		if (Object.keys(getApp().globalData.store.state.userInfo).length == 0) {
 			uni.showToast({
 				title: '您还未登录，快去登录吧~',
@@ -81,7 +82,7 @@ export default {
 				}
 			})
 		} else {
-
+           console.log(1111111111111111)
 			return true;
 		}
 	},

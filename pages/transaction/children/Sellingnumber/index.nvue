@@ -1,7 +1,7 @@
 <!-- 卖号 -->
 <template>
 	<view class="container">
-			<scroller  :style="{height:myHeight-200+'rpx'}" :show-scrollbar="false">
+			<scroller  :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false">
 				<view class="body">
 					<group type='select' title='添加游戏' :borderTop='false' :value="form.gamename" @click="addxh"></group>
 					<group type='select' title='添加小号' :borderTop='false' :value="form.role_name" @click="handleRouter('/pages/transaction/children/Sellingnumber/someNumber/someNumber?game_id='+game_id,1)"></group>
@@ -42,7 +42,7 @@
 					  <view class="slot-content">
 						<text class="content_text">已经向您的手机号：{{userInfo.mobile}}发送验证码</text>
 						 <view class="" style="flex-direction: row;align-items: center;">
-						 	<input type="number" maxlength="6" v-model="form['sms-code']" class="inputs" placeholder="请输入验证码" :style="{width:myWidth-200+'px'}"/>
+						 	<input type="number" maxlength="6" v-model="form['sms-code']" style="font-size: 30rpx;" placeholder="请输入验证码" :style="{width:myWidth-200+'px'}"/>
 						 	<verificationCode @click="getCode" :contentCode='contentCode'></verificationCode>	
 						 </view>
 					  
