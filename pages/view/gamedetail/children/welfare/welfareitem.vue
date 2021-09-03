@@ -1,3 +1,4 @@
+
 <template>
 	<view v-if="pageData.activity.count>0" style="padding: 0 32rpx;">
 		<view class="new-list">
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+	
 	export default {
 		data() {
 			return {}
