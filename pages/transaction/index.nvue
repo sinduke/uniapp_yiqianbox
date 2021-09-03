@@ -143,14 +143,12 @@
 			if(this.active==2){
 				this.$refs.recovery.getData()
 			    this.activ1--
-			     console.log( this.activ1,'   this.activ1   this.activ1   this.activ1')
 			}
 			
 		},
 		watch:{
 			active(val){
 				if(val!==1){
-					console.log(val)
 					uni.$off('selectedGame',(data)=>{
 						console.log(data,'data')
 					})

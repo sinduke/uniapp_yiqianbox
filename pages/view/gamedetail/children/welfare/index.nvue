@@ -1,15 +1,18 @@
 <!-- 福利 -->
 <template>
-	<view class="welfare" v-if="pageData">
-		<view style="overflow: hidden;width: 100%;height: 462rpx;">
-			<view class="backImages" :style="{background:'url('+pageData.app_hot_image+') center no-repeat'}"></view>
+	<view class="welfare" >
+		<view class="top" >
+			<view class="backImages" v-if="pageData&&platform=='android'">
+				<image :src="pageData.app_hot_image" :style="{width:myWidth+'px'}"></image>
+				<sn-blur-view ref='sn_blur' v-if='isBlur' :radius='6'  :fps='120' :downscaleFactor='0.2' :style="{position:'absolute',width: myWidth+'px',height: '462rpx',bottom:0,right:0}" />
+			</view>
+
 		</view>
 		<view class="myback" @click="back">
 			<image src="@/static/images/back.png" style="width: 40rpx;height: 40rpx;"></image>
 		</view>
-		<view class="myDetail">
-			<image :src="pageData.icon" mode="widthFix" style="width: 176rpx;height: 176rpx;margin-right: 24rpx;">
-			</image>
+		<view class="myDetail" v-if="pageData">
+			<image :src="pageData.icon" mode="widthFix" style="width: 176rpx;height: 176rpx;margin-right: 24rpx;"></image>
 			<view class="detailRight">
 				<text class="gamename">{{pageData.gamename}}</text>
 				<view class="">
@@ -22,11 +25,11 @@
 		<!-- 详细信息 -->
 		<view class="mycard" :style="{height:$store.state.myHeight-462+'rpx'}">
 			<!-- <view class="TitleList"> -->
-			<xw-tab ref="navTab" :tabTitle="TitleList" @changeTab='changeTab' style="margin-bottom: 40rpx;"></xw-tab>
+			<!-- <xw-tab ref="navTab" :tabTitle="TitleList" @changeTab='changeTab' style="margin-bottom: 40rpx;"></xw-tab> -->
 			<!-- </view> -->
 
 			<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
-			<swiper style="min-height: 100vh;" :current="currentTab" @change="swiperTab">
+<!-- 			<swiper style="min-height: 100vh;" :current="currentTab" @change="swiperTab">
 				<swiper-item>
 					<scroll-view scroll-y="true" :style="{height:$store.state.myHeight-562+'rpx'}" style="display: flex;justify-content: center;">
 						<giftsitem :pageData="pageData.gift" @isGifts='isGifts'></giftsitem>
@@ -47,7 +50,7 @@
 						<vipitem :pageData="pageData.post"></vipitem>
 					</scroll-view>
 				</swiper-item>
-			</swiper>
+			</swiper> -->
 			<!-- <tabBar4 :currentPage="currentPage"></tabBar4> -->
 		</view>
 
@@ -57,16 +60,20 @@
 </template>
 
 <script>
-	import giftsitem from "./giftsitem.vue"
-	import welfareitem from "./welfareitem.vue"
-	import rebateitem from "./rebateitem.vue"
-	import  vipitem from "./vipitem.vue"
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData
+	// import giftsitem from "./giftsitem.vue"
+	// import welfareitem from "./welfareitem.vue"
+	// import rebateitem from "./rebateitem.vue"
+	// import  vipitem from "./vipitem.vue"
 	export default {
 		data() {
 			return {
 				game_id: 0,
 				pageData: null,
 				isActive: false,
+				isBlur:false,
 				active: 0,
 				number: 0,
 				scrollMove: 0,
@@ -76,13 +83,36 @@
 
 			}
 		},
+		computed: {
+			platform(){
+				return globalData.store.state.platform
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
 		components: {
-			giftsitem,
-			welfareitem,
-			rebateitem,
-			vipitem
+			// giftsitem,
+			// welfareitem,
+			// rebateitem,
+			// vipitem
+		},
+		mounted() {
+			this.creatWeb()
 		},
 		methods: {
+			creatWeb(){
+			let web = plus.webview.create('./welfare.html','new_web',{
+				height:'300rpx',
+				width:'300rpx'
+			});
+			  web.show()
+			},
+			
+			
 			//后退
 			back() {
 				uni.navigateBack({
@@ -91,12 +121,14 @@
 			},
 			// 获取游戏数据
 			getPageData() {
-				this.$api.get('game/detail', {
+				$api.get('game/detail', {
 					game_id: this.game_id
 				}).then(res => {
 					this.pageData = res.data.data
-	
-
+					this.isBlur = true
+					setTimeout(()=>{
+						this.$refs.sn_blur.pauseBlur()
+					},1000)
 				})
 			},
 			isGifts(e){
@@ -143,25 +175,26 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 	.welfare {
-		width: 100%;
-		height: 100%;
+		flex: 1;
 		overflow: hidden;
 		position: relative;
-		// background:url(../../../../../static/images/Refreshmore.gif) no-repeat;
-
+      }
 		.backImages {
 			height: 462rpx;
-			width: 100%;
-			background-size: 20;
-			filter: blur(20rpx);
+			/* filter: blur(20rpx); */
 		}
+		 .top{
+			 overflow: hidden;
+			 height: 462rpx;
+		 }
 
 		.myback {
 			width: 66rpx;
 			height: 66rpx;
-			@include flex;
+            flex-direction: row;
+			align-items: center;
 			justify-content: center;
 			position: absolute;
 			top: 88rpx;
@@ -171,7 +204,7 @@
 		}
 
 		.myDetail {
-			@include flex;
+			/* @include flex; */
 			justify-content: flex-start;
 			position: absolute;
 			top: 204rpx;
@@ -180,22 +213,22 @@
 
 		}
 
-		// .giftDetail {
+/* 		// .giftDetail {
 		// 	@include border_box;
 		// 	padding-bottom: 40rpx;
 		// 	margin-bottom: 40rpx;
 
-		// }
+		// } */
 
 		.text {
-			font-size: $xw-font;
+			font-size: 28rpx;
 			margin-right: 16rpx;
 			color: #fff;
 		}
 
 
 		.gamename {
-			font-size: $xw-h1-font;
+			font-size: 40rpx;
 			color: #fff;
 			margin-bottom: 14rpx;
 		}
@@ -212,10 +245,8 @@
 
 		.mycard {
 			width: 100%;
-			@include padding;
+			/* @include padding; */
 			background-color: #fff;
 
 		}
-
-	}
 </style>

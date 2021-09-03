@@ -432,7 +432,6 @@
 			setTimeout(()=>{
 				this.getEvaluate()
 			},300)
-			console.log(uni.getStorageSync('downList'),"uni.getStorageSync('downList')")
 			if(uni.getStorageSync('downList').length>0){
 				uni.getStorageSync('downList').map(item=>{
 				    if(item.game_id==this.game_id){
