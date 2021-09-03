@@ -1,0 +1,232 @@
+<!-- 个人 优惠券 -->
+<template>
+	<view class="youhui">
+		<view class="line" style="box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);width: 100%;height: 8rpx;background: #FFFFFF;margin-bottom: 24rpx;">
+		</view>
+		<list class="list" v-if="couponList1.length" :show-scrollbar='false' :style="{width:myWidth+'px',height:myHeight-94+'rpx'}">
+			<cell v-for="(item,index) in couponList1" :style="{width:$store.state.myWidth-32+'px'}">
+				<view class="cell">
+					<view class="cell_left" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
+						<text class="left_text1">{{item.coupons_amount}}</text>
+						<text class="left_text2">{{item.title}}</text>
+					</view>
+					<view class="cell_right" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
+						<view class="right_head">
+							<view class="head_text">
+								<text class="head_text1">有效期至：{{item.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
+								<text class="head_text2">领取时间：{{item.get_time_begin | dateFormat('yyyy-MM-dd')}}后</text>
+							</view>
+							<view class="head_but" >
+								<text class="head_text3" v-if="!item.have_got" @click="handleClick(item.id,item.period_type)">领取</text>
+								<text class="head_text4" v-else>已领取</text>
+							</view>
+						</view>
+						<view class="right_bottom">
+							<text class="head_text2" style="font-size:26rpx ;">适用于《{{coupon.gamename}}》</text>
+						</view>
+					</view>
+				</view>
+			</cell>
+			<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" ></loading>
+		</list>
+		<nloading v-else :isNoData="isNoData"></nloading>
+	<!-- 	 <scroll-view scroll-y="true" :style="{height:$store.state.myHeight-160+'rpx'}">
+		 	<view>
+				<view class="bottom" v-for="(item,index) in couponList1">
+					<view class="left">
+						<text class="left_1">{{item.coupons_amount}}</text>
+						<text class="left_2">{{item.title}}</text>
+					</view>
+					<view class="right">
+						<view class="right_head">
+							<view class="right_head_1">
+								<view class="right_head_2">
+									<text class=" bg-purple">	有效期至：{{item.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
+									<text class=" bg-purple-light">领取时间：{{item.get_time_begin | dateFormat('yyyy-MM-dd')}}后</text>
+								</view>
+								<u-button v-if="!item.have_got" @click="handleClick(item.id,item.period_type)" class="but" 	shape='circle' size="mini">领取</u-button>
+								<u-button v-else  class="but1" shape='circle' size="mini">已领取</u-button>
+							</view>
+						</view>
+						<view class="right_bot">
+							适用于《{{coupon.gamename}}》
+						</view>
+					</view>
+				</view>
+			</view>
+		 </scroll-view> -->
+
+	</view>
+</template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import nloading from '@/components/nvue-loading/nvue-loading'
+	export default {
+		components:{
+			nloading
+		},
+		data() {
+			return {
+				isNoData:false,
+				params: {
+				page: 1,
+				offset: 20,
+				status:1,
+				game_id:0
+				},
+				active: 0,
+				current: 0,
+				couponList1: [],
+				coupon:[]	
+			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		methods: {
+			//点击领取
+			handleClick(id, period_type) {
+				if(common.isLogin()){
+					$api.get("user/coupons/add", {
+						coupon_id: id,
+						period_type
+					}).then(res => {
+						if (res.data.code == 200) {
+							uni.showToast({
+								icon: "none",
+								title: res.data.msg
+							})
+						} else {
+							uni.showToast({
+								icon: "none",
+								title: res.data.msg
+							})
+						}
+						this.getPage1Data()
+					})
+				}
+			},
+			
+			//获取数据
+			getPage1Data() {
+				$api.get('game/detail', {
+					...this.params
+				}).then(res => {
+					this.isNoData = true
+					if (res.data.code == 200) {
+						this.couponList1 = res.data.data.coupons.list;
+						this.coupon = res.data.data	
+					} else {
+						//加载失败
+						uni.showToast({
+							title: "加载失败",
+							icon: "none"
+						})
+					}
+				})
+			
+			},
+		},
+		onLoad(option){
+			this.params.game_id = option.gameid
+			this.getPage1Data()
+		}
+	}
+</script>
+
+<style scoped >
+	.youhui{
+		flex: 1;
+		overflow: hidden;
+		background-color: #fff;
+	}
+ .list{
+	 padding: 0 32rpx;
+		overflow: hidden;
+	}
+	.cell{
+		margin-top:48rpx ;
+		flex-direction: row;
+		
+	}
+	/* 左边 */
+	.cell_left{
+		border-radius: 40rpx 0rpx 0rpx 40rpx;
+		background-color: #E9E9E9;
+	}
+	.left_text1{
+		margin:30rpx 0rpx 10rpx 0;
+		text-align: center;
+		color: #1C1C1C;
+		font-size:50rpx ;
+		font-weight:700;
+		font-family: PingFang SC;
+		lines:1;
+		text-overflow:ellipsis;
+		
+	}
+	.left_text2{
+		text-align: center;
+		color: #666666;
+		font-size:26rpx ;
+		font-family: PingFang SC;
+		font-weight: 500;
+		margin-bottom:24rpx ;
+	}
+	/* 右边 */
+	.cell_right{
+		background: #F8F8F8;
+		padding:22rpx  ;
+		border-radius:0 40rpx 40rpx 0;
+	}
+	.right_head{
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom:1rpx dashed #C1C1C1;
+		padding-bottom:16rpx ;
+	}
+	.head_text1{
+		color: #666666;
+		font-size: 28rpx;
+		font-weight: 400;
+		margin-bottom:12rpx ;
+	}
+	.head_text2{
+		color: #C1C1C1;
+		font-size: 24rpx;
+		font-weight: 400;	
+	}
+	.head_but{
+		height:50rpx ;
+		width: 100rpx;
+		padding:0rpx 12rpx;
+		border: 1px solid #E4E4E4;
+		background: #FFFFFF;
+		border-radius:25rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.head_text3{
+		color: #FF5927;
+		font-size:28rpx ;
+		font-weight: 500;
+	}
+	.head_text4{
+		color: #999;
+		font-size:28rpx ;
+		font-weight: 500;
+	}
+	.right_bottom{
+		margin-top:12rpx ;
+		justify-content: center;
+	}
+</style>
