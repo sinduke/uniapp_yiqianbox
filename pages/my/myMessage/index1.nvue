@@ -13,7 +13,7 @@
 					<text class="text3">{{pageData.create_time|dateFormat('yyyy/MM/dd')}}</text>
 				</view>
 			</view>
-			<view class="head"  @click="handleRouter('/pages/my/myMessage/children/activeMessage/activeMessage')">
+			<view class="head"  @click="handleRouter('/pages/my/myMessage/children/activeMessage/activeMessage1')">
 				<image class="left" src="@/static/images/view/hdxx.png" mode="widthFix" style="position: relative;">
 					<view v-if="likeDate.is_comment_read" style="position: absolute;top: 25rpx;left: 65rpx;width: 30rpx;height: 30rpx;background: #FF5927;border-radius: 30rpx;">
 						<text style="font-size:20rpx ;font-weight: 300;color: #fff;text-align: center;">{{likeDate.is_comment_read}}</text>

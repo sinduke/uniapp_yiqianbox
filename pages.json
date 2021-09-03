@@ -349,6 +349,18 @@
 				}
 			}
 		},
+		//消息-互动消息nvue
+		{
+		    "path" : "pages/my/myMessage/children/activeMessage/activeMessage1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }
+		    
+		},
 		//消息-我的赞
 		{
 			"path": "pages/my/myMessage/children/activeMessage/Myzan",
@@ -1117,6 +1129,7 @@
 			}
 
 		} 
+        
     ],
 
 	"easycom": {
