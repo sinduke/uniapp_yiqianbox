@@ -3,7 +3,7 @@
 	<view class="container">
 		<view class="lineShowdow"></view>
 		<view class="box">
-			<list :style="{height:myHeight-1+'rpx'}" :show-scrollbar="false" >
+			<list :style="{height:myHeight-1+'rpx'}" :show-scrollbar="false" v-if="pageData">
 				<cell  style="height: 32rpx;"></cell>
 				<cell v-for="(item,index) in pageData['account_sell']" :key='index' >
 					<view class="head" :style="{width:myWidth-32+'px'}">
@@ -57,10 +57,7 @@
 						</view>
 						<text class="text3">{{item.content}}</text>
 						<text class="text3">官方回复：{{item.reply_content}}</text>
-						<view class="head_2">
-							<text class="text3">小号ID：{{item.mg_mem_id}}</text>
-							<text class="text1">￥{{item.price}}</text>
-						</view>
+						
 						<text class="text3" style="font-size: 26rpx;color: #999999;">{{item.create_time|dateFormat('yyyy/MM/dd hh:mm:ss')}}</text>
 					</view>
 				</cell>
@@ -97,8 +94,8 @@
 					...this.params
 				}).then(res=> {
 					if(res.data.code==200){
+						this.isNoData = true
 						this.pageData = res.data.data
-						console.log(this.pageData['account_sell'])
 					}  
 				})
 			}
