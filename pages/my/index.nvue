@@ -160,7 +160,7 @@
 					{
 						url: '../../static/images/my/lqzx.png',
 						name: '领券中心',
-						router: '/pages/my/children/couponsCore/index1',
+						router: '/pages/my/children/couponsCore/index',
 						type: 1
 					},
 					{
