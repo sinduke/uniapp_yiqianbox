@@ -1,0 +1,190 @@
+<template>
+	<view class="container">
+		<myNavbar title='我的积分' right  ></myNavbar>
+		<view class="box">
+		 	<text style="margin-top: 200rpx;"></text>
+			<!-- 父评论 -->
+			<view class="head" :style="{width:myWidth-32+'px'}">
+				<view class="head_le">
+					<view class="img"></view>
+					<view class="textList">
+						<text class="text1">爱笑的笨蛋</text>
+						<text class="text2">游戏时长 53分钟</text>
+					</view>
+				</view>
+				<text class="head_ri">132</text>
+			</view>
+			<text class="middle">玩了几天针不戳，在这里，除了射击和团队协作之外
+，你还需要学会驾驭各类新奇武器和华丽的机甲载
+具，并通过高超的作战策略和敏捷的操作，来对抗
+强大的机甲与对手。</text>
+			<view class="bottom" :style="{width:myWidth-32+'px'}"></view>
+			<view class="bottom1">
+				<text class="text3">36分钟前发布</text>
+				<view style="flex-direction: row;justify-content: space-between;align-items: center;">
+					<text class="text4">223</text>
+					<text class="text4">131</text>
+				</view>
+			</view>
+		</view>
+		<view class="line" :style="{width:myWidth+'px'}"></view>
+		<!-- 子回复 -->
+		<view class="sun" :style="{width:myWidth+'px'}">
+		 	<view class="sun_box1">
+		 		<text class="box1_text1">回复</text>
+				<text class="box1_text2">当前22条回复</text>
+		 	</view>
+			<view class="sun_box2">
+				<view class="img"></view>
+				<view class="box2_box">
+					<text class="text1">喝汽水</text>
+					<text class="text3">6分钟前评论</text>
+				</view>
+			</view>
+			<text class="sun_text">看着就好玩，怎么玩能分享一下经验吗？</text>
+			<view class="sun_box3">
+				<text class="text4">1</text>
+				<text class="text4">3213</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
+	import nloading from '@/components/nvue-loading/nvue-loading'
+	export default {
+		data() {
+			return {
+				isNoData:false,
+				loadinging:false,
+			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},	
+		},
+		components: {
+			myNavbar
+		},
+		
+		methods: {
+			
+		}
+	}
+</script>
+
+<style scoped>
+	.container{
+		flex: 1;
+		background: #fff;
+	}
+	.box{
+		padding:0rpx 32rpx;
+	}
+/* 	父评论 */
+	.head{
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 32rpx;
+	}
+	.head_le{
+		flex-direction: row;
+		align-items: center;
+	}
+	.img{
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 80rpx;
+		border: 1rpx solid #E4E4E4;
+		margin-right: 32rpx;
+	}
+	.text1{
+		font-weight: bold;
+		font-size: 34rpx;
+		color: #1C1C1C;
+	}
+	.text2{
+		color: #666666;
+		font-size: 26rpx;
+		font-weight: 400;
+	}
+	.middle{
+		font-weight: 400;
+		font-size: 32rpx;
+		color: #666666;
+		margin-bottom: 32rpx;
+	}
+	.bottom{
+		height: 320rpx;
+		border-radius: 20rpx;
+		border: 1rpx solid red;
+		margin-bottom: 32rpx;
+	}
+	.bottom1{
+		
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 32rpx;
+	}
+	.text3{
+		font-size: 32rpx;
+		font-weight: 400;
+		color: #C1C1C1;
+	}
+	.text4{
+		font-size: 28rpx;
+		font-weight: 400;
+		color: #666666;
+	}
+	.line{
+		height: 20rpx;
+		background: #F4F4F4;
+	}
+	
+	
+	/* 子回复 */
+	.sun{
+		padding: 50rpx 32rpx;
+		border-bottom: 1rpx solid #EFEFEF;
+	}
+	.sun_box1{
+		flex-direction: row;
+		margin-bottom: 50rpx;
+	}
+	.box1_text1{
+		font-size: 42rpx;
+		font-weight: bold;
+		color: #000000;
+		margin-right: 32rpx;
+	}
+	.box1_text2{
+		margin-top: 22rpx;
+		font-size: 24rpx;
+		font-weight: 400;
+		color: #666666;
+	}
+	.sun_box2{
+		flex-direction: row;
+		margin-bottom: 32rpx;
+	}
+	.sun_text{
+		font-size: 32rpx;
+		font-weight: 400;
+		color: #666666;
+		margin-bottom: 32rpx;
+	}
+	.sun_box3{
+		flex-direction: row;
+	}
+</style>

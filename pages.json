@@ -311,17 +311,6 @@
 		    	}
 		    }
 		},
-		//消息-客服通知
-		{
-			"path": "pages/my/myMessage/children/customerNotice/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		},
 		//消息-客服通知nvue
 		{
 		    "path" : "pages/my/myMessage/children/customerNotice/index1",
@@ -338,17 +327,6 @@
 		    }
 		    
 		},
-		//消息-互动消息
-		{
-			"path": "pages/my/myMessage/children/activeMessage/activeMessage",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		},
 		//消息-互动消息nvue
 		{
 		    "path" : "pages/my/myMessage/children/activeMessage/activeMessage1",
@@ -361,17 +339,17 @@
 		    }
 		    
 		},
-		//消息-我的赞
+		//消息-我的赞nvue
 		{
-			"path": "pages/my/myMessage/children/activeMessage/Myzan",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
+		    "path" : "pages/my/myMessage/children/activeMessage/Myzan1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }
+		    
 		},
 		//官方通知nvue
 		{
@@ -661,6 +639,17 @@
 					}
 				}
 			}
+		},
+		//评论详情nvue
+		{
+		    "path" : "pages/view/gamedetail/commentDetail1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }  
 		},
 		//评论详情
 		{
@@ -1128,8 +1117,7 @@
 				}
 			}
 
-		} 
-        
+		}   
     ],
 
 	"easycom": {

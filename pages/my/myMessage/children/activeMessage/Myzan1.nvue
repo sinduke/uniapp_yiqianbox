@@ -4,19 +4,6 @@
 		 <view class="box" :style="{width:myWidth+'px'}">
 			<list :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false" v-if="pageDate">
 				<cell style="height: 32rpx;"></cell>
-				<cell  @click="tozan" v-if="likeDate.is_like_read">
-					<view class="head" :style="{width:myWidth-32+'px'}">
-						<view class="head_le">
-							<view class="le_box">
-								<image class="le_img" src="../../../../../static/images/zan-acitve.png" ></image>
-							</view>
-							<text class="head_text1">当前有{{likeDate.is_like_read}}条新点赞</text>
-						</view>
-						<view class="haed_ri">
-							<image class="ri_img" src="../../../../../static/images/view/left-gred.png" ></image>
-						</view>
-					</view>
-				</cell>
 				<cell  v-for="(item,index) in pageDate" :key="index">
 					<view class="middle" :style="{width:myWidth-32+'px'}" @click="handleDel(item,index)">
 						<view class="mid_le" v-if="isActive" >
@@ -34,15 +21,9 @@
 								</view>
 								<text class="mid_text3">回复</text>
 							</view>
-							<text class="ri_mid" >{{item.content}}</text>
-							<view class="ri_bot" v-if="item.parent_comment">
-								<text class="bot_text">{{item.parent_comment.content}}</text>
-							</view>
 						</view>
 					</view>
 				</cell>
-				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
-				</loading>
 			</list>
 			<nloading v-else :isNoData="isNoData"></nloading>
 			<view class="bottom" :style="{width:myWidth-32+'px'}" v-if="isActive" >
@@ -74,19 +55,11 @@
 		data() {
 			return {
 				isNoData:false,
-				loadinging:false,
 				pageDate:[],
 				selectAll: false,
 				isActive: false,
 				isNumber:0,
 				type:true,
-				likeDate:[],
-				params:{
-					read_type: "comment",
-					page:1,
-					offset: 20,
-					count:0,
-				}
 			}
 		},
 		components: {
@@ -99,14 +72,6 @@
 			this.getDate()
 		},
 		methods: {
-			//加载更多
-			onloading(e){
-				if(this.params.count>this.pageDate.length){
-					this.loadinging = true
-					this.params.page++
-					this.getPageDate()
-				}	
-			},
 			handleDelete() {
 				uni.vibrateShort({
 					success: () => {
@@ -117,28 +82,25 @@
 					}
 				})
 			},
-			//消息数据
+			//数据
 			getPageDate(){
-				$api.get("v8/comments/message_list",{	
-				}).then(res=> {
-					this.isNoData = true
-					this.loadinging = false
-					this.pageDate = res.data.data.list
-					this.likeDate = res.data.data
-				})
-			},
-			//消息已读
-			getDate(){
-				$api.get("v8/comments/message_read",{	
+				$api.get("v8/comments/my_like",{
 					...this.params
 				}).then(res=> {
+					this.pageDate = res.data.data.list
+					this.params.count = res.data.data.count
+					this.isNoData = true
 				})
 			},
-			tozan(){
-				uni.navigateTo({
-					url:"/pages/my/myMessage/children/activeMessage/Myzan1"
+			//点赞已读
+			getDate(){
+				$api.get("v8/comments/message_read",{	
+					read_type:"like"
+				}).then(res=> {
+					
 				})
 			},
+			
 			//确认删除
 			getDelDate(){
 				let comment_ids = []
@@ -148,7 +110,7 @@
 					}
 				})
 				$api.get("v8/comments/del_message",{
-					del_type: "comment",
+					del_type:"like",
 					comment_ids
 				}).then(res=>{
 					if(res.data.code==200){
@@ -228,19 +190,7 @@
 		margin-top: 131rpx;
 		padding: 32rpx 32rpx;
 	}
-	.head{
-		background: #F4F4F4;
-		padding: 40rpx 32rpx;
-		flex-direction: row;
-		border-radius: 40rpx;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 40rpx;
-	}
-	.head_le{
-		flex-direction: row;
-		align-items: center;
-	}
+	
 	.le_box{
 		width: 64rpx;
 		height: 64rpx;
@@ -250,19 +200,6 @@
 		justify-content: center;
 		align-items: center;
 		margin-right: 32rpx;
-	}
-	.le_img{
-		width: 30rpx;
-		height: 30rpx;
-	}
-	.ri_img{
-		width: 20rpx;
-		height: 30rpx;
-	}
-	.head_text1{
-		font-size: 30rpx;
-		font-weight: 400;
-		color: #666666;
 	}
 	.middle{
 		flex-direction: row;
@@ -316,25 +253,6 @@
 		font-weight: 400;
 		color: #666666;
 	}
-	.ri_mid{
-		font-size: 30rpx;
-		font-weight: 400;
-		color: #1C1C1C;
-		margin-top: 15rpx;
-	}
-	.ri_bot{
-		margin-top: 20rpx;
-		padding: 15rpx 24rpx;
-		border-radius: 16rpx;
-		background: #E4E4E4;
-	}
-	.bot_text{	
-		color: #666666;
-		font-size: 28rpx;
-		font-weight: 400;
-		text-overflow: ellipsis;
-		lines: 1;
-	}
 	.bottom{
 		position: absolute;
 		bottom:30rpx;
@@ -363,3 +281,4 @@
 		color: #FF5927;
 	}
 </style>
+

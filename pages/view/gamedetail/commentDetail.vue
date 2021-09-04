@@ -70,19 +70,6 @@
 			</view>
 			<view class="reply-item-content" @click="isShow(item)">
 				<view class="">
-					<!-- {{item.add}}
-					<view v-if="item.add">
-						<view class="">
-							{{isTrue}}
-						</view>
-						<view class="" v-if="isTrue">
-							<text>{{item.add}}</text>
-							<text>回复 :{{placeholder}}</text>
-							<text class="content contents">{{item.content}}</text>
-						</view>
-						
-						
-					</view> -->
 					<view class="content contents">{{item.content}}</view>
 				</view>
 				
