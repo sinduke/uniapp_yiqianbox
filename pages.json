@@ -851,21 +851,6 @@
 				}
 			}
 		},
-		{ //平台币-充值中心
-			"path": "pages/my/FlatGoldCoins/topUp/topUp",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "充值中心"
-					}
-				}
-			}
-
-		},
 		//平台币-充值中心nvue
 		{
 		    "path" : "pages/my/FlatGoldCoins/topUp/topUp1",
@@ -1118,6 +1103,15 @@
 			}
 
 		}   
+        ,{
+            "path" : "pages/view/gamedetail/children/WrComment1",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 
 	"easycom": {
