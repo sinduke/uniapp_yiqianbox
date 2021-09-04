@@ -1,11 +1,12 @@
 <!-- 常见问题 -->
 <template>
 	<view class="myMessage">
-		<myNavbar title='常见问题' right radius @click="clear" src='../../../../static/images/clear-icon.png'></myNavbar>
+		<myNavbar title='常见问题' right radius @click="clear" :type="1" src='../../../../static/images/clear-icon.png'></myNavbar>
 		<view class="myshadowLine" />
 
-		<view class="body" :style="{height:myHeight-360+'rpx'}">
-			<list :style="{height:myHeight-360+'rpx'}" :scroll-top="scrollTop">
+		<view class="body" :style="{height:myHeight-keyHeight-360+'rpx'}">
+			<list :style="{height:myHeight-keyHeight-360+'rpx'}" :scroll-top="scrollTop" class="list">
+				<cell style="height: 32rpx;"></cell>
 					<!-- 客服回复 -->
 					<cell class="kfItem">
 						<view class="kfItem_left">
@@ -17,7 +18,7 @@
 					</cell>
                     <cell style="height: 32rpx;"></cell>
 					
-					<cell class="cards" :style="{width:myWidth-48+'px'}" >
+					<cell class="cards" :style="{width:myWidth-32+'px'}" >
 						<view class="" v-for="(item,index) in mem_List" :key='index' >
 							<view class="cardsItem" :style="{borderBottom:index<mem_List.length-1?'1px solid #efefef':'',marginBottom:index<mem_List.length-1?'24rpx':''}" @click="handleClik(item.name)">
 							<text class="itemname" >{{item.name}}</text> 
@@ -53,7 +54,7 @@
 							<view class="kfItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
 								<view class="" v-for="(v,i) in item.list" :key='i'>
 									<view class="cardsItem" :style="{borderBottom:i<item.list.length-1?'1px solid #efefef':'',marginBottom:i<item.list.length-1?'24rpx':''}"	@click="handleClik(v.title,v.id)">
-										<text class="itemname" style="font-size: 26rpx;">{{v.title}}</text>
+										<text class="itemname" :style="{maxWidth:myWidth/1.8+'px'}" style="font-size: 28rpx;">{{v.title}}</text>
 										<image src="@/static/images/666_right.png" mode="widthFix" style="width: 24rpx;height: 24rpx;"></image>
 									</view>
 								</view>
@@ -66,13 +67,13 @@
 		<view class="bottom" >
 			<view class="bottom_ipnut">
 				 <image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;margin-right: 32rpx;"></image>
-				<input :auto-blur="true" @blur="isStyle" :adjust-position="false" class="input" @click="changeStyle"	type="text" v-model="content" placeholder="请输入您的问题" @confirm='confirm' />
+				<input :adjust-position='false' cursor-spacing='55' class="input" type="text" v-model="content" placeholder="请输入您的问题" @confirm='confirm' />
 				<!-- <view class=""	style="width: 60rpx;height: 60rpx;border-radius: 60rpx;padding: 4rpx; box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8);display: flex;align-items: center;justify-content: center;">
 					<image src="@/static/images/index/detail-button.png" mode="widthFix" style="width: 40rpx;height: 40rpx;" @click="confirm"></image>
 				</view> -->
 			</view>
 			<view class="scroll">
-				<text class="text">您可能想问</text>
+				<text class="text" style="margin-top: 8rpx;">您可能想问</text>
 				<scroller scroll-direction="horizontal" class="scroller" :style="{width:$store.state.myWidth-120+'px',marginLeft: '180rpx'}">
 				<text class="problemItem" v-for="(item,index) in problemList" :key='index'	@click="handleClik(item.name)">{{item.name}}</text>
 				</scroller>
@@ -89,16 +90,14 @@
 	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	const globalData = getApp().globalData
 	// const dom = weex.requireModule('dom')
-	// import {
-	// 	mapState
-	// } from "vuex";
 	export default {
 		components:{
 			myNavbar
 		},
 		data() {
 			return {
-				scrollTop: 999999,
+				scrollTop: 999,
+				keyHeight:0,
 				old: {
 					scrollTop: 0
 				},
@@ -179,6 +178,11 @@
 				return globalData.store.state.serviceList
 			}
 
+		},
+		mounted() {
+			uni.onKeyboardHeightChange((e)=>{
+				this.keyHeight = e.height* (750 / uni.getSystemInfoSync().windowWidth)
+			})
 		},
 		methods: {
 			isStyle() {
@@ -327,6 +331,7 @@
 	   color: #1C1C1C;
 	   font-weight: 700;
 	   text-overflow: ellipsis;
+	   lines: 2;
 	   overflow:hidden
    }
    .bottom_ipnut{
@@ -374,7 +379,11 @@
 
 	.body {
 		margin-top:160rpx;
-		padding: 12rpx 32rpx;
+		/* padding: 0 32rpx; */
+
+	},
+	.list{
+		padding: 0 32rpx;
 	}
 
 	.kfItem {
@@ -462,8 +471,7 @@
 
 	.bottom {
 		padding: 20rpx 32rpx;
-		background-color: #FcFcFc;
-		/* box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8); */
+		background-color: #fff;
 	}
 
 	.input {
@@ -477,7 +485,7 @@
 		padding: 6rpx 18rpx;
 		margin-right: 24rpx;
 		lines: 1;
-		font-size: 32rpx;
+		font-size: 28rpx;
 	}
 
 	.text {
