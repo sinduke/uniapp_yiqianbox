@@ -1,0 +1,416 @@
+<!-- 任务中心 -->
+<template>
+	<view class="tankCenter">
+	<myNavbar title='任务中心' :lines="false" right radius router='/pages/my/children/taskCenter/signRule/signRule' src='../../../../static/images/my_details.png'></myNavbar>
+		
+		<view class="body">
+			<list :style="{height:myHeight-160+'rpx',width:myWidth+'px'}" @loadmore='loadmore'	 loadmoreoffset='20' :show-scrollbar='false'   class="list" ref="list"  >
+				<cell>
+					<view class="banner">
+						<image src="@/static/images/my/rwzx-banner.png" mode="widthFix" :style="{width:myWidth+'px',height:'380rpx'}"></image>
+						<view class="myjf">
+							<text class="myjf_text" style="font-weight: 700;font-size: 32rpx;">当前剩余积分</text>
+							<view class="jfrouter" @click="handleRouter('/pages/my/integral/integral')">
+								<text class="myjf_text" style="font-weight: 900;font-size: 48rpx;">{{userInfo.my_integral}}</text>
+								<text class="myjf_text" style="margin: 0 6rpx;font-weight: 700;font-size: 32rpx;">积分</text>
+								<view  class="icon">
+									<image src="@/static/images/right_white.png" style="width: 25rpx;height: 25rpx;"></image>
+								</view>
+							</view>
+						</view>
+					</view>
+				</cell>
+				<cell>
+					<view class="qdjf">
+						<view class="qdjf_tit">
+							<text class="title">已连续签到</text>
+							<text style="color: #FF5927;font-size: 38rpx;">{{userInfo.continuous_sign}}</text>
+							<text class="title">天,明天签到+2积分</text>
+						</view>
+						<view class="qdjf_body">
+							<view class="qdjf_item" v-for="(item,index) in 7" :key='index'>
+								<view class="" style="flex-direction: row;align-items: center;justify-content:">
+									<view class="qdjf_raidus" :style="{borderColor:index<userInfo.continuous_sign?'#FF5927':'#999'}">
+										<image src="@/static/images/yes_icon.png" v-if="index<userInfo.continuous_sign" mode="widthFix" style="width: 28rpx;height: 28rpx;"></image>
+										<text class="text" v-else>+{{index+1}}</text>
+									</view>
+									<view class="qdjf_line" v-if="index<6" :style="{backgroundColor:index<userInfo.continuous_sign?'#FF5927':'#999'}"></view>
+								</view>
+								<text class="text" v-if="!index" >今天</text>
+								<text class="text" v-else >{{new Date()/1000+(86400*index)|dateFormat('MM.dd')}}</text>
+							</view>
+						</view>
+					</view>
+				</cell>
+				<cell>
+					<view class="zptz">
+						<image src="@/static/images/my/rwzx-xyzp.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="height: 340rpx;margin-right: 24rpx;" @click="handleRouter('/pages/my/children/bigTurntable/index')"></image>
+						<image src="@/static/images/my/rwzx-qmtg.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="margin-right: 24rpx;height: 340rpx;"	@click="handleRouter('/pages/my/children/share/index')"></image>
+						<image src="@/static/images/my/rwzx-jfsc.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="height: 340rpx;" @click="handleRouter('/pages/my/children/pointMall/index1')"></image>		
+					</view>
+				</cell>
+				<cell>
+					<!-- 日常任务 -->
+					<view class="rcrw" style="margin-bottom: 24rpx;">
+						<text class="title">日常任务</text>
+						<view class="rcrw_body" v-if="pageData">
+							<view class="rcrw_item" v-for="(item,index) in pageData.daily.list" :key='index'>
+								<view class="left">
+									<image :src="/http/.test(item.icon)?item.icon:'https:'+item.icon" mode="widthFix" style="width: 60rpx; height: 60rpx;"></image>
+								</view>
+								<view class="right" style="margin-left: 32rpx;">
+									<view :style="{width:myWidth/1.7+'px'}">
+										<text class="right_title">{{item.ia_name}}</text>
+										<text class="text">{{item.ia_desc}}</text>
+									</view>
+									<view>
+										<text v-if="item.ia_code == 'sign'" @click="signIn(item.finish_flag)"	:class="{active:item.finish_flag==2}" class="button">{{item.finish_flag == 1 ? '领&emsp;取' : '已完成'}}</text>
+										<text v-else class="button" @click="handleClick(item.finish_flag,item.ia_id)" :class="{active:item.finish_flag==2}">{{item.finish_flag == 1 ? '去完成' : '已完成'}}</text>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</cell>
+				<cell>
+					
+					<!-- 新手任务 -->
+					<view class="rcrw">
+						<text class="title">新手任务</text>
+						<view class="rcrw_body" v-if="pageData">
+							<view class="rcrw_item" v-for="(item,index) in pageData.one.list" :key='index'>
+								<view class="left">
+									<image :src="/http/.test(item.icon)?item.icon:'https:'+item.icon" mode="widthFix" style="width: 60rpx; height: 60rpx;"></image>
+								</view>
+								<view class="right" style="margin-left: 32rpx;">
+									<view :style="{width:myWidth/1.7+'px'}">
+										<text class="right_title">{{item.ia_name}}</text>
+										<text class="text">{{item.ia_desc}}</text>
+									</view>
+									<view>
+										<text class="button" :class="{active:item.finish_flag==2}"	@click="handleClick(item.finish_flag,item.ia_id)">{{item.finish_flag == 1 ? '去完成' : '已完成'}}</text>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</cell>
+			</list>
+			
+		</view>
+	</view>
+</template>
+
+<script>
+	import {	$api	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
+	const globalData = getApp().globalData
+	export default {
+		components:{
+			myNavbar
+		},
+		data() {
+			return {
+				pageData: null,
+
+			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			userInfo() {
+				return globalData.store.state.userInfo
+			},
+			loginInfo() {
+				return globalData.store.state.loginInfo
+			}
+
+		},
+		methods: {
+			//获取
+			getPageData() {
+				$api.get("app/integral/task/home", ).then(res => {
+					this.pageData = res.data.data;
+				})
+			},
+			// 签到
+			signIn(type) {
+				if (type == 1) {
+				   $api.get("user/sign/add", {
+						token: this.loginInfo.user_token
+
+					}).then(res => {
+						this.getPageData();
+						uni.showToast({
+							title: '签到成功！',
+							icon: 'none',
+							success: () => {
+								setTimeout(() => {
+									common.getuserInfo()
+								}, 200)
+							}
+						})
+
+					})
+				}
+
+			},
+			//任务跳转
+			handleClick(type, ia_id) {
+				if (type == 1) {
+					switch (ia_id) {
+						// 每日新游
+						case 27:
+							uni.navigateTo({
+								url: `/pages/game/children/special?name=每日新游&id=${3}`
+							})
+							break;
+						case 5:
+						case 24:
+						case 25:
+							uni.switchTab({
+								url: `/pages/game/index`
+							})
+							break;
+						case 26:
+							uni.navigateTo({
+								url: `/pages/index/index`
+							})
+
+							break;
+						case 2:
+						case 23:
+						case 9:
+						case 7:
+							uni.navigateTo({
+								url: `/pages/my/myAdministration/index`
+							})
+
+							break;
+					}
+				}
+
+			},
+			//路由跳转
+			handleRouter(url) {
+				uni.navigateTo({
+					url
+				})
+			},
+		},
+		onShow() {
+			this.getPageData()
+		},
+		filters: {
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	.tankCenter {
+		flex: 1;
+		overflow: hidden;
+		background-color: #F4F4F4;
+	}
+	.icon {
+		width: 40rpx;
+		height: 40rpx;
+		justify-content: center;
+		align-items: center;
+		border-radius: 40rpx;
+		background-color: rgba(255, 255, 255, 0.4);
+	}
+   .myjf_text{
+	   color: #fff;
+   }
+   .body{
+	   	margin-top:160rpx
+   }
+	.banner {
+		position: relative;
+	
+	}
+
+	.myjf {
+		position: absolute;
+		align-items: flex-start;
+		color: #fff;
+		left: 32rpx;
+		top: 140rpx;
+	}
+
+
+	.qdjf {
+		padding: 40rpx 32rpx;
+		background-color: #fff;
+		margin-bottom: 20rpx;
+	}
+
+	.qdjf_tit {
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 24rpx;
+	}
+
+	.qdjf_body {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.qdjf_raidus {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		width: 50rpx;
+		height: 50rpx;
+		border: 1px solid #CECECE;
+		border-radius: 50rpx;
+		margin-bottom: 10rpx;
+
+	}
+
+	.qdjf_line {
+		margin-left: 4rpx;
+		width: 50rpx;
+		height: 4rpx;
+		background-color: #CECECE;
+	}
+
+
+	.zptz {
+		padding: 40rpx 32rpx;
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 20rpx;
+		background-color: #fff;
+	}
+
+	.image {
+		border-radius: 30rpx;
+	}
+
+	.jfrouter {
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+	}
+
+	.jfradius {
+		width: 40rpx;
+		height: 40rpx;
+		border-radius: 40rpx;
+		background-color: rgba(255, 255, 255, .4);
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+
+	.rcrw {
+		padding: 20rpx 32rpx;
+		background-color: #fff;
+		
+	}
+	.rcrw_body{
+		margin-top: 32rpx;
+	}
+
+	.title {
+		color: #1C1C1C;
+		font-weight: 700;
+		font-size: 32rpx;
+		/* margin-bottom: 20rpx; */
+	}
+
+	.rcrw_item {
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		margin-bottom: 40rpx;
+		
+
+	}
+
+	.left {
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 100rpx;
+		border: 1px solid #e4e4e4;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+
+	}
+
+	.right {
+		border-bottom:1px solid #efefef ;
+		padding-bottom: 20rpx;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.right_title {
+		font-weight: 700;
+		font-size: 32rpx;
+		margin-bottom: 4rpx;
+	}
+
+	.button {
+		padding:8rpx 18rpx;
+		border-radius: 32rpx;
+		border: 1px solid #efefef;
+		color: #FF5927;
+		font-weight: 700;
+		font-size: 26rpx;
+		lines: 1;
+
+
+	}
+
+
+	.text {
+		font-size: 26rpx;
+		color: #999;
+	}
+
+	.active {
+		background-color: #C1C1C1 !important;
+		color: #fff !important;
+		border: 1px solid #C1C1C1 !important;
+	}
+</style>
