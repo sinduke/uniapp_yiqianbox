@@ -165,7 +165,7 @@
 			// 图片上传
 			uploadSuccess(data) {
 				this.fileList = data;
-				console.log(data)
+				
 			},
 			// 隐藏图片框
 			imgnoShow() {
