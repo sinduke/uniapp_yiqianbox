@@ -279,7 +279,7 @@
 				</cell>
 			</list>
 			<view v-if='BannerList.length==0' style="position: absolute;top: 300rpx;margin-left: -32rpx;">
-				<myloading></myloading>
+				<myloading ></myloading>
 			</view>
 		</view>
 	</view>

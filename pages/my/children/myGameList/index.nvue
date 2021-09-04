@@ -31,7 +31,7 @@
 							</view>
 						</view>
 				        <view class="" :style="{width:myWeight-32+'px'}" style="flex-direction: row;justify-content: center;">    	
-						 <myloading v-if="!value.list.length"></myloading>
+						 <myloading :isNoData='isNoData'  v-if="!value.list.length"></myloading>
 				        </view>
 						
 					</view>
@@ -60,6 +60,7 @@
 		data() {
 			return {
 				active: 0,
+				isNoData:false,
 				pageData:null,
 				isActive: false,
 				scrollMove: 0,
@@ -135,6 +136,7 @@
 			
 			getPageData(){
 				$api.get("user/my_games").then(res => {
+					this.isNoData = true
 					if(res.data.code==200){
 					this.pageData = res.data.data
 					}

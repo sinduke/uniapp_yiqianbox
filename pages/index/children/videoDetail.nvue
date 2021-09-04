@@ -647,7 +647,6 @@
 				},e => {
 	
 					if (e.state === 'start') {
-						// this.type = 1
 						setTimeout(()=>{
 						BindingX.unbind({
 							token: mybindUp.token,

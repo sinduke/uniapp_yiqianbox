@@ -1,0 +1,165 @@
+<!-- 注册页面 -->
+<template>
+	<view class="container">
+		<text class="title">欢迎注册</text>
+
+		<!-- 手机号注册 -->
+		<text class="h2">密码</text>
+		<view class="select flex">
+			<input type="text" class="inputs" v-if="is_eye"  v-model="form['mem-password']" placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<input type="password" class="inputs" v-else   v-model="form['mem-password']" placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<image src="@/static/images/eye_open.png" v-if="is_eye" mode="widthFix" @click="is_eye=false" style="width: 30rpx;height: 30rpx;"></image>
+			<image src="@/static/images/eye_close.png" v-else mode="widthFix" @click="is_eye=true" style="width: 30rpx;height: 30rpx;"></image>
+		</view>
+		<text class="h2">再次输入密码</text>
+		<view class="select flex">
+			<input type="text" class="inputs" v-if="is_eye" v-model="again_psd" placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<input type="password" class="inputs" v-else   v-model="again_psd" placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<image src="@/static/images/eye_open.png" v-if="is_eye" mode="widthFix" @click="is_eye=false" style="width: 30rpx;height: 30rpx;"></image>
+			<image src="@/static/images/eye_close.png" v-else mode="widthFix" @click="is_eye=true" style="width: 30rpx;height: 30rpx;"></image>
+		</view>
+		<view class="mobile clearfix">
+			<text class="mobile_text">首次一键登录，需要绑定密码</text>
+		</view>
+		<text class="mybutton" @click="submitPassword">提 交</text>
+		
+
+		<view class="bottom">
+			<text class="text" style="color: #666;">注册登陆即表示同意</text>&nbsp
+			<text class="text"	style="font-weight: 700;">《平台服务协议》</text>
+		</view>
+	</view>
+</template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	export default {
+		data() {
+			return {
+				oauth: {
+					openid: '',
+					name: ''
+				},
+				again_psd: "",
+				form: {
+					"mem-password": "",
+				},
+				is_eye:false,
+			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			}
+		},
+		methods: {
+			// 提交密码修改
+			submitPassword() {
+				if (this.form["mem-password"] != this.again_psd) {
+					uni.showToast({
+						title: this.$t('my.srmmbyz'),
+						icon: 'none'
+					})
+					return;
+				}
+				$api.get("password/update_pwd", {
+					...this.form
+				}).then(res => {
+					if (res.data.code == 200) {
+						uni.getStorageSync('mem-password', this.form["mem-password"])
+						uni.showToast({
+							title: res.data.msg,
+							success: () => {
+								uni.switchTab({
+									url: '/pages/my/index'
+								})
+							}
+
+						})
+					 common.getuserInfo()
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none"
+
+						})
+						return
+					}
+
+				})
+			},
+		},
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+	.title {
+		margin: 60rpx 0;
+		color: #1C1C1C;
+		font-weight: 700;
+		font-size: 40rpx;
+	}
+
+	.container {
+		background-color: #fff;
+		overflow: hidden;
+		flex: 1;
+		padding: 0 32rpx;
+	}
+
+	.flex {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.select {
+		margin-bottom: 48rpx;
+		padding-bottom: 12rpx;
+		border-bottom: 1px solid #efefef;
+	}
+
+	.inputs {
+		font-size: 28rpx;
+	}
+
+	.mobile {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		margin: 24rpx 0;
+	}
+
+	.mobile_text {
+		font-size: 28rpx;
+		color: #666;
+	}
+
+	.fr {
+		color: #666;
+	}
+
+
+	.mybutton {
+		text-align: center;
+		border: 1px solid #efefef;
+		color: #FF5927;
+		padding: 24rpx 0;
+		border-radius: 60rpx;
+		font-size: 30rpx;
+		font-weight: 700;
+		lines: 1;
+		margin-bottom: 48rpx;
+	}
+	.bottom {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.text{
+		font-size: 28rpx;
+		color: #1C1C1C
+	}
+</style>

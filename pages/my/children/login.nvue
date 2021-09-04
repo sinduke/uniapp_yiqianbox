@@ -1,0 +1,699 @@
+<template>
+	<!-- 登录 -->
+	<view class="login">
+		<view class="backimg" style="position: relative;">
+			<image src="@/static/images/my/login-backimage.png" mode="widthFix" :style="{width: myWidth+'px'}"></image>
+			<image ref='Loginimages' class="Loginimages" @click="handleClick" :src="userFormat.icon" :style="{left:myWidth/2-45+'px'}"></image>
+		</view>
+		<view class="body">
+				<view class="log">
+					<text class="h1 log_text">登录</text>
+				</view>
+			<view class="qita" v-if="notPhone">
+				<view class="userInfo">
+					<text class="h2">账号</text>
+					<view class="select flex" >
+						<input type="text" class="inputs" v-model="form['mem-username']" placeholder="请输入手机号或账号" maxlength="20" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+						<image src="@/static/images/down_999.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+					</view>
+					<text class="h2">密码</text>
+					<view class="select flex">
+						<input type="text" class="inputs" v-if="is_eye" v-model="form['mem-password']"  placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+						<input type="password" class="inputs" v-else v-model="form['mem-password']" placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+						<image src="@/static/images/eye_open.png" v-if="is_eye" mode="widthFix" @click="is_eye=false" style="width: 30rpx;height: 30rpx;"></image>
+						<image src="@/static/images/eye_close.png" v-else mode="widthFix" @click="is_eye=true" style="width: 30rpx;height: 30rpx;"></image>
+					</view>
+				</view>
+					<text class="mybutton" @click="doLogin">立即登录</text>
+			</view>
+
+			<!-- 手机号登录 -->
+			<view class="myPhone" v-else>
+				<view class="userInfo">
+					<text class="h2">手机号</text>
+					<view class="select flex" >
+						<input type="text" class="inputs" v-model="phone['sms-mobile']" placeholder="请输入手机号" maxlength="20" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+						<image src="@/static/images/down_999.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+					</view>
+					<text class="h2">验证码</text>
+					<view class="select flex" >
+						<input type="number" maxlength="6" v-model="phone['sms-code']" class="inputs" placeholder="请输入验证码" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+						<verificationCode @click="getCode" :contentCode='contentCode'></verificationCode>	
+					</view>
+				</view>
+					<text class="mybutton" @click="iphoneLogin">登录/注册</text>
+			</view>
+
+
+			<view class="phonelogin">
+				<text class="text" style="font-weight: 700;color: #1C1C1C;" v-if="notPhone"	@click="notPhone=false">手机登录</text>
+				<text class="text" style="font-weight: 700;color: #1C1C1C;" v-else @click="notPhone=true">账号登录</text>
+				<text class="text" style="margin: 0 56rpx;">|</text>
+				<text class="text" style="color: #666;" @click="forgetPw">忘记密码</text>
+			</view>
+			<text class="dologin">————————— 其他登录方式 ————————</text>
+			<view class="wxlogin">
+				<view class="gird">
+					<view class="gird_item" @click="dsfLogin('qq')" ref='gird_item1' style="opacity: 0;">
+						<image style="width:100rpx;height: 100rpx;" src="@/static/images/qq-icon1.png" mode="widthFix"></image>
+						<text class="grid-text" style="">QQ</text>
+					</view>
+					<view class="gird_item" @click="dsfLogin('weixin')" ref='gird_item2' style="opacity: 0;">
+						<image style="width:100rpx;height: 100rpx;" src="@/static/images/wx-icon1.png" mode="widthFix"></image>
+						<text class="grid-text" style="">微信</text>
+					</view>
+
+					<view class="gird_item" v-if="$store.state.platform=='ios'" ref='gird_item3' style="opacity: 0;">
+						<image style="width:100rpx;height: 100rpx;" src="@/static/images/wb-login.png" mode="widthFix"></image>
+						<text class="grid-text" style="">微博</text>
+					</view>
+					<view class="gird_item" @click="dsfLogin('sinaweibo')" v-else ref='gird_item3' style="opacity: 0;">
+						<image style="width:100rpx;height: 100rpx;" src="@/static/images/wb-icon1.png" mode="widthFix"></image>
+						<text class="grid-text" style="">微博</text>
+					</view>
+
+				</view>
+			</view>
+			<view class="bottom">
+				<text class="text" style="color: #666;">注册登陆即表示同意</text>&nbsp
+				<text class="text"	style="font-weight: 700;">《平台服务协议》</text>
+			</view>
+		</view>
+		<view class="back" @click="handleback">
+			<image src="@/static/images/back.png" style="width: 44rpx;height: 44rpx;"></image>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {	$api	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import verificationCode from '@/components/nvue-verificationCode/nvue-verificationCode.nvue';
+	export default {
+		components:{
+			verificationCode
+		},
+		data() {
+			return {
+				is_eye:false,
+				isTrue: true,
+				notPhone: true,
+				contentCode:0,
+				form: {
+					"mem-username": "",
+					"mem-password": ""
+				},
+				codeText: "",
+				phone: {
+					"sms-mobile": '',
+					"sms-phone": '2',
+					"sms-code": '',
+					"sms-type": '2',
+				},
+				infoData: {
+					access_token: ''
+
+				},
+			}
+		},
+		computed: {
+			// 导航栏高度
+			userFormat() {
+				return globalData.store.state.userFormat
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			userInfo() {
+				return globalData.store.state.userInfo
+			},
+
+		},
+		mounted() {
+			this.binds(common.getEl(this.$refs.Loginimages), 'transform.translateY', `easeOutBounce(t,0,130,600)`)
+			
+			this.binds(common.getEl(this.$refs.gird_item3), 'transform.translateX', `easeInOutBack(t,-400,400,600)`)
+			this.binds(common.getEl(this.$refs.gird_item3), 'opacity', `easeInSine(t,0,1,600)`)
+			setTimeout(()=>{
+				this.binds(common.getEl(this.$refs.gird_item2), 'transform.translateX', `easeInOutBack(t,-200,200,600)`)
+				this.binds(common.getEl(this.$refs.gird_item2), 'opacity', `easeInSine(t,0,1,600)`)
+			},200)
+			setTimeout(()=>{
+				 this.binds(common.getEl(this.$refs.gird_item1), 'transform.translateX', `easeInOutBack(t,-100,100,600)`)
+				 this.binds(common.getEl(this.$refs.gird_item1), 'opacity', `easeInSine(t,0,1,600)`)
+			},400)
+			
+			setTimeout(()=>{
+				this.phonelogin()
+			},800)
+		},
+		methods: {
+			handleClick(){
+				this.binds(common.getEl(this.$refs.Loginimages), 'transform.scale', `easeOutElastic(t,0,1,600)`)
+			},
+			
+			//动画
+			binds(ref, property, expression, type) {
+				let rotatebin = BindingX.bind({
+					eventType: 'timing',
+					exitExpression: 't>600',
+					props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+						{
+							element: ref, //动画元素
+							property: property, //动画属性
+							expression: expression
+						}
+			
+					]
+				}, e => {
+					if (e.state === 'start') {
+						setTimeout(()=>{
+						BindingX.unbind({
+							token: rotatebin.token,
+							eventType: 'timing'
+						})
+							
+						},600)
+					}
+				});
+			},
+			
+			
+			
+			//返回
+			handleback() {
+				uni.navigateBack()
+			},
+
+
+			//第三方登录
+			dsfLogin(type) {
+				if (this.isTrue) {
+					this.isTrue = false
+					setTimeout(() => {
+						this.isTrue = true
+					}, 500)
+					uni.getProvider({
+						service: 'oauth',
+						success: res => {
+							//支持微信、qq和微博等
+							if (~res.provider.indexOf(type)) {
+								uni.login({
+									provider: type,
+									success: loginRes => {
+										console.log(loginRes, 'loginResloginRes')
+										let access_token = loginRes.authResult.access_token
+										let openid = loginRes.authResult.openid
+										// console.log('-------获取openid(unionid)-----');
+										this.infoData.access_token = access_token
+										this.infoData.openid = openid
+										uni.setStorageSync('openid', openid);
+										// 获取用户信息
+										uni.getUserInfo({
+											provider: type,
+											success: infoRes => {
+												console.log('-------获取' + type +
+													'用户所有-----');
+												// console.log(JSON.stringify(infoRes.userInfo));
+												this.infoData = {
+													...this.infoData,
+													...infoRes.userInfo,
+													name: type
+												}
+												this.login(this.infoData)
+
+											}
+										});
+									}
+								});
+							}
+
+
+						}
+
+					});
+
+				}
+
+
+			},
+
+			login(data) {
+
+				let oauth = {}
+				oauth = {
+					...data,
+					type: 3,
+					client_id: this.client_id,
+					refresh_token: "",
+					app_id: this.app_id,
+				}
+				console.log(data, 'datadatadata')
+				$api.get("user/login", {
+					"mem-openid": oauth.openid,
+					"mem-oauth_type": oauth.name == 'qq' ? 2 : oauth.name == 'weixin' ? 1 : 3,
+				}).then(res => {
+					if (res.data.code == 41316 || res.data.code == 41318 || res.data.code == 41320) {
+						uni.navigateTo({
+							url: `/pages/view/register/index?id=${oauth.openid}&name=${oauth.name=='qq'?'QQ':oauth.name=='weixin'?'微信':'新浪微博'}&oauth_type=${oauth.name=='qq'?2:oauth.name=='weixin'?1:3}`
+						})
+					} else if (res.data.code == 200) {
+						uni.setStorageSync('mem-openid', oauth.openid)
+						this.$store.commit("setLoginInfo", res.data.data)
+						uni.setStorageSync('mem-username', res.data.data.username)
+						uni.setStorageSync('mem-oauth_type', oauth.name == 'qq' ? 2 : oauth.name == 'weixin' ? 1 :
+							3)
+
+						uni.showToast({
+							title: '登录成功',
+							icon: 'none',
+							success: () => {
+								// 返回上一页
+								setTimeout(() => {
+									uni.navigateBack()
+								}, 300)
+							}
+						})
+
+						// 获取用户信息
+						common.getuserInfo();
+					}
+
+				})
+			},
+			// 一键登录
+			oneLogin() {
+				// 显示一键登录选项
+				uni.login({
+					provider: 'univerify',
+					univerifyStyle: { // 自定义登录框样式
+						"fullScreen": "true", // 是否全屏显示，默认值： "false"
+						"authButton": {
+							"normalColor": '#ff5927',
+							"textColor": "#ffffff",
+							// "border":'#e4e4e4'
+						},
+						//   "buttons": {  // 自定义登陆按钮
+						//     "iconWidth": "45px", // 图标宽度（高度等比例缩放） 默认值：45px
+						//     "list": [
+						//       {
+						//         "provider": "qq",
+						//         "iconPath": "@/static/images/qq-share.png" // 图标路径仅支持本地图片
+						//       }, 
+						//       {
+						//         "provider": "weixin",
+						//         "iconPath": "../../../static/images/wx-share.png" // 图标路径仅支持本地图片
+						//       },
+						// {
+						//   "provider": "weibo",
+						//   "iconPath": "../../../static/images/wb-share.png" // 图标路径仅支持本地图片
+						// }
+						//     ]
+						//   }
+					},
+					success: res => { // 登录成功
+						console.log(res, 'loginRes')
+						let loginRes = res.authResult
+						uniCloud.callFunction({
+							name: 'index', // 你的云函数名称
+							data: {
+								'access_token': loginRes.access_token, // 客户端一键登录接口返回的access_token
+								'openid': loginRes.openid // 客户端一键登录接口返回的openid
+							}
+						}).then(res => {
+							this.onephoneLoin(res.result.content.phoneNumber, 1, loginRes.openid)
+
+
+
+							// 登录成功，可以关闭一键登录授权界面了
+						}).catch(err => {
+							// 处理错误
+
+						})
+					},
+					fail(res) { // 登录失败
+						uni.closeAuthView() //关闭一键登录弹出窗口
+					},
+					complete: () => {
+						// uni.closeAuthView()
+						this.notPhone = true
+					}
+				})
+
+			},
+			//本机号码一键登录
+			phonelogin() {
+				uni.preLogin({ // 该函数是判断当前设备环境是否支持一键登录，
+					// 如果能支持一键登录，此时可以显示一键登录选项，同时预登录会准备好相关环境
+					provider: 'univerify',
+					success: res => {
+						//预登录成功
+						this.oneLogin()
+					},
+					fail(res) {
+						uni.showToast({
+							title: '请开启第一个sim卡的流量后，重新进入登录界面，就能正确使用一键登录功能了！',
+							icon: 'none',
+
+						})
+						// 预登录失败
+						//如果手机没有插入有效的sim卡，或者手机蜂窝数据网络关闭，
+						//都有可能造成预登录校验失败。
+					}
+				})
+			},
+			onephoneLoin(mobile, type, openid) {
+				$api.get("v8/user/loginm", {
+					"sms-mobile": mobile,
+					"sms-phone": type
+				}).then(res => {
+					// 将登录获取的数据记录下来
+					console.log(res, 'sssssssssssssss')
+					uni.closeAuthView()
+					if (res.data.code == 200) {
+						if (res.data.data.is_pwd) {
+							uni.setStorageSync('sms-mobile', mobile)
+							uni.setStorageSync('mem-username', mobile)
+							this.$store.commit("setLoginInfo", res.data.data)
+							uni.showToast({
+								title: '登录成功',
+								success: () => {
+
+									// 返回上一页
+									setTimeout(() => {
+										uni.navigateBack({
+											delta: 1,
+										})
+									}, 300)
+								}
+							})
+							// 获取用户信息
+							common.getuserInfo();
+						} else {
+							uni.setStorageSync('sms-mobile', mobile)
+							uni.setStorageSync('mem-username', mobile)
+							this.$store.commit("setLoginInfo", res.data.data)
+							//跳转
+							uni.navigateTo({
+								url: '/pages/my/children/bindingPssword/bindingPssword'
+							})
+
+
+						}
+
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none'
+
+						})
+					}
+
+				})
+
+
+
+
+			},
+			doLogin() {
+				$api.get("user/login", {
+					...this.form,
+					equipmentCode: this.equipmentCode
+				}).then(res => {
+					console.log(res, 'doLogindoLogindoLogindoLogin')
+					// 将登录获取的数据记录下来
+					if (res.data.code == 200) {
+						this.$store.commit("setLoginInfo", res.data.data)
+						// 将用户名密码记录在本地
+						uni.setStorageSync('mem-username', this.form["mem-username"])
+						uni.setStorageSync('mem-password', this.form["mem-password"])
+
+						uni.showToast({
+							title: '登录成功',
+							success: () => {
+							common.getuserInfo();
+								// 返回上一页
+								setTimeout(() => {
+									uni.navigateBack({
+										delta: 1,
+									})
+								}, 300)
+							}
+						})
+						// 获取用户信息
+
+
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none'
+
+						})
+					}
+
+				})
+			},
+			/* 手机号登录 */
+			codeChange(text) {
+				this.codeText = text;
+			},
+			getCode() {
+				if (!this.phone['sms-mobile']) {
+					uni.showToast({
+						title: "请输入手机号",
+						icon: "none"
+					})
+					return;
+				}
+				
+				$api.get("v8/sms/send", {
+					...this.phone
+				}).then(res => {
+					console.log(res,'sssssssssssss')
+					if(res.data.code==200){
+					     this.contentCode++
+					}else{
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none"
+						})
+					}	
+				})
+
+			},
+			iphoneLogin() {
+				$api.get("v8/user/loginm", {
+					...this.phone
+				}).then(res => {
+					// 将登录获取的数据记录下来
+					if (res.data.code == 200) {
+						if (res.data.data.is_pwd) {
+							uni.setStorageSync('mem-username', this.phone['sms-mobile'])
+							uni.setStorageSync('sms-mobile', this.phone['sms-mobile'])
+							this.$store.commit("setLoginInfo", res.data.data)
+							uni.showToast({
+								title: '登录成功',
+								success: () => {
+									// 返回上一页
+									setTimeout(() => {
+										uni.navigateBack({
+											delta: 1,
+										})
+									}, 300)
+								}
+							})
+							// 获取用户信息
+
+							common.getuserInfo();
+						} else {
+							uni.setStorageSync('mem-username', this.phone['sms-mobile'])
+							uni.setStorageSync('sms-mobile', this.phone['sms-mobile'])
+							this.$store.commit("setLoginInfo", res.data.data)
+							//跳转
+							uni.navigateTo({
+								url: '/pages/my/children/bindingPssword/bindingPssword'
+							})
+
+
+						}
+
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none'
+
+						})
+					}
+
+				})
+			},
+
+
+
+			//忘记密码
+			forgetPw() {
+				uni.navigateTo({
+					url: `/pages/my/children/forgetPwd`
+				})
+			}
+
+		},
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+	.back {
+		position: fixed;
+		width: 66rpx;
+		height: 66rpx;
+		top: 120rpx;
+		left: 32rpx;
+		border-radius: 66rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		background-color: #1C1C1C;
+		opacity: 0.5;
+	}
+	.flex{
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.h2{
+		margin-bottom: 8rpx;
+	}
+	.select{
+	    margin-bottom: 48rpx;
+	  	padding-bottom:12rpx;
+		border-bottom:1px solid #efefef;
+	}
+
+	.login {
+		overflow: hidden;
+		background-color: #fff;
+	}
+	.dologin{
+		color: #999;
+		font-weight: 400;
+		text-align: center;
+		font-size: 26rpx;
+		lines: 1;
+		margin-bottom: 32rpx;
+	}
+
+	.body {
+		margin-top: 20rpx;
+		padding: 0 32rpx;
+	}
+	.log_text {
+		font-size: 52rpx;
+	}
+
+	.userInfo {
+		margin-top: 36rpx;
+	}
+
+	.userInfo_line {
+		height: 3rpx;
+		width: 100%;
+		background-color: #E4E4E4;
+		margin-bottom: 52rpx;
+
+	}
+	.number {
+		font-size: 38rpx;
+		color: #1C1C1C;
+		font-weight: 700;
+		margin-bottom: 80rpx;
+
+	}
+
+
+	.mybutton {
+		text-align: center;
+		border: 1px solid #efefef;
+		color: #FF5927;
+		padding:24rpx 0;
+		border-radius: 60rpx;
+		font-size: 30rpx;
+		font-weight: 700;
+		lines: 1;
+		margin-bottom: 48rpx;
+	}
+
+	.phonelogin {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 180rpx;
+	}
+
+	.wxlogin {
+		margin-bottom: 48rpx;
+	}
+
+	.images {
+		border-radius: 82rpx;
+		width: 82rpx;
+		height: 82rpx;
+	}
+	.gird{
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 60rpx;
+		 margin-bottom: 48rpx;
+	}
+	.gird_item{
+		align-items: center;
+	}
+
+	.iconfont {
+		font-size: 60rpx;
+		color: #C1C1C1;
+		background-color: #EFEFEF;
+		border-radius: 50%;
+		padding: 14rpx 20rpx;
+		margin-bottom: 6rpx;
+	}
+
+	.grid-text {
+		margin-top: 8rpx;
+		font-size: 28rpx;
+		color: #666;
+	}
+
+	.bottom {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+
+	.Loginimages {
+		width: 180rpx;
+		height: 180rpx;
+		position: absolute;
+		top: 0rpx;
+		padding: 6rpx 10rpx;
+		border-radius: 30rpx;
+	}
+
+	.text {
+		font-size: 26rpx;
+		color: #1C1C1C;
+	}
+
+	.inputs {
+		font-size: 28rpx;
+	}
+</style>

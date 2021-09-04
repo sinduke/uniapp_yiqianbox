@@ -1,0 +1,356 @@
+<!-- 注册页面 -->
+<template>
+	<view class="container">
+	 <text class="title">欢迎注册/绑定</text>
+
+		<!-- 手机号注册 -->
+		<text class="h2">手机号</text>
+		<view class="select flex" >
+			<input type="number" class="inputs" v-model="form2['sms-mobile']" placeholder="请输入已绑定的手机号" maxlength="20" :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<image src="@/static/images/close.png" v-if="form2['sms-mobile']" @click="form2['sms-mobile']=''" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+		</view>
+		<text class="h2">验证码</text>
+		<view class="select flex" >
+			<input type="number" maxlength="6" v-model="form2['sms-code']" class="inputs" placeholder="请输入验证码" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+			<verificationCode @click="getCode" :contentCode='contentCode'></verificationCode>	
+		</view>
+		<text class="h2" v-if="ispassword">密码</text>
+		<view class="select flex" v-if="ispassword">
+			<input type="text" class="inputs" v-if="is_eye" v-model="form2['mem-password']"  placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<input type="password" class="inputs" v-else  v-model="form2['mem-password']" placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<image src="@/static/images/eye_open.png" v-if="is_eye" mode="widthFix" @click="is_eye=false" style="width: 30rpx;height: 30rpx;"></image>
+			<image src="@/static/images/eye_close.png" v-else mode="widthFix" @click="is_eye=true" style="width: 30rpx;height: 30rpx;"></image>
+		</view>
+		<view class="mobile clearfix">
+			<text class="mobile_text">首次{{oauth.name}}登录，需要{{is_reg?"注册":"绑定"}}手机号</text>
+		</view>
+			<text class="mybutton" v-if="is_reg" @click="register2">注 册/绑 定</text>
+			<text class="mybutton" v-else @click="register1">注 册/绑 定</text>
+		
+	<!-- 	<view >
+			<u-form :model="form2" ref="uForm" label-width="120" :border-bottom="false" label-align="right">
+				<view class="h2">手机号</view>
+				<u-form-item label="">
+					<u-input v-model="form2['sms-mobile']" placeholder="请输入手机号" />
+				</u-form-item>
+				<view class="h2">验证码</view>
+				<u-form-item label="">
+					<u-input v-model="form2['sms-code']" placeholder="请输入验证码" style="margin-right: 30rpx;" />
+					<text size="mini" slot="right" type="warning" @click="getCode">{{codeText}}</text>
+					<u-verification-code style="background: #ffd014;" ref="uCode" @change="codeChange">
+					</u-verification-code>
+				</u-form-item>
+				<view class="h2" v-if="ispassword">密 码</view>
+				<u-form-item label="" v-if="ispassword">
+					<u-input v-model="form2['mem-password']" type="password" placeholder="请输入密码" />
+				</u-form-item>
+			</u-form>
+			<view class="mobile clearfix" v-if="!this.oauth">
+				<text class="fr" @click="changeRegister">{{text}}</text>
+			</view>
+			<view class="mobile clearfix">
+				<text>首次{{oauth.name}}登录，需要{{is_reg?"注册":"绑定"}}手机号</text>
+			</view>
+			<view class="btn">
+				<text class="buttons" v-if="is_reg" @click="register2">注 册/绑 定</text>
+				<text class="buttons" v-else @click="register1">注 册/绑 定</text>
+
+			</view>
+		</view> -->
+
+		<!-- <view class="bottom">注册即表示同意<text class="txt">《平台服务协议》</text></view> -->
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData
+	import verificationCode from '@/components/nvue-verificationCode/nvue-verificationCode.nvue';
+	export default {
+		components:{
+			verificationCode
+		},
+		data() {
+			return {
+				register: 1,
+				text: "手机号注册",
+				ispassword: false,
+				is_reg: false,
+				is_eye:false,
+				contentCode:0,
+				oauth: {
+					openid: '',
+					name: ''
+				},
+
+				form1: {
+					"mem-username": "",
+					"mem-password": "",
+					passwordAgain: ""
+				},
+
+				codeText: "",
+				form2: {
+					"sms-mobile": "",
+					"sms-code": "",
+					"mem-password": "",
+					"sms-type": 1,
+					"sms-oauth_type": '',
+
+
+				}
+			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			}
+		},
+		methods: {
+			//手机号注册
+			register1() {
+				if (this.oauth) {
+					this.form2["sms-openid"] = this.oauth.openid
+					this.form2["sms-type"] = 2
+				}
+				$api.get("user/mobile/register", {
+					...this.form2,
+					equipmentCode: this.equipmentCode,
+				}).then(res => {
+					console.log(res, 'registerregisterregisterregisterregister')
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: "注册成功",
+						})
+						uni.setStorageSync('mem-openid', this.oauth.openid)
+						this.$store.commit("setLoginInfo", res.data.data)
+						uni.setStorageSync('mem-username', res.data.data.username)
+						uni.setStorageSync('mem-oauth_type', this.form2['sms-oauth_type'])
+
+
+						uni.showToast({
+							title: '登录成功',
+							icon: 'none',
+							success: () => {
+								setTimeout(() => {
+									// 返回我的页面
+									uni.switchTab({
+										url: "/pages/my/index"
+									})
+								}, 300)
+							}
+						})
+						// 获取用户信息
+						this.$common.getuserInfo();
+
+
+
+
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none"
+						})
+					}
+
+				})
+			},
+
+			// 手机号绑定
+			register2() {
+				if (this.oauth) {
+					this.form2["sms-openid"] = this.oauth.openid
+					this.form2["sms-type"] = 2
+				}
+				$api.get("v8/user/bind_login", {
+					...this.form2,
+					equipmentCode: this.equipmentCode,
+				}).then(res => {
+					console.log(res, 'bind_loginbind_loginbind_login')
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: "绑定成功",
+						})
+						uni.setStorageSync('mem-openid', this.oauth.openid)
+						this.$store.commit("setLoginInfo", res.data.data)
+						uni.setStorageSync('mem-username', res.data.data.username)
+						uni.setStorageSync('mem-oauth_type', this.form2['sms-oauth_type'])
+						uni.showToast({
+							title: '登录成功',
+							icon: 'none',
+							success: () => {
+								setTimeout(() => {
+									// 返回我的页面
+									uni.switchTab({
+										url: "/pages/my/index"
+									})
+								}, 300)
+							}
+						})
+						// 获取用户信息
+						this.$common.getuserInfo();
+
+
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none"
+						})
+					}
+
+				})
+
+			},
+			//绑定登录
+			bindingLogin() {
+				$api.get("user/login", {
+					"mem-openid": this.oauth.openid,
+					"mem-oauth_type": this.form2['sms-oauth_type'],
+				}).then(res => {
+					console.log(res, 'registerregisterregisterregisterregister')
+					if (res.data.code == 200) {
+						uni.setStorageSync('mem-openid', this.oauth.openid)
+						this.$store.commit("setLoginInfo", res.data.data)
+						uni.setStorageSync('mem-username', res.data.data.username)
+						uni.setStorageSync('mem-oauth_type', this.form2['sms-oauth_type'])
+						uni.showToast({
+							title: '登录成功',
+							icon: 'none',
+							success: () => {
+								setTimeout(() => {
+									// 返回我的页面
+									uni.switchTab({
+										url: "/pages/my/index"
+									})
+								}, 300)
+							}
+						})
+						// 获取用户信息
+						common.getuserInfo();
+					}
+
+				})
+			},
+
+			doLogin(form) {
+				$api.get("user/login", {
+					...form
+				}).then(res => {
+
+					if (res.data.code == 200) {
+						// 将登录获取的数据记录下来
+						this.$store.commit("setLoginInfo", res.data.data)
+						// 将用户名密码记录在本地
+						uni.setStorageSync('mem-username', form["mem-username"])
+						uni.setStorageSync('mem-password', form["mem-password"])
+						// 返回我的页面
+						uni.switchTab({
+							url: "/pages/my/index"
+						})
+						console.log('loginloginlogin')
+						// 获取用户信息
+						common.getuserInfo();
+					}
+
+				})
+			},
+			getCode() {
+				if (!this.form2['sms-mobile']) {
+					uni.showToast({
+						title: "请输入手机号",
+						icon: "none"
+					})
+					return;
+				}			
+				$api.get("v8/sms/oauth_send", {
+				    ...this.form2
+				}).then(res => {
+					console.log(res,'resresresresres')
+					if(res.data.code==200){
+						this.is_reg = res.data.data.is_reg
+					     this.contentCode++
+					 if (!res.data.data.is_reg) {
+							this.ispassword = true
+						}
+					}else{
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none"
+						})
+					}	
+				})
+				
+			}
+		},
+		onLoad(option) {
+			if (Object.keys(option).length) {
+				this.oauth.openid = option.id,
+				this.oauth.name = option.name,
+				this.form2['sms-oauth_type'] = option.oauth_type,
+				console.log(this.oauth)
+				this.register = 2
+			}
+
+		}
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+	.title{
+		margin: 60rpx 0;
+		color: #1C1C1C;
+		font-weight: 700;
+		font-size: 40rpx;
+	}
+	.container {
+		background-color: #fff;
+		overflow: hidden;
+		flex: 1;
+		padding: 0 32rpx;
+	}
+	.flex{
+		flex-direction: row;
+		align-items: center;
+	}
+	.select{
+	    margin-bottom: 48rpx;
+	  	padding-bottom:12rpx;
+		border-bottom:1px solid #efefef;
+	}
+	.inputs{
+		font-size: 28rpx;
+	}
+	.mobile {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		margin: 24rpx 0;
+	}
+
+	.mobile_text {
+		font-size: 28rpx;
+		color: #666;
+	}
+
+	.fr {
+		color: #666;
+	}
+
+
+	.mybutton {
+		text-align: center;
+		border: 1px solid #efefef;
+		color: #FF5927;
+		padding:24rpx 0;
+		border-radius: 60rpx;
+		font-size: 30rpx;
+		font-weight: 700;
+		lines: 1;
+		margin-bottom: 48rpx;
+	}
+
+</style>

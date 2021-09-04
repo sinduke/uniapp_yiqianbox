@@ -1,0 +1,191 @@
+<!-- 忘记密码 -->
+<template>
+	<view class="container">
+		<text class="title" >忘记密码</text>
+		<!-- 第一步：验证码 -->
+		<text class="h2">账号</text>
+		<view class="select flex" >
+			<input type="number" class="inputs" v-model="form1['sms-mobile']" placeholder="请输入已绑定的手机号" maxlength="20" :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<image src="@/static/images/close.png" v-if="form2['sms-mobile']" @click="form1['sms-mobile']=''" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+		</view>
+		<text class="h2">验证码</text>
+		<view class="select flex" >
+			<input type="number" maxlength="6" v-model="form1['sms-code']" class="inputs" placeholder="请输入验证码" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+			<verificationCode @click="getCode" :contentCode='contentCode'></verificationCode>	
+		</view>
+		<text class="h2">新密码</text>
+		<view class="select flex">
+			<input type="text" class="inputs" v-if="is_eye"  v-model="form2.password"  placeholder="请输入新密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<input type="password" class="inputs" v-else  v-model="form2.password" placeholder="请输入新密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<image src="@/static/images/eye_open.png" v-if="is_eye" mode="widthFix" @click="is_eye=false" style="width: 30rpx;height: 30rpx;"></image>
+			<image src="@/static/images/eye_close.png" v-else mode="widthFix" @click="is_eye=true" style="width: 30rpx;height: 30rpx;"></image>
+		</view>
+		<text class="h2">再次确认</text>
+		<view class="select flex">
+			<input type="text" class="inputs" v-if="is_eye1" v-model="form2.passwordAgain"  placeholder="请再次输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<input type="password" class="inputs" v-else v-model="form2.passwordAgain" placeholder="请再次输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
+			<image src="@/static/images/eye_open.png" v-if="is_eye1" mode="widthFix" @click="is_eye1=false" style="width: 30rpx;height: 30rpx;"></image>
+			<image src="@/static/images/eye_close.png" v-else mode="widthFix" @click="is_eye1=true" style="width: 30rpx;height: 30rpx;"></image>
+		</view>
+		<text class="mybutton" @click="handleConfirm">设置新密码</text>
+	</view>
+</template>
+
+<script>
+	import { $api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData
+	import verificationCode from '@/components/nvue-verificationCode/nvue-verificationCode.nvue';
+	export default {
+		components:{
+			verificationCode
+		},
+		data() {
+			return {
+				show: true,
+				codeText: "",
+				form1: {
+					"sms-mobile": "",
+					"sms-code": "",
+					"sms-type": 5
+				},
+				is_eye:false,
+				is_eye1:false,
+				form2: {
+					password: "",
+					passwordAgain: "",
+					verify_token: ""
+				}
+			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			}
+		},
+		methods: {
+			codeChange(text) {
+				this.codeText = text;
+			},
+			// 发送验证码
+			getCode() {
+				if (!this.form1['sms-mobile']) {
+					uni.showToast({
+						title: "请输入手机号",
+						icon: "none"
+					})
+					return;
+				}
+				
+				$api.get("v8/sms/send", {
+				    ...this.form1
+				}).then(res => {
+					if(res.data.code==200){
+					     this.contentCode++
+					}else{
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none"
+						})
+					}	
+				})
+
+			},
+			// 确认验证码
+			handleConfirm() {
+			   $api.get("findpwd/sms/check", {
+					...this.form1
+				}).then(res => {
+					uni.showToast({
+						title: res.data.msg,
+						icon: "none"
+					})
+					this.show = false;
+					this.form2.verify_token = res.data.data.verify_token;
+					this.submitPassword()
+				})
+
+			},
+			// 提交密码修改
+			submitPassword() {
+				if (this.form2.password != this.form2.passwordAgain || this.form2.password == 0) {
+					uni.showToast({
+						title: '输入密码不一致',
+						icon: "none"
+					})
+					return;
+				}
+				$api.get("findpwd/password/reset", {
+					...this.form2
+				}).then(res => {
+					if (res.data.code == 200) {
+						uni.showToast({
+							title: "修改密码成功",
+							icon: "none"
+						})
+						setTimeout(() => {
+							uni.navigateBack({
+								delta: 1
+							})
+						}, 400)
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: "none"
+						})
+					}
+				})
+			}
+		}
+		
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+	.flex{
+		flex-direction: row;
+		align-items: center;
+	}
+	.select{
+	    margin-bottom: 48rpx;
+	  	padding-bottom:12rpx;
+		border-bottom:1px solid #efefef;
+	}
+	.inputs{
+		font-size: 28rpx;
+	}
+	.container {
+		flex: 1;
+		background-color: #fff;
+		overflow: hidden;
+		padding: 0 32rpx;
+	}
+	.title{
+		margin: 80rpx 0;
+		color: #1C1C1C;
+		font-weight: 700;
+		font-size:48rpx;
+	}
+
+	.bottom {
+		position: absolute;
+		bottom: 40rpx;
+		text-align: center;
+
+	}
+	.mybutton {
+		text-align: center;
+		border: 1px solid #efefef;
+		color: #FF5927;
+		padding:24rpx 0;
+		border-radius: 60rpx;
+		font-size: 30rpx;
+		font-weight: 700;
+		lines: 1;
+		margin-bottom: 48rpx;
+	}
+</style>
