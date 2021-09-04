@@ -676,7 +676,21 @@
 					}
 				}
 			}
-
+		},
+		// 写评论nvue
+		{
+		    "path" : "pages/view/gamedetail/children/WrComment1",
+		    "style": {
+		    	"app-plus": {
+		    		"bounce": "none", //关闭窗口回弹效果
+		    		"titleNView": {
+		    			"backgroundColor": "#fff",
+		    			"titleColor": "#1C1C1C",
+		    			"titleAlign": "left",
+		    			"titleText": "写评论"
+		    		}
+		    	}
+		    } 
 		},
 		{
 			"path": "components/nvue-propup/nvue-propup",
@@ -1103,15 +1117,7 @@
 			}
 
 		}   
-        ,{
-            "path" : "pages/view/gamedetail/children/WrComment1",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+        
     ],
 
 	"easycom": {
