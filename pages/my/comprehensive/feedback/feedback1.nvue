@@ -184,7 +184,7 @@
 	.text_box{
 		margin-top: 40rpx;
 		padding:21rpx ;
-		border-radius: 40rpx;
+		border-radius: 20rpx;
 		border: 2rpx solid #E4E4E4;
 	}
 	.box_input{

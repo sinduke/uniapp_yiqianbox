@@ -107,8 +107,8 @@
 							this.imageList.unshift(data.data.url)
 							if(this.imageList.length>this.max_number){
 							  this.imageList.splice(this.imageList.length-1,1)
-							  this.$emit('upLoadSuccess',this.imageList)
 							}
+							  this.$emit('upLoadSuccess',this.imageList)
 							// this.src  = data.data.url
 							// 上传成功
 						     uni.showToast({

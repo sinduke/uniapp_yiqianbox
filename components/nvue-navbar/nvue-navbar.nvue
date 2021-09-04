@@ -5,7 +5,8 @@
 		<view class="title">
 			<view class="slot-left" @click="handleback">
 			<image class="right_icon" ref='handleBack' style="margin-right: 24rpx;" src="@/static/images/left.png" ></image>
-			<text class="customer" >{{title}}</text>
+			<image v-if="isleft" :src="src1" mode="widthFix" class="right_icon1" ></image>	
+			<text :class="{customer1:isleft==true}" class="customer" >{{title}}</text>
 			</view>	
 			<view class="slot-center">
 				<slot></slot>
@@ -47,7 +48,14 @@
 			lines:{
 				default:true
 			},
+			isleft:{
+				default:false
+			},
 			src:{
+				type:String,
+				default:''
+			},
+			src1:{
 				type:String,
 				default:''
 			},
@@ -145,9 +153,19 @@
 		height: 35rpx;
 	
 	}
+	.right_icon1{
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 24rpx;
+		margin-right: 24rpx;
+	}
 	.customer{
 		font-weight: 400;
 		font-size: 32rpx;
+	}
+	.customer1{
+		font-weight: bold;
+		font-size: 36rpx;
 	}
 	.slot-right{
 		flex-direction: row;

@@ -1,16 +1,32 @@
 <!-- 去写评论 -->
 <template>
-	<view>
-		
+	<view class="container">
+		<view :style="{width:myWidth+'px'}" style="box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);height: 8rpx;"></view>
+		<view class="box">
+			<text class="text1">请评分</text>
+			
+		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		$api
+	} from '@/config/api.js';
+	import common from "@/common/js/common.js";
 	export default {
 		data() {
 			return {
 				
 			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},	
 		},
 		methods: {
 			
@@ -18,6 +34,17 @@
 	}
 </script>
 
-<style>
-
+<style scoped>
+	.container{
+		flex: 1;
+		background: #fff;
+	}
+	.box{
+		padding: 48rpx 32rpx;
+	}
+	.text1{
+		font-weight: 500;
+		font-size: 32rpx;
+		color: ;
+	}
 </style>

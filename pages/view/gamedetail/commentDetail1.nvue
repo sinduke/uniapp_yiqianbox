@@ -1,52 +1,92 @@
 <template>
 	<view class="container">
-		<myNavbar title='我的积分' right  ></myNavbar>
-		<view class="box">
-		 	<text style="margin-top: 200rpx;"></text>
-			<!-- 父评论 -->
-			<view class="head" :style="{width:myWidth-32+'px'}">
-				<view class="head_le">
-					<view class="img"></view>
-					<view class="textList">
-						<text class="text1">爱笑的笨蛋</text>
-						<text class="text2">游戏时长 53分钟</text>
+		<myNavbar :isleft="true" :src1="pageData.new_icon?pageData.new_icon:pageData.icon"  :title="pageData.gamename" :right="false"  ></myNavbar>
+		<list :style="{height:myHeight-100+'rpx'}" :show-scrollbar="false">
+			<cell class="box">
+				<text style="margin-top: 200rpx;"></text>
+				<!-- 父评论 -->
+				<view class="head" :style="{width:myWidth-32+'px'} ">
+					<view class="head_le">
+						<image class="img" :src="commentData.mem_avatar" mode="" ></image>
+						<view class="textList">
+							<text class="text1">{{commentData.mem_name}}</text>
+							<text class="text2">游戏时长 53分钟</text>
+						</view>
+					</view>
+					<text class="head_ri"></text>
+				</view>
+				<text class="middle">{{commentData.content}}</text>
+				<image  @click="handleImage(index,commentData.content_img)" class="bottom" v-if="commentData.content_img" :src="item" mode="widthFix" v-for="(item,index) in commentData.content_img" :key="index" :style="{width:myWidth-32+'px'}"></image>
+				<view class="bottom1" v-if="type">
+					<text class="text3">{{commentData.time_str}}</text>
+					<view style="flex-direction: row;justify-content: space-between;align-items: center;">
+						<view @click="handleSupport(commentData)" style="flex-direction: row;justify-content: space-between;align-items: center;">
+							<image :src="commentData.is_like == 2 ?'../../../static/images/zan-acitve.png':'../../../static/images/zan.png'" class="zanimg"  ></image>
+							<text :style="{color:commentData.is_like == 2 ? '#FF5927' : '#666'}" class="text4" style="margin-left: 12rpx;">{{commentData.like_cnt}}</text>
+						</view>
+						<view @click="noSupport(commentData)" style="flex-direction: row;justify-content: space-between;align-items: center;">
+							<image class="zanimg" style="margin:0rpx 12rpx 0rpx 60rpx;" :src="commentData.is_hate == 2 ?'../../../static/images/notZan-active.png':'../../../static/images/notZan.png'" ></image>
+							<text  class="text4" :style="{color:commentData.is_hate == 2 ? '#FF5927' : '#666'}">{{commentData.hate_cnt}}</text>
+						</view>
 					</view>
 				</view>
-				<text class="head_ri">132</text>
-			</view>
-			<text class="middle">玩了几天针不戳，在这里，除了射击和团队协作之外
-，你还需要学会驾驭各类新奇武器和华丽的机甲载
-具，并通过高超的作战策略和敏捷的操作，来对抗
-强大的机甲与对手。</text>
-			<view class="bottom" :style="{width:myWidth-32+'px'}"></view>
-			<view class="bottom1">
-				<text class="text3">36分钟前发布</text>
-				<view style="flex-direction: row;justify-content: space-between;align-items: center;">
-					<text class="text4">223</text>
-					<text class="text4">131</text>
+			</cell>
+			<cell class="line" :style="{width:myWidth+'px'}"></cell>
+			<cell class="sun" :style="{width:myWidth+'px'}">
+				<!-- 子回复 -->
+				<view class="sun_box1">
+					<text class="box1_text1">回复</text>
+					<text class="box1_text2">当前{{soncomment.count}}条评论</text>
+				</view>
+			</cell>
+			<cell @click="imgnoShow" class="sun_box4"  :style="{width:myWidth+'px'}" v-for="(item,index) in soncomment.list" :key='index' v-if="soncomment.count>0" >
+				
+					<view class="sun_box2">
+						<image class="img" :src="item.mem_avatar" ></image>
+						<view class="box2_box">
+							<text class="text1">{{item.mem_name}}</text>
+							<text class="text3">{{item.time_str}}</text>
+						</view>
+					</view>
+					<text class="sun_text">{{item.content}}</text>
+					<view class="" style="flex-direction: row;">
+						<image @click="handleImage(index,item.content_img)" :style="{width:(myWidth-32)*0.3+'px',height:(myWidth-32)*0.3+'px',marginRight:(myWidth-32)*0.03+'px'}"  v-if="item.content_img" class="bottom"  :src="i" v-for="(i,index) in item.content_img" :key='index'></image>
+					</view>
+					
+					<view style="flex-direction: row;align-items: center;">
+						<view @click="handleSupport(item,index)" style="flex-direction: row;justify-content: space-between;align-items: center;">
+							<image :src="item.is_like == 2 ?'../../../static/images/zan-acitve.png':'../../../static/images/zan.png'" class="zanimg"  ></image>
+							<text :style="{color:item.is_like == 2 ? '#FF5927' : '#666'}" class="text4" style="margin-left: 12rpx;margin-right: 30rpx;">{{item.like_cnt}}</text>
+						</view>
+						<view @click="noSupport(item, index)"  style="flex-direction: row;justify-content: space-between;align-items: center;">
+							<image class="zanimg" style="margin:0rpx 12rpx 0rpx 30rpx;" :src="item.is_hate == 2 ?'../../../static/images/notZan-active.png':'../../../static/images/notZan.png'" ></image>
+							<text  class="text4" :style="{color:item.is_hate == 2 ? '#FF5927' : '#666'}">{{item.hate_cnt}}</text>
+						</view>
+					</view>
+			</cell>
+			<cell>
+				<view style="height: 600rpx;" v-if="soncomment.count==0">
+					<image src="../../../static/images/sf-background.png" mode="widthFix" style="width: 100%;"></image>
+					<text style="text-align: center;">暂无评论，快去评论吧！</text>
+				</view>
+			</cell>
+		</list>
+		<!-- 输入框 -->
+		<view :style="{width:myWidth+'px'}" class="input_box"  style="box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);">
+			<view class="input_box2">
+				<view class="input_box1" :style="{width:myWidth-100+'px'}">
+					<textarea @keyboardheightchange="keyboardheightchange"  v-model="rate.comment"  style="font-size: 30rpx;font-weight: 400;" :auto-height = "true"  :fixed="true" value="" placeholder="请输入回复内容..." :placeholder-style="{fontSize:'16rpx'}" />
+				</view>
+				<view @click="publicComment" style="width: 64rpx;height: 64rpx;box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);border-radius: 64rpx;justify-content: center;align-items: center;">
+					<image src="../../../static/images/index/detail-button.png" style="width: 40rpx;height: 40rpx;" mode="widthFix"></image>
 				</view>
 			</view>
-		</view>
-		<view class="line" :style="{width:myWidth+'px'}"></view>
-		<!-- 子回复 -->
-		<view class="sun" :style="{width:myWidth+'px'}">
-		 	<view class="sun_box1">
-		 		<text class="box1_text1">回复</text>
-				<text class="box1_text2">当前22条回复</text>
-		 	</view>
-			<view class="sun_box2">
-				<view class="img"></view>
-				<view class="box2_box">
-					<text class="text1">喝汽水</text>
-					<text class="text3">6分钟前评论</text>
-				</view>
-			</view>
-			<text class="sun_text">看着就好玩，怎么玩能分享一下经验吗？</text>
-			<view class="sun_box3">
-				<text class="text4">1</text>
-				<text class="text4">3213</text>
+			<view v-if="isImg" style="margin-top: 24rpx;flex-direction: row;">
+				<upLoadImage type="1"  :max_number='3'  @upLoadSuccess='uploadSuccess'></upLoadImage>
 			</view>
 		</view>
+		
+		
 	</view>
 </template>
 
@@ -57,11 +97,34 @@
 	import common from "@/common/js/common.js";
 	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
 	import nloading from '@/components/nvue-loading/nvue-loading'
+	import upLoadImage from '@/components/nvue-upLoadImage/nvue-upLoadImage.nvue';
 	export default {
 		data() {
 			return {
 				isNoData:false,
 				loadinging:false,
+				commentparams: {
+					page: 1,
+					offset: 100,
+					object_id: 0,
+					parent_id: "",
+					type_name: "game",
+				},
+				pageData: {},
+				commentData: {},
+				soncomment: [],
+				
+				isImg: false,
+				rate: {
+					comment: ""
+				},
+				placeholder:"请输入回复内容...",
+				action: 'https://api.sy12306.com/asset/upload',
+				isTrue: false,
+				fileList: [],
+				isdata: true,
+				nodata: true,
+				type: true,
 			}
 		},
 		computed: {
@@ -73,11 +136,174 @@
 			},	
 		},
 		components: {
-			myNavbar
+			myNavbar,
+			upLoadImage
 		},
+		onLoad(option) {
+			console.log(1111)
+			let itemobj = JSON.parse(option.item)
+			this.commentData = itemobj
+			if (option.type) {
+				this.type = false
+				this.commentparams.parent_id = itemobj.id
+				this.commentparams.object_id = itemobj.id
+			} else {
+				this.commentparams.parent_id = itemobj.id
+				this.commentparams.object_id = itemobj.id
+			}
+			this.gameData({
+				game_id: option.gameid
+			})
 		
+		},
 		methods: {
+			keyboardheightchange(e){
+				if(e.detail.height){
+					this.isImg = true
+				}
+			},
+			// 图片上传
+			uploadSuccess(data) {
+				this.fileList = data;
+				console.log(data)
+			},
+			// 隐藏图片框
+			imgnoShow() {
+				uni.hideKeyboard()
+				this.isImg = false
+				this.rate.comment = ''
+				// this.$refs.uUpload.clear()
+			},
+			//查看图片
+			handleImage(i, imglist) {
+				common.previewImage(i, imglist)
+			},
+			gameData(params) {
+				$api.get("/game/detail", {
+					...params
+				}).then(res => {
+					this.pageData = res.data.data
+					this.commentparams.object_id = this.pageData.game_id
+					this.getEvaluate()
+				})
 			
+			},
+			// 提交评论
+			publicComment() {
+				if(common.isLogin()){
+					if (!this.rate.comment) {
+						return uni.showToast({
+							icon: 'none',
+							title: '请输入评论'
+						})
+					} else {
+						let content = {
+							content: this.rate.comment,
+							content_img: this.fileList.toString()
+						}
+						$api.get("v8/comments/add", {
+							...this.commentparams,
+							...content,
+						}).then(res => {
+							console.log(666,res)
+							this.isTrue = true
+							uni.showToast({
+								title: '发表成功',
+								icon: 'none',
+							})
+							this.imgnoShow()
+							this.getEvaluate()
+						})
+					}
+				}
+			},
+			//获取子评论
+			getEvaluate() {
+				$api.get('v8/comments/sub_list', {
+					...this.commentparams
+				}).then(res => {
+					if (res.data.code == 200) {
+						console.log(res.data.data.list)
+						this.soncomment = res.data.data
+						
+					}
+				})
+			},
+			// 点赞或取消
+			handleSupport(item) {
+				if (common.isLogin()) {
+					let params = {
+						game_id: this.pageData.game_id,
+						comment_id: item.id,
+					};
+					if (item.is_like == 2) {
+						params["type"] = 1
+					} else {
+						params["type"] = 2
+					}
+					$api.get("v8/comments/like", {
+						...params
+					}).then(res => {
+						if (res.data.code == 200) {
+							if (item.is_like == 1 && item.is_hate == 1) {
+								item.like_cnt++;
+								item.is_like = 2
+							} else if (item.is_like == 1 && item.is_hate == 2) {
+								item.like_cnt++;
+								item.is_like = 2;
+								item.hate_cnt--;
+								item.is_hate = 1;
+							} else if (item.is_like == 2 && item.is_hate == 1) {
+								item.like_cnt--;
+								item.is_like = 1;
+							}
+						} else {
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'none'
+							})
+						}
+					})
+				}
+			},
+			//踩评论
+			noSupport(item, index) {
+				if (common.isLogin()) {
+					let params = {
+						game_id: this.pageData.game_id,
+						comment_id: item.id,
+						comment_type: 2,
+					};
+					if (item.is_hate == 2) {
+						params["type"] = 1
+					} else {
+						params["type"] = 2
+					}
+					$api.get("v8/comments/like", {
+						...params
+					}).then(res => {	
+						if (res.data.code == 200) {
+							if (item.is_like == 1 && item.is_hate == 1) {
+								item.hate_cnt++;
+								item.is_hate = 2
+							} else if (item.is_like == 2 && item.is_hate == 1) {
+								item.hate_cnt++;
+								item.is_hate = 2;
+								item.like_cnt--;
+								item.is_like = 1;
+							} else if (item.is_like == 1 && item.is_hate == 2) {
+								item.hate_cnt--;
+								item.is_hate = 1;
+							}
+						} else {
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'none'
+							})
+						}
+					})
+				}
+			}
 		}
 	}
 </script>
@@ -125,9 +351,7 @@
 		margin-bottom: 32rpx;
 	}
 	.bottom{
-		height: 320rpx;
 		border-radius: 20rpx;
-		border: 1rpx solid red;
 		margin-bottom: 32rpx;
 	}
 	.bottom1{
@@ -151,16 +375,18 @@
 		height: 20rpx;
 		background: #F4F4F4;
 	}
+	.zanimg{
+		width: 30rpx;
+		height: 30rpx;
+	}
 	
 	
 	/* 子回复 */
 	.sun{
-		padding: 50rpx 32rpx;
-		border-bottom: 1rpx solid #EFEFEF;
+		padding: 50rpx 32rpx 0rpx 32rpx;
 	}
 	.sun_box1{
 		flex-direction: row;
-		margin-bottom: 50rpx;
 	}
 	.box1_text1{
 		font-size: 42rpx;
@@ -186,5 +412,27 @@
 	}
 	.sun_box3{
 		flex-direction: row;
+	}
+	.sun_box4{
+		padding: 50rpx 32rpx;
+		border-bottom: 2rpx solid #EFEFEF;
+	}
+	.input_box{
+		position: fixed;
+		background: #fff;
+		padding: 24rpx 32rpx;
+		bottom: 0;
+	}
+	.input_box2{
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.input_box1{
+		flex-direction: row;
+		align-items: center;
+		background: #F4F4F4;
+		padding: 15rpx 32rpx;
+		border-radius: 40rpx;
 	}
 </style>

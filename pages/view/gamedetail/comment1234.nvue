@@ -305,7 +305,7 @@
 			commentDetail(item, index) {
 				let itemstr = JSON.stringify(item)
 				uni.navigateTo({
-					url: `/pages/view/gamedetail/commentDetail?gameid=${this.pageData.game_id}&item=${itemstr}`
+					url: `/pages/view/gamedetail/commentDetail1?gameid=${this.pageData.game_id}&item=${itemstr}`
 				})
 			},
 			//获取评分
