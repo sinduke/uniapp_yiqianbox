@@ -1146,12 +1146,12 @@
 				"selectedIconPath": "static/images/tabbar/jiaoyi2.gif",
 				"text": "交易"
 			},
-			{
-				"pagePath": "pages/customerService/index",
-				"iconPath": "static/images/tabbar/kefu1.png",
-				"selectedIconPath": "static/images/tabbar/kefu2.gif",
-				"text": "客服"
-			},
+			// {
+			// 	"pagePath": "pages/customerService/index",
+			// 	"iconPath": "static/images/tabbar/kefu1.png",
+			// 	"selectedIconPath": "static/images/tabbar/kefu2.gif",
+			// 	"text": "客服"
+			// },
 			{
 				"pagePath": "pages/my/index",
 				"iconPath": "static/images/tabbar/wode1.png",

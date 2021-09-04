@@ -1,8 +1,8 @@
 <!-- 客服中心 -->
 <template>
 	<view class="customerService">
-		<view :style="{height:statusBarHeight+'px',width:myWidth+'px'}" />
-		<view class="Title" >
+		<!-- <view :style="{height:statusBarHeight+'px',width:myWidth+'px'}" /> -->
+	<!-- 	<view class="Title" >
 			<view class="titleLeft">
 			   <text class="titleName">客服中心</text> 
 			</view>
@@ -12,8 +12,8 @@
 					<image src="@/static/images/customerService/kfzx-icon.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/my/comprehensive/feedback/feedback1')" ></image>
 				</view>
 			</view>
-		</view>
-		
+		</view> -->
+		<myNavbar title='客服中心'  right radius router='/pages/my/comprehensive/feedback/feedback1' src='../../static/images/customerService/kfzx-icon.png'></myNavbar>
 		<view class="Body" :style="{height:myHeight-252+'rpx'}">
 			<scroller :show-scrollbar="false" :style="{height:myHeight-252+'rpx'}">
 				<view>
@@ -97,8 +97,12 @@
 <script>
 	import { $api } from '@/config/api.js';
 	import common from "@/common/js/common.js";
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	const globalData = getApp().globalData
 	export default {
+		components:{
+			myNavbar
+		},
 		computed:{
 			// 导航栏高度
 			statusBarHeight(){
@@ -228,6 +232,7 @@
 		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
 	}
 	.Body{
+		margin-top: 160rpx;
 		padding: 0 16px;
 	}
 	.Body__back{
