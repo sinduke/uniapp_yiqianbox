@@ -2,8 +2,8 @@
 <template>
 	<view class="container">
 		<!-- <iframe :src="game_url" frameborder="0" scrolling="no"></iframe> -->
-		<web-view :webview-styles="webviewStyles" :src="game_url" v-if="show"></web-view>
-		<image src="@/static/images/myrefresh.gif" width="40%" mode="widthFix" class="image"></image>
+		<web-view :webview-styles="webviewStyles" :src="game_url" :webview-styles="webviewStyles" v-if="show"></web-view>
+		<!-- <image src="@/static/images/myrefresh.gif" width="40%" mode="widthFix" class="image"></image> -->
 	</view>
 </template>
 
@@ -15,9 +15,12 @@
 				show: true,
 				webviewStyles: {
 					width: "100%",
-					height: "100%"
-				},
-			     istrue:true
+					height: "100%",
+					progress: {
+					color: '#ff5927'
+						}
+					}
+			     // istrue:true
 			}
 		},
 		onLoad(options) {
@@ -77,25 +80,10 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 	.container {
 		position: relative;
 		overflow: hidden;
+  }
 
-		iframe {
-			width: 100%;
-			height: 100%;
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: 100;
-		}
-
-		.image {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-		}
-	}
 </style>

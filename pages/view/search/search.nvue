@@ -353,7 +353,7 @@
 	}
 
 	.search_text {
-		font-size: 38rpx;
+		font-size: 34rpx;
 		color: #666;
 		font-weight: 400;
 	}

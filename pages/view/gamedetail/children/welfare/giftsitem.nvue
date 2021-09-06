@@ -18,9 +18,9 @@
 			</view>
 		      <text class="giftButton" :style="{color:item.is_get_gift?'#999':'#FF5927'}"  @click="getGift(item.gift_id,item.is_get_gift)">{{item.is_get_gift ? '已领取' : '领 取'}}</text>
 			</view>	
-			  <text class="info text" :style="{width:myWidth/1.8+'px'}">{{item.content}}</text>
+			  <text class="info text" :style="{width:myWidth/1.2+'px'}">{{item.content}}</text>
 			</view>
-		    <myloading v-if="pageData.length==0" :isNoData='true' ></myloading>
+		    <myloading :style="{width:myWidth-32+'px'}" v-if="pageData.length==0" :isNoData='true' ></myloading>
 		</view>
 </template>
 

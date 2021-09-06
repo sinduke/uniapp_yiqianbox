@@ -1,10 +1,14 @@
 <!-- 福利 -->
 <template>
-	<view class="welfare">
+	<view class="welfare" v-if="pageData">
 		<view class="top">
 			<view class="backImages" v-if="pageData&&platform=='android'">
 				<image :src="pageData.app_hot_image" :style="{width:myWidth+'px'}"></image>
 				<view class="mask" :style="{width:myWidth+'px'}" />
+			</view>
+			<view class="backImages" v-else>
+				<image v-if="pageData" :src="pageData.app_hot_image" :style="{width:myWidth+'px'}"></image>
+				<view class="blur"  blurEffect="light" :style="{width:myWidth+'px'}"  style="position: absolute;height: 462rpx;" />
 			</view>
 
 		</view>
@@ -14,7 +18,7 @@
 		<view class="myDetail" v-if="pageData">
 			<image :src="pageData.icon" mode="widthFix" style="width: 176rpx;height: 176rpx;margin-right: 24rpx;">	</image>
 			<view class="detailRight">
-				<text class="gamename">{{pageData.gamename}}</text>
+				<text class="gamename" :style="{width:myWidth-140+'px'}">{{pageData.gamename}}</text>
 				<view class="detail_item">
 					<text class="text" v-if="pageData.gc_id">{{pageData.gc_id}}出品</text>
 					<text class="text" v-if="pageData.gc_id">|</text>
@@ -46,55 +50,21 @@
 					</scroller>
 				</swiper-item>
 				<swiper-item>
-					<view class="swiper-item">
-						cccccccccccccccccccccccccccccccccccccccccccccc
-					</view>
+					<scroller  :style="{height:$store.state.myHeight-562+'rpx'}" >
+						<rebateitem :pageData="pageData.post"></rebateitem>
+					</scroller>
 				</swiper-item>
 				<swiper-item>
-					<view class="swiper-item">
-						dddddddddddddddddddddddddddddddd
-					</view>
+					<scroller  :style="{height:$store.state.myHeight-562+'rpx'}" >
+							<vipitem :pageData="pageData.post"></vipitem>
+					</scroller>
 				</swiper-item>
 			</swiper>
 			</view>
 			
-			
-			
-			
-			
-			
-			<!-- <view class="TitleList"> -->
-			<!-- <xw-tab ref="navTab" :tabTitle="TitleList" @changeTab='changeTab' style="margin-bottom: 40rpx;"></xw-tab> -->
-			<!-- </view> -->
-
-			<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
-			<!-- 			<swiper style="min-height: 100vh;" :current="currentTab" @change="swiperTab">
-				<swiper-item>
-					<scroll-view scroll-y="true" :style="{height:$store.state.myHeight-562+'rpx'}" style="display: flex;justify-content: center;">
-						<giftsitem :pageData="pageData.gift" @isGifts='isGifts'></giftsitem>
-					</scroll-view>
-				</swiper-item>
-				<swiper-item>
-					<scroll-view scroll-y="true" :style="{height:$store.state.myHeight-562+'rpx'}" style="display: flex;justify-content: center;">
-						<welfareitem :pageData="pageData.post"></welfareitem>
-					</scroll-view>
-				</swiper-item>
-				<swiper-item>
-					<scroll-view scroll-y="true" :style="{height:$store.state.myHeight-562+'rpx'}" style="display: flex;justify-content: center;">
-						<rebateitem :pageData="pageData.post"></rebateitem>
-					</scroll-view>
-				</swiper-item>
-				<swiper-item>
-					<scroll-view scroll-y="true" :style="{height:$store.state.myHeight-562+'rpx'}" style="display: flex;justify-content: center;">
-						<vipitem :pageData="pageData.post"></vipitem>
-					</scroll-view>
-				</swiper-item>
-			</swiper> -->
-			<!-- <tabBar4 :currentPage="currentPage"></tabBar4> -->
 		</view>
 
 
-	</view>
 	</view>
 </template>
 
@@ -104,9 +74,9 @@
 	const globalData = getApp().globalData
 	import giftsitem from "./giftsitem.nvue"
 	import welfareitem from "./welfareitem.nvue"
+	import rebateitem from "./rebateitem.nvue"
+	import  vipitem from "./vipitem.nvue"
 
-	// import rebateitem from "./rebateitem.vue"
-	// import  vipitem from "./vipitem.vue"
 	export default {
 		data() {
 			return {
@@ -139,8 +109,8 @@
 		components: {
 			giftsitem,
 			welfareitem,
-			// rebateitem,
-			// vipitem
+			rebateitem,
+			vipitem
 
 		},
 		methods: {
@@ -334,6 +304,8 @@
 		font-weight: 700;
 		font-size: 40rpx;
 		color: #fff;
+		lines:1;
+		text-overflow: ellipsis;
 		margin-bottom: 14rpx;
 	}
 

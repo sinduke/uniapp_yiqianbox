@@ -37,8 +37,7 @@
 					<image v-if='isAndroid' style="margin-left: 20rpx;position: absolute;" :src="pageData.app_hot_image" :style="{width: myWidth-70+'px',height:'180rpx'}"></image>
 							
 					<image v-if="$store.state.platform=='ios'"   :src="pageData.app_hot_image" :style="{width: myWidth+'px',height:'180rpx'}"></image>
-					<view v-if="$store.state.platform=='ios'" blurEffect="light" style=";position: absolute;width: 1000rpx;height: 200rpx;">
-					</view>
+					<view v-if="$store.state.platform=='ios'" blurEffect="light" style=";position: absolute;width: 1000rpx;height: 200rpx;"></view>
 					<sn-blur-view ref='sn_blur' :radius='22'  fps='120' v-if='isBlur&&isAndroid'  :style="{position:'absolute',width: myWidth+100+'px',height:'180rpx',bottom:0}" />	
 					</view>
 					<view class="nav" ref="nav"   style="margin-top: -200rpx;">
@@ -46,7 +45,7 @@
 							<image :src="pageData.new_icon||pageData.icon" style="width: 140rpx;height: 140rpx;"></image>
 						</view>	
 						<view style="width: 400rpx;margin-top: 20rpx;">
-							<text style="color: #FEFEFE;margin-bottom: 20rpx;">{{pageData.gamename}}</text>
+							<text style="color: #FEFEFE;margin-bottom: 20rpx;">{{pageData.gamename.length>18?pageData.gamename.slice(0,16)+'..':pageData.gamename}}</text>
 							<view style="flex-direction: row;">
 								<text style="color: #FEFEFE;font-size: 24rpx;" v-if="pageData.gc_id">{{pageData.gc_id}}出品</text>
 								<text style="color: #FEFEFE;font-size: 24rpx;margin: 0 20rpx;" v-if="pageData.gc_id">|</text>
@@ -102,7 +101,7 @@
 			  	</view>
 				<!-- 下载  -->		
 				<!-- android -->
-				<view class="cards" ref="down" v-if="pageData.classify==3" @click="handleDownLoad" style="height: 80rpx;">
+				<view class="cards" ref="down" v-if="pageData.classify==3" @click="handleDownLoad" >
 				<view class="down">
 					<image class="operation-item_image" src="@/static/images/dwonLoad.png" mode="widthFix" style="margin-right: 12rpx;"  v-if="status=='下 载'"></image>
 					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"  v-else></image>
@@ -756,7 +755,7 @@
 				this.$store.commit('setDownTasksList',downList) 
 				uni.setStorageSync('downList',[])
 				uni.setStorageSync('downList',arrList)
-				// this.handleRouter('/pages/view/downLoad/downLoad')
+				this.handleRouter('/pages/view/downLoad/downLoad')
 			},
 			
 			

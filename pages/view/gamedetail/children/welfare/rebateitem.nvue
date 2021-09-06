@@ -1,0 +1,102 @@
+<!-- 返利 -->
+<template>
+	<view class="welfareitem">
+		<view v-if="pageData.rebate.count>0" style="padding: 0 32rpx;">
+			<view class="new-list">
+				<view v-for="(item,index) in pageData.rebate.list" :key="index" v-if="index<1" class="coupons">
+					<view class="title" :style="{width:myWidth-32+'px'}">
+						<text class="title_name"  :style="{width:myWidth-120+'px'}">{{item.title}}</text>
+						<text class="buttons" @click="handleRouter">返利申请</text>
+					</view>
+					<view class="body">
+					 <text class="pub_time">{{item.pub_time}}</text>
+					 <text class="content" :style="{width:myWidth-32+'px'}">{{item.content.replace(/<[^<>]+>/g,'')}}</text>
+					 <!-- <u-parse :content="item.content"  style="transform: scale(0.8);" class="u-parse" ></u-parse> -->
+					</view>	  
+				</view>
+			</view>
+		</view>
+		<myloading :style="{width:myWidth-32+'px'}" v-else :isNoData='true'></myloading>
+	</view>
+
+</template>
+
+
+
+<script>
+	import uParse from '@/components/u-parse/u-parse.vue'
+	import common from "@/common/js/common.js";
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import myloading from '@/components/nvue-loading/nvue-loading'
+	export default {
+		data(){
+			return{
+				active:-1
+			}
+		},
+		components: {
+			myloading,
+			uParse
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+		},
+		methods:{
+
+		},
+		props: {
+			pageData: {
+				type: Object,
+				default: () => {
+					return {}
+				}
+			},
+		},
+	}
+</script>
+
+<style  scoped>
+  .title{
+    flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+  }
+  .title_name{
+	  font-size: 32rpx;
+	  font-weight: 700;
+	  color: #1C1C1C;
+	  lines: 1;
+	  text-overflow: ellipsis;
+  }
+  .body{
+	  justify-content: flex-start;
+	  align-items: flex-start;
+  }
+  .u-parse{
+	  margin-left: -70rpx;
+	  margin-top: -350rpx;
+
+  }
+  .pub_time{
+	  font-size: 28rpx;
+	  font-weight: 400;
+	  color: #666;
+	  margin-top: 24rpx;
+	  margin-left:10rpx
+	  
+  }
+  .buttons{
+	   font-weight: 700;
+	   font-size: 28rpx;
+	   color: #FF5927;
+	   border: 1px solid #efefef;
+	   padding: 8rpx 32rpx;
+	   border-radius: 32rpx;
+  }
+  .content{
+  	font-weight: 400;
+  	font-size: 28rpx;
+  }
+</style>

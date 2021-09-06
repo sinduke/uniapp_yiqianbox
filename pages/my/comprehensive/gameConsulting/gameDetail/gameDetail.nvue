@@ -8,7 +8,7 @@
 					<image :src="detailList.icon" mode="widthFix" style="width: 140rpx;height: 140rpx"></image>
 				</view>
 				<view class="head_mid">
-					<text class="head_mid1">{{detailList.title}}</text>
+					<text class="head_mid1" :style="{width:myWidth-140+'px'}">{{detailList.title}}</text>
 					<view style="flex-direction: row;align-items: center;">
 						<text class="text">{{detailList.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
 						<text class="text" style="margin: 0 20rpx;">|</text>
@@ -16,11 +16,11 @@
 					</view>
 				</view>
 			</view>
-			<scroller :show-scrollbar='false'  :style="{height: $store.state.myHeight-320+'rpx'}">
+			<scroller :show-scrollbar='false'  :style="{height:myHeight-320+'rpx'}">
 			<view class="box_middle">
 				<text class="title">{{detailList.excerpt}}</text>
 				<view class="" >
-					<image :src="detailList.img"  style="height: 380rpx;border-radius: 20rpx;margin-bottom: 36rpx;" :style="{width:$store.state.myWidth-32+'px'}"></image>
+					<image :src="detailList.img"  style="height: 380rpx;border-radius: 20rpx;margin-bottom: 36rpx;" :style="{width:myWidth-32+'px'}"></image>
 				</view>
 				<text class="texts">{{content}}</text>
 			</view>
@@ -51,6 +51,14 @@
 				shareData: null,
 				post_hits: 0
 			}
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
 		},
 		methods: {
 			//跳转资讯详情页
@@ -171,6 +179,8 @@
 	}
 
 	.head_mid1 {
+		lines: 1;
+		text-overflow: ellipsis;
 		font-size: 32rpx;
 		font-weight: 700;
 		color: #252525;

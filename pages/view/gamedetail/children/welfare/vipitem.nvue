@@ -1,0 +1,87 @@
+<template>
+	<view class="vipitem">
+		<view v-if="pageData.viptable.list.length>0">
+			<text class="title">{{pageData.viptable.list[0].title}}</text>
+			<text class="pub_time">{{pageData.viptable.list[0].pub_time}}</text>
+			<view class="tab-box" :style="{width:myWidth-32+'px'}">
+			  	<text class="tabItem_title" v-for="(item,index) in content" :key='index' :style="{width:myWidth/2.4+'px'}">{{item}}</text>
+			</view>
+		</view>
+		<myloading v-else :style="{width:myWidth-32+'px'}" :isNoData='true'></myloading>
+	</view>
+</template>
+
+<script>
+	import myloading from '@/components/nvue-loading/nvue-loading'
+	export default {
+		components: {
+			myloading,
+			},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			content(){
+				let mycontent = ''
+				let contentList = []
+				let array = []
+				if(this.pageData.viptable.list.length>0){
+				var reg = /<[^<>]+>/g
+				mycontent = this.pageData.viptable.list[0].content.replace(reg,'')
+				contentList = mycontent.split('\n')
+				 array = contentList.filter(item=>{
+					   if(item){
+						   return item 
+					   }
+				   })
+				}
+				return array
+			}
+		},
+		props: {
+			pageData: {
+				type: Object,
+				default: () => {
+					return {}
+				}
+			}
+		},
+
+	}
+</script>
+
+<style  scoped>
+	.title {
+		font-weight: 700;
+		margin-bottom: 10rpx;
+		font-size: 32rpx;
+	}
+
+	.time {
+		color: #666;
+		margin-bottom: 30rpx;
+		margin-left: 30rpx;
+	}
+	.pub_time{
+		  font-size: 28rpx;
+		  font-weight: 400;
+		  color: #666;
+		  margin: 24rpx 0;
+		  
+	}
+	.tab-box{
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+		padding-bottom: 80rpx;
+	}
+	.tabItem_title{
+		font-weight: 400;
+		font-size: 36rpx;
+		padding: 20rpx 0;
+		border: 1px solid #efefef;
+		text-align: center;
+	}
+
+</style>
