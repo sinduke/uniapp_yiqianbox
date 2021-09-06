@@ -1,58 +1,70 @@
 <template>
-	<view >
+	<view style="flex: 1;">
 		<myNavbar title='领券中心' :lines="false" right radius router='/pages/my/coupons/coupons1' src='../../../../static/images/my_details.png'></myNavbar>
-		<view class="img" :style="{width:myWidth+'px'}">
-			<image :style="{width:myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
-		</view>
-		<view class="head">
-			<view class="head_top">
-				<text class="top_text1">{{new Date()/1000|dateFormat('yyyy.MM.dd')}}</text>
-				<text class="top_text2">{{new Date()/1000+86400|dateFormat('yyyy.MM.dd')}}</text>
-				<text class="top_text2">{{new Date()/1000+(86400*2)|dateFormat('yyyy.MM.dd')}}</text>
-			</view>
-			<view class="head_bom">
-				<view class="bom_box1">
-					<text style="font-size:28rpx;" class="top_text1">今日</text>
+		<list :show-scrollbar="false" :style="{width:myWidth+'px',height:myHeight-1+'rpx'}">
+			<cell>
+				<view class="img" :style="{width:myWidth+'px'}">
+					<image :style="{width:myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
 				</view>
-				<view class="" style="height: 15rpx; background: #F1F1F1;flex:1 ;">
-				</view>
-				<view class="bom_box1">
-					<text style="font-size:28rpx;" class="top_text2">即将开始</text>
-				</view>
-				<view class="" style="height: 15rpx; background: #F1F1F1;flex:1 ;"></view>
-				<view class="bom_box1">
-					<text style="font-size:28rpx;" class="top_text2">即将开始</text>
-				</view>
-			</view>
-		</view>
-		<view class="head1" :style="{width:myWidth-32+'px'}">
-			<text class="head_text1">今日好券</text>
-			<scroller scroll-direction="horizontal" :style="{width:myWidth-58+'px'}" style="flex-direction: row;" v-if="lengthList">
-				<view v-for="(item,index) in onpage" :key='index' >
-					<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;position:relative;" mode="widthFix">
-						<view class="img_box" @click="toDetail(item.game_id)">
-							<view class="" style="flex-direction: row;">
-								<text class="img_text">￥</text>
-								<text class="img_text1">{{item.coupons_amount}}</text>
-							</view>
-							<text class="img_text2">{{item.title}}</text>
-							<text class="img_text3">{{item.name}}</text>
+				<view class="head">
+					<view class="head_top">
+						<text class="top_text1">{{new Date()/1000|dateFormat('yyyy.MM.dd')}}</text>
+						<text class="top_text2">{{new Date()/1000+86400|dateFormat('yyyy.MM.dd')}}</text>
+						<text class="top_text2">{{new Date()/1000+(86400*2)|dateFormat('yyyy.MM.dd')}}</text>
+					</view>
+					<view class="head_bom">
+						<view class="bom_box1">
+							<text style="font-size:28rpx;" class="top_text1">今日</text>
 						</view>
-						<view class="img_btn" v-if="!item.have_got" @click.stop="handleClick(item.id,item.period_type)">
-							<text class="img_text4">立即领取</text>
+						<view class="" style="height: 15rpx; background: #F1F1F1;flex:1 ;">
 						</view>
-						<view class="img_btn" v-else >
-							<text class="img_text4">已领取</text>
+						<view class="bom_box1">
+							<text style="font-size:28rpx;" class="top_text2">即将开始</text>
 						</view>
-					</image>	
+						<view class="" style="height: 15rpx; background: #F1F1F1;flex:1 ;"></view>
+						<view class="bom_box1">
+							<text style="font-size:28rpx;" class="top_text2">即将开始</text>
+						</view>
+					</view>
 				</view>
-			</scroller>
-			<nloading v-else style="margin-top: -60rpx;" :isNoData="isNoData"  :style="{width:myWidth-32+'px',height:450+'rpx'}"></nloading>
-		</view>
-		<view class="head1" :style="{width:myWidth-32+'px'}">
-			<text class="head_text1">优选好券</text>
-		</view>
-		<couplist1></couplist1>
+			</cell>
+			<header>
+				<view class="head1" :style="{width:myWidth-32+'px'}">
+					<text class="head_text1">今日好券</text>
+					<scroller scroll-direction="horizontal" :style="{width:myWidth-58+'px'}" style="flex-direction: row;" v-if="lengthList">
+						<view v-for="(item,index) in onpage" :key='index' >
+							<image src="../../../../static/images/my/lqzx-back.png" style="width: 280rpx;margin-right: 24rpx;position:relative;" mode="widthFix">
+								<view class="img_box" @click="toDetail(item.game_id)">
+									<view class="" style="flex-direction: row;">
+										<text class="img_text">￥</text>
+										<text class="img_text1">{{item.coupons_amount}}</text>
+									</view>
+									<text class="img_text2">{{item.title}}</text>
+									<text class="img_text3">{{item.name}}</text>
+								</view>
+								<view class="img_btn" v-if="!item.have_got" @click.stop="handleClick(item.id,item.period_type)">
+									<text class="img_text4">立即领取</text>
+								</view>
+								<view class="img_btn" v-else >
+									<text class="img_text4">已领取</text>
+								</view>
+							</image>	
+						</view>
+					</scroller>
+					<nloading v-else style="margin-top: -60rpx;" :isNoData="isNoData"  :style="{width:myWidth-32+'px',height:450+'rpx'}"></nloading>
+				</view>
+			
+			
+				
+			
+				<view class="head1" :style="{width:myWidth-32+'px',height:940+'rpx'}">
+					<text class="head_text1">优选好券</text>
+					<couplist1></couplist1>
+				</view>
+				
+			</header>
+		</list>
+		
 	</view>
 </template>
 
@@ -211,8 +223,9 @@
 	}
 	.head_text1{
 		color: #000000;
-		font-size: 32rpx;
+		font-size: 36rpx;
 		margin-bottom: 40rpx;
+		font-weight: bold;
 	}
 	.img_box{
 		position: absolute;

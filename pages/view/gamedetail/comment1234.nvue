@@ -295,7 +295,7 @@
 			toComment() {
 				if (Object.keys(this.$store.state.userInfo).length) {
 					uni.navigateTo({
-						url: `/pages/view/gamedetail/children/WrComment?gameid=${this.pageData.game_id}`
+						url: `/pages/view/gamedetail/children/WrComment1?gameid=${this.pageData.game_id}`
 					})
 				}else{
 					common.isLogin()

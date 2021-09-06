@@ -3,7 +3,7 @@
 	<view class="container">
 		<view class="lineShowdow"></view>
 		<view class="box">
-			<list :style="{height:myHeight-1+'rpx'}" :show-scrollbar="false" v-if="pageData.length">
+			<list  @loadmore='loadmore' loadmoreoffset='10' :style="{height:myHeight-1+'rpx'}" :show-scrollbar="false" v-if="pageData.length">
 				<cell style="height: 32rpx;"></cell>
 				<cell v-for="(item,index) in pageData" :key='index' >
 					<view class="head" :style="{width:myWidth-32+'px'}">
@@ -12,8 +12,11 @@
 						<text class="text3">{{item.create_time|dateFormat('yyyy/MM/dd hh:mm:ss')}}</text>
 					</view>
 				</cell>
-				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
-				</loading>
+				<cell v-if="loadinging">
+					<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
+				</cell>
 			</list>
 			<nloading v-else :isNoData="isNoData"></nloading>
 		</view>
@@ -56,7 +59,7 @@
 		},
 		methods: {
 			//加载更多
-			onloading(e){
+			loadmore(){
 				if(this.count>this.pageData.length){
 					this.loadinging = true
 					this.params.page++
