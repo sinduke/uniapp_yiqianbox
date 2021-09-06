@@ -3,7 +3,7 @@
 	<view class="container">
 		<text class="title" >忘记密码</text>
 		<!-- 第一步：验证码 -->
-		<text class="h2">账号</text>
+		<text class="h2">手机号</text>
 		<view class="select flex" >
 			<input type="number" class="inputs" v-model="form1['sms-mobile']" placeholder="请输入已绑定的手机号" maxlength="20" :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
 			<image src="@/static/images/close.png" v-if="form2['sms-mobile']" @click="form1['sms-mobile']=''" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
