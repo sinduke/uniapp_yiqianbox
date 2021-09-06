@@ -179,7 +179,7 @@
 
 <style scoped>
 	.img{
-		margin-top: 83rpx;
+		margin-top: 30px;
 	}
 	.head{
 		padding:32rpx ;
