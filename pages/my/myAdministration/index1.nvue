@@ -1,4 +1,5 @@
 <template>
+	
 	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
 		<view class="avatar_box" :style="{width:$store.state.myWidth+'px'}">
 			<view class="avatar" @click="changeAvatar">
@@ -13,12 +14,9 @@
 			<view v-if="userInfo.has_bind_mobile == 2" >
 				<gamecell left="手机号" :right="userInfo.mobile"></gamecell>
 			</view>
-			<view v-else @click="handleRouter('/pages/view/changeMobile/changeMobile')">
+			<view  v-else @click="handleRouter('/pages/my/myAdministration/children/changeMobile/index1')">
 				<gamecell left="手机号" right="待绑定"></gamecell>
 			</view>
-			<!-- <view v-else @click="handleRouter('/pages/my/myAdministration/children/changeMobile/index1')">
-				<gamecell left="手机号" right="待绑定"></gamecell>
-			</view> -->
 			
 			<view @click="nickName.show = true">
 				<gamecell left="昵称" :right="userInfo.nickname" :type="1" ></gamecell>

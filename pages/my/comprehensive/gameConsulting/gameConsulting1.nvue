@@ -14,23 +14,30 @@
 					<swiper-item>
 						<list @loadmore='loadmore' loadmoreoffset='10' class="list" v-if="pageData1.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell  v-for="(item,index) in pageData1" @click="handleRouterdetail(item.news_id,item.post_hits)" :style="{width:$store.state.myWidth-32+'px'}">
-								<view class="head" :style="{width:$store.state.myWidth-33+'px'}" style="margin-left: 6rpx;">
-									<image class="head_img" :src="item.img" mode="widthFix"></image>
-									<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
-										<text class="head_text">{{item.post_title}}</text>
+								<cover-image src="../../../../static/images/cards2.png" style="position: relative;" mode="widthFix">
+								</cover-image>
+								<view class="" style="position: absolute;top: -28rpx;">
+									<view class="head" style="margin-left: 5rpx;" :style="{width:$store.state.myWidth-36+'px'}">
+										<image class="head_img" :src="item.img" mode="widthFix"></image>
+										<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
+											<text class="head_text">{{item.post_title}}</text>
+										</view>
 									</view>
+									<view class="bottom" :style="{width:$store.state.myWidth-32+'px'}" >
+										<view class="bottom_Left" :style="{width:($store.state.myWidth-145)*0.7+'px'}">
+											<text class="left_text1">{{item.title}}</text>
+											<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+										</view>
+										<view class="bottom_right">
+											<image src="../../../../static/images/seeall.png" mode="" style="width: 28rpx;height: 16rpx;"></image>
+											<text class="right_text2">{{item.post_hits}}</text>
+										</view>
+									</view>
+									<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
 								</view>
-								<view class="bottom" :style="{width:$store.state.myWidth-35+'px'}" style="box-shadow: 0px 0px 4rpx rgba(0, 0, 0, 0.16);margin-left: 6rpx;">
-									<view class="bottom_Left" :style="{width:($store.state.myWidth-145)*0.7+'px'}">
-										<text class="left_text1">{{item.title}}</text>
-										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
-									</view>
-									<view class="bottom_right">
-										<image src="../../../../static/images/seeall.png" mode="" style="width: 28rpx;height: 16rpx;"></image>
-										<text class="right_text2">{{item.post_hits}}</text>
-									</view>
-								</view>
-								<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+								
+								
+								
 							</cell>
 							<cell v-if="loadinging">
 								<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
@@ -43,23 +50,28 @@
 					<swiper-item>
 						<list @loadmore='loadmore' loadmoreoffset='10' class="list" v-if="pageData2.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell  v-for="(item,index) in pageData2" @click="handleRouterdetail(item.news_id,item.post_hits)" :style="{width:$store.state.myWidth-32+'px'}">
-								<view class="head" :style="{width:$store.state.myWidth-33+'px'}" style="margin-left: 6rpx;">
-									<image class="head_img" :src="item.img" mode="widthFix"></image>
-									<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
-										<text class="head_text">{{item.post_title}}</text>
+								<cover-image src="../../../../static/images/cards2.png" style="position: relative;" mode="widthFix">
+								</cover-image>
+								<view class="" style="position: absolute;top: -28rpx;">
+									<view class="head" :style="{width:$store.state.myWidth-36+'px'}" style="margin-left: 5rpx;">
+										<image class="head_img" :src="item.img" mode="widthFix"></image>
+										<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
+											<text class="head_text">{{item.post_title}}</text>
+										</view>
 									</view>
+									<view class="bottom" :style="{width:$store.state.myWidth-32+'px'}" >
+										<view class="bottom_Left" :style="{width:($store.state.myWidth-145)*0.7+'px'}">
+											<text class="left_text1">{{item.title}}</text>
+											<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+										</view>
+										<view class="bottom_right">
+											<image src="../../../../static/images/seeall.png" mode="" style="width: 28rpx;height: 16rpx;"></image>
+											<text class="right_text2">{{item.post_hits}}</text>
+										</view>
+									</view>
+									<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
 								</view>
-								<view class="bottom" :style="{width:$store.state.myWidth-35+'px'}" style="box-shadow: 0px 0px 4rpx rgba(0, 0, 0, 0.16);margin-left: 6rpx;">
-									<view class="bottom_Left" :style="{width:($store.state.myWidth-145)*0.7+'px'}">
-										<text class="left_text1">{{item.title}}</text>
-										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
-									</view>
-									<view class="bottom_right">
-										<image src="../../../../static/images/seeall.png" mode="" style="width: 28rpx;height: 16rpx;"></image>
-										<text class="right_text2">{{item.post_hits}}</text>
-									</view>
-								</view>
-								<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+								
 							</cell>
 							<cell v-if="loadinging">
 								<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
@@ -72,13 +84,16 @@
 					<swiper-item>
 						<list @loadmore='loadmore' loadmoreoffset='10' class="list" v-if="pageData3.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell  v-for="(item,index) in pageData3" @click="handleRouterdetail(item.news_id,item.post_hits)" :style="{width:$store.state.myWidth-32+'px'}">
-								<view class="head" :style="{width:$store.state.myWidth-33+'px'}" style="margin-left: 6rpx;">
+								<cover-image src="../../../../static/images/cards2.png" style="position: relative;" mode="widthFix">
+								</cover-image>
+								<view class="" style="position: absolute;top: -28rpx;">
+								<view class="head" :style="{width:$store.state.myWidth-36+'px'}" style="margin-left: 5rpx;">
 									<image class="head_img" :src="item.img" mode="widthFix"></image>
 									<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
 										<text class="head_text">{{item.post_title}}</text>
 									</view>
 								</view>
-								<view class="bottom" :style="{width:$store.state.myWidth-35+'px'}" style="box-shadow: 0px 0px 4rpx rgba(0, 0, 0, 0.16);margin-left: 6rpx;">
+								<view class="bottom" :style="{width:$store.state.myWidth-32+'px'}" >
 									<view class="bottom_Left" :style="{width:($store.state.myWidth-145)*0.7+'px'}">
 										<text class="left_text1">{{item.title}}</text>
 										<text class="left_text2">{{item.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
@@ -89,6 +104,7 @@
 									</view>
 								</view>
 								<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+								</view>
 							</cell>
 							<cell v-if="loadinging">
 								<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
@@ -346,26 +362,25 @@
 		overflow: hidden;
 	}
 	.cell{
-		border-radius: 40rpx;
+		border-radius: 20rpx;
 		background: #FFFFFF;
 	}
 	.head{
 		position:relative;
-		height:330rpx ;
-		border-radius: 40rpx 40rpx 0rpx 0rpx;
+		height:345rpx ;
+		border-radius: 20rpx 20rpx 0rpx 0rpx;
 		margin-top: 40rpx;
 	}
 	.icon{
 		position:absolute;
 		width:176rpx ;
 		height:176rpx ;
-		border-radius:40rpx ;
 		bottom: 43rpx;
 		left:30rpx ;
 	}
 	.head_img{
-		height:330rpx ;
-		border-radius: 40rpx 40rpx 0rpx 0rpx;
+		height:345rpx ;
+		border-radius: 20rpx 20rpx 0rpx 0rpx;
 	}
 	.head_box{
 		position:absolute;

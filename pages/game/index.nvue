@@ -149,7 +149,7 @@
 						<view class="box-header">
 							<text class="box-header-item" v-if="demoData">{{demoData.topic_name}}</text>
 							<text class="box-header-item1"
-								@click="handleRouter('/pages/my/children/demoGame/index',1)">查看更多</text>
+								@click="handleRouter('/pages/my/children/demoGame/index1',1)">查看更多</text>
 						</view>
 						<view class="box-content-demo">
 							<view class="box-content-demo-left" ref="boxLeft">
