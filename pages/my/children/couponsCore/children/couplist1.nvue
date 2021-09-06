@@ -1,12 +1,12 @@
 <template>
-	<view style="flex: 1;">
-		<view class="container" :style="{width:$store.state.myWidth+'px'}">
-			<view class="box" :style="{width:$store.state.myWidth+'px'}">
+		<view class="container" :style="{width:$store.state.myWidth-56+'px'}">
+			<view class="box" :style="{width:$store.state.myWidth-56+'px'}">
 				<!-- tabs -->
-				<scroller scroll-direction="horizontal" style="flex-direction: row;">
-					<view class="tab" :style="{transform:tableft? 'translateX('+-0.22*myWidth*(number2)+')':'translateX('+-0.22*myWidth*(number3)+')'}">
+				<!-- <scroller scroll-direction="horizontal" style="flex-direction: row;"> -->
+					<!-- <view class="tab" :style="{width:$store.state.myWidth-56+'px',transform:tableft? 'translateX('+-0.22*myWidth*(number2)+')':'translateX('+-0.22*myWidth*(number3)+')'}"> -->
+					<view class="tab" :style="{width:$store.state.myWidth-56+'px'}">
 						<view class="tabslist">
-							<view class="tabs" style="margin-right:60rpx ;" :active="active"  v-for="(item,index) in tabslist" @click="tabsClick(index)">
+							<view class="tabs"  :active="active" v-for="(item, index) in myGame" :key="index" @click="tabsClick(index)">
 								<text :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 							</view>	
 						</view>
@@ -14,43 +14,44 @@
 						<view  class="tabs_line" :style="{transform:left? 'translateX('+0.22*myWidth*number+')':'translateX('+0.22*myWidth*number1+')'}"></view>
 					</view>
 					
-				</scroller>
+				<!-- </scroller> -->
 				
 				<!-- 滑动item -->
-				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight*0.3+'rpx'}"  >
-					<swiper-item v-for="(i,index) in page" :key="index">
-						<text>{{i}}</text>
-						<!-- <list class="list" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight*0.2+'rpx'}">
-							<cell v-for="(item,index) in couponList1" :style="{width:$store.state.myWidth-32+'px'}">
+				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth-56+'px',height:730+'rpx'}"  >
+					<swiper-item v-for="(data,i) in pageData" :key='i'>
+						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:730+'rpx'}">
+							<view v-for="(item,index) in data.list" :key='index' :style="{width:$store.state.myWidth-56+'px'}">
 								<view class="cell">
-									<view class="cell_left" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
-										<text class="left_text1">{{item.coupon.coupons_amount}}</text>
-										<text class="left_text2">{{item.coupon.title}}</text>
+									<view class="cell_left" :style="{width:($store.state.myWidth-56)*0.3+'px'}">
+										<text class="left_text1">{{item.coupons_amount}}</text>
+										<text class="left_text2">{{item.title}}</text>
 									</view>
-									<view class="cell_right" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
+									<view class="cell_right" :style="{width:($store.state.myWidth-56)*0.7+'px'}">
 										<view class="right_head">
 											<view class="head_text">
-												<text class="head_text1">有效期至：{{item.coupon.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
-												<text class="head_text2">领取时间：{{item.coupon.get_time_begin | dateFormat('yyyy-MM-dd')}}后</text>
+												<text class="head_text1">有效期至：{{item.get_time_end|dateFormat('yyyy.MM.dd')}}</text>
+												<text class="head_text2">领取时间：{{item.get_time_begin|dateFormat('yyyy.MM.dd')}}后</text>
 											</view>
-											<view class="head_but" @click="handleRouterdetail(item.coupon.game_id)">
-												<text class="head_text3">去使用</text>
+											<view  v-if="!item.have_got" class="head_but" @click="handleClick(item.id,item.period_type,item)">
+												<text class="head_text3">领 取</text>
+											</view>
+											<view v-else class="head_but3" >
+												<text style="color: #fff;" class="head_text3">已领取</text>
 											</view>
 										</view>
 										<view class="right_bottom">
-											<text class="head_text2" style="font-size:26rpx ;">适用于《{{item.coupon.game_name}}》</text>
+											<text class="head_text2" style="font-size:26rpx ;">适用于《{{item.game.name}}》</text>
 										</view>
 									</view>
 								</view>
-							</cell>
-							<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
-							</loading>
-						</list> -->
+							</view>
+							<!-- <loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+							</loading> -->
+						</scroll-view>
 					</swiper-item>
 				</swiper>
 			</view>
 		</view>
-	</view>
 </template>
 
 <script>
@@ -62,8 +63,6 @@
 	export default {
 		data() {
 			return {
-				tabslist: ['可使用', '已使用', '已过期','可使用', '已使用', '已过期','可使用', '已使用', '已过期',],
-				page:['1', '2', '3','4', '5', '6','7', '8', '9'],
 				loadinging:false,
 				active: 0,
 				current: 0,
@@ -71,31 +70,16 @@
 				noActive:false,
 				number:0,
 				number1:0,
-				number2:0,
-				number3:0,
+				// number2:0,
+				// number3:0,
 				left:false,	
-				tableft:false,
-				couponList1: [],
-				params: [
-					{
-						page: 1,
-						offset: 10,
-						status:1,
-						count:0,
-					},
-					{
-						page: 1,
-						offset: 10,
-						status:2,
-						count:0,
-					},
-					{
-						page: 1,
-						offset: 10,
-						status:3,
-						count:0,
-					},
-				]
+				// tableft:false,
+				myGame: [],
+				pageData: null,
+				pramas:{
+					offset:10,
+					game_num:4,
+				}
 			}
 		},
 		components:{
@@ -105,19 +89,24 @@
 			active(val){
 				this.number1 = this.number
 				this.number = val
-				if(this.left){
-					if(val>2&&val<this.tabslist.length-2){
-						this.number3 = this.number2
-						this.number2 = val-2
-						this.tableft = this.left
-					}
-				}else{
-					if(val>2&&val<this.tabslist.length-2){
-						this.number2 = this.number3
-						this.number3 = val-2
-						this.tableft = this.left
-					}
-				}
+				// if(this.left){
+				// 	if(val>2&&val<this.tabslist.length-2){
+				// 		this.number3 = this.number2
+				// 		this.number2 = val-2
+				// 		this.tableft = this.left
+				// 	}
+					
+				// }else{
+				// 	if(val>2&&val<this.tabslist.length-2){
+				// 		this.number2 = this.number3
+				// 		this.number3 = val-2
+				// 		this.tableft = this.left
+						
+				// 	}else if(val==2){
+				// 		this.number2 = this.number3
+				// 		this.number3 = val-2
+				// 	}
+				// }
 				if(this.number-this.number1>0){
 					this.left = true
 				}else{
@@ -130,15 +119,15 @@
 					this.noActive = true
 				}	
 			},
-			isActive(val){
-				this.getPage2Data()
-			},
-			noActive(val){
-				this.getPage3Data()
-			}
+			// isActive(val){
+			// 	this.getPage2Data()
+			// },
+			// noActive(val){
+			// 	this.getPage3Data()
+			// }
 		},
 		mounted() {
-			this.getPage1Data()
+			this.getPageData()
 		},
 		computed: {
 			myWidth() {
@@ -183,26 +172,64 @@
 		methods: {
 			//加载更多
 			onloading(e){
-				if(this.active==0){
-					if(this.params[0].count>this.couponList1.length){
-						this.loadinging = true
-						this.params[0].page++
-						this.getPage1Data()	
-					}
-				}else if(this.active==1){
-					if(this.params[1].count>this.couponList2.length){
-						this.loadinging = true
-						this.params[1].page++
-						this.getPage2Data()	
-					}
-				}else{
-					if(this.params[2].count>this.couponList3.length){
-						this.loadinging = true
-						this.params[2].page++
-						this.getPage3Data()	
-					}
-				}
+				// if(this.active==0){
+				// 	if(this.params[0].count>this.couponList1.length){
+				// 		this.loadinging = true
+				// 		this.params[0].page++
+				// 		this.getPage1Data()	
+				// 	}
+				// }else if(this.active==1){
+				// 	if(this.params[1].count>this.couponList2.length){
+				// 		this.loadinging = true
+				// 		this.params[1].page++
+				// 		this.getPage2Data()	
+				// 	}
+				// }else{
+				// 	if(this.params[2].count>this.couponList3.length){
+				// 		this.loadinging = true
+				// 		this.params[2].page++
+				// 		this.getPage3Data()	
+				// 	}
+				// }
 				
+			},
+			//优惠券
+			getPageData() {
+				$api.get('/user/coupons/rand_games',{
+					...this.pramas
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.pageData = res.data.data.data
+						this.myGame = res.data.data.game
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none',
+						})
+						return
+					}
+			
+				})
+			},
+			//点击领取
+			handleClick(id, period_type,item) {
+				$api.get("user/coupons/add", {
+					coupon_id: id,
+					period_type
+				}).then(res => {
+					if (res.data.code == 200) {
+						item.have_got = true
+						uni.showToast({
+							icon: "none",
+							title: res.data.msg
+						})
+					} else {
+						uni.showToast({
+							icon: "none",
+							title: res.data.msg
+						})
+					}
+				})
 			},
 			tabsClick(index){
 				this.current = index
@@ -215,56 +242,6 @@
 					url: `/pages/view/gamedetail/gamedetail?gameid=${id}`
 				})
 			},
-			//请求数据
-			getPage1Data() {
-				$api.get('/user/coupons/list', {
-					...this.params[0]
-				}).then(res => {
-					if (res.data.code == 200) {
-						this.loadinging = false
-						this.couponList1 =this.couponList1.concat(res.data.data.list) 
-						this.params[0].count = res.data.data.count
-					} else {
-						uni.showToast({
-							title:res.data.msg,
-							icon: "none"
-						})
-					}
-				})
-			},
-			getPage2Data() {
-				$api.get('/user/coupons/list', {
-					...this.params[1]
-				}).then(res => {
-					if (res.data.code == 200) {
-						this.loadinging = false
-						this.couponList2 =this.couponList2.concat(res.data.data.list)
-						this.params[1].count = res.data.data.count
-					} else {
-						uni.showToast({
-							title:res.data.msg,
-							icon: "none"
-						})
-					}
-				})
-			},
-			getPage3Data() {
-				$api.get('/user/coupons/list', {
-					...this.params[2]
-				}).then(res => {
-					if (res.data.code == 200) {
-						this.loadinging = false
-						this.couponList3 =this.couponList3.concat(res.data.data.list)
-						this.params[2].count = res.data.data.count
-					} else {
-						uni.showToast({
-							title:res.data.msg,
-							icon: "none"
-						})
-					}
-				})
-			
-			},
 		}
 	}
 </script>
@@ -275,7 +252,7 @@
 		background: #fff;
 	}
 	.box{
-		padding:0rpx 32rpx ;
+		
 	}
 	.lineShowdow{
 		height:6rpx ;
@@ -287,15 +264,16 @@
 		transition-duration:0.4s;
 	}
 	.tabslist{
-		margin-top:30rpx ;
 		flex-direction: row;
-		margin-right:60rpx;
 	}
 	.tabs_text{
+		width: 160rpx;
 		color: #666666;
 		font-weight: 400;
-		font-size: 36rpx;
-		
+		font-size: 30rpx;
+		text-overflow: ellipsis;
+		lines: 1;
+		flex: 1;
 	}
 	.tabs_line{
 		margin:10rpx 0rpx 4rpx 28rpx;
@@ -311,7 +289,7 @@
 		overflow: hidden;
 	}
 	.cell{
-		margin-top:48rpx ;
+		margin-bottom: 32rpx;
 		flex-direction: row;
 		
 	}
@@ -365,9 +343,17 @@
 	}
 	.head_but{
 		height:50rpx ;
-		padding:0rpx 12rpx;
+		padding:0rpx 30rpx;
 		border: 1px solid #E4E4E4;
 		background: #FFFFFF;
+		border-radius:25rpx;
+		justify-content: center;
+	}
+	.head_but3{
+		height:50rpx ;
+		padding:0rpx 16rpx;
+		border: 1px solid #E4E4E4;
+		background: #C1C1C1;
 		border-radius:25rpx;
 		justify-content: center;
 	}

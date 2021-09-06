@@ -41,8 +41,6 @@
 						</view>
 					</view>
 				</cell>
-				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
-				</loading>
 			</list>
 			<nloading v-else :isNoData="isNoData"></nloading>
 			<view class="bottom" :style="{width:myWidth-32+'px'}" v-if="isActive" >
@@ -74,7 +72,6 @@
 		data() {
 			return {
 				isNoData:false,
-				loadinging:false,
 				pageDate:[],
 				selectAll: false,
 				isActive: false,
@@ -83,8 +80,6 @@
 				likeDate:[],
 				params:{
 					read_type: "comment",
-					page:1,
-					offset: 20,
 					count:0,
 				}
 			}
@@ -99,14 +94,6 @@
 			this.getDate()
 		},
 		methods: {
-			//加载更多
-			onloading(e){
-				if(this.params.count>this.pageDate.length){
-					this.loadinging = true
-					this.params.page++
-					this.getPageDate()
-				}	
-			},
 			handleDelete() {
 				uni.vibrateShort({
 					success: () => {
@@ -122,7 +109,6 @@
 				$api.get("v8/comments/message_list",{	
 				}).then(res=> {
 					this.isNoData = true
-					this.loadinging = false
 					this.pageDate = res.data.data.list
 					this.likeDate = res.data.data
 				})

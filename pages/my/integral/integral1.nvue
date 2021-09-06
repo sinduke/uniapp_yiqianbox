@@ -13,7 +13,7 @@
 				<!-- 滑动item -->
 				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}"  >
 					<swiper-item>
-						<list v-if="ObtainList.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}">
+						<list v-if="ObtainList.length" :show-scrollbar='false' @loadmore='loadmore' loadmoreoffset='10' :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}">
 							<cell  class="cell":style="{width:$store.state.myWidth-32+'px'}" v-for="(item,index) in ObtainList">
 								<view class="cell_left">
 									<text class="left_text1">{{item.ia_name}}</text>
@@ -21,8 +21,11 @@
 								</view>
 								<text class="cell_right">+{{item.integral}} 积分</text>
 							</cell>
-							<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
-							</loading>
+							<cell v-if="loadinging">
+								<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+									<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+								</view>
+							</cell>
 						</list>
 						<nloading v-else :isNoData="isNoData"></nloading>
 					</swiper-item>
@@ -138,7 +141,7 @@
 		},
 		methods: {
 			//加载更多
-			onloading(e){
+			loadmore(){
 				if(this.active==0){
 					if(this.params[0].count>this.ObtainList.length){
 						this.loadinging = true

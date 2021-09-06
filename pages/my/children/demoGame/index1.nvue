@@ -3,7 +3,7 @@
 	<view class="demoGame">
 		<view class="lineShowdow"></view>
 		<view class="bottom" :style="{height:$store.state.mysHeight-160+'rpx'}" >
-			<list :show-scrollbar='false' :style="{height:$store.state.mysHeight-160+'rpx'}" v-if="pageData.length">
+			<list  @loadmore='loadmore' loadmoreoffset='10' :show-scrollbar='false' :style="{height:$store.state.mysHeight-160+'rpx'}" v-if="pageData.length">
 				<cell>
 					<view class="head">
 						<text class="str">1.点击试玩领取任务后，进入游戏详情</text>
@@ -45,7 +45,11 @@
 						</view>
 					</view>
 				</cell>
-				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" ></loading>
+				<cell v-if="loadinging">
+					<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
+				</cell>
 			</list >
 			<nloading v-else :isNoData="isNoData"></nloading>
 		</view>
@@ -135,7 +139,7 @@
 				}
 			},
 			//加载更多
-			onloading(e){
+			loadmore(){
 				if(this.count>this.pageData.length){
 					this.loadinging = true
 					this.formData.page++

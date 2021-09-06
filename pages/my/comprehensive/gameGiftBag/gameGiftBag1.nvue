@@ -3,7 +3,7 @@
 	<view style="flex: 1;background-color: #fff;">
 		<view class="lineShowdow"></view>
 		<view class="box" :style="{width:$store.state.myWidth+'px'}">
-			<list class="list" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" v-if="pageData.length">
+			<list @loadmore='loadmore' loadmoreoffset='10' class="list" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" v-if="pageData.length">
 				<cell class="cell" :style="{width:$store.state.myWidth+'px'}" v-for="(item,index) in pageData">
 					<image class="box_left" mode="widthFix" :src="item.icon"  @click="toDetail(item.game_id)"></image>
 					<view class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
@@ -18,8 +18,11 @@
 						</view>
 					</view>
 				</cell>
-				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
-				</loading>
+				<cell v-if="loadinging">
+					<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
+				</cell>
 			</list>
 			<nloading v-else :isNoData="isNoData"></nloading>
 		</view>
@@ -91,7 +94,7 @@
 		},
 		methods: {
 			//加载更多
-			onloading(e){
+			loadmore(){
 				if(this.count>this.pageData.length){
 					this.loadinging = true
 					this.params.page++
