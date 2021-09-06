@@ -1,13 +1,13 @@
 <!-- h5游戏开玩 -->
 <template>
 	<view class="container">
-		<!-- <iframe :src="game_url" frameborder="0" scrolling="no"></iframe> -->
-		<web-view :webview-styles="webviewStyles" :src="game_url" :webview-styles="webviewStyles" v-if="show"></web-view>
+		<web-view :webview-styles="webviewStyles" :src="game_url"  v-if="show"></web-view>
 		<!-- <image src="@/static/images/myrefresh.gif" width="40%" mode="widthFix" class="image"></image> -->
 	</view>
 </template>
 
 <script>
+	const globalData = getApp().globalData
 	export default {
 		data() {
 			return {
@@ -23,12 +23,24 @@
 			     // istrue:true
 			}
 		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			client_id() {
+				return globalData.store.state.client_id
+			},
+			loginInfo() {
+				return globalData.store.state.loginInfo
+			}
+		
+		},
 		onLoad(options) {
-			this.game_url = options.game_url +
-				"&token=" +
-				this.$store.state.loginInfo.user_token +
-				"&link=uniapp&client_id=" +
-				this.client_id;
+			this.game_url = options.game_url +"&token=" +this.loginInfo.user_token +"&link=uniapp&client_id=" +this.client_id;
+			console.log(this.game_url)
 		},
 
 		// beforeRouteLeave(to, from, next) {
@@ -82,6 +94,7 @@
 
 <style scoped>
 	.container {
+		flex: 1;
 		position: relative;
 		overflow: hidden;
   }
