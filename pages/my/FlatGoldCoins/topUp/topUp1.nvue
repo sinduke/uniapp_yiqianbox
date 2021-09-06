@@ -1,61 +1,57 @@
 <!-- 充值页面 -->
 <template>
 	<view class="container" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}">
-		<web-view  :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" :src="src"></web-view>
+		<web-view :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" :src="src":webview-styles="webviewStyles"></web-view>
 	</view>
 </template>
 
 <script>
-	import {$api} from '@/config/api.js';
+	import {
+		$api
+	} from '@/config/api.js';
 	import common from "@/common/js/common.js";
 	const globalData = getApp().globalData
 	export default {
-	  
+
 		data() {
 			return {
 				url: "",
 				show: false,
-				content: ""
+				content: "",
+				webviewStyles: {
+					progress: {
+						color: '#ff5927'
+					}
+				}
 			}
 		},
 		computed: {
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
-			src(){
-			return 'https://api.sy12306.com/app/wap/ptb/recharge?client_id='+ globalData.store.state.client_id+'&token=' + globalData.store.state.loginInfo.user_token + '&isBox=true'
-				// "'https://api.sy12306.com/app/wap/ptb/recharge?client_id=' + $store.state.client_id +'&token=' + $store.state.loginInfo.user_token + '&isBox=true'"
+			src() {
+				return 'https://api.sy12306.com/app/wap/ptb/recharge?client_id=' + globalData.store.state.client_id +'&token=' + globalData.store.state.loginInfo.user_token + '&isBox=true&new_box=1'
 			}
 		},
-		onLoad(options) {
-			switch (options.ret) {
-				case 1:
-					this.show = true;
-					this.content = "充值成功";
-					break;
-				case 0:
-					this.show = true;
-					this.content = "充值未成功";
-					break;
-				default:
-					return;
-			}
-		},
-		// created() {
-			
-		// 	this.url =
-		// 		"https://api.sy12306.com/app/wap/ptb/recharge?client_id=" +
-		// 		this.$store.state.client_id +
-		// 		"&token=" +
-		// 		this.$store.state.loginInfo.user_token +
-		// 		"&isBox=true"
+		// onLoad(options) {
+		// 	switch (options.ret) {
+		// 		case 1:
+		// 			this.show = true;
+		// 			this.content = "充值成功";
+		// 			break;
+		// 		case 0:
+		// 			this.show = true;
+		// 			this.content = "充值未成功";
+		// 			break;
+		// 		default:
+		// 			return;
+		// 	}
 		// },
-		
 	}
 </script>
 
 <style scoped>
-	.container{
+	.container {
 		background: #fff;
 	}
 </style>

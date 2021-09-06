@@ -224,9 +224,11 @@
 
 </script>
 
-<style lang="scss">
+<style>
 	/* #ifndef APP-PLUS-NVUE */
-	@import "uview-ui/index.scss";
-	@import './static/fonts/iconfont.css'
+	/* @import "uview-ui/index.scss"; */
+	/* @import './static/fonts/iconfont.css'; */
 	/* #endif */
+	 /* @import "./components/u-parse/u-parse.css" */
+
 </style>

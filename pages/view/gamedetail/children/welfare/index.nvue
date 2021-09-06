@@ -1,10 +1,10 @@
 <!-- 福利 -->
 <template>
-	<view class="welfare" >
-		<view class="top" >
+	<view class="welfare">
+		<view class="top">
 			<view class="backImages" v-if="pageData&&platform=='android'">
 				<image :src="pageData.app_hot_image" :style="{width:myWidth+'px'}"></image>
-				<sn-blur-view ref='sn_blur' v-if='isBlur' :radius='6'  :fps='120' :downscaleFactor='0.2' :style="{position:'absolute',width: myWidth+'px',height: '462rpx',bottom:0,right:0}" />
+				<view class="mask" :style="{width:myWidth+'px'}" />
 			</view>
 
 		</view>
@@ -12,24 +12,63 @@
 			<image src="@/static/images/back.png" style="width: 40rpx;height: 40rpx;"></image>
 		</view>
 		<view class="myDetail" v-if="pageData">
-			<image :src="pageData.icon" mode="widthFix" style="width: 176rpx;height: 176rpx;margin-right: 24rpx;"></image>
+			<image :src="pageData.icon" mode="widthFix" style="width: 176rpx;height: 176rpx;margin-right: 24rpx;">	</image>
 			<view class="detailRight">
 				<text class="gamename">{{pageData.gamename}}</text>
-				<view class="">
-					<text class="text" v-if="pageData.gc_id">{{pageData.gc_id}}出品</text><text class="text"
-						v-if="pageData.gc_id">|</text><text class="text">{{pageData.popularity_cnt}}人在玩</text>
+				<view class="detail_item">
+					<text class="text" v-if="pageData.gc_id">{{pageData.gc_id}}出品</text>
+					<text class="text" v-if="pageData.gc_id">|</text>
+					<text class="text">{{pageData.popularity_cnt}}人在玩</text>
 				</view>
 			</view>
 		</view>
-		<view class="cardRidus"></view>
+		<view class="cardRidus" :style="{width:myWidth+'px'}" ></view>
 		<!-- 详细信息 -->
-		<view class="mycard" :style="{height:$store.state.myHeight-462+'rpx'}">
+		<view class="mycard" :style="{height:myHeight-462+'rpx',width:myWidth+'px'}">
+		<view class="tabslist" :style="{width:myWidth+'px'}">
+			<view class="tabs" style="margin-right:60rpx ;" :active="active"  v-for="(item,index) in tabslist" @click="tabsClick(index)">
+				<text :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+			</view>	
+		</view>
+		<view  class="tabs_line" :style="{transform:left? 'translateX('+0.18*myWidth*number+')':'translateX('+0.18*myWidth*number1+')'}"></view>
+			
+			<view class="swiper" @touchstart='touchstart'>
+			<swiper @change='swiperChange' @transition='transition'  :current="active" @animationfinish='animationfinish' :style="{height:myHeight-120+'rpx',width:myWidth+'px'}" ref="swiper">
+				<swiper-item>
+					<scroller  :style="{height:$store.state.myHeight-562+'rpx'}">
+						<giftsitem :pageData="pageData.gift" @isGifts='isGifts'></giftsitem>
+					</scroller>
+				</swiper-item>
+				<swiper-item>
+					<scroller  :style="{height:$store.state.myHeight-562+'rpx'}" >
+					
+						<welfareitem :pageData="pageData.post"></welfareitem>
+					</scroller>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						cccccccccccccccccccccccccccccccccccccccccccccc
+					</view>
+				</swiper-item>
+				<swiper-item>
+					<view class="swiper-item">
+						dddddddddddddddddddddddddddddddd
+					</view>
+				</swiper-item>
+			</swiper>
+			</view>
+			
+			
+			
+			
+			
+			
 			<!-- <view class="TitleList"> -->
 			<!-- <xw-tab ref="navTab" :tabTitle="TitleList" @changeTab='changeTab' style="margin-bottom: 40rpx;"></xw-tab> -->
 			<!-- </view> -->
 
 			<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
-<!-- 			<swiper style="min-height: 100vh;" :current="currentTab" @change="swiperTab">
+			<!-- 			<swiper style="min-height: 100vh;" :current="currentTab" @change="swiperTab">
 				<swiper-item>
 					<scroll-view scroll-y="true" :style="{height:$store.state.myHeight-562+'rpx'}" style="display: flex;justify-content: center;">
 						<giftsitem :pageData="pageData.gift" @isGifts='isGifts'></giftsitem>
@@ -60,31 +99,34 @@
 </template>
 
 <script>
-	import { $api } from '@/config/api.js';
+	import {	$api	} from '@/config/api.js';
 	import common from "@/common/js/common.js";
 	const globalData = getApp().globalData
-	// import giftsitem from "./giftsitem.vue"
-	// import welfareitem from "./welfareitem.vue"
+	import giftsitem from "./giftsitem.nvue"
+	import welfareitem from "./welfareitem.nvue"
+
 	// import rebateitem from "./rebateitem.vue"
 	// import  vipitem from "./vipitem.vue"
 	export default {
 		data() {
 			return {
+				number: 0,
 				game_id: 0,
 				pageData: null,
 				isActive: false,
-				isBlur:false,
 				active: 0,
 				number: 0,
+				number1:0,
+				left:false,	
 				scrollMove: 0,
 				isGift: true,
-				TitleList: ['礼包', '游戏福利', '返利', 'VIP表'],
+				tabslist: ['礼包', '福利', '返利', 'VIP表'],
 				currentTab: 0,
 
 			}
 		},
 		computed: {
-			platform(){
+			platform() {
 				return globalData.store.state.platform
 			},
 			myWidth() {
@@ -95,24 +137,16 @@
 			},
 		},
 		components: {
-			// giftsitem,
-			// welfareitem,
+			giftsitem,
+			welfareitem,
 			// rebateitem,
 			// vipitem
-		},
-		mounted() {
-			this.creatWeb()
+
 		},
 		methods: {
-			creatWeb(){
-			let web = plus.webview.create('./welfare.html','new_web',{
-				height:'300rpx',
-				width:'300rpx'
-			});
-			  web.show()
+			tabsClick(index){
+				this.active = index
 			},
-			
-			
 			//后退
 			back() {
 				uni.navigateBack({
@@ -125,128 +159,197 @@
 					game_id: this.game_id
 				}).then(res => {
 					this.pageData = res.data.data
-					this.isBlur = true
-					setTimeout(()=>{
-						this.$refs.sn_blur.pauseBlur()
-					},1000)
 				})
 			},
-			isGifts(e){
-				if(e){
-					this.getPageData()
+			isGifts(e) {
+				 if (e) {
+					 this.getPageData()
 				}
 			},
-
-
 			// 切换
 			touchstart(e) {
 				this.isActive = true
 			},
-			isactive(e) {
+			isactive(e){
 				this.isActive = false
-			},
-			handleActive(e) {
-				this.active = e
 			},
 			animationfinish(e) {
 				this.number = e.detail.current
-			},
-			changeTab(index) {
-				this.currentTab = index;
-			},
-			swiperTab(e) {
-				var index = e.detail.current //获取索引
-				this.$refs.navTab.longClick(index);
+				
 			},
 			//滑动监听
 			transition(e) {
-				this.scrollMove = Math.round(e.detail.dx)
+				if(Math.abs(Math.round(e.detail.dx))==this.$store.state.myWidth){
+					setTimeout(()=>{
+					},400)
+				}else{
+					this.scrollMove = Math.round(e.detail.dx)
+				}
 			},
 			swiperChange(e) {
+				
 				this.active = e.detail.current
 			},
+
+
+			// // 切换
+			// touchstart(e) {
+			// 	this.isActive = true
+			// },
+			// isactive(e) {
+			// 	this.isActive = false
+			// },
+			// handleActive(e) {
+			// 	this.active = e
+			// },
+			// animationfinish(e) {
+			// 	this.number = e.detail.current
+			// },
+			// changeTab(index) {
+			// 	this.currentTab = index;
+			// },
+			// swiperTab(e) {
+			// 	var index = e.detail.current //获取索引
+			// 	this.$refs.navTab.longClick(index);
+			// },
+			// //滑动监听
+			// transition(e) {
+			// 	this.scrollMove = Math.round(e.detail.dx)
+			// },
+			// swiperChange(e) {
+			// 	this.active = e.detail.current
+			// },
 
 		},
 		onLoad(option) {
 			console.log(option.game_id)
 			this.game_id = option.game_id
 			this.getPageData()
-		}
+		},
+		watch:{
+			active(val){
+				this.number1 = this.number
+				this.number = val
+				if(this.number-this.number1>0){
+					this.left = true
+				}else{
+					this.left = false
+					this.number1 = this.number
+				}
+				if(val==1){
+					this.isActive = true 
+				}else if(val==2){
+					this.noActive = true
+				}	
+			},
+		},
 	}
 </script>
 
-<style  scoped>
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+	/* 滑块 */
+	.tabslist{
+		margin-top:30rpx ;
+		flex-direction: row;
+		margin-right:60rpx;
+	}
+	.tabs_text{
+		color: #666666;
+		font-weight: 400;
+		font-size: 36rpx;
+		
+	}
+	.tabs_line{
+		margin:10rpx 0rpx 48rpx 0rpx;
+		width:55rpx;
+		height:6rpx ;
+		border-radius:6rpx;
+		background: #FF5927;
+		transition-property: transform;
+		transition-duration:0.4s;
+	}
+	.mask {
+		position: absolute;
+		height: 462rpx;
+		bottom: 0;
+		right: 0;
+		background-color: #111;
+		opacity: 0.4;
+
+	}
+
 	.welfare {
 		flex: 1;
 		overflow: hidden;
 		position: relative;
-      }
-		.backImages {
-			height: 462rpx;
-			/* filter: blur(20rpx); */
-		}
-		 .top{
-			 overflow: hidden;
-			 height: 462rpx;
-		 }
+	}
 
-		.myback {
-			width: 66rpx;
-			height: 66rpx;
-            flex-direction: row;
-			align-items: center;
-			justify-content: center;
-			position: absolute;
-			top: 88rpx;
-			left: 32rpx;
-			border-radius: 40rpx;
-			background-color: rgba(0, 0, 0, 0.4);
-		}
+	.backImages {
+		height: 462rpx;
+		/* filter: blur(20rpx); */
+	}
 
-		.myDetail {
-			/* @include flex; */
-			justify-content: flex-start;
-			position: absolute;
-			top: 204rpx;
-			left: 32rpx;
+	.top {
+		overflow: hidden;
+		height: 462rpx;
+	}
 
+	.myback {
+		width: 66rpx;
+		height: 66rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		top: 88rpx;
+		left: 32rpx;
+		border-radius: 40rpx;
+		background-color: rgba(0, 0, 0, 0.4);
+	}
 
-		}
-
-/* 		// .giftDetail {
-		// 	@include border_box;
-		// 	padding-bottom: 40rpx;
-		// 	margin-bottom: 40rpx;
-
-		// } */
-
-		.text {
-			font-size: 28rpx;
-			margin-right: 16rpx;
-			color: #fff;
-		}
+	.myDetail {
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		position: absolute;
+		top: 204rpx;
+		left: 32rpx;
 
 
-		.gamename {
-			font-size: 40rpx;
-			color: #fff;
-			margin-bottom: 14rpx;
-		}
+	}
+	.detail_item{
+		flex-direction: row;
+		align-items: center;
+	}
 
-		.cardRidus {
-			width: 100%;
-			height: 40rpx;
-			border-radius: 20px 20px 0 0;
-			position: absolute;
-			top: 426rpx;
-			background-color: #fff;
+	.text {
+		font-size: 28rpx;
+		margin-right: 16rpx;
+		color: #fff;
+	}
 
-		}
 
-		.mycard {
-			width: 100%;
-			/* @include padding; */
-			background-color: #fff;
+	.gamename {
+		font-weight: 700;
+		font-size: 40rpx;
+		color: #fff;
+		margin-bottom: 14rpx;
+	}
 
-		}
+	.cardRidus {
+		height: 40rpx;
+		border-radius: 20px 20px 0 0;
+		position: absolute;
+		top: 426rpx;
+		background-color: #fff;
+
+	}
+
+	.mycard {
+	
+		padding: 0 32rpx;
+		background-color: #fff;
+
+	}
 </style>
