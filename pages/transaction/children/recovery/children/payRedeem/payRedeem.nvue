@@ -5,7 +5,7 @@
 		<view class="Title" :style="{width:myWidth+'px'}">
 			<text class='text'>请选择你的支付方式</text>
 		</view>
-		<group :src="item.icon" v-for="(item,index) in paylist"  :title="item.name" :key='index' :borderTop="index>0?false:true"  @click="handlePay(item.payway)"></group>
+		<group :src="item.icon" v-for="(item,index) in paylist"  :title1="item.name" :key='index' :borderTop="index>0?false:true"  @click="handlePay(item.payway)"></group>
 	</view>
 </template>
 

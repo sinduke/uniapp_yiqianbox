@@ -30,7 +30,7 @@
 						<nloading v-else :isNoData="isNoData"></nloading>
 					</swiper-item>
 					<swiper-item>
-						<list v-if="couponList.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}">
+						<list @loadmore='loadmore' loadmoreoffset='10' v-if="couponList.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}">
 							<cell  class="cell":style="{width:$store.state.myWidth-32+'px'}" v-for="(item,index) in couponList">
 								<view class="cell_left">
 									<text class="left_text1">{{item.goods_name}}</text>
@@ -38,8 +38,11 @@
 								</view>
 								<text class="cell_right" style="color:#999999;">-{{item.integral}} 积分</text>
 							</cell>
-							<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
-							</loading>
+							<cell v-if="loadinging">
+								<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+									<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+								</view>
+							</cell>
 						</list>
 						<nloading v-else :isNoData="isNoData"></nloading>
 					</swiper-item>

@@ -3,49 +3,54 @@
 	<view class="container">
 		<view class="lineShowdow"></view>
 		<view class="box" v-if="pageData">
-			<view class="head" @click="handleRouter('/pages/my/myMessage/children/officialMess/index1')">
+			<view class="head" :style="{width:myWidth-32+'px'}" @click="handleRouter('/pages/my/myMessage/children/officialMess/index1')">
 				<image class="left" src="@/static/images/view/gftz.png"  mode="widthFix"></image>
 				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
-					<view class="right_le">
+					<view class="right_le" style="flex-direction: row;justify-content: space-between;">
 						<text class="text1">官方通知</text>
-						<text class="text2">{{pageData.title}}</text>
+						<text class="text3">{{pageData.create_time|dateFormat('yyyy/MM/dd')}}</text>
+						
 					</view>
-					<text class="text3">{{pageData.create_time|dateFormat('yyyy/MM/dd')}}</text>
+					<text class="text2" v-if="pageData.title">{{pageData.title}}</text>
+					<text class="text2" v-else>暂无新通知</text>
 				</view>
 			</view>
-			<view class="head"  @click="handleRouter('/pages/my/myMessage/children/activeMessage/activeMessage1')">
+			<view class="head" :style="{width:myWidth-32+'px'}"  @click="handleRouter('/pages/my/myMessage/children/activeMessage/activeMessage1')">
 				<image class="left" src="@/static/images/view/hdxx.png" mode="widthFix" style="position: relative;">
 					<view v-if="likeDate.is_comment_read" style="position: absolute;top: 25rpx;left: 65rpx;width: 30rpx;height: 30rpx;background: #FF5927;border-radius: 30rpx;">
 						<text style="font-size:20rpx ;font-weight: 300;color: #fff;text-align: center;">{{likeDate.is_comment_read}}</text>
 					</view>
 				</image>
-				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
-					<view class="right_le">
+				<view class="right" :style="{width:myWidth-32-48-25+'px'}">
+					<view class="right_le" style="flex-direction: row;justify-content: space-between;">
 						<text class="text1">互动消息</text>
-						<text class="text2" v-if="likeDate.is_comment_read">您有新消息</text>
-						<text class="text2" v-else>您未有新消息</text>
+						<text class="text3">{{page2Data.time_str}}</text>
+						
 					</view>
-					<text class="text3">{{page2Data.time_str}}</text>
+					<text class="text2" v-if="likeDate.is_comment_read">您有新消息</text>
+					<text class="text2" v-else>暂无消息</text>
 				</view>
 			</view>
-			<view class="head" @click="handleRouter('/pages/my/myMessage/children/customerNotice/index1')">
+			<view class="head" :style="{width:myWidth-32+'px'}" @click="handleRouter('/pages/my/myMessage/children/customerNotice/index1')">
 				<image class="left" src="@/static/images/view/kftz.png" mode="widthFix" ></image>	
-				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
-					<view class="right_le">
+				<view class="right" :style="{width:myWidth-32-48-25+'px'}">
+					<view class="right_le" style="flex-direction: row;justify-content: space-between;">
 						<text class="text1">客服通知</text>
-						<text class="text2">[消息列表]</text>
+						<text class="text3">今天</text>
+						
 					</view>
-					<text class="text3">今天</text>
+					<text class="text2">[消息列表]</text>
 				</view>
 			</view>
-			<view class="head" @click="handleRouter('/pages/customerService/children/problem/index')">
+			<view class="head" :style="{width:myWidth-32+'px'}" @click="handleRouter('/pages/customerService/children/problem/index')">
 				<image class="left" src="@/static/images/view/cjwt.png" mode="widthFix" ></image>
 				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
-					<view class="right_le">
+					<view class="right_le" style="flex-direction: row;justify-content: space-between;">
 						<text class="text1">常见问题</text>
-						<text class="text2">HI，您好，请在底部选择你要咨询的...</text>
+						<text class="text3">今天</text>
+						
 					</view>
-					<text class="text3">今天</text>
+					<text class="text2">HI，您好，请在底部选择你要咨询的...</text>
 				</view>
 			</view>
 		</view>
@@ -166,18 +171,16 @@
 	.head{
 		flex-direction: row;
 		align-items: center;
-		
+		justify-content: space-between;
 	}
 	.left{
 		width: 100rpx;
 		height: 100rpx;
 		border-radius: 100rpx;
-		margin-right: 32rpx;
+		
 	}
 	.right{
 		padding:32rpx 0rpx 32rpx 0rpx;
-		flex-direction: row;
-		justify-content: space-between;
 		border-bottom:1rpx solid #EFEFEF ;
 	}
 	.text1{

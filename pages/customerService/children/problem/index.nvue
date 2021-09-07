@@ -4,8 +4,8 @@
 		<myNavbar title='常见问题' right radius @click="clear" :type="1" src='../../../../static/images/clear-icon.png'></myNavbar>
 		<view class="myshadowLine" />
 
-		<view class="body" :style="{height:myHeight-keyHeight-360+'rpx'}">
-			<list :style="{height:myHeight-keyHeight-360+'rpx'}" :scroll-top="scrollTop" class="list">
+		<view class="body" :style="{height:myHeight-keyHeight-250+'rpx'}">
+			<list :style="{height:myHeight-keyHeight-250+'rpx'}" :scroll-top="scrollTop" class="list">
 				<cell style="height: 32rpx;"></cell>
 					<!-- 客服回复 -->
 					<cell class="kfItem">
@@ -65,13 +65,13 @@
 			</list>
 		</view>
 		<view class="bottom" >
-			<view class="bottom_ipnut">
+			<!-- <view class="bottom_ipnut">
 				 <image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;margin-right: 32rpx;"></image>
 				<input :adjust-position='false' cursor-spacing='55' class="input" type="text" v-model="content" placeholder="请输入您的问题" @confirm='confirm' />
-				<!-- <view class=""	style="width: 60rpx;height: 60rpx;border-radius: 60rpx;padding: 4rpx; box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8);display: flex;align-items: center;justify-content: center;">
+				<view class=""	style="width: 60rpx;height: 60rpx;border-radius: 60rpx;padding: 4rpx; box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8);display: flex;align-items: center;justify-content: center;">
 					<image src="@/static/images/index/detail-button.png" mode="widthFix" style="width: 40rpx;height: 40rpx;" @click="confirm"></image>
-				</view> -->
-			</view>
+				</view>
+			</view> -->
 			<view class="scroll">
 				<text class="text" style="margin-top: 8rpx;">您可能想问</text>
 				<scroller scroll-direction="horizontal" class="scroller" :style="{width:$store.state.myWidth-120+'px',marginLeft: '180rpx'}">
