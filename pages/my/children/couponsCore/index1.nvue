@@ -1,11 +1,15 @@
 <template>
 	<view style="flex: 1;">
 		<myNavbar title='领券中心' :lines="false" right radius router='/pages/my/coupons/coupons1' src='../../../../static/images/my_details.png'></myNavbar>
+		<view class="" :style="{width:myWidth+'px',marginTop:statusBarHeight+90+'rpx'}">
+		</view>
 		<list :show-scrollbar="false" :style="{width:myWidth+'px',height:myHeight-1+'rpx'}">
 			<cell>
-				<view class="img" :style="{width:myWidth+'px'}">
+				<view class="img" >
 					<image :style="{width:myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
 				</view>
+				
+				
 				<view class="head">
 					<view class="head_top">
 						<text class="top_text1">{{new Date()/1000|dateFormat('yyyy.MM.dd')}}</text>
@@ -27,7 +31,7 @@
 						</view>
 					</view>
 				</view>
-			</cell>
+		</cell>
 			<header>
 				<view class="head1" :style="{width:myWidth-32+'px'}">
 					<text class="head_text1">今日好券</text>
@@ -57,7 +61,7 @@
 			
 				
 			
-				<view class="head1" :style="{width:myWidth-32+'px',height:940+'rpx'}">
+				<view class="head1" :style="{width:myWidth-32+'px',height:1000+'rpx'}">
 					<text class="head_text1">优选好券</text>
 					<couplist1></couplist1>
 				</view>
@@ -88,6 +92,9 @@
 			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight* (750 / uni.getSystemInfoSync().windowWidth)
 			},
 		},
 		filters:{
@@ -179,7 +186,7 @@
 
 <style scoped>
 	.img{
-		margin-top: 30px;
+		/* margin-top: 36px; */
 	}
 	.head{
 		padding:32rpx ;

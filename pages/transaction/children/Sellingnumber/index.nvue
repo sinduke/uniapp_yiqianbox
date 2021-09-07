@@ -288,8 +288,11 @@
 				this.clearImageList++
 			},
 			addxh() {
-				this.resetForm()
-				this.handleRouter('/pages/transaction/children/Sellingnumber/addGame/addGame')
+				if(common.isLogin()){
+					this.resetForm()
+					this.handleRouter('/pages/transaction/children/Sellingnumber/addGame/addGame')
+				}
+				
 			}
 		},
 

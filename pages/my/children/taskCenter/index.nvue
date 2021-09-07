@@ -3,7 +3,7 @@
 	<view class="tankCenter">
 	<myNavbar title='任务中心' :lines="false" right radius router='/pages/my/children/taskCenter/signRule/signRule' src='../../../../static/images/my_details.png'></myNavbar>
 		
-		<view class="body">
+		<view class="body" :style="{width:myWidth+'px',marginTop:statusBarHeight+90+'rpx'}">
 			<list :style="{height:myHeight-160+'rpx',width:myWidth+'px'}" @loadmore='loadmore'	 loadmoreoffset='20' :show-scrollbar='false'   class="list" ref="list"  >
 				<cell>
 					<view class="banner">
@@ -117,6 +117,9 @@
 			}
 		},
 		computed: {
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight* (750 / uni.getSystemInfoSync().windowWidth)
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -259,7 +262,7 @@
 	   color: #fff;
    }
    .body{
-	   	margin-top:160rpx
+	   	
    }
 	.banner {
 		position: relative;
