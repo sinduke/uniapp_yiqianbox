@@ -3,14 +3,11 @@
 		<myNavbar title='幸运转盘' :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
 		<image src="@/static/images/my/bigturntablebgi1.png" mode="widthFix" :style="{height:myHeight+'rpx',width:myWidth+'px'}"></image>
 		<view class="bg123" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
-			<view class="bigTitle">
-				<view class="dzpjh" v-if="is_free==1">您有一次免费抽奖机会</view>
-				<view class="dzpjh" v-else>您今天免费次数已用完</view>
-			</view>
-			
-			<view class="my_integrals">
-				<view class="my_integral">我的积分：{{userInfo.my_integral}}</view>
-			</view>
+			<view class="bigTitle" :style="{windth:myWidth+'px'}">
+				<text class="dzpjh" v-if="is_free==1">您有一次免费抽奖机会</text>
+				<text class="dzpjh" v-else>您今天免费次数已用完</text>
+				<text class="my_integral">我的积分：{{userInfo.my_integral}}</text>
+			</view>		
 
 			<!-- 组件 -->
 			<view class="bigTrb" >
@@ -19,10 +16,10 @@
 			</view>
 			
 			
-			<shModal  title="" :textType="false" :isShow="show" :showSubmit='false' :modalMode='false' style="margin-top:100rpx">
+			<shModal  title="" :textType="false" :isShow="show" :showSubmit='false' :modalMode='false' >
 				<!-- 兑换抽奖机会 -->
 				<view class="dzp-tc" v-if="handleShow" :style="{width:myWidth/1.4+'px',height: '600rpx'}" style="flex-direction: row;align-items: center; justify-content: center;">
-					<image src="@/static/images/my/dzp-tck.png" :style="{width:myWidth/1.2+'px',height: '600rpx'}"></image>
+					<image src="@/static/images/my/dzp-tck.png" :style="{width:myWidth/1.1+'px',height: '600rpx'}"></image>
 					<view class="dzp-tc-content">
 						<image src="@/static/images/my/dzp-jf.png" mode="widthFix" style="width:100rpx;" />
 						<text class="dzp-tc-content-text1" v-if="is_free==2">幸运大转盘一次抽奖</text>
@@ -40,8 +37,8 @@
 				</view>
 				<!-- 未中奖 -->
 				
-				<view class="dzp-tc1" v-else-if="order.is_win==2" :style="{width:myWidth/1.4+'px',height: '600rpx'}" style="flex-direction: row;align-items: center; justify-content: center;">
-					<image src="@/static/images/my/dzp-wzj.png" :style="{width:myWidth/1.2+'px',height: '600rpx'}"></image>
+				<view class="dzp-tc" v-else-if="order.is_win==2" :style="{width:myWidth/1.4+'px',height: '600rpx'}" style="flex-direction: row;align-items: center; justify-content: center;">
+					<image src="@/static/images/my/dzp-wzj.png" :style="{width:myWidth/1.1+'px',height: '600rpx'}"></image>
 					
 					<view class="dzp-tc-content">
 						<image src="@/static/images/0.png" mode="widthFix" style="width:200rpx;height: 300rpx" />
@@ -54,13 +51,13 @@
 				</view>
 				<!-- 中奖 -->
 			
-				<view class="dzp-tc1" v-else :style="{width:myWidth/1.4+'px',height: '600rpx'}" style="flex-direction: row;align-items: center; justify-content: center;">
-					<image src="@/static/images/my/dzp-zj.png" :style="{width:myWidth/1.2+'px',height: '600rpx'}"></image>
+				<view class="dzp-tc" v-else :style="{width:myWidth/1.4+'px',height: '600rpx'}" style="flex-direction: row;align-items: center; justify-content: center;">
+					<image src="@/static/images/my/dzp-zj.png" :style="{width:myWidth/1.1+'px',height: '600rpx'}"></image>
 					<view class="dzp-tc-content">
 						<image :src="order.prize_img" mode="widthFix" style="width:200rpx;height:120rpx;margin-top: 48rpx;" />
 						<text style="margin:10rpx 0;color: #ff5927;font-size: 32rpx;font-weight: 700;">{{order.prize_name}}</text>
 						<view class="" style="display: flex; justify-content: center;">
-							<text class="buttons" @click="handleReceive">立即领取</text>
+							<text class="buttons" style="color: #FF5927;" @click="handleReceive">立即领取</text>
 						</view>
 					</view>
 				</view>
@@ -123,7 +120,6 @@
 		// },
 		onLoad() {
 			this.youHeight = uni.getSystemInfoSync().screenHeight
-			console.log(this.youHeight)
 			this.getPrizeList()
 		},
 		methods: {
@@ -137,7 +133,7 @@
 				$api.get("app/shop/big_wheel_list", {
 					mg_mem_id: this.userInfo.mem_id,
 				}).then((res) => {
-					console.log(res,'big_wheel_listbig_wheel_list')
+				
 					this.is_free = res.data.data.is_free;
 					this.grid_info_arr = res.data.data.list.sort((a, b) => {
 						return a.prize_order - b.prize_order;
@@ -147,16 +143,16 @@
 						prize_name: '抽奖'
 					})
 					this.lottery_draw_param.domData = this.grid_info_arr
-
+                
 				})
 			},
 			//未中奖
 			handleNo() {
 				this.show = false
-				this.grid_info_arr = []
+				// this.grid_info_arr = []
 				this.type = 1
 				this.bigShow = true
-				this.getPrizeList()
+				// this.getPrizeList()
 
 			},
 			//确认兑换
@@ -180,9 +176,9 @@
 					success: () => {
 						setTimeout(() => {
 							common.getuserInfo();
-							this.grid_info_arr = []
+							// this.grid_info_arr = []
 							this.type = 1
-							this.getPrizeList()
+							// this.getPrizeList()
 							this.show = false;
 							this.bigShow = true
 							setTimeout(() => {
@@ -210,10 +206,39 @@
 							mem_id: this.userInfo.mem_id,
 						},
 					).then((res) => {
-						console.log(res,'ssssssssssssssssssssss')
+						let index = 0
+						let a  = 0
+						if(res.data.data.prize_order-1 < 4){
+							
+							index = res.data.data.prize_order-1
+						}else{
+							index = res.data.data.prize_order-1
+						}
+						
 						this.order = res.data.data;
 						this.handleShow = false;
-						this.lottery_draw_param.winingIndex = this.order.prize_order - 1;
+						switch (index){
+							case 5:
+							a = 6
+							break;
+							case 3:
+							a = 7
+							break;		
+							case 6:
+							a = 5
+							break;
+							case 4:
+							a = 3
+							break;
+							case 7:
+							a = 4
+							break;	
+							default:
+							a = index;
+							break;
+						}
+						// console.log(a)
+						this.lottery_draw_param.winingIndex = a;
 						callback(this.lottery_draw_param);
 						this.bigShow = false
 
@@ -241,13 +266,13 @@
 	}
 
 	.bigTrb {
-		margin-top: 600rpx;
+		margin-top: 36rpx;
 	}
-
-	.bigzhuanp {
-		position: absolute;
-		top: 660rpx;
-	}
+	.bigTitle {
+	    margin-top: 460rpx;
+       align-items: center;
+			   justify-content: center;
+	  }
 	.buttons{
 		border: 1px solid #efefef;
 		padding: 6 36rpx;
@@ -256,44 +281,24 @@
 		
 	}
 
-	.bigTitle {
-		
 
-      }
 		.dzpjh {
 			color: #BF4137;
 			font-size: 32rpx;
 			font-weight: 700;
 			lines: 1;
-		}
-
-
-
-		.my_integrals {
-			position: absolute;
-			/* 	left: 50%;
-		bottom: 62.5%; */
-			/* transform: translateX(-50%); */
+			margin-bottom: 84rpx
 		}
 
 		.my_integral {
 			color: #fff;
 			font-size: 28rpx;
-			margin: 6rpx auto;
+			/* margin: 6rpx auto; */
+		}
+		.dzp-tc{
+			margin-top: 80rpx;
 		}
 
-
-		.dzp-tc1 {
-			height: 900rpx !important;
-			width: 100% !important;
-		}
-
-
-
-		.dzp-tc2 {
-			position: relative;
-			overflow: hidden;
-		}
 
 		.dzp-tc-content {
 			position: absolute;
@@ -329,15 +334,5 @@
 			align-items: center;
 			justify-content: space-between;
 		}
-
-		.button {
-			padding: 10rpx 40rpx;
-			line-height: 40rpx;
-			font-size: 24rpx;
-			color: #fff;
-			border: none;
-			border-radius: 10rpx;
-		}
-
 
 </style>
