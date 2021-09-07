@@ -662,21 +662,6 @@
 				}
 			}
 		},
-		{
-			// 写评论
-			"path": "pages/view/gamedetail/children/WrComment",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "写评论"
-					}
-				}
-			}
-		},
 		// 写评论nvue
 		{
 		    "path" : "pages/view/gamedetail/children/WrComment1",
