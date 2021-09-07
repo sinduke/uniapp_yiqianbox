@@ -397,17 +397,17 @@
 			}
 		},
 		// 领券中心
-		{
-			"path": "pages/my/children/couponsCore/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
+		// {
+		// 	"path": "pages/my/children/couponsCore/index",
+		// 	"style": {
+		// 		// 取消默认的原生导航栏
+		// 		"navigationStyle": "custom",
+		// 		"app-plus": {
+		// 			"bounce": "none"
+		// 		}
+		// 	}
 
-		},
+		// },
 		// 领券中心nvue
 		{
 		    "path" : "pages/my/children/couponsCore/index1",
@@ -468,38 +468,21 @@
 				}
 			}
 		},
-		//通用设置
-		{
-			"path": "pages/my/mySetting/tySetting",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "通用设置",
-						"titleAlign": "left"
-					}
-				}
-			}
-		},
-
-
-		// 修改手机号
-		{
-			"path": "pages/view/changeMobile/changeMobile",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "绑定手机号",
-						"titleAlign": "left"
-					}
-				}
-			}
-		},
+		// //通用设置
+		// {
+		// 	"path": "pages/my/mySetting/tySetting",
+		// 	"style": {
+		// 		"app-plus": {
+		// 			"bounce": "none", //关闭窗口回弹效果
+		// 			"titleNView": {
+		// 				"backgroundColor": "#fff",
+		// 				"titleColor": "#1C1C1C",
+		// 				"titleText": "通用设置",
+		// 				"titleAlign": "left"
+		// 			}
+		// 		}
+		// 	}
+		// },
 		//修改手机号nvue
 		{
 		    "path" : "pages/my/myAdministration/children/changeMobile/index1",
@@ -652,31 +635,31 @@
 		    }  
 		},
 		//评论详情
-		{
-			"path": "pages/view/gamedetail/commentDetail",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		},
-		{
-			// 写评论
-			"path": "pages/view/gamedetail/children/WrComment",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "写评论"
-					}
-				}
-			}
-		},
+		// {
+		// 	"path": "pages/view/gamedetail/commentDetail",
+		// 	"style": {
+		// 		// 取消默认的原生导航栏
+		// 		"navigationStyle": "custom",
+		// 		"app-plus": {
+		// 			"bounce": "none"
+		// 		}
+		// 	}
+		// },
+		// {
+		// 	// 写评论
+		// 	"path": "pages/view/gamedetail/children/WrComment",
+		// 	"style": {
+		// 		"app-plus": {
+		// 			"bounce": "none", //关闭窗口回弹效果
+		// 			"titleNView": {
+		// 				"backgroundColor": "#fff",
+		// 				"titleColor": "#1C1C1C",
+		// 				"titleAlign": "left",
+		// 				"titleText": "写评论"
+		// 			}
+		// 		}
+		// 	}
+		// },
 		// 写评论nvue
 		{
 		    "path" : "pages/view/gamedetail/children/WrComment1",
@@ -804,14 +787,15 @@
 				}
 			}
 
-		}, {
-			"path": "components/nvue-tabs/nvue-tabs",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
 		},
+		// {
+		// 	"path": "components/nvue-tabs/nvue-tabs",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"enablePullDownRefresh": false
+		// 	}
+
+		// },
 		//详情页 福利
 		{
 			"path": "pages/view/gamedetail/children/welfare/index",
@@ -902,6 +886,7 @@
 			"style": {
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black",
 				"app-plus": {
 					"bounce": "none" //关闭窗口回弹效果
 
@@ -1119,10 +1104,6 @@
 		}   
         
     ],
-
-	"easycom": {
-		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
-	},
 	"tabBar": {
 		"borderStyle": "white",
 		"color": "#8a8a8a",

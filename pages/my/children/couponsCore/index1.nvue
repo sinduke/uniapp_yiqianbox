@@ -54,9 +54,6 @@
 					<nloading v-else style="margin-top: -60rpx;" :isNoData="isNoData"  :style="{width:myWidth-32+'px',height:450+'rpx'}"></nloading>
 				</view>
 			
-			
-				
-			
 				<view class="head1" :style="{width:myWidth-32+'px',height:940+'rpx'}">
 					<text class="head_text1">优选好券</text>
 					<couplist1></couplist1>

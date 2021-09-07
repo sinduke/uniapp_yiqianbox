@@ -1,25 +1,13 @@
 <template>
-	<view class="">
-		<u-navbar title="" :border-bottom='false' class="u-navbar">
-			<slot>
-				<view class="title">
-					<view class="slot-wrap">
-						<text class="customer" style="font-weight: 400;margin-left: -20rpx;font-size: 32rpx;">幸运转盘</text>
-					</view>
-					<view class="slot-right">
-						<view class="radius">
-							<text class="iconfont" style="font-weight: 400;font-size: 34rpx;"	@click="handleRouter('/pages/my/integral/integral')">&#xe645;</text>
-						</view>
-					</view>
-				</view>
-			</slot>
-		</u-navbar>
+	<view class="bigTurntable">
+		<myNavbar title='幸运转盘' :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
+		<image src="@/static/images/my/bigturntablebgi1.png" mode="widthFix" :style="{height:myHeight+'rpx',width:myWidth+'px'}"></image>
 		<view class="bg123">
-			<view class="bigTitle" >
-				<view  class="dzpjh" v-if="is_free==1">您有一次免费抽奖机会</view>
+			<view class="bigTitle">
+				<view class="dzpjh" v-if="is_free==1">您有一次免费抽奖机会</view>
 				<view class="dzpjh" v-else>您今天免费次数已用完</view>
-
 			</view>
+			
 			<view class="my_integrals">
 				<view class="my_integral">我的积分：{{userInfo.my_integral}}</view>
 			</view>
@@ -28,14 +16,14 @@
 
 				<!-- 组件 -->
 				<view class="bigzhuanp">
-					<LotteryDraw class="trans" @click='handleShowClick' :grid_info_arr='grid_info_arr' :type='type' :order='order' style="transform: scale(1.2);" @get_winingIndex='get_winingIndex'
-						@luck_draw_finish='luck_draw_finish'></LotteryDraw>
+			<!-- 		<LotteryDraw class="trans" @click='handleShowClick' :grid_info_arr='grid_info_arr' :type='type'
+						:order='order' style="transform: scale(1.2);" @get_winingIndex='get_winingIndex'
+						@luck_draw_finish='luck_draw_finish'></LotteryDraw> -->
 				</view>
 
-
-
 			</view>
-			<xw-popup v-model="show" mode="center" border-radius="20" width="80%" :mask-close-able='false'>
+			<view v-model="show" mode="center" border-radius="20" width="80%" :mask-close-able='false'>
+				
 				<!-- 兑换抽奖机会 -->
 				<view class="dzp-tc" v-if="handleShow"
 					style="background: url(../../../../static/images/my/dzp-tck.png) no-repeat center;">
@@ -61,7 +49,8 @@
 					style="background: url(../../../../static/images/my/dzp-wzj.png) no-repeat center;">
 					<view class="dzp-tc-content">
 						<image src="@/static/images/0.png" mode="widthFix" style="width:280rpx;" />
-						<view class="dzp-tc-content-xx" style="color: #999;font-size: 36rpx;margin-top: -25rpx;">{{order.prize_name}}
+						<view class="dzp-tc-content-xx" style="color: #999;font-size: 36rpx;margin-top: -25rpx;">
+							{{order.prize_name}}
 						</view>
 						<view class="" style="display: flex; justify-content: center;">
 							<view class="buttons" @click="handleNo" style="margin-bottom: 5rpx;">再来一次</view>
@@ -80,19 +69,22 @@
 						</view>
 					</view>
 				</view>
-			</xw-popup>
+				
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import {
-		mapState
-	} from 'vuex'
+	import {	$api } from '@/config/api.js';
+	import common from "@/common/js/common.js";
+	const globalData = getApp().globalData
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	import LotteryDraw from '@/components/SJ-LotteryDraw/SJ-LotteryDraw.vue';
 	export default {
 		components: {
-			LotteryDraw
+			LotteryDraw,
+			myNavbar
 		},
 		data() {
 			return {
@@ -119,9 +111,12 @@
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
-			...mapState({
-				userInfo: 'userInfo'
-			})
+			myWidth(){
+				return uni.getSystemInfoSync().windowWidth
+			},
+			userInfo() {
+				return globalData.store.state.userInfo
+			},
 		},
 		// onReady() {
 		// 	uni.setNavigationBarTitle({
@@ -141,7 +136,7 @@
 			},
 			getPrizeList() {
 				//请求奖品列表
-				this.$api.get("app/shop/big_wheel_list", {
+				$api.get("app/shop/big_wheel_list", {
 					mg_mem_id: this.userInfo.mem_id,
 				}).then((res) => {
 					this.is_free = res.data.data.is_free;
@@ -149,7 +144,7 @@
 						return a.prize_order - b.prize_order;
 					});
 					this.grid_info_arr.push({
-						prize_img: require('@/static/images/cjbutton.png'),
+						prize_img:'../../../../static/images/cjbutton.png',
 						prize_name: '抽奖'
 					})
 					this.lottery_draw_param.domData = this.grid_info_arr
@@ -185,7 +180,7 @@
 					title: "领取成功！",
 					success: () => {
 						setTimeout(() => {
-							this.$common.getuserInfo();
+							common.getuserInfo();
 							this.grid_info_arr = []
 							this.type = 1
 							this.getPrizeList()
@@ -210,7 +205,7 @@
 			get_winingIndex(callback) {
 				if (this.bigShow) {
 					this.show = false;
-					this.$api.get(
+					$api.get(
 						"app/shop/lucky_draw", {
 							is_free: this.is_free,
 							mem_id: this.userInfo.mem_id,
@@ -232,178 +227,134 @@
 			}
 
 		},
-		//监听导航栏事件
-		onNavigationBarButtonTap() {
-			this.common.routerTo({
-				name: "integralRecord",
-			});
-		}
 	};
 </script>
 
-<style lang="scss" scoped>
-	.u-navbar {
-
-		.title {
-			flex: 1;
-			padding: 0 $xw-padding;
-			@include flex;
-		}
-
-		.customer {
-			color: $xw-black-dark;
-			font-size: $xw-h1-font;
-			
-		}
-
-		.radius {
-			width: 64rpx;
-			height: 64rpx;
-			border-radius: 50%;
-			box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);
-			@include flex;
-			justify-content: center;
-		}
-
+<style scoped>
+	.bigTurntable{
+		flex: 1;
+		overflow:hidden;
 	}
-
 	.bg123 {
-		background: url("~@/static/images/my/bigturntablebgi1.png") center no-repeat;
-		background-size: 100%;
-		background-position: 10 0;
-		width: 100%;
-		height: 100vh;
 		overflow: hidden;
 		background-color: #f7a085;
 		position: relative;
-
-		.bigTrb {
-			width: 100%;
-			@include flex;
-			justify-content: center;
-
-			.bigzhuanp {
-				position: absolute;
-				top: 660rpx;
-				// margin-bottom: 460rpx;
-			}
-
-
-
-
-		}
-
 	}
-	.bigTitle {
-		@include flex;
-		flex-direction: column;
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		
 
+	.bigTrb {
+
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.bigzhuanp {
+		position: absolute;
+		top: 660rpx;
+	}
+
+	.bigTitle {
+		position: absolute;
+		/* 		left: 50%;
+		transform: translateX(-50%);
+		 */
+}
 		.dzpjh {
 			color: #BF4137;
-			font-size: $xw-h3-font;
-			letter-spacing: 4rpx;
+			font-size: 32rpx;
 			font-weight: 700;
-			white-space: nowrap;
+			lines: 1;
 		}
 
 
 
-	}
-
-	.my_integrals {
-		@include flex;
-		flex-direction: column;
-		position: absolute;
-		left: 50%;
-		bottom: 62.5%;
-		transform: translateX(-50%);
+		.my_integrals {
+			position: absolute;
+			/* 	left: 50%;
+		bottom: 62.5%; */
+			/* transform: translateX(-50%); */
+		}
 
 		.my_integral {
 			color: #fff;
 			letter-spacing: 2rpx;
-			font-size: $xw-font;
+			font-size: 28rpx;
 			margin: 6rpx auto;
 		}
-	}
-
-	.dzp-tc {
-		height: 800rpx !important;
-		width: 100% !important;
-		background-size: 120% !important;
 
 
-	}
-
-	.dzp-tc1 {
-		height: 900rpx !important;
-		width: 100% !important;
-		background-size: 110% !important;
-	}
+		.dzp-tc {
+			height: 800rpx !important;
+			width: 100% !important;
 
 
-	.dzp-tc,
-	.dzp-tc1,
-	.dzp-tc2 {
-		position: relative;
-		overflow: hidden;
+		}
+
+		.dzp-tc1 {
+			height: 900rpx !important;
+			width: 100% !important;
+		}
+
+
+
+		.dzp-tc2 {
+			position: relative;
+			overflow: hidden;
+		}
 
 		.dzp-tc-content {
 			position: absolute;
-			width: 80%;
-			height: 60%;
-			display: flex;
-			flex-direction: column;
+			/* 	width: 80%;
+			height: 60%; */
 			align-items: center;
 			margin-top: 100rpx;
-			top: 28%;
+			/* 	top: 28%;
 			left: 50%;
 			z-index: 10;
-			transform: translateX(-50%);
-
-			.dzp-tc-content-text1 {
-				margin-top: 10rpx;
-			}
-
-			.dzp-tc-content-text2 {
-				color: red;
-			}
-
-			.dzp-tc-content-text3 {
-				margin-top: 10rpx;
-
-				text {
-					color: #ff8500;
-				}
-			}
-
-			.dzp-tc-content-text4 {
-				margin-top: 40rpx;
-				width: 80%;
-				display: flex;
-				justify-content: space-between;
-
-				button {
-					padding: 10rpx 40rpx;
-					line-height: 40rpx;
-					font-size: 24rpx;
-					color: #fff;
-					border: none;
-					border-radius: 10rpx;
-				}
-			}
+			transform: translateX(-50%); */
 		}
-	}
 
-	.dzp-tc-content-xx {
-		margin: 0 auto;
-		color: #FFD014;
-	}
+		.dzp-tc-content-text1 {
+			margin-top: 10rpx;
+		}
 
-	@media screen and (max-height: 750px) {
+		.dzp-tc-content-text2 {
+			color: red;
+		}
+
+		.dzp-tc-content-text3 {
+			margin-top: 10rpx;
+		}
+
+		.text {
+			color: #ff8500;
+		}
+
+
+		.dzp-tc-content-text4 {
+			margin-top: 40rpx;
+			/* width: 80%; */
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.button {
+			padding: 10rpx 40rpx;
+			line-height: 40rpx;
+			font-size: 24rpx;
+			color: #fff;
+			border: none;
+			border-radius: 10rpx;
+		}
+
+
+		.dzp-tc-content-xx {
+			margin: 0 auto;
+			color: #FFD014;
+		}
+
+		/* 	@media screen and (max-height: 750px) {
 		.bigTrb {
 			top: 45% !important;
 		}
@@ -453,8 +404,8 @@
 			top:680rpx !important;
 		}
 	}
-
-	.buttons {
+ */
+		/* 	.buttons {
 		margin-top: 20rpx;
 		@include button(60rpx, 12rpx, 80rpx);
 		font-size: 32rpx;
@@ -462,5 +413,5 @@
 		display: inline-block;
 
 
-	}
+	} */
 </style>
