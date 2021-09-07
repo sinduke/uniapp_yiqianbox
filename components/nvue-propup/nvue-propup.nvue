@@ -102,7 +102,7 @@
 	
 		  <!-- qq -->
 		    <view class="" v-if="isAction&&$store.state.platform=='ios'" 
-			style="position: fixed;flex-direction: row;align-items: center;justify-content: space-between;height: 50px; background-color: #F0AD4E;"  
+			style="position: fixed;flex-direction: row;align-items: center;justify-content: space-between;height: 50px;"  
 			:style="{
 			bottom:myHeight<1400?'200px':'410rpx',
 			left:myHeight<1400?myWidth/2-94+'px':myWidth/2-116+'px',
@@ -120,7 +120,7 @@
 			</view>
 		<!-- 复制链接 -->
 		  <view class="" v-if="isAction&&$store.state.platform=='ios'"  
-		  style="position: fixed; width: 50px;height: 50px;background-color: #FF3A59;"  @click="copy" 
+		  style="position: fixed; width: 50px;height: 50px;"  @click="copy" 
 		  :style="{left:myWidth/2-25+'px',
 		  bottom:myHeight<1400?'210px':'460rpx'
 		  }"
