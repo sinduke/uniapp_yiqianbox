@@ -1,16 +1,17 @@
 <template>
-	<view class=""  v-if="isShow">
-		<view class="modal_box" :style="{height:$store.state.myHeight+'rpx',width:$store.state.myWidth+'px'}" @click="noModal">
+	<view class="nvue-shModal"  v-if="isShow">
+		<view class="modal_box" :style="{height:$store.state.myHeight+'rpx',width:myWidth+'px'}" @click="noModal">
 			
 		</view>
-		<view @click.stop="stopModal" class="but_box" :style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:$store.state.myWidth*0.8+'px',left:$store.state.myWidth*0.1+'px',top:$store.state.myHeight*0.2+'rpx'}">
+		<view @click.stop="stopModal" class="but_box"  
+		:style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:myWidth*0.8+'px',left:myWidth*0.1+'px',top:myHeight*0.2+'rpx',backgroundColor:modalMode?'#fff':'transparent'}">
 		<!-- <view @click.stop="stopModal" class="but_box" :style="{height:active?350+'rpx':0+'rpx',opacity:active?1:0,width:active?$store.state.myWidth*0.8+'px':0,left:active?$store.state.myWidth*0.1+'px':$store.state.myWidth*0.5+'px',top:active?$store.state.myHeight*0.2+'rpx':$store.state.myHeight*0.33+'rpx'}"> -->
 			<text class="but_text1">{{title}}</text>
 			<text class="but_text2" v-if="textType">{{text}}</text>
 			<slot></slot>
-			<view class="but_but" :style="{width:$store.state.myWidth*0.8-70+'px'}">
-				<text class="but_text3" @click="noModal" :style="{width:$store.state.myWidth*0.4-35+'px'}">取消</text>
-				<text class="but_text4" @click="confirm" :style="{width:$store.state.myWidth*0.4-35+'px'}">确认</text>
+			<view class="but_but" :style="{width:myWidth*0.8-70+'px'}" v-if="showSubmit">
+				<text class="but_text3" @click="noModal" :style="{width:myWidth*0.4-35+'px'}">取消</text>
+				<text class="but_text4" @click="confirm" :style="{width:myWidth*0.4-35+'px'}">确认</text>
 			</view>
 		</view>
 	</view>
@@ -24,6 +25,14 @@
 			return {
 				active:false
 			}
+		},
+		computed: {
+			myHeight() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth(){
+				return uni.getSystemInfoSync().windowWidth
+			},
 		},
 		props: {
 			//是否显示模态框
@@ -42,6 +51,14 @@
 			},
 			//是否显示文字
 			textType: {
+				type: Boolean,
+				default:true
+			},
+			showSubmit:{
+				type: Boolean,
+				default:true
+			},
+			modalMode:{
 				type: Boolean,
 				default:true
 			},
@@ -78,6 +95,10 @@
 	
 <style scoped>
 	@import '@/common/css/nvue-whith.css';
+	.nvue-shModal{
+		flex: 1;
+		overflow:hidden
+	}
 	.modal_box{
 		position: fixed;
 		top:0rpx ;
@@ -86,7 +107,7 @@
 	}
 	.but_box{
 		position: fixed;
-		background: #FFFFFF;
+		/* background: #FFFFFF; */
 		border-radius: 48rpx;
 		padding:36rpx ;
 		transition-duration:0.3s;
