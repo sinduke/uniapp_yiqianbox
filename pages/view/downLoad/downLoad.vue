@@ -1,6 +1,6 @@
 <template>
 	<view class="downLoad">
-		<u-navbar title="" :border-bottom='false' class="u-navbar">
+<!-- 		<u-navbar title="" :border-bottom='false' class="u-navbar">
 			<slot>
 				<view class="title">
 					<view class="slot-wrap">
@@ -16,7 +16,7 @@
 					</view>
 				</view>
 			</slot>
-		</u-navbar>
+		</u-navbar> -->
 		<view class="Body">
 			<view class="cards" v-for="(item,index) in pageList" :key='item.game_id'>
 				<view class="" v-if="isActive" style="margin-right: 12rpx;width: 40rpx;height: 40rpx;"	@click="handleDel(index)">

@@ -396,18 +396,7 @@
 				}
 			}
 		},
-		// 领券中心
-		{
-			"path": "pages/my/children/couponsCore/index",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-
-		},
+		
 		// 领券中心nvue
 		{
 		    "path" : "pages/my/children/couponsCore/index1",
@@ -463,21 +452,6 @@
 						"backgroundColor": "#fff",
 						"titleColor": "#1C1C1C",
 						"titleText": "领取记录",
-						"titleAlign": "left"
-					}
-				}
-			}
-		},
-		//通用设置
-		{
-			"path": "pages/my/mySetting/tySetting",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "通用设置",
 						"titleAlign": "left"
 					}
 				}
@@ -633,17 +607,6 @@
 		    		"bounce": "none"
 		    	}
 		    }  
-		},
-		//评论详情
-		{
-			"path": "pages/view/gamedetail/commentDetail",
-			"style": {
-				// 取消默认的原生导航栏
-				"navigationStyle": "custom",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
 		},
 		// 写评论nvue
 		{

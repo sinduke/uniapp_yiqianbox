@@ -34,7 +34,7 @@
 						<view class="dzp-tc-content-text2" v-if="is_free==2">您将消耗50积分</view>
 						<view class="dzp-tc-content-text2" v-else>您本次不消耗积分</view>
 						<view class="dzp-tc-content-text3" v-if="userInfo.my_integral<50&&is_free==2">
-							<u-icon name="info-circle-fill" color="#ff5927" size="28"></u-icon>
+							<!-- <u-icon name="info-circle-fill" color="#ff5927" size="28"></u-icon> -->
 							<text>您的积分不足，快去完成任务赚钱吧</text>
 						</view>
 						<view class="dzp-tc-content-text4">
