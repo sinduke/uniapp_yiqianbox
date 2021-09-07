@@ -1,7 +1,7 @@
 <!-- 自定义导航栏 -->
 <template>
 	<view class="nvue-navbar" @click.stop="stop" :style="{boxShadow: lines?'0px 0px 6px 0px rgba(221, 221, 221, 0.6)':''}">
-	 	<view class="statusBarHeight" :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
+	 	<view class="statusBarHeight" :style="{height:statusBarHeight+'rpx',width:myWidth+'px'}"></view>
 		<view class="title">
 			<view class="slot-left" @click="handleback">
 			<image class="right_icon" ref='handleBack' style="margin-right: 24rpx;" src="@/static/images/left.png" ></image>
@@ -72,7 +72,7 @@
 				return uni.getSystemInfoSync().windowWidth
 			},
 			statusBarHeight() {
-				return uni.getSystemInfoSync().statusBarHeight
+				return uni.getSystemInfoSync().statusBarHeight* (750 / uni.getSystemInfoSync().windowWidth)
 			},
 	
 		},

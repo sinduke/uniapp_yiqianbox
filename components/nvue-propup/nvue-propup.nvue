@@ -202,7 +202,7 @@
 			bind3(){
 				this.bindingx(300,common.getEl(this.$refs.fk1),'transform.scale', 'easeOutElastic(t,.2,.8,300)')
 				uni.navigateTo({
-					url:'/pages/my/comprehensive/feedback/feedback'
+					url:'/pages/my/comprehensive/feedback/feedback1'
 				})
 			},
 			bindingx(timer,element,property,expression){

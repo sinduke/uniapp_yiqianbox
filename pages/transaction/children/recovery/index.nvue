@@ -97,15 +97,16 @@
 					uni.showToast({
 						title:res.data.msg,
 						icon:'none',
-						success: () => {
-							this.isTrue = true
-							setTimeout(()=>{
-								uni.navigateTo({
-									url:'/pages/my/children/login'
-								})
-							},200)
-						}
+						// success: () => {
+							
+						// 	setTimeout(()=>{
+						// 		uni.navigateTo({
+						// 			url:'/pages/my/children/login'
+						// 		})
+						// 	},200)
+						// }
 					})
+					this.isTrue = true
 					return
 				}
 					if (res.data.data.list) {
@@ -121,12 +122,23 @@
 				$api.get('app/recycle/order_list', {
 					classify: this.$store.state.app_id == 100 ? 3 : 4
 				}).then(res => {
-					if(!res.data.data.count){
-					    this.isTrue = true
+					console.log(res)
+					if(res.data.code!==200){
+					   uni.showToast({
+					   	title:res.data.msg,
+					   	icon:'none',
+					   })
+					   this.isTrue = true
+					   return
+					}else if(res.data.data.count==0){
+						 this.isTrue = true
+						
+					}else{
+						console.log(this.isTrue,'this.isTrue')
+						this.pageData = res.data.data.list
+						this.count = res.data.data.count
 					}
-					console.log(this.isTrue,'this.isTrue')
-					this.pageData = res.data.data.list
-					this.count = res.data.data.count
+					
 				})
 			},
 			handleClick(i) {

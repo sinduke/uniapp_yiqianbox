@@ -51,13 +51,13 @@
 						uni.showToast({
 							title:res.data.msg,
 							icon:'none',
-							success: () => {
-								setTimeout(()=>{
-									uni.navigateTo({
-										url:'/pages/my/children/login'
-									})
-								},200)
-							}
+							// success: () => {
+							// 	setTimeout(()=>{
+							// 		uni.navigateTo({
+							// 			url:'/pages/my/children/login'
+							// 		})
+							// 	},200)
+							// }
 						})
 					}
 					

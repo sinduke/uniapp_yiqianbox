@@ -14,7 +14,7 @@
 				<cell v-for="(item,index) in pageData" style="margin-bottom: 84rpx;">
 					<view class="bottom_item">
 						<view class="item_head" :style="{width:$store.state.myWidth-32+'px'}" @click="handleRouter(item.app_id)">
-							<image class="item_img" :src="item.game.ext_info.hot_image" ></image>
+							<image class="item_img" :src="item.game.ext_info.hot_image" :style="{width:myWidth-32+'px'}" mode="widthFix"></image>
 							<view  class="blurs" :style="{width:$store.state.myWidth-32+'px'}">
 								<view class="blurs" ></view>
 								<view style=" left: 16rpx;position: absolute;bottom:18rpx ;">
@@ -78,6 +78,11 @@
 		},
 		components:{
 			nloading
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			}
 		},
 		filters: {
 			// 1.日期格式过滤器

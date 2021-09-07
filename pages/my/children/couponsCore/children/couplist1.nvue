@@ -17,9 +17,9 @@
 				<!-- </scroller> -->
 				
 				<!-- 滑动item -->
-				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth-56+'px',height:730+'rpx'}"  >
+				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth-56+'px',height:580+'rpx'}"  >
 					<swiper-item v-for="(data,i) in pageData" :key='i'>
-						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:730+'rpx'}">
+						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:580+'rpx'}">
 							<view v-for="(item,index) in data.list" :key='index' :style="{width:$store.state.myWidth-56+'px'}">
 								<view class="cell">
 									<view class="cell_left" :style="{width:($store.state.myWidth-56)*0.3+'px'}">
