@@ -1,35 +1,52 @@
 <!-- 添加游戏 -->
 <template>
-	<view class="container">
-		<view class="body" :style="{width:myWidth+'px'}">
-				<view class="u-col"  v-for="(item,index) in pageData" :key="index" :style="{width:myWidth/2.4+'px'}">
-					<view class="u-row">
-						<view class="row_left"  @click="handleRouter(item.game_id, item.gamename)">
-							<image style="width: 140rpx;height: 140rpx;margin-right: 12rpx;" :src="item.game_new_icon||item.game_icon" ></image>
+	<view class="container" style="flex: 1;background: #fff;">
+		<list v-if="pageData" @loadmore='loadmore' loadmoreoffset='10'>
+			<cell>
+				<view class="body" :style="{width:myWidth+'px'}">
+						<view class="u-col"  v-for="(item,index) in pageData" :key="index" :style="{width:myWidth/2.4+'px'}">
+							<view class="u-row">
+								<view class="row_left"  @click="handleRouter(item.game_id, item.gamename)">
+									<image style="width: 140rpx;height: 140rpx;margin-right: 12rpx;" :src="item.game_new_icon||item.game_icon" ></image>
+								</view>
+								<view  class="row_right"  @click="handleRouter(item.game_id, item.gamename)">
+									<text class="gamename"  style="width: 160rpx;">{{item.gamename}}</text>
+									<text class="xiaohao">小号数：{{item.account_cnt}}</text>
+								</view>
+							</view>
 						</view>
-						<view  class="row_right"  @click="handleRouter(item.game_id, item.gamename)">
-							<text class="gamename"  style="width: 160rpx;">{{item.gamename}}</text>
-							<text class="xiaohao">小号数：{{item.account_cnt}}</text>
-						</view>
-					</view>
 				</view>
-		</view>
+			</cell>
+			<cell v-if="loadinging">
+				<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+					<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+				</view>
+			</cell>
+		</list>
+		
+		<nloading v-else :isNoData="isNoData"></nloading>
 	</view>
 </template>
 
 <script>
 	import { $api } from '@/config/api.js';
+	import nloading from '@/components/nvue-loading/nvue-loading'
 	export default {	
 		data() {
 			return {
+				isNoData:false,
+				loadinging:false,
 				params: {
 					page: 1,
 					offset: 20,
-					is_seft: 1
+					is_seft: 1,
+					count:0,
 				},
 				pageData: []
-
 			}
+		},
+		components:{
+			nloading
 		},
 		computed: {
 			myHeight() {
@@ -41,23 +58,27 @@
 			
 		},
 		methods: {
+			//加载更多
+			loadmore(){
+				if(this.params.count>this.pageData.length){
+					this.loadinging = true
+					this.params.page++
+					this.getData(this.params)	
+				}
+			},
 			getData(params) {
 			 $api.get( "user/account/game/list",
 				{	...params
 				}).then(res => {
 					if(res.data.code==200){
-						this.pageData = res.data.data.list;
+						this.isNoData = true
+						this.loadinging = false
+						this.pageData = this.pageData.concat(res.data.data.list)
+						this.params.count = res.data.data.count
 					}else{
 						uni.showToast({
 							title:res.data.msg,
 							icon:'none',
-							// success: () => {
-							// 	setTimeout(()=>{
-							// 		uni.navigateTo({
-							// 			url:'/pages/my/children/login'
-							// 		})
-							// 	},200)
-							// }
 						})
 					}
 					

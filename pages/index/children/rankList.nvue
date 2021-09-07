@@ -181,13 +181,17 @@
 					...data,
 					client_id:this.$store.state.client_id
 				}).then(res => {
-					this.pageData = this.pageData.concat(res.data.data.list)
-					this.count = res.data.data.count
-					setTimeout(()=>{	
-			       	this.loadinging = false;
-					this.bind();
-					},100)
-					this.isNoData = true
+					if(res.data.code==200){
+						this.pageData = this.pageData.concat(res.data.data.list)
+						this.count = res.data.data.count
+						setTimeout(()=>{	
+						this.loadinging = false;
+						this.bind();
+						},100)
+					}else{
+						this.isNoData = true
+					}
+					
 				})
 
 			},

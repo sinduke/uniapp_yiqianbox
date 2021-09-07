@@ -96,9 +96,8 @@
 					<view class="box">
 						<view class="box-header" v-if="newsdata">
 							<text class="box-header-item">{{newsdata.topic_name}}</text>
-							<text class="box-header-item1"	@click="specialRouter(newsdata.topic_name,newsdata.topic_id)">查看更多</text>
 						</view>
-						<view class="box-content-img" v-if="newsdata">
+						<view class="box-content-img" v-if="newsdata" @click="specialRouter(newsdata.topic_name,newsdata.topic_id)">
 							<image :style="{width:myWidth-32+'px'}" :src="/http/i.test(newsdata.image)?newsdata.image:'https:'+ newsdata.image" 	mode="widthFix" style="border-radius: 20rpx;">
 							</image>
 						</view>
@@ -234,9 +233,9 @@
 					<view class="box">
 						<view class="box-header" >
 							<text class="box-header-item" v-if="hotdata">{{hotdata.topic_name}}</text>
-							<text class="box-header-item1"	@click="specialRouter(hotdata.topic_name,hotdata.topic_id)">查看更多</text>
+							
 						</view>
-						<view class="box-content-img" v-if="hotdata">
+						<view class="box-content-img" v-if="hotdata" @click="specialRouter(hotdata.topic_name,hotdata.topic_id)">
 							<image :style="{width:myWidth-32+'px'}" :src="/http/i.test(hotdata.image)?hotdata.image:'https:'+ hotdata.image"	mode="widthFix" style="border-radius: 20rpx;"></image>
 						</view>
 						<view ref="box_icon5" style="height:250rpx;">
