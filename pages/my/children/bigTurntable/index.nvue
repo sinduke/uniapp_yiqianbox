@@ -19,7 +19,7 @@
 			</view>
 			
 			
-			<shModal  title="" :textType="false" :isShow="show" :showSubmit='false' :modalMode='false'>
+			<shModal  title="" :textType="false" :isShow="show" :showSubmit='false' :modalMode='false' style="margin-top:100rpx">
 				<!-- 兑换抽奖机会 -->
 				<view class="dzp-tc" v-if="handleShow" :style="{width:myWidth/1.4+'px',height: '600rpx'}" style="flex-direction: row;align-items: center; justify-content: center;">
 					<image src="@/static/images/my/dzp-tck.png" :style="{width:myWidth/1.2+'px',height: '600rpx'}"></image>
@@ -44,7 +44,7 @@
 					<image src="@/static/images/my/dzp-wzj.png" :style="{width:myWidth/1.2+'px',height: '600rpx'}"></image>
 					
 					<view class="dzp-tc-content">
-						<image src="@/static/images/0.png" mode="widthFix" style="width:220rpx;height: 300rpx" />
+						<image src="@/static/images/0.png" mode="widthFix" style="width:200rpx;height: 300rpx" />
 						<text class="dzp-tc-content-xx" style="color: #999;font-size: 32rpx;margin-bottom:12rpx">{{order.prize_name}}</text>
 						<view class="" style="display: flex; justify-content: center;">
 							<text class="buttons" @click="handleNo" style="margin-bottom: 5rpx;">再来一次</text>
@@ -57,7 +57,7 @@
 				<view class="dzp-tc1" v-else :style="{width:myWidth/1.4+'px',height: '600rpx'}" style="flex-direction: row;align-items: center; justify-content: center;">
 					<image src="@/static/images/my/dzp-zj.png" :style="{width:myWidth/1.2+'px',height: '600rpx'}"></image>
 					<view class="dzp-tc-content">
-						<image :src="order.prize_img" mode="widthFix" style="width:200rpx;height:120rpx" />
+						<image :src="order.prize_img" mode="widthFix" style="width:200rpx;height:120rpx;margin-top: 48rpx;" />
 						<text style="margin:10rpx 0;color: #ff5927;font-size: 32rpx;font-weight: 700;">{{order.prize_name}}</text>
 						<view class="" style="display: flex; justify-content: center;">
 							<text class="buttons" @click="handleReceive">立即领取</text>
@@ -137,6 +137,7 @@
 				$api.get("app/shop/big_wheel_list", {
 					mg_mem_id: this.userInfo.mem_id,
 				}).then((res) => {
+					console.log(res,'big_wheel_listbig_wheel_list')
 					this.is_free = res.data.data.is_free;
 					this.grid_info_arr = res.data.data.list.sort((a, b) => {
 						return a.prize_order - b.prize_order;
@@ -209,6 +210,7 @@
 							mem_id: this.userInfo.mem_id,
 						},
 					).then((res) => {
+						console.log(res,'ssssssssssssssssssssss')
 						this.order = res.data.data;
 						this.handleShow = false;
 						this.lottery_draw_param.winingIndex = this.order.prize_order - 1;

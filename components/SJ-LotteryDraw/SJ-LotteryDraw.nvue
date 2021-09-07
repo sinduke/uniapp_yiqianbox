@@ -2,8 +2,8 @@
 	<view class="lottery_container">
 		<view class="grid_wrap" :style="{width:myWidth-60+'px',height:600+'rpx'}">
 				<view class="lottery_grid" :style="{width:myWidth-60+'px'}">
-					<view class="lottery_item" :style="{width:myWidth/4+'px',height:myWidth/4+'px',backgroundImage:index==4?'linear-gradient(to bottom right,#ff8500,#ff5927);':'linear-gradient(to bottom right,#fff,#fcfcfc);'}" v-for="(item, index) in grid_info_arr" :class="{ active: current_index == index && index != 8 }" :key="index" @click="luck_draw" :data-index="index">
-						<image v-if="index != 4" class="grid_img" mode='widthFix' style="width: 100rpx;height:100rpx" :src="item.prize_img"/>
+					<view class="lottery_item" :style="{width:myWidth/4+'px',height:myWidth/4+'px',background:index == 4?'#ff8500':'#fff'}" v-for="(item, index) in grid_info_arr" :class="{ active: current_index == index && index != 4 }" :key="index" @click="luck_draw" :data-index="index">
+						<image v-if="index != 4" class="grid_img" mode='widthFix' style="width: 120rpx;height:120rpx" :src="item.prize_img"/>
 						<text class="name" :style="{fontSize:index==4?'36rpx':'28rpx',color:index==4?'#fff':'#FF4810'}">{{ index == 4 ? '抽奖' : item.prize_name }}</text>	 
 						<text class="name" style="font-size: 24rpx;color: #fff;">{{ index == 4 ? '(消耗50积分)' : '' }}</text>	 
 					</view>
@@ -67,7 +67,13 @@
 									...lottery_draw_param
 								},
 								function(index, count) {
+									if(index==4){
+										that.current_index = 8
+									}else{
 									that.current_index = index;
+										
+									}
+									
 								}
 							);
 
@@ -108,13 +114,16 @@
 		justify-content: center;
 		align-items: center;
 		margin-right: 6rpx;
-		margin-top: 6rpx;
+		margin-top: 10rpx;
 		border-radius: 20rpx;
 	}
 	.name{
 		font-size: 28rpx;
 		color: #FF4810;
 		font-weight: 700;
+	}
+	.active{
+		background-image: linear-gradient(to bottom,#FFEC24,#FFF9D1) !important;
 	}
 	/* @import './SJ-LotteryDraw.css'; */
 </style>
