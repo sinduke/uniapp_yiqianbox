@@ -12,7 +12,7 @@
 				<view class="my_integral">我的积分：{{userInfo.my_integral}}</view>
 			</view>
 
-			<view class="bigTrb" :style="{margin:'0 auto',marginTop:myHeight-750+'rpx'}">
+			<view class="bigTrb" :style="{marginTop:myHeight-750+'rpx'}">
 
 				<!-- 组件 -->
 				<view class="bigzhuanp">
@@ -238,7 +238,7 @@
 	.bg123 {
 		overflow: hidden;
 		background-color: #f7a085;
-		position: relative;
+		position: absolute;
 	}
 
 	.bigTrb {

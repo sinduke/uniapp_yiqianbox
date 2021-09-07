@@ -8,7 +8,7 @@
 						<text>{{ index == 8 ? '抽奖' : item.prize_name }}</text>
 						 
 					</view>
-				</ul>
+				</view>
 			</view>
 		</view>
 	</view>

@@ -5,12 +5,10 @@
 		</view>
 		<list :show-scrollbar="false" :style="{width:myWidth+'px',height:myHeight-1+'rpx'}">
 			<cell>
-				<view class="img" :style="{width:myWidth+'px'}">
 				<view class="img" >
 					<image :style="{width:myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
 				</view>
-				
-				
+
 				<view class="head">
 					<view class="head_top">
 						<text class="top_text1">{{new Date()/1000|dateFormat('yyyy.MM.dd')}}</text>

@@ -483,23 +483,6 @@
 				}
 			}
 		},
-
-
-		// 修改手机号
-		{
-			"path": "pages/view/changeMobile/changeMobile",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "绑定手机号",
-						"titleAlign": "left"
-					}
-				}
-			}
-		},
 		//修改手机号nvue
 		{
 		    "path" : "pages/my/myAdministration/children/changeMobile/index1",
@@ -659,21 +642,6 @@
 				"navigationStyle": "custom",
 				"app-plus": {
 					"bounce": "none"
-				}
-			}
-		},
-		{
-			// 写评论
-			"path": "pages/view/gamedetail/children/WrComment",
-			"style": {
-				"app-plus": {
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "写评论"
-					}
 				}
 			}
 		},
