@@ -2,20 +2,14 @@
 	<view class="lottery_container">
 		<view class="grid_wrap">
 			<view class="lottery_wrap">
-				<ul class="lottery_grid">
-					<li v-for="(item, index) in grid_info_arr" :class="{ active: current_index == index && index != 8 }"
-						:key="index" @click="luck_draw" :data-index="index">
-						<image v-if="index != 8" class="grid_img" mode='widthFix' style="width: 100rpx;"
-							:src="item.prize_img" alt="">
-							{{ index == 8 ? '抽奖' : item.prize_name }}
-					</li>
+				<view class="lottery_grid">
+					<view v-for="(item, index) in grid_info_arr" :class="{ active: current_index == index && index != 8 }" :key="index" @click="luck_draw" :data-index="index">
+						<image v-if="index != 8" class="grid_img" mode='widthFix' style="width: 100rpx;" :src="item.prize_img" alt=""/>
+						<text>{{ index == 8 ? '抽奖' : item.prize_name }}</text>
+						 
+					</view>
 				</ul>
 			</view>
-		<!-- 	<view class="lottery_wrap_border">
-				<ul v-for="(item, index) in 4" :key="index">
-					<li v-for="(item, index) in 12" :key="index"></li>
-				</ul>
-			</view> -->
 		</view>
 	</view>
 
@@ -89,6 +83,6 @@
 	};
 </script>
 
-<style scoped lang="css">
-	@import './SJ-LotteryDraw.css';
+<style scoped>
+	/* @import './SJ-LotteryDraw.css'; */
 </style>

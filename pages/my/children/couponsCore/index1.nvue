@@ -5,6 +5,7 @@
 		</view>
 		<list :show-scrollbar="false" :style="{width:myWidth+'px',height:myHeight-1+'rpx'}">
 			<cell>
+				<view class="img" :style="{width:myWidth+'px'}">
 				<view class="img" >
 					<image :style="{width:myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
 				</view>
@@ -57,9 +58,6 @@
 					</scroller>
 					<nloading v-else style="margin-top: -60rpx;" :isNoData="isNoData"  :style="{width:myWidth-32+'px',height:450+'rpx'}"></nloading>
 				</view>
-			
-			
-				
 			
 				<view class="head1" :style="{width:myWidth-32+'px',height:1000+'rpx'}">
 					<text class="head_text1">优选好券</text>

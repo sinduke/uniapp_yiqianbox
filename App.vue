@@ -1,12 +1,13 @@
 <script>
 	import store from '@/store/store.js'
+	import {$api} from '@/config/api.js';
 	export default {
 		globalData: {
 			$i18n: {},
 			$t: {},
 			store
 		},
-		onLaunch: function() {
+		onLaunch() {
 			this.globalData.$i18n = this.$i18n
 			this.globalData.$t = str => this.$t(str)
 			// 读取client_id

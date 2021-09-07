@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import uView from "uview-ui";
+// import uView from "uview-ui";
 
 // 全局公用方法
 import common from "@/common/js/common.js";
@@ -20,11 +20,9 @@ import store from './store/store.js';
 Vue.prototype.$store = store;
 
 //引入ui组件
-Vue.use(uView);
+// Vue.use(uView);
 Vue.config.productionTip = false
-//引入Lottie动画资源
-// import lottie from 'vue-lottie';
-// Vue.component('lottie', lottie)
+
 
 App.mpType = 'app'
 //国际化语言
