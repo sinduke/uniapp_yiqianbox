@@ -18,7 +18,7 @@
 								</cover-image>
 								<view class="" style="position: absolute;top: -28rpx;">
 									<view class="head" style="margin-left: 5rpx;" :style="{width:$store.state.myWidth-36+'px'}">
-										<image class="head_img" :src="item.img" mode="widthFix"></image>
+										<image class="head_img" :style="{width:$store.state.myWidth-32+'px'}" :src="item.img" mode="widthFix"></image>
 										<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
 											<text class="head_text">{{item.post_title}}</text>
 										</view>
@@ -52,9 +52,9 @@
 							<cell  v-for="(item,index) in pageData2" @click="handleRouterdetail(item.news_id,item.post_hits)" :style="{width:$store.state.myWidth-32+'px'}">
 								<cover-image :style="{width:$store.state.myWidth-32+'px'}" src="../../../../static/images/cards2.png" style="margin-bottom: 24rpx;position: relative;" mode="widthFix">
 								</cover-image>
-								<view class="" style="position: absolute;top: -28rpx;">
+								<view class="" style="position: absolute;top: -28rpx">
 									<view class="head" :style="{width:$store.state.myWidth-36+'px'}" style="margin-left: 5rpx;">
-										<image class="head_img" :src="item.img" mode="widthFix"></image>
+										<image  class="head_img" :style="{width:$store.state.myWidth-32+'px'}" :src="item.img" mode="widthFix"></image>
 										<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
 											<text class="head_text">{{item.post_title}}</text>
 										</view>
@@ -84,11 +84,11 @@
 					<swiper-item>
 						<list @loadmore='loadmore' loadmoreoffset='10' class="list" v-if="pageData3.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell  v-for="(item,index) in pageData3" @click="handleRouterdetail(item.news_id,item.post_hits)" :style="{width:$store.state.myWidth-32+'px'}">
-								<cover-image :style="{width:$store.state.myWidth-32+'px'}" src="../../../../static/images/cards2.png" style="position: relative;margin-bottom: 24rpx;" mode="widthFix">
+								<cover-image :style="{width:myWidth-32+'px'}" src="../../../../static/images/cards2.png" style="position: relative;margin-bottom: 24rpx;" mode="widthFix">
 								</cover-image>
 								<view class="" style="position: absolute;top: -28rpx;">
 								<view class="head" :style="{width:$store.state.myWidth-36+'px'}" style="margin-left: 5rpx;">
-									<image class="head_img" :src="item.img" mode="widthFix"></image>
+									<image class="head_img"  :style="{width:myWidth-32+'px'}" :src="item.img" mode="widthFix"></image>
 									<view class="head_box" :style="{width:$store.state.myWidth-32+'px'}">
 										<text class="head_text">{{item.post_title}}</text>
 									</view>

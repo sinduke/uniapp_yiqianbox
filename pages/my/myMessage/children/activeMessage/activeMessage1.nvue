@@ -2,7 +2,7 @@
 	<view class="container">
 		 <myNavbar title='互动消息' :type="1" @click="handleDelete" right radius :src="isActive?'../../../../../static/images/my/xxxx.png':'../../../../../static/images/my/rwzx-xgnc.png'" ></myNavbar>
 		 <view class="box" :style="{width:myWidth+'px'}">
-			<list :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false" v-if="pageDate">
+			<list :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false" v-if="count">
 				<cell style="height: 32rpx;"></cell>
 				<cell  @click="tozan" v-if="likeDate.is_like_read">
 					<view class="head" :style="{width:myWidth-32+'px'}">
@@ -78,6 +78,7 @@
 				isNumber:0,
 				type:true,
 				likeDate:[],
+				count:0,
 				params:{
 					read_type: "comment",
 					count:0,
@@ -85,7 +86,8 @@
 			}
 		},
 		components: {
-			myNavbar
+			myNavbar,
+			nloading 
 		},
 		onShow(){
 			this.getPageDate()
@@ -108,8 +110,11 @@
 			getPageDate(){
 				$api.get("v8/comments/message_list",{	
 				}).then(res=> {
+					console.log(this.isNoData )
 					this.isNoData = true
+					console.log(this.isNoData )
 					this.pageDate = res.data.data.list
+					this.count = res.data.data.count
 					this.likeDate = res.data.data
 				})
 			},

@@ -4,30 +4,50 @@
 		<navbar title='返利申请' router='/pages/customerService/children/rechargeRebate/children/applicatRecord1'
 			src='../../../../static/images/my_details.png'></navbar>
 		<view class="box">
+			
 			<view class="inputs">
 				<image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 				<input class="input" v-model="formData.game_name" type="text"  placeholder='去找你的想要的游戏'
 					placeholder-style='font-size:16px;color:#c1c1c1'  @input='search'
 					:style="{width:myWidth/1.4+'px'}"></input>
 			</view>
-			<list class="list" :style="{width:$store.state.myWidth+'px',height:myHeight-278+'rpx'}" v-if="list.length>0">
-				<cell class="cell" :style="{width:$store.state.myWidth+'px'}" v-for="(item,index) in list" v-if="item.is_recycle!=1" :key='index'>
-					<image class="box_left" mode="widthFix" :src="item.icon"  @click="handleRouter(item)"></image>
-					<view class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
-						<view class="right_1" :style="{width:($store.state.myWidth-128)*0.75+'px'}" @click="handleRouter(item)">
-							<text class="text1">{{item.name}}</text>
-							<text class="text2">当前对应区服：{{item.server_name}}</text>
-							<view style="flex-direction: row;">
-								<text class="text4">当前返利状态：</text>
-								<text class="text3" :style="{color:item.is_rebate==1?'#FC6170':item.is_rebate==2?'#2BC8F9':'#000'}">{{item.is_rebate==1?'可申请返利':item.is_rebate==2?'已申请返利':item.is_rebate==3?'不可申请返利':'返利已发放'}}
-								</text>
+			<list @loadmore='loadmore' loadmoreoffset='10' class="list" :style="{width:$store.state.myWidth+'px',height:myHeight-278+'rpx'}" v-if="list.length>0">
+				<cell :style="{width:$store.state.myWidth+'px'}" v-for="(item,index) in list" v-if="item.is_recycle!=1" :key='index'>
+					<view class="cell" v-if="platform=='android'">
+						<image class="box_left" mode="widthFix" :src="item.icon"  @click="handleRouter(item)"></image>
+						<view class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
+							<view class="right_1" :style="{width:($store.state.myWidth-128)*0.75+'px'}" @click="handleRouter(item)">
+								<text class="text1">{{item.name}}</text>
+								<text class="text2">当前对应区服：{{item.server_name}}</text>
+								<view style="flex-direction: row;">
+									<text class="text4">当前返利状态：</text>
+									<text class="text3" :style="{color:item.is_rebate==1?'#FC6170':item.is_rebate==2?'#2BC8F9':'#000'}">{{item.is_rebate==1?'可申请返利':item.is_rebate==2?'已申请返利':item.is_rebate==3?'不可申请返利':'返利已发放'}}
+									</text>
+								</view>
 							</view>
+							<image @click="handleRouter(item)" src="../../../../static/images/view/left-gred.png" style="width:18rpx;height: 30rpx;"  mode=""></image>
 						</view>
-						<image @click="handleRouter(item)" src="../../../../static/images/view/left-gred.png" style="width:18rpx;height: 30rpx;"  mode=""></image>
+					</view>
+					<view class="cell" v-if="platform=='ios'">
+						<image class="box_left" mode="widthFix" :src="item.icon"  @click="handleRouter(item)"></image>
+						<view style="margin-top: 0rpx;" class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
+							<view class="right_1" :style="{width:($store.state.myWidth-128)*0.75+'px'}" @click="handleRouter(item)">
+								<text class="text1">{{item.name}}</text>
+								<text class="text2">当前对应区服：{{item.server_name}}</text>
+								<view style="flex-direction: row;">
+									<text class="text4">当前返利状态：</text>
+									<text class="text3" :style="{color:item.is_rebate==1?'#FC6170':item.is_rebate==2?'#2BC8F9':'#000'}">{{item.is_rebate==1?'可申请返利':item.is_rebate==2?'已申请返利':item.is_rebate==3?'不可申请返利':'返利已发放'}}</text>
+								</view>
+							</view>
+							<image @click="handleRouter(item)" src="../../../../static/images/view/left-gred.png" style="width:18rpx;height: 30rpx;"  mode=""></image>
+						</view>
 					</view>
 				</cell>
-				<loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
-				</loading>
+				<cell v-if="loadinging">
+					<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
+				</cell>
 			</list>
 			<nloading v-else :isNoData="isNoData"></nloading>
 		</view>
@@ -67,6 +87,9 @@
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
+			platform(){
+				return uni.getSystemInfoSync().platform
+			}
 		},
 		onShow() {
 			this.list = []
@@ -75,7 +98,7 @@
 		},
 		methods: {
 			//加载更多
-			onloading(e){
+			loadmore(){
 				if(this.count>this.list.length){
 					this.loadinging = true
 					this.formData.page++
@@ -136,24 +159,21 @@
 	/* list */
 	.cell{
 		flex-direction: row;
-		align-items: center;
-		
 	}
 	.box_left{
 		width:160rpx ;
 		height:160rpx ;
-		margin-right: 32rpx;
+		margin: 32rpx 32rpx 32rpx 0;
+		
 	}
 	.box_right{
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
+		margin-top: 32rpx;
 		border-bottom: 2rpx solid #EFEFEF; 
-		margin-top:40rpx ;
-		padding-bottom: 15rpx;
 	}
 	.text1{
-		margin-top: 10rpx;
 		color: #1C1C1C;
 		font-weight: 500;
 		font-size:32rpx ;

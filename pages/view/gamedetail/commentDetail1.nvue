@@ -1,10 +1,13 @@
 <template>
 	<view class="container">
 		<myNavbar :isleft="true" :src1="pageData.new_icon?pageData.new_icon:pageData.icon"  :title="pageData.gamename" :right="false"  ></myNavbar>
+		
+		
 		<list :style="{height:myHeight-100+'rpx'}" :show-scrollbar="false">
 			<cell class="box">
 				<text style="margin-top: 200rpx;"></text>
 				<!-- 父评论 -->
+				
 				<view class="head" :style="{width:myWidth-32+'px'} ">
 					<view class="head_le">
 						<image class="img" :src="commentData.mem_avatar" mode="" ></image>
@@ -71,12 +74,14 @@
 				</view>
 			</cell>
 		</list>
+		
 		<!-- 输入框 -->
 		<view :style="{width:myWidth+'px'}" class="input_box"  style="box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);">
 			<view class="input_box2">
 				<view class="input_box1" :style="{width:myWidth-100+'px'}">
-					<textarea @keyboardheightchange="keyboardheightchange"  v-model="rate.comment"  style="font-size: 30rpx;font-weight: 400;" :auto-height = "true"  :fixed="true" value="" placeholder="请输入回复内容..." :placeholder-style="{fontSize:'16rpx'}" />
+					<textarea :style="{width:myWidth-150+'px'}" @keyboardheightchange="keyboardheightchange"  v-model="rate.comment"  style="font-size: 30rpx;font-weight: 400;" :auto-height = "true"  :fixed="true" value="" placeholder="请输入回复内容..." :placeholder-style="{fontSize:'16rpx'}" />
 				</view>
+				
 				<view @click="publicComment" style="width: 64rpx;height: 64rpx;box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);border-radius: 64rpx;justify-content: center;align-items: center;">
 					<image src="../../../static/images/index/detail-button.png" style="width: 40rpx;height: 40rpx;" mode="widthFix"></image>
 				</view>
