@@ -44,7 +44,7 @@
 			</scroll-view>
 		</view>
 		<showpop :topHeight="3" :isShow="isShow" :textType="false" :titleType="false" :paddingType="true" :buttonType="false" @remove="remove">
-			<image src="@/static/images/my/jfsc-jfgz.png" mode="widthFix" class="showimg">
+			<image :style="{width:myWidth*0.8+'px'}" src="@/static/images/my/jfsc-jfgz.png" style="border-radius:40rpx;" mode="widthFix" class="showimg">
 				<text class="show_text1">1.每日签到，实名认证，充值获取积分。</text>
 				<text class="show_text2">2.完成游戏任务，获取积分。</text>
 				<view class="show_box" @click="remove">
@@ -53,7 +53,7 @@
 			</image>
 		</showpop>
 		<showpop :isShow="handleShow" :textType="false" :titleType="false" :paddingType="true" :buttonType="false" @remove="remove">
-			<image src="@/static/images/my/jfsc-qrdh.png" mode="widthFix" class="showimg">
+			<image :style="{width:myWidth*0.8+'px'}" src="@/static/images/my/jfsc-qrdh.png" style="border-radius: 40rpx;"  mode="widthFix" class="showimg">
 				<view class="img_box" style="position:absolute" :style="{width:$store.state.myWidth*0.7,left:$store.state.myWidth*0.05,bottom:$store.state.myWidth*0.05}">
 					<view style="background: #F7F7FF;flex-direction: row;padding:30rpx;border-radius:10rpx;" :style="{width:$store.state.myWidth*0.7}" >
 						<image style="width: 90rpx;height: 90rpx;border-radius:45rpx " src="../../../../static/images/ptbicon.png" mode="widthFix"></image>
