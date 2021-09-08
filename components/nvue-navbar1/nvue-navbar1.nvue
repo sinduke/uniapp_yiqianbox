@@ -1,0 +1,184 @@
+<!-- 自定义导航栏 -->
+<template>
+	<view class="nvue-navbar" @click.stop="stop" :style="{boxShadow: lines?'0px 0px 6px 0px rgba(221, 221, 221, 0.6)':''}">
+	 	<view class="statusBarHeight" :style="{height:statusBarHeight+'rpx',width:myWidth+'px'}"></view>
+		<view class="title">
+			<view class="slot-left" @click="handleback">
+			<image class="right_icon" ref='handleBack' style="margin-right: 24rpx;" src="@/static/images/left.png" ></image>
+			<image v-if="isleft" :src="src1" mode="widthFix" class="right_icon1" ></image>	
+			<text :class="{customer1:isleft==true}" class="customer" >{{title}}</text>
+			</view>	
+			<view class="slot-center">
+				<slot></slot>
+			</view>
+			<view class="slot-right" v-if="right">
+				<view :class="{radius}"  @click="handleRouter" style="box-shadow: 0px 0px 6px 0px rgba(180, 180, 180, 0.6);">
+					<image :src="src" mode="widthFix" class="right_icon" ></image>	
+				</view>
+			</view>
+			
+		</view>
+	</view>
+</template>
+
+<script>
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	export default {
+		data(){
+			return{
+				
+			}
+		},
+		props:{
+			title:{
+				type:String,
+				default:''
+			},
+			router:{
+				type:String,
+				default:''
+			},
+			radius:{
+				default:true
+			},
+			right:{
+				default:true
+			},
+			lines:{
+				default:true
+			},
+			isleft:{
+				default:false
+			},
+			src:{
+				type:String,
+				default:''
+			},
+			src1:{
+				type:String,
+				default:''
+			},
+			type:{
+				default:0
+			},
+			
+		},
+		computed: {
+			i18n() {
+				return globalData.$t('index')
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			statusBarHeight() {
+				return uni.getSystemInfoSync().statusBarHeight* (750 / uni.getSystemInfoSync().windowWidth)
+			},
+	
+		},
+		methods:{
+			stop(){
+				
+			},
+			handleRouter(){
+				if(this.type){
+					this.$emit("click")
+					return 
+				}
+				uni.navigateTo({
+					url:this.router
+				})
+			},
+			handleback(){
+				this.bin()
+			},
+			//动画
+			bin() {
+				let handleBack = common.getEl(this.$refs.handleBack)
+				let binx = BindingX.bind({
+						eventType: 'timing',
+						exitExpression: 't>300',
+						props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
+							{
+								element: handleBack, //动画元素
+								property: 'transform.scale', //动画属性
+								expression: `linear(t,1,-.4,300)`
+							},
+							{
+								element: handleBack, //动画元素
+								property: 'opacity', //动画属性
+								expression: `linear(t,1,-.4,300)`
+							}
+			
+						]
+					}, e => {
+						if (e.state == 'start') {
+							setTimeout(() => {
+								uni.navigateBack({
+									delta: 1
+								})
+							}, 300)
+						}
+					}
+			
+				);
+			
+			},
+			
+		}
+	}
+</script>
+
+<style scoped>
+	.nvue-navbar{
+		background-color:#fff ;
+		position: fixed;
+	}
+	.statusBarHeight{
+		background-color: #fff;
+	}
+	.title{
+		height: 90rpx;
+		flex-direction: row;
+        align-items: center;
+		justify-content: space-between;
+		padding:0 24rpx;
+	}
+	.slot-left{
+		flex-direction: row;
+		align-items: center;
+	}
+	.right_icon{
+		width: 35rpx;
+		height: 35rpx;
+	
+	}
+	.right_icon1{
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 24rpx;
+		margin-right: 24rpx;
+	}
+	.customer{
+		font-weight: 400;
+		font-size: 32rpx;
+	}
+	.customer1{
+		font-weight: bold;
+		font-size: 36rpx;
+	}
+	.slot-right{
+		flex-direction: row;
+		align-items: center;
+	}
+	.radius{
+		width: 60rpx;
+		height: 60rpx;
+		border-radius: 60rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		
+	}
+
+</style>

@@ -43,7 +43,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<showpop :isShow="isShow" :textType="false" :titleType="false" :paddingType="true" :buttonType="false" @remove="remove">
+		<showpop :topHeight="3" :isShow="isShow" :textType="false" :titleType="false" :paddingType="true" :buttonType="false" @remove="remove">
 			<image src="@/static/images/my/jfsc-jfgz.png" mode="widthFix" class="showimg">
 				<text class="show_text1">1.每日签到，实名认证，充值获取积分。</text>
 				<text class="show_text2">2.完成游戏任务，获取积分。</text>

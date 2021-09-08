@@ -1,4 +1,5 @@
 <template>
+	<!-- 实名认证 -->
 	<view class="container" :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
 		<view class="lineShowdow" ></view>
 		<view class="box" :style="{width:myWidth+'px'}">
@@ -187,6 +188,8 @@
 		border-radius:50rpx;
 		height:100rpx ;
 		border:2rpx solid #E1E1E1;
+		flex-direction: row;
+		align-items: center;
 	}
 	.button_text{
 		color: #FF4810;

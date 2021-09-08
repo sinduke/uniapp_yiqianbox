@@ -1,22 +1,25 @@
 <template>
 	<view class="downLoad">
-<!-- 		<u-navbar title="" :border-bottom='false' class="u-navbar">
-			<slot>
+		<view style="margin-top: 80rpx; " title="" :border-bottom='false' >
+			
+			<view>
 				<view class="title">
-					<view class="slot-wrap">
+					
+					<view class="slot-wrap" style="align-items: center;display: flex;flex-wrap: row;" @click="goback">
+						<image  ref='handleBack' style="margin-right: 50rpx;width: 35rpx;height: 35rpx;" src="@/static/images/left.png" ></image>
 						<text class="customer" style="font-size: 32rpx;font-weight: 400;margin-left: -20rpx;">下载管理</text>
 					</view>
 					<view class="slot-right">
 						<view class="radius">
-							<text class="iconfont" style="font-weight: 400;font-size: 32rpx;" @click="isActive=false"
-								v-if="isActive">&#xe608;</text>
-							<text class="iconfont" style="font-weight: 400;font-size: 32rpx;" @click="handleDelete"
-								v-else>&#xe8b0;</text>
+							<image @click="isActive=false"  style="font-weight: 400;font-size: 32rpx;width: 40rpx;height: 40rpx;" v-if="isActive" src="@/static/images/my/xxxx.png" mode=""></image>
+							<image  @click="handleDelete"  style="font-weight: 400;font-size: 32rpx;width: 40rpx;height: 40rpx;" v-else src="@/static/images/my/rwzx-xgnc.png" mode=""></image>
+							
 						</view>
 					</view>
 				</view>
-			</slot>
-		</u-navbar> -->
+			</view>
+		</view>
+		
 		<view class="Body">
 			<view class="cards" v-for="(item,index) in pageList" :key='item.game_id'>
 				<view class="" v-if="isActive" style="margin-right: 12rpx;width: 40rpx;height: 40rpx;"	@click="handleDel(index)">
@@ -84,6 +87,11 @@
 			}
 		},
 		methods: {
+			goback(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			toDetail(item) {
 				uni.navigateTo({
 					url: "/pages/view/gamedetail/gamedetail?gameid=" + item.game_id

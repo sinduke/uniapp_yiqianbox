@@ -17,7 +17,7 @@ export default {
 	// 设备码
 	equipmentCode: "",
 	// client_id
-	client_id:,
+	client_id:4231,
 	systemInfoSync: '',
 	//设备高度
 	myHeight: uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth),

@@ -265,8 +265,11 @@
 			/* @include button(32rpx, 10rpx, 32rpx); */
 			}
 		.button {
-			/* white-space: nowrap; */
+			/*  */
 			lines: 1;
 			font-size: 28rpx;
+			/* #ifdef APP-VUE */
+			white-space: nowrap;
+			/* #endif */
 		}
 </style>

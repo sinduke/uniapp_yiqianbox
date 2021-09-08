@@ -12,8 +12,8 @@
 		</view>
 		<view class="speciallist"  :style="{height:myHeight-180+'rpx',width:myWidth+'px'}">	
 		 <list v-if="pageData.length>0" ref="list" loadmoreoffset='10' :show-scrollbar='false' :style="{height:myHeight-180+'rpx'}" class="list" @loadmore='loadmore'>
-		 <refresh @refresh="onrefresh"  :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
-		 	<view class="refreshImages" >
+		 <refresh :style="{width:myWidth-32+'px'}" @refresh="onrefresh"  :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
+		 	<view :style="{width:myWidth-32+'px'}" class="refreshImages" >
 		 		<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
 		 	</view>
 		 </refresh>

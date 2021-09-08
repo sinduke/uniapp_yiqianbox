@@ -1,13 +1,13 @@
 <template>
-	<view class=""  v-if="isShow">
-		<view class="modal_box" :style="{height:$store.state.myHeight+'rpx',width:$store.state.myWidth+'px'}" @click="noModal">
+	<view class=""  v-if="isShow" :style="{width:myWidth+'px'}">
+		<view class="modal_box" :style="{height:myHeight+'rpx',width:myWidth+'px'}" @click="noModal">
 			
 		</view>
-		<view @click.stop="stopModal" :class="{but_box1:paddingType==true}" class="but_box" :style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:$store.state.myWidth*0.1*popWidth+'px',left:$store.state.myWidth*(5-popWidth/2)*0.1+'px',top:$store.state.myHeight*topHeight*0.1+'rpx'}">
+		<view @click.stop="stopModal" :class="{but_box1:paddingType==true}" class="but_box" :style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:myWidth*0.1*popWidth+'px',left:myWidth*(5-popWidth/2)*0.1+'px',top:myHeight*topHeight*0.1+'rpx'}">
 			<text class="but_text1" v-if="titleType">{{title}}</text>
 			<text class="but_text2" v-if="textType">{{text}}</text>
 			<slot></slot>
-			<view v-if="buttonType" class="" style="align-items: center;margin-top:40rpx ;" :style="{width:($store.state.myWidth-32)*0.1*popWidth+'px'}">
+			<view v-if="buttonType" class="" style="align-items: center;margin-top:40rpx ;" :style="{width:(myWidth-32)*0.1*popWidth+'px'}">
 				<view class="but_but" @click="noModal" >
 					<text class="but_text3" >我知道了</text>
 				</view>
@@ -39,7 +39,7 @@
 			//距离顶部高度1-10分为10等分
 			topHeight: {
 				type:Number,
-				default: 3,
+				default: 2,
 			},
 			//标题文字
 			title: {
@@ -84,6 +84,17 @@
 					},100)
 				}
 				
+			}
+		},
+		computed:{
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			platform(){
+				return uni.getSystemInfoSync().platform
 			}
 		},
 		methods: {

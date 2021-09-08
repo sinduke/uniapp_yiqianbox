@@ -1,4 +1,5 @@
 <template>
+	<!-- 折叠面板 -->
 	<view class="container" :style="{width:$store.state.myWidth+'px'}">
 		<view class="box">
 			<view class="head" @click="show" :style="{width:myWidth-32+'px',height:active?93+downHeight+'rpx':93+'rpx'}">

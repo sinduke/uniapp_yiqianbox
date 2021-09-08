@@ -1,5 +1,5 @@
 <template>
-	
+	<!-- 账号信息 -->
 	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
 		<view class="avatar_box" :style="{width:$store.state.myWidth+'px'}">
 			<view class="avatar" @click="changeAvatar">

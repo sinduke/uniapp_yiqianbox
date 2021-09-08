@@ -1,3 +1,4 @@
+<!-- 账号信息 -->
 <template>
 	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
 		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
