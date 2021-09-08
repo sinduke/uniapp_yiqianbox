@@ -49,7 +49,7 @@
 									<text class="img_text4">立即领取</text>
 								</view>
 								<view class="img_btn" v-else >
-									<text class="img_text4">已领取</text>
+									<text class="img_text4" style="color:#999999 ;">已领取</text>
 								</view>
 							</image>	
 						</view>

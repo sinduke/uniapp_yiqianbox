@@ -10,22 +10,27 @@
 							<view class="le_box2" v-if="!item.noActive"></view>
 							<image class="le_box1" v-else src="@/static/images/view/down_acitve.png" ></image>
 						</view>
-						<view class="mid_ri">
-							<view class="ri_head">
-								<view style="flex-direction: row;">
+						<view class="mid_ri" >
+							<view class="ri_head" >
+								<view style="flex-direction: row;justify-content:space-between;">
 									<image class="mid_img" :src="item.mem_avatar" mode="" ></image>
-									<view>
-										<text class="mid_text1">{{item.mem_name}}</text>
-										<text class="mid_text2">{{item.time_str}} · {{item.game_name}}</text>
+									<view >
+										<view :style="{width:myWidth-64-55+'px'}" class="" style="flex-direction: row;justify-content:space-between;">
+											<text class="mid_text1">{{item.mem_name}}</text>
+											<text class="mid_text3">{{item.time_str}}</text>
+										</view>
+										
+										
+										<text class="mid_text2">{{item.parent_comment.content}}</text>
 									</view>
 								</view>
-								<text class="mid_text3">回复</text>
+								
 							</view>
 						</view>
 					</view>
 				</cell>
 			</list>
-			<nloading v-else :isNoData="isNoData"></nloading>
+			<nloading :style="{width:myWidth-32+'px'}" v-else :isNoData="isNoData"></nloading>
 			<view class="bottom" :style="{width:myWidth-32+'px'}" v-if="isActive" >
 				<view class="bot_box" @click="handleNotall"  v-if="selectAll">
 					<image class="le_box1"  src="@/static/images/view/down_acitve.png" ></image>
@@ -88,6 +93,7 @@
 					...this.params
 				}).then(res=> {
 					this.pageDate = res.data.data.list
+					console.log(this.pageDate)
 					this.params.count = res.data.data.count
 					this.isNoData = true
 				})

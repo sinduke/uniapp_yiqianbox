@@ -78,13 +78,13 @@
 									<image class="kf_image" src="@/static/images/view/PlayGame.png" mode="widthFix"  v-if="pageData.game_start_time"></image>
 									 <image  class="kf_image" src="@/static/images/view/noPlayGame.png" v-else mode="widthFix"></image>
 									<view style="margin-right: 10rpx;" v-if="pageData.game_start_time">
-									<text style="color: #c1c1c1;font-size: 24rpx;text-align: center;">机动22区</text>
+									<text style="color: #c1c1c1;font-size: 24rpx;text-align: center;">{{pageData.serlistNew.list[0].server_name}}</text>
 									<text style="color: #666;font-size: 32rpx;text-align: center;">今天 {{pageData.game_start_time|dateFormat('hh:mm')}}</text>
 							        </view>
 								<view style="margin-right: 10rpx;" v-else>
 								<text style="color: #666;font-size: 32rpx;text-align: center;">暂无新服</text>
 								</view>				
-						     	<image src="@/static/images/right.png" mode="widthFix" style="width: 14rpx;height: 12rpx;" v-if="pageData.game_start_time"></image>
+						     	<image src="@/static/images/right.png"  style="width: 24rpx;height: 35rpx;" v-if="pageData.game_start_time"></image>
 							</view>
 								<!-- 折扣 -->
 							<view class="zhekou" >

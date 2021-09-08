@@ -44,7 +44,11 @@
 			},
 		},
 		methods:{
-
+			handleRouter(){
+				uni.navigateTo({
+					url:'/pages/customerService/children/rechargeRebate/index1'
+				})
+			}
 		},
 		props: {
 			pageData: {
@@ -98,5 +102,6 @@
   .content{
   	font-weight: 400;
   	font-size: 28rpx;
+	color: #666666;
   }
 </style>

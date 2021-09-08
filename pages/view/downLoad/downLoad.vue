@@ -59,7 +59,7 @@
 				<text class="text" @click="handleNotall" v-if="selectAll">全不选</text>
 				<text class="text" @click="handleAll" v-else>全选</text>
 			</view>
-			<view class="button" @click="handleconfirm">已选择{{isNumber}}个游戏清除下载痕迹</view>
+			<view  class="button" @click="handleconfirm">已选择{{isNumber}}个游戏清除下载痕迹</view>
 		</view>
 		
 		<nvue-loading v-if="pageList.length==0" :isNoData='pageList.length==0?true:false' style="margin-top: 400rpx;"></nvue-loading>
@@ -300,6 +300,7 @@
 				padding-bottom: 40rpx;
 
 				.buttons {
+					
 					.button {
 						white-space: nowrap;
 						@include button(32rpx, 10rpx, 32rpx);
@@ -354,6 +355,7 @@
 				font-size: $xw-font;
 				font-weight: 500;
 				@include overflow;
+				margin-right: 80rpx;
 			}
 		}
 		.img_left{

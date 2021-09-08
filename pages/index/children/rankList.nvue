@@ -184,14 +184,14 @@
 					if(res.data.code==200){
 						this.pageData = this.pageData.concat(res.data.data.list)
 						this.count = res.data.data.count
+						if(this.count==0){
+							this.isNoData = true
+						}
 						setTimeout(()=>{	
 						this.loadinging = false;
 						this.bind();
 						},100)
-					}else{
-						this.isNoData = true
 					}
-					
 				})
 
 			},

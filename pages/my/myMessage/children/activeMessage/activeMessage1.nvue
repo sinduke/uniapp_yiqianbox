@@ -2,7 +2,7 @@
 	<view class="container">
 		 <myNavbar title='互动消息' :type="1" @click="handleDelete" right radius :src="isActive?'../../../../../static/images/my/xxxx.png':'../../../../../static/images/my/rwzx-xgnc.png'" ></myNavbar>
 		 <view class="box" :style="{width:myWidth+'px'}">
-			<list :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false" v-if="count">
+			<list :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false" v-if="likeDate.is_like_read||count">
 				<cell style="height: 32rpx;"></cell>
 				<cell  @click="tozan" v-if="likeDate.is_like_read">
 					<view class="head" :style="{width:myWidth-32+'px'}">
@@ -42,7 +42,7 @@
 					</view>
 				</cell>
 			</list>
-			<nloading v-else :isNoData="isNoData"></nloading>
+			<nloading :style="{width:myWidth-32+'px'}" v-else :isNoData="isNoData"></nloading>
 			<view class="bottom" :style="{width:myWidth-32+'px'}" v-if="isActive" >
 				<view class="bot_box" @click="handleNotall"  v-if="selectAll">
 					<image class="le_box1"  src="@/static/images/view/down_acitve.png" ></image>
@@ -115,9 +115,7 @@
 			getPageDate(){
 				$api.get("v8/comments/message_list",{	
 				}).then(res=> {
-					console.log(this.isNoData )
 					this.isNoData = true
-					console.log(this.isNoData )
 					this.pageDate = res.data.data.list
 					this.count = res.data.data.count
 					this.likeDate = res.data.data
