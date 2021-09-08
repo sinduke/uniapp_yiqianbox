@@ -33,6 +33,11 @@
 						<serverList ref='serverList' :myWidth='myWidth' :myHeight='myHeight' :isServer='isServer'></serverList>
 					</view>
 				</swiper-item>
+				<swiper-item v-if="custom_name">
+					<view class="swiper-item">
+						<diyList ref='rankList' :myWidth='myWidth' :myHeight='myHeight' :isdiy='isdiy' :client_id='client_id'></diyList>
+					</view>
+				</swiper-item>
 			</swiper>
 			</view>
 		</view>
@@ -42,9 +47,9 @@
 		import common from "@/common/js/common.js";
 		import recommend from './children/recommend'
 		import rankList from './children/rankList'
+		import diyList from './children/diyList'
 		import serverList from './children/serverList'
 		import titleLine from '@/components/nuve-titleLine/nuve-titleLine'
-
 		const BindingX = uni.requireNativePlugin('bindingx');
 		// Get the globalData
 		const globalData = getApp().globalData
@@ -53,7 +58,8 @@
 				recommend,
 				rankList,
 				serverList,
-				titleLine
+				titleLine,
+				diyList
 			},
 		data() {
 			return {
@@ -63,6 +69,7 @@
 				isServer: false,
 				lineRotate: 1,
 				isActive: false,
+				isdiy:false,
 				networkType:'',
 				scrollMove: 0,
 				number: 0,
@@ -102,9 +109,15 @@
 			statusBarHeight() {
 				return uni.getSystemInfoSync().statusBarHeight
 			},
-		   subNvue() {
+		    subNvue() {
 				return uni.getSubNVueById('popup')
 			},
+			custom_name(){
+				return globalData.store.state.custom_name
+			},
+			client_id(){
+				return globalData.store.state.client_id
+			}
 			
 		},
 		beforeCreate() {
@@ -133,6 +146,13 @@
 		
 		
 		onLoad() {
+			console.log(this.custom_name,'custom_name')
+			if(this.custom_name){
+				this.TitleList.push({
+						id: 4,
+						name: this.custom_name
+					},)
+			}
 			this.checkHotUpdate()
 		    this.getWifi()
 			
@@ -282,6 +302,8 @@
 					this.isRank = true
 				} else if (val == 2) {
 					this.isServer = true
+				} else if (val == 3) {
+					this.isdiy = true
 				}
 
 			},

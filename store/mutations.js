@@ -77,5 +77,10 @@ export default {
 	},
 	setUdid(state, data){
 		state.udid = data;
+	},
+	setCustom_name(state, data){
+		state.custom_name = data;
 	}
+	
+	
 }
