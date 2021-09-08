@@ -133,6 +133,7 @@
 
 <script>
 	const BindingX = uni.requireNativePlugin('bindingx');
+	import {$api} from '@/config/api.js';
 	import common from "@/common/js/common.js";
 	
 	export default {
@@ -201,9 +202,13 @@
 			},
 			bind3(){
 				this.bindingx(300,common.getEl(this.$refs.fk1),'transform.scale', 'easeOutElastic(t,.2,.8,300)')
-				uni.navigateTo({
-					url:'/pages/my/comprehensive/feedback/feedback1'
-				})
+				
+				if(common.isLogin()){
+					uni.navigateTo({
+						url:'/pages/my/comprehensive/feedback/feedback1'
+					})
+				}
+				
 			},
 			bindingx(timer,element,property,expression){
 				let mybindUp = BindingX.bind({

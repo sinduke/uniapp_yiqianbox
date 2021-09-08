@@ -19,9 +19,9 @@
 				<!-- 历史记录 -->
 				<view class="history">
 					<view class="history_item" v-for="(v,i) in historyData" :key='i' v-if="i<number">
-						<view style="flex-direction: row;align-items: center;">
+						<view style="flex-direction: row;align-items: center;width:500rpx;" @click="clickSearch(v)">
 							<image src="@/static/images/timer-icon.png" mode="widthFix" style="width: 32rpx;height: 32rpx;margin-right: 32rpx;" @click="close(i)"></image>
-							<text class="text" @click="clickSearch(v)">{{v}}</text>
+							<text class="text" >{{v}}</text>
 						</view>
 						<image src="@/static/images/close.png" mode="widthFix" style="width: 32rpx;height: 32rpx;" @click="close(i)"></image>
 					</view>

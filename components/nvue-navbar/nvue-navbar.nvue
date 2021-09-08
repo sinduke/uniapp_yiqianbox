@@ -97,17 +97,17 @@
 				let handleBack = common.getEl(this.$refs.handleBack)
 				let binx = BindingX.bind({
 						eventType: 'timing',
-						exitExpression: 't>300',
+						exitExpression: 't>100',
 						props: [ //props数组用来描述伴随scroll事件需要改变的元素节点
 							{
 								element: handleBack, //动画元素
 								property: 'transform.scale', //动画属性
-								expression: `linear(t,1,-.4,300)`
+								expression: `linear(t,1,-.4,100)`
 							},
 							{
 								element: handleBack, //动画元素
 								property: 'opacity', //动画属性
-								expression: `linear(t,1,-.4,300)`
+								expression: `linear(t,1,-.4,100)`
 							}
 			
 						]
@@ -117,7 +117,7 @@
 								uni.navigateBack({
 									delta: 1
 								})
-							}, 300)
+							}, 100)
 						}
 					}
 			

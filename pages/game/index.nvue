@@ -157,7 +157,7 @@
 								<view class="box-content-demo-box-left"	@click="handleRouter('/pages/view/gamedetail/gamedetail?gameid='+demoData.game_list[0].game_id)">
 									<view style="flex-direction: row; align-items: center;" v-if="demoData">
 										<image class="box-content-demo-box-left-image" :src="demoData.game_list[0].new_icon||demoData.game_list[0].icon"	mode="widthFix"></image>
-										<text style="width: 140rpx;font-size: 28rpx;">{{demoData.game_list[0].gamename||demoData.game_list[0].game_name}}</text>
+										<text style="width: 140rpx;font-size: 28rpx;lines: 3;">{{demoData.game_list[0].gamename||demoData.game_list[0].game_name}}</text>
 									</view>
 									<text class="box-content-demo-box-left-text">试玩完成后奖励150积分</text>
 								</view>
