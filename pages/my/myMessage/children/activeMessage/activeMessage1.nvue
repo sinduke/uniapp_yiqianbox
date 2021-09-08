@@ -97,14 +97,19 @@
 		},
 		methods: {
 			handleDelete() {
-				uni.vibrateShort({
-					success: () => {
-						this.isActive = !this.isActive
-						this.isNumber = this.pageDate.filter(item => {
-							return item.noActive == true
-						}).length
-					}
-				})
+				if(this.count){
+					uni.vibrateShort({
+						success: () => {
+							this.isActive = !this.isActive
+							this.isNumber = this.pageDate.filter(item => {
+								return item.noActive == true
+							}).length
+						}
+					})
+				}else{
+					this.isActive = false
+				}
+				
 			},
 			//消息数据
 			getPageDate(){

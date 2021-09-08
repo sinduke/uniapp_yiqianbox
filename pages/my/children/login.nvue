@@ -132,6 +132,9 @@
 			userInfo() {
 				return globalData.store.state.userInfo
 			},
+			client_id(){
+				return globalData.store.state.client_id
+			}
 
 		},
 		mounted() {
@@ -255,6 +258,7 @@
 				}
 				console.log(data, 'datadatadata')
 				$api.get("user/login", {
+					client_id: this.client_id,
 					"mem-openid": oauth.openid,
 					"mem-oauth_type": oauth.name == 'qq' ? 2 : oauth.name == 'weixin' ? 1 : 3,
 				}).then(res => {
@@ -369,6 +373,7 @@
 			},
 			onephoneLoin(mobile, type, openid) {
 				$api.get("v8/user/loginm", {
+					client_id: this.client_id,
 					"sms-mobile": mobile,
 					"sms-phone": type
 				}).then(res => {
@@ -422,6 +427,7 @@
 			},
 			doLogin() {
 				$api.get("user/login", {
+					client_id: this.client_id,
 					...this.form,
 					equipmentCode: this.equipmentCode
 				}).then(res => {
@@ -472,6 +478,7 @@
 				}
 				
 				$api.get("v8/sms/send", {
+					client_id: this.client_id,
 					...this.phone
 				}).then(res => {
 					console.log(res,'sssssssssssss')
@@ -488,6 +495,7 @@
 			},
 			iphoneLogin() {
 				$api.get("v8/user/loginm", {
+					client_id: this.client_id,
 					...this.phone
 				}).then(res => {
 					// 将登录获取的数据记录下来
@@ -549,7 +557,6 @@
 
 <style scoped>
 	@import '@/common/css/nvue-whith.css';
-
 	.back {
 		position: fixed;
 		width: 66rpx;

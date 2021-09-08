@@ -79,7 +79,7 @@
 				</list>
 				
 				<view v-if="list.length==0&&serverData.length==0" :style="{width:isShowSelet?myWidth+'px':myWidth-60+'px'}" style="position: absolute;top: 300rpx;left: 50%;margin-left: -50rpx;">
-					<myloading :isrefre='isrefre' @Refresh='Refresh' :class="{middle_left:isShowSelet==true}"></myloading>
+					<myloading :isNoData='isNoData' :isrefre='isrefre' @Refresh='Refresh' :class="{middle_left:isShowSelet==true}"></myloading>
 				</view>
 			</view>
 
@@ -113,6 +113,7 @@
 		},
 		data() {
 			return {
+				isNoData:false,
 				left_middle:false,
 				//下拉刷新
 				refreshing: false,
@@ -408,11 +409,18 @@
 					...this.params,
 					client_id:this.$store.state.client_id
 				}).then(res => {
-					this.list = this.list.concat(res.data.data.list);
-					this.count = res.data.data.count
-                    setTimeout(()=>{
-						this.loadinging = false
-					},100)
+					if(res.data.code==200){
+						
+						this.list = this.list.concat(res.data.data.list);
+						this.count = res.data.data.count
+						if(this.count==0){
+							this.isNoData = true
+						}
+						setTimeout(()=>{
+							this.loadinging = false
+						},100)
+					}
+					
 				})
 
 			},
