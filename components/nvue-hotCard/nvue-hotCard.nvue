@@ -6,8 +6,7 @@
 				<text class="gamename">{{item.gamename}}</text>
 				<view class="tags">
 					<text class="tag">{{item.one_word.length>26?item.one_word.slice(0,24)+'..':item.one_word}}</text>
-					<image class="tagImage" src="@/static/images/index/tagst.png" mode="widthFix"
-						style="width: 25rpx;height: 25rpx;" />
+					<image class="tagImage" src="@/static/images/index/tagst.png" mode="widthFix" style="width: 25rpx;height: 25rpx;" />
 				</view>
 				<view class="listBottom">
 					<view class="" style="flex-direction: row;align-items: center;" v-if="item.start_time.length">
@@ -20,7 +19,7 @@
 				</view>
 
 			</view>
-			<view class="corner">
+			<view class="corner" v-if="!type">
 				<image src="../../static/images/rate-rate.png" mode="widthFix" style="width: 100rpx;height: 100rpx;"></image>
 				<text class="number">NO：1</text>
 			</view>
@@ -35,6 +34,9 @@
 			item: {
 				type: Object,
 				default: () => {}
+			},
+			type:{
+				default:0
 			}
 		},
 		computed: {

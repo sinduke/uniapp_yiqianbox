@@ -1,0 +1,215 @@
+<!-- 自定义 -->
+<template>
+	<view class="ranklist">
+		<view class="titleLine" ref="titleLine" :style="{width:myWidth+'px',height:'2rpx'}"></view>
+		<view class="myList" :style="{height:myHeight-240+'rpx',width:myWidth+'px'}">
+			<list :show-scrollbar='false'  class="list" :style="{height:myHeight-240+'rpx'}" @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="pageData.length">
+				<refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'" :style="{width:myWidth-32+'px'}" :viewHeight='120'>
+					<view class="refreshImages" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
+					</view>
+				</refresh>
+				
+				<cell>
+					<hotCard :item='pageData[0]' :type='1'></hotCard>
+				</cell>
+				<cell v-for="(item,index) in pageData" :key='index' v-if="index>1">
+					<gameItem :itemIndex='index' :item="item" :type='3' style="margin:20rpx 0;"></gameItem>
+				</cell>
+				<cell v-if="loadinging">
+					<view class="" style="margin-bottom: 100rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
+						<image src="@/static/images/loadmore.gif" mode="widthFix" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
+				</cell>
+				
+			</list>
+			
+		</view>
+		<view v-if="pageData.length==0&&islogin" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
+			<myloading :isrefre='isrefre' :isNoData='isNoData'  @Refresh='Refresh'></myloading>
+		</view>
+	</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	const BindingX = uni.requireNativePlugin('bindingx');
+	import common from "@/common/js/common.js";
+	import hotCard from '@/components/nvue-hotCard/nvue-hotCard'
+	import gameItem from '@/components/nvue-gameItem/nvue-gameItem'
+	import myloading from '@/components/nvue-loading/nvue-loading'
+
+	export default {
+		components: {
+			hotCard,
+			gameItem,
+			myloading
+		},
+		props: {
+			myHeight: {
+				type: Number
+			},
+			myWidth: {
+				type: Number
+			},
+			isdiy: {
+				type: Boolean,
+				default: false,
+			},
+			client_id:{
+				default:''
+			}
+		},
+		data() {
+			return {
+				islogin:false,
+				isNoData:false,
+				loadinging:false,
+				pageData: [],
+				count: 0,
+				status: 'loadMore',
+				formData: {
+					page: 1,
+					offset: 10,
+				},
+				refreshing: false,
+				isrefre: false,
+				active: 0,
+				scrollTop:0,
+			}
+		},
+		methods: {
+			onpullingdown(e) {
+
+			},
+			//加载
+			loadmore(){
+			if(this.count>this.pageData.length){
+		     this.loadinging = true
+			   this.formData.page++
+			    this.getpageData(this.formData)
+				}
+			},
+			//刷新
+			Refresh(data) {
+				this.isrefre = true
+				if (data) {
+					this.pageData = []
+					this.getpageData(this.formData)
+				}
+			},
+			//下拉刷新
+			onrefresh() {
+				this.refreshing = true
+				setTimeout(() => {
+						this.resetLoadMore()
+					this.refreshing = false;
+				}, 1000)
+			},
+			// 首页专区数据
+			getpageData(data = {}) {
+				$api.get('/game/custom_category', {
+					...data,
+					client_id:this.client_id
+				}).then(res => {
+					if(res.data.code==200){
+						this.pageData = this.pageData.concat(res.data.data.list[0].game_list)
+						this.count = res.data.data.list[0].game_list_count
+						setTimeout(()=>{	
+						this.loadinging = false;
+						this.bind();
+						},100)
+					}else{
+						this.isNoData = true
+					}
+					
+				})
+
+			},
+
+			// 重置 loadmore
+			resetLoadMore() {
+				this.$refs.list.resetLoadmore();
+			},
+			//动画
+			bind() {
+				let anchor = common.getEl(this.$refs.list);
+				let titleLine = common.getEl(this.$refs.titleLine);
+				let mybinx = BindingX.bind({
+					anchor: anchor,
+					eventType: 'scroll',
+					props: [{
+						element: titleLine,
+						property: 'background-color', //动画属性
+						expression: 'evaluateColor("#ffffff","#efefef", min(y, 200)/200)' //表达式 说明了y从0-400,对应的值是1-0  
+					}, ]
+				}, e => {
+					if (e.state === 'turn') {
+
+					}
+				});
+			},
+
+		},
+		watch: {
+			isdiy(val) {
+				if (val) {
+					this.getpageData(this.formData)
+					this.islogin = true
+				}
+
+			}
+		},
+
+
+	}
+</script>
+
+<style scoped>
+	@import '@/common/css/nvue-whith.css';
+
+	.myList {
+		padding: 0rpx 32rpx;
+	}
+
+	.ranklist {
+		/* padding: rpx 0; */
+	}
+
+	.text {
+		padding: 10rpx 32rpx;
+		margin-right: 32rpx;
+		color: #666666;
+		font-size: 32rpx;
+		background-color: #F4F4F4;
+		border-radius: 40rpx;
+		border: 2rpx solid #F4F4F4;
+
+	}
+
+	.text1 {
+		border: 2rpx solid #FF5927;
+		background-color: #fff;
+		color: #FF5927;
+		 font-weight: 700; 
+	}
+
+	.loadmoreText {
+		font-size: 22rpx;
+		font-weight: 400;
+		text-align: center;
+		color: #666;
+		margin: 10rpx 0;
+	}
+
+	.scroller {
+		margin-left: 32rpx;
+		flex-direction: row;
+		padding: 40rpx 0;
+	}
+	.loadList{
+       position: absolute;
+	}
+</style>
