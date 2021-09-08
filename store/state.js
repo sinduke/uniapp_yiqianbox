@@ -4,8 +4,8 @@
 // 版本环境
 export default {
 	// api请求头
-	// httpAPI: "https://api.sy12306.com/",   // sy12306.com
-	httpAPI: "https://api.hnyfqj.cn/", // hnyfqj.cn
+	httpAPI: "https://api.sy12306.com/",   // sy12306.com
+	// httpAPI: "https://api.hnyfqj.cn/", // hnyfqj.cn
 	// app运行的平台
 	platform: uni.getSystemInfoSync().platform,
 	// 热更最后一位
@@ -17,7 +17,7 @@ export default {
 	// 设备码
 	equipmentCode: "",
 	// client_id
-	client_id:769,
+	client_id:,
 	systemInfoSync: '',
 	//设备高度
 	myHeight: uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth),
@@ -58,8 +58,6 @@ export default {
 	// 管理所有的下载任务
 	downTasksList: [],
 	// 管理客服回复
-	serviceList: [],
-	/* 自定义专题 */
-	custom_name:''
+	serviceList: []
 }
 

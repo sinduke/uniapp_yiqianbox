@@ -89,6 +89,7 @@
 				handleShow: true,
 				order: "",
 				type: 1,
+				timeer:0,
 				youHeight: 0,
 				//转盘数据	
 				grid_info_arr: [],
@@ -163,9 +164,7 @@
 					this.userInfo.my_integral = this.userInfo.my_integral - 50;
 				}
 
-				let timer = setTimeout(() => {
-					this.show = true;
-				}, 6000);
+
 				this.is_free = 2
 			},
 			//领取 
@@ -220,24 +219,34 @@
 						switch (index){
 							case 5:
 							a = 6
+							this.timeer = 2500
 							break;
 							case 3:
+							this.timeer = 3000
 							a = 7
 							break;		
 							case 6:
+							this.timeer = 2000
 							a = 5
 							break;
 							case 4:
+							this.timeer = 1000
 							a = 3
 							break;
 							case 7:
+							this.timeer = 1600
 							a = 4
 							break;	
 							default:
+							this.timeer = 0
 							a = index;
 							break;
 						}
 						// console.log(a)
+                        let timer = setTimeout(() => {
+                        	this.show = true;
+                        }, 6000+this.timeer);
+						
 						this.lottery_draw_param.winingIndex = a;
 						callback(this.lottery_draw_param);
 						this.bigShow = false
