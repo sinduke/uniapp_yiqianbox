@@ -146,7 +146,6 @@
 		
 		
 		onLoad() {
-			console.log(this.custom_name,'custom_name')
 			if(this.custom_name){
 				this.TitleList.push({
 						id: 4,

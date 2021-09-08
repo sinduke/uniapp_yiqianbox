@@ -242,7 +242,6 @@
 							a = index;
 							break;
 						}
-						// console.log(a)
                         let timer = setTimeout(() => {
                         	this.show = true;
                         }, 6000+this.timeer);
