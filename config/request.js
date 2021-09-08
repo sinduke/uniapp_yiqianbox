@@ -1,6 +1,8 @@
 import Request from '@/utils/luch-request/index.js'
 import Store from "@/store/store.js"
 
+
+
 const api = new Request()
 export {
 	api
@@ -18,12 +20,13 @@ api.setConfig((config) => {
 })
 //请求前拦截
 api.interceptors.request.use((config) => { // 可使用async await 做异步操作
+  let Store = getApp().globalData.store
+   // console.log(Store.state,'Store.state.Store.state.')
 	config.header = {
 		...config.header
 	}
 	config.params = {
 		format: 'json',
-		app_id: Store.state.app_id,
 		token: Store.state.loginInfo.user_token || Store.state.init.user_token || '',
 		client_id: Store.state.client_id, // 渠道号  Store.state.client_id
 		app_id: Store.state.app_id, // 手机号 100  101   Store.state.app_id
