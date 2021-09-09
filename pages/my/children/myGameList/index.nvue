@@ -8,7 +8,7 @@
 			</view>
 		</view>
 	
-		<swiper @change='swiperChange' :current="active" :style="{height:$store.state.platform=='ios'&&myHeight<1400?myHeight-460+'rpx':$store.state.platform=='ios'&&myHeight<1400?myHeight-220+'rpx':$store.state.platform=='android'? myHeight-200+'rpx':''}" v-if="pageData" >
+		<swiper @change='swiperChange' :current="active" :style="{height:$store.state.platform=='ios'&&myHeight<1400?myHeight-460+'rpx':$store.state.platform=='ios'&&myHeight>1400?myHeight-220+'rpx':$store.state.platform=='android'? myHeight-200+'rpx':''}" v-if="pageData" >
 			<swiper-item v-for="(value,index) in pageData" :key='index'>
 				<scroller :show-scrollbar="false"  :style="{height:myHeight-440+'rpx'}">
 					<view class="">
