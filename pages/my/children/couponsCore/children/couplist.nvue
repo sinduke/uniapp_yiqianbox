@@ -1,0 +1,357 @@
+<template>
+		<view class="container" :style="{width:$store.state.myWidth-56+'px'}">
+			<view class="box" :style="{width:$store.state.myWidth-56+'px'}">
+				<!-- tabs -->
+				<scroller scroll-direction="horizontal" style="flex-direction: row;" >
+					<view class="tab" ref="tabslist">
+					<!-- <view class="tab" :style="{width:$store.state.myWidth-56+'px'}"> -->
+						<view  class="tabslist">
+							<view    class="tabs"  :active="active" v-for="(item, index) in myGame" :key="index" @click="tabsClick(index)">
+								<text :ref="'input_te'+index" :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+							</view>	
+						</view>
+						
+						<view  class="tabs_line" :style="{transform:active? 'translateX('+tableft1+')':'translateX('+tableft2+')'}"></view>
+					</view>
+					
+				</scroller>
+				
+				<!-- 滑动item -->
+				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth-56+'px',height:580+'rpx'}"  >
+					<swiper-item v-for="(data,i) in pageData" :key='i'>
+						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:580+'rpx'}">
+							<view v-for="(item,index) in data.list" :key='item.id' :style="{width:$store.state.myWidth-56+'px'}">
+								<view class="cell">
+									<view class="cell_left" :style="{width:($store.state.myWidth-56)*0.3+'px'}">
+										<text class="left_text1">{{item.coupons_amount}}</text>
+										<text class="left_text2">{{item.title}}</text>
+									</view>
+									<view class="cell_right" :style="{width:($store.state.myWidth-56)*0.7+'px'}">
+										<view class="right_head">
+											<view class="head_text">
+												<text class="head_text1">有效期至：{{item.get_time_end|dateFormat('yyyy.MM.dd')}}</text>
+												<text class="head_text2">领取时间：{{item.get_time_begin|dateFormat('yyyy.MM.dd')}}后</text>
+											</view>
+											<view  v-if="!item.have_got" class="head_but" @click="handleClick(item.id,item.period_type,item)">
+												<text class="head_text3">领 取</text>
+											</view>
+											<view v-else class="head_but3" >
+												<text style="color: #fff;" class="head_text3">已领取</text>
+											</view>
+										</view>
+										<view class="right_bottom">
+											<text class="head_text2" style="font-size:26rpx ;">适用于《{{item.game.name}}》</text>
+										</view>
+									</view>
+								</view>
+							</view>
+							<!-- <loading  @loading="onloading" :display="loadinging ? 'show' : 'hide'" >
+							</loading> -->
+						</scroll-view>
+					</swiper-item>
+				</swiper>
+			</view>
+		</view>
+</template>
+
+<script>
+	import {
+		$api
+	} from '@/config/api.js';
+	const dom = uni.requireNativePlugin('dom')
+	import common from "@/common/js/common.js";
+	import nloading from '@/components/nvue-loading/nvue-loading'
+	export default {
+		data() {
+			return {
+				loadinging:false,
+				active: 0,
+				current: 0,
+				number:0,
+				number1:0,
+				number2:0,
+				number3:0,
+				left:false,	
+				tableft1:0,
+				tableft2:40,
+				tableft0:0,
+				myGame: [],
+				tabsleft:0,
+				pageData: null,
+				pramas:{
+					offset:10,
+					game_num:4,
+				}
+			}
+		},
+		components:{
+			nloading
+		},
+		watch:{
+			active(val){
+				// if(val==1||val==2){
+				// 	console.log(111)
+				// 	dom.scrollToElement(this.$refs.tabslist, {
+				// 	    offset: 100
+				// 	})
+				// }
+				dom.getComponentRect(this.$refs['input_te' + (val-1)][0], res=>{
+					this.tableft2 = res.size.left
+					console.log(this.tableft2)
+					
+				})
+				dom.getComponentRect(this.$refs['input_te' + (val)][0], res=>{
+					this.tableft1 = res.size.left
+					this.tableft1-this.tableft2
+				})
+				console.log(1111,)
+				//  dom.getComponentRect(this.$refs['input_te' + (3)][0], res=>{
+				// 	console.log(res.size)
+				// })
+				// this.number1 = this.number
+				// this.number = val
+				// if(this.number-this.number1>0){
+				// 	this.left = true
+				// }else{
+				// 	this.left = false
+				// 	this.number1 = this.number
+				// }
+				// if(this.left){
+				// 	if(val>2&&val<this.myGame.length-2){
+				// 		this.number3 = this.number2
+				// 		this.number2 = val-2
+				// 		this.tableft = this.left
+				// 	}
+					
+				// }else{
+				// 	if(val>2&&val<this.myGame.length-2){
+				// 		this.number2 = this.number3
+				// 		this.number3 = val-2
+				// 		this.tableft = this.left
+						
+				// 	}else if(val==2){
+				// 		this.number2 = this.number3
+				// 		this.number3 = val-2
+				// 	}
+				// }
+			},
+		},
+		mounted() {
+			this.getPageData()
+			
+		},
+		computed: {
+			myWidth() {
+				return uni.getSystemInfoSync().windowWidth
+			},
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+		},
+		filters:{
+			// 1.日期格式过滤器
+			dateFormat(value, fmt) {
+				let getDate = new Date(value * 1000);
+				let o = {
+					"M+": getDate.getMonth() + 1,
+					"d+": getDate.getDate(),
+					"h+": getDate.getHours(),
+					"m+": getDate.getMinutes(),
+					"s+": getDate.getSeconds(),
+					"q+": Math.floor((getDate.getMonth() + 3) / 3),
+					S: getDate.getMilliseconds(),
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(getDate.getFullYear() + "").substr(4 - RegExp.$1.length)
+					);
+				}
+				for (let k in o) {
+					if (new RegExp("(" + k + ")").test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length === 1 ?
+							o[k] :
+							("00" + o[k]).substr(("" + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			}
+		},
+		methods: {
+			//优惠券
+			getPageData() {
+				$api.get('/user/coupons/rand_games',{
+					...this.pramas
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.pageData = res.data.data.data
+						this.myGame = res.data.data.game
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none',
+						})
+						return
+					}
+			
+				})
+			},
+			//点击领取
+			handleClick(id, period_type,item) {
+				$api.get("user/coupons/add", {
+					coupon_id: id,
+					period_type
+				}).then(res => {
+					if (res.data.code == 200) {
+						item.have_got = true
+						uni.showToast({
+							icon: "none",
+							title: res.data.msg
+						})
+					} else {
+						uni.showToast({
+							icon: "none",
+							title: res.data.msg
+						})
+					}
+				})
+			},
+			tabsClick(index){
+				this.current = index
+			},
+			swiperClick(e){
+				this.active = e.detail.current
+			},
+			handleRouterdetail(id) {
+				uni.navigateTo({
+					url: `/pages/view/gamedetail/gamedetail?gameid=${id}`
+				})
+			},
+		}
+	}
+</script>
+
+<style scoped>
+	/* body */
+	.container{
+		background: #fff;
+	}
+	.box{
+		
+	}
+	.lineShowdow{
+		height:6rpx ;
+		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	}
+	/* 滑块 */
+	.tab{
+		transition-property: transform;
+		transition-duration:0.4s;
+	}
+	.tabslist{
+		flex-direction: row;
+	}
+	.tabs_text{
+		
+		color: #666666;
+		font-weight: 400;
+		font-size: 30rpx;
+		/* text-overflow: ellipsis;
+		lines: 1;
+		flex: 1; */
+	}
+	.tabs_line{
+		margin:10rpx 0rpx 4rpx 0rpx;
+		width:55rpx;
+		height:6rpx ;
+		border-radius:6rpx;
+		background: #FF5927;
+		transition-property: transform;
+		transition-duration:0.4s;
+	}
+	/* item-cell */
+	.list{
+		overflow: hidden;
+	}
+	.cell{
+		margin-bottom: 32rpx;
+		flex-direction: row;
+		
+	}
+	/* 左边 */
+	.cell_left{
+		border-radius: 40rpx 0rpx 0rpx 40rpx;
+		background-color: #E9E9E9;
+	}
+	.left_text1{
+		margin:30rpx 0rpx 10rpx 0;
+		text-align: center;
+		color: #1C1C1C;
+		font-size:50rpx ;
+		font-weight:700;
+		font-family: PingFang SC;
+		lines:1;
+		text-overflow:ellipsis;
+		
+	}
+	.left_text2{
+		text-align: center;
+		color: #666666;
+		font-size:26rpx ;
+		font-family: PingFang SC;
+		font-weight: 500;
+		margin-bottom:24rpx ;
+	}
+	/* 右边 */
+	.cell_right{
+		background: #F8F8F8;
+		padding:22rpx  ;
+		border-radius:0 40rpx 40rpx 0;
+	}
+	.right_head{
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom:1rpx dashed #C1C1C1;
+		padding-bottom:16rpx ;
+	}
+	.head_text1{
+		color: #666666;
+		font-size: 28rpx;
+		font-weight: 400;
+		margin-bottom:12rpx ;
+	}
+	.head_text2{
+		color: #C1C1C1;
+		font-size: 24rpx;
+		font-weight: 400;	
+	}
+	.head_but{
+		height:50rpx ;
+		padding:0rpx 30rpx;
+		border: 1px solid #E4E4E4;
+		background: #FFFFFF;
+		border-radius:25rpx;
+		justify-content: center;
+	}
+	.head_but3{
+		height:50rpx ;
+		padding:0rpx 16rpx;
+		border: 1px solid #E4E4E4;
+		background: #C1C1C1;
+		border-radius:25rpx;
+		justify-content: center;
+	}
+	.head_text3{
+		color: #FF5927;
+		font-size:28rpx ;
+		font-weight: 500;
+	}
+	.right_bottom{
+		margin-top:12rpx ;
+		justify-content: center;
+	}
+</style>

@@ -200,7 +200,7 @@
 		color: #666666;
 	}
 	.texts{
-		color: #252525;
+		color: #666666;
 		font-weight: 300;
 		font-size: 32rpx;
 		line-height: 42rpx;

@@ -4,7 +4,7 @@
 		<list v-if="pageData" @loadmore='loadmore' loadmoreoffset='10'>
 			<cell>
 				<view class="body" :style="{width:myWidth+'px'}">
-						<view class="u-col"  v-for="(item,index) in pageData" :key="index" :style="{width:myWidth/2.4+'px'}">
+						<view class="u-col"  v-for="(item,index) in pageData" :key="index" :style="{width:myWidth/2.5+'px'}">
 							<view class="u-row">
 								<view class="row_left"  @click="handleRouter(item.game_id, item.gamename)">
 									<image style="width: 140rpx;height: 140rpx;margin-right: 12rpx;" :src="item.game_new_icon||item.game_icon" ></image>
