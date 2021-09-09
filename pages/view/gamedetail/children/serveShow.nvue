@@ -1,7 +1,7 @@
 <template>
 	<view class="content" @click.stop="noclick">
 		<!--开服 弹出框 -->
-		<mypopup :nheight='460' easing='linear' :ntime='200'>
+		<mypopup :nheight='460' >
 			<view class="title">
 				<text style="width: 10rpx;"></text>
 				<text class="titleLeft">全部开服</text>

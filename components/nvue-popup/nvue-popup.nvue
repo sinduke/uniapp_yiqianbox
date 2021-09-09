@@ -18,11 +18,11 @@
 			},
 			easing:{
 				type:String,
-				default:'linear'
+				default:'easeOutQuart'
 			},
 			ntime:{
 				type:Number,
-				default:300
+				default:200
 			}
 		},
 		methods: {
@@ -81,7 +81,7 @@
 		background-color: #FFFFFF;
 		height: 10rpx;
 		padding: 20rpx 40rpx 0 40rpx;
-		border-top-left-radius: 40rpx;
-		border-top-right-radius: 40rpx;
+		border-top-left-radius: 20rpx;
+		border-top-right-radius: 20rpx;
 	}
 </style>

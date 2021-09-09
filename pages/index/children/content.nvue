@@ -1,7 +1,7 @@
 <template>
 	<view class="content" @click.stop="noclick">
 		<!--评论 弹出框 -->
-		<mypopup :nheight='460' easing='linear' :ntime='200'>
+		<mypopup :nheight='460'>
 			<view class="title">
 				<text class="titleLeft">全部评论（{{count}}）</text>
 				<image src="@/static/images/close.png" mode="widthFix" style="width: 48rpx;height: 48rpx;" @click="handleClose"></image>

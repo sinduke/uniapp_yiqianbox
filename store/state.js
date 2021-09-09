@@ -4,8 +4,8 @@
 // 版本环境
 export default {
 	// api请求头
-	httpAPI: "https://api.sy12306.com/",   // sy12306.com
-	// httpAPI: "https://api.hnyfqj.cn/", // hnyfqj.cn
+	// httpAPI: "https://api.sy12306.com/",   // sy12306.com
+	httpAPI: "https://api.hnyfqj.cn/", // hnyfqj.cn
 	// app运行的平台
 	platform: uni.getSystemInfoSync().platform,
 	// 热更最后一位
@@ -17,7 +17,7 @@ export default {
 	// 设备码
 	equipmentCode: "",
 	// client_id
-	client_id:'',
+	client_id:769,
 	systemInfoSync: '',
 	//设备高度
 	myHeight: uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth),
