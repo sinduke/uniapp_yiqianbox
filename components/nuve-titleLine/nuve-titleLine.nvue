@@ -1,12 +1,14 @@
 <template>
 	<view class="nuve-titleLine">
-		<scroller ref="scroller" :style="{width:myWidth/2+'px'}" scroll-direction="horizontal" :show-scrollbar="false" >
-			<view class="titleItem" :style="{transform:'translateX('+moveX+'px)',width:titleItemWidth+'px'}" >
-				<view v-for="(item,index) in TitleList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth / 3)-98+'px'}" ref="tabitem" :id="item.id"> 
-					<text class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
+		<scroller ref="scroller" :style="{width:myWidth/1.6+'px'}" scroll-direction="horizontal" :show-scrollbar="false" style="flex-direction: row;">
+			<view class="titles">
+				<view class="titleItem" :style="{width:titleItemWidth+'px'}" >
+					<view v-for="(item,index) in TitleList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth / 3)-98+'px'}" ref="tabitem" :id="item.id"> 
+						<text class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
+					</view>
 				</view>
+				  <view :style="{transform:'translateX('+(widthLine)+'rpx)',width:linesWidth+'px'}" class="lines" ref="lines"></view>
 			</view>
-			<view :style="{transform:'translateX('+(widthLine)+'rpx)',width:linesWidth+'px'}" class="lines" ref="lines"></view>
 		</scroller>
 
 	</view>
@@ -50,7 +52,6 @@
 				actives: 0,
 				isActive: false,
 				widthLine:0,
-				moveX:0,
 				titleItemWidth:0,
 				linesWidth:0,
 			
@@ -75,18 +76,18 @@
 			getline_Width(index){
 				dom.getComponentRect(this.$refs.tabitem[index], res => {
 					this.linesWidth = res.size.width 
+					 console.log(this.linesWidth,'res.size.width')
 				});
 			},
 			
 			getWidth(){
 				this.$refs.tabitem.map(item=>{
 					dom.getComponentRect(item, res => {
-						this.titleItemWidth += res.size.width +( this.myWidth / 3 - 100)
-					 // this.tabbarWidth = res.size.width;
+						this.titleItemWidth += res.size.width + ( this.myWidth / 3 - 100)
+					   
 					});
 				})
 				
-			
 			},
 			scrollTabTo(index) {
 			  const el = this.$refs.tabitem[index];
@@ -111,7 +112,6 @@
 					this.scrollTabTo(val-1<0?0:val-1)
 				}
 				 this.getline_Width(val)
-					console.log(val,'val')
 			},
 			scrollMove(val) {
 				if(this.number==(this.length-1)&&val>0){
@@ -133,7 +133,8 @@
 			setTimeout(()=>{
 			  this.getWidth()
 			  this.getline_Width(0)
-			},300)
+			
+			},100)
 		}
 
 
@@ -145,18 +146,16 @@
 
 	.lines {
 		height: 6rpx;
-		width: 26px;
 		background-color: #FF5927;
 		/* margin-left: 6px; */
 		border-radius: 6rpx;
+/* 		transition-property:width,transform;
+		transition-duration:0.2s;
+		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1); */
 	}
 
 	.titleItem {
 		flex-direction: row;
-		transition-property:transform;
-		transition-duration:0.3s;
-		/* transition-delay:0.1s; */
-		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
 		
 	}
 
