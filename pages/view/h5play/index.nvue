@@ -40,7 +40,7 @@
 		
 		},
 		onLoad(options) {
-			this.game_url = options.game_url +"&token=" +this.loginInfo.user_token +"&link=uniapp&client_id=" +this.client_id;
+			this.game_url = options.game_url +"&token=" +this.loginInfo.user_token +"&link=uniapp&client_id=" +this.client_id+'&box_jingying=1';
 			console.log(this.game_url)
 		},
 
