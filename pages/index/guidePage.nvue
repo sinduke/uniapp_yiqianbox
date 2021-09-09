@@ -67,6 +67,7 @@
 			getPageData() {
 				$api.get("home/slideguid").then((res) => {
 					globalData.store.commit('setCustom_name',res.data.data.custom_name)
+					console.log(res.data.data.custom_name,'res.data.data.custom_name')
 					if (res.data.data) {	
 						this.pageData = res.data.data.hometopper;
 						if (this.guideFirstya != 1) {

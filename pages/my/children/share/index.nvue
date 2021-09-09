@@ -40,7 +40,7 @@
 			  <image src="@/static/images/comment-close.png" mode="widthFix" style="width: 40rpx;height: 40rpx;position: fixed" :style="{left:myWidth/2+86+'px',top:$store.state.myHeight<1400?$store.state.myHeight/2-200+'rpx':$store.state.myHeight/2-306+'rpx'}" @click="close"></image>
 			</view>
 		</view>
-		<mypopup :nheight='460' easing='linear' :ntime='200' style="position: fixed;" v-if="payWay.show" @click.stop='stop'>
+		<mypopup :nheight='460'  style="position: fixed;" v-if="payWay.show" @click.stop='stop'>
 			<view class="prouptitle">
 				<text class="pup_text" @click.stop="payWay.show=false">取消</text>
 				<text class="pup_text" style="color: #ff5927;" @click="handleSelect">确认</text>

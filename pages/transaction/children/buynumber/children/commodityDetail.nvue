@@ -10,7 +10,6 @@
 			</view>
 			<view  >
 				<image src="@/static/images/right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
-				<!-- <u-icon name="arrow-right" color="#888" size="28"></u-icon> -->
 			</view>
 		</view>
 		<view class="xiaohao" >
@@ -20,7 +19,7 @@
 		</view>
 		<view  class="flex" style="margin-bottom: 24rpx;" >
 			<text class="text">小号ID：</text> 
-			<text class="text">{{pageData.role_id}}</text>
+			<text class="text">{{pageData.mg_mem_id}}</text>
 		</view>
 		<view  class="flex" style="justify-content: space-between;"> 
 		<view class="flex" style="align-items: flex-end;">

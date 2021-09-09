@@ -18,11 +18,11 @@
 			},
 			easing:{
 				type:String,
-				default:'linear'
+				default:'easeOutQuart'
 			},
 			ntime:{
 				type:Number,
-				default:300
+				default:200
 			}
 		},
 		methods: {
