@@ -135,7 +135,7 @@
 				params: {
 					page: 1,
 					offset: 15,
-					is_h5: 2,
+					is_h5: 0,
 					tags: 0,
 					is_mp4: 0,
 					cates: 0,
