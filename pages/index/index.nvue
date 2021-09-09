@@ -79,11 +79,11 @@
 						name: '推荐'
 					},
 					{
-						id: 0,
+						id: 1,
 						name: '排行'
 					},
 					{
-						id: 0,
+						id: 2,
 						name: '新服'
 					}
 				],
@@ -148,7 +148,7 @@
 		onLoad() {
 			if(this.custom_name){
 				this.TitleList.push({
-						id: 4,
+						id: 3,
 						name: this.custom_name
 					},)
 			}

@@ -1,14 +1,12 @@
 <!-- 排行 -->
 <template>
 	<view class="ranklist">
-		 <!-- <view class="" :style="{height:3+'rpx',width:myWidth+'px',backgroundColor:'#dddddd'}"> </view> -->
 		<scroller class="scroller" scroll-direction='horizontal' :show-scrollbar='false'  >
-			<text @click="handletab(item.type)" class="text" :class="{text1:active==item.type}" v-for="item in tabList"
-				:key='item.type'>{{item.name}}</text>
+			<text @click="handletab(index)" class="text" :class="{text1:active==index}" v-for="(item,index) in tabList" :key='index'>{{item}}</text>
 		</scroller>
 		<view class="titleLine" ref="titleLine" :style="{width:myWidth+'px',height:'2rpx'}"></view>
 		<view class="myList" :style="{height:myHeight-400+'rpx',width:myWidth+'px'}">
-			<list :show-scrollbar='false'  class="list" :style="{height:myHeight-400+'rpx'}" @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="pageData.length">
+			<list :show-scrollbar='false'  class="list" :style="{height:myHeight-400+'rpx'}" @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="list.length">
 				<refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'" :style="{width:myWidth-32+'px'}" :viewHeight='120'>
 					<view class="refreshImages" :style="{width:myWidth-32+'px'}">
 						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
@@ -16,9 +14,9 @@
 				</refresh>
 				
 				<cell>
-					<hotCard :item='pageData[0]'></hotCard>
+					<hotCard :item='list[0]'></hotCard>
 				</cell>
-				<cell v-for="(item,index) in pageData" :key='index' v-if="index>1">
+				<cell v-for="(item,index) in list" :key='index' v-if="index>0">
 					<gameItem :itemIndex='index' :item="item" :type='1' style="margin:20rpx 0;"></gameItem>
 				</cell>
 				<cell v-if="loadinging">
@@ -30,7 +28,7 @@
 			</list>
 			
 		</view>
-		<view v-if="pageData.length==0&&islogin" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
+		<view v-if="list.length==0&&islogin" :style="{width:myWidth+'px'}" style="position: absolute;top: 300rpx;">
 			<myloading :isrefre='isrefre' :isNoData='isNoData'  @Refresh='Refresh'></myloading>
 		</view>
 	</view>
@@ -70,34 +68,14 @@
 				isNoData:false,
 				scrollLeft:0,
 				loadinging:false,
-				tabList: [{
-						type: 0,
-						name: '热门榜'
-					},
-					{
-						type: 1,
-						name: '新游榜'
-					},
-					{
-						type: 2,
-						name: 'H5热门榜'
-					},
-					{
-						type: 3,
-						name: 'H5新游榜'
-					}
-				],
-				pageData: [],
+				tabList: [],
+				list:[],
+				pageData: null,
 				count: 0,
 				status: 'loadMore',
 				formData: {
 					page: 1,
-					offset: 15,
-					is_h5: 2,
-					/*, 是否H5游戏*/
-					sort: 1,
-					/* 热门榜还是新游榜 */
-
+					offset: 10
 				},
 				refreshing: false,
 				isrefre: false,
@@ -111,7 +89,7 @@
 			},
 			//加载
 			loadmore(){
-			if(this.count>this.pageData.length){
+			if(this.count>this.list.length){
 		     this.loadinging = true
 			   this.formData.page++
 			    this.getpageData(this.formData)
@@ -121,7 +99,7 @@
 			Refresh(data) {
 				this.isrefre = true
 				if (data) {
-					this.pageData = []
+					this.pageData = null
 					this.getpageData(this.formData)
 				}
 			},
@@ -137,56 +115,29 @@
 			/* 切换 */
 			handletab(index) {
 				this.active = index
-				this.formData = {
-					page: 1,
-					offset: 15,
-					is_h5: 2,
-					sort: 1,
-				}
-					this.scrollLeft = 10
-
-				switch (index) {
-					case 0:
-						this.pageData = []
-						this.formData.page = 1
-						this.formData.sort = 1
-						this.getpageData(this.formData)
-						break;
-					case 1:
-						this.pageData = []
-						this.formData.page = 1
-						this.formData.sort = 2
-						this.getpageData(this.formData)
-						break;
-					case 2:
-						this.pageData = []
-						this.formData.page = 1
-						this.formData.sort = 1
-						this.formData.is_h5 = 1
-						this.getpageData(this.formData)
-						break;
-					case 3:
-						this.pageData = []
-						this.formData.page = 1
-						this.formData.sort = 2
-						this.formData.is_h5 = 1
-						this.getpageData(this.formData)
-						break;
-				}
+                 this.formData.page = 1
+				 this.list = []
+                 this.getpageData(this.formData)
 
 			},
 			// 首页专区数据
 			getpageData(data = {}) {
-				$api.get('/game/multilistnew', {
+				$api.get('game/rank_category', {
 					...data,
 					client_id:this.$store.state.client_id
 				}).then(res => {
+					if(this.tabList.length<3){
+						res.data.data.list.map(item=>{
+							this.tabList.push(item.topic_name)
+						})
+					}
 					if(res.data.code==200){
-						this.pageData = this.pageData.concat(res.data.data.list)
-						this.count = res.data.data.count
-						if(this.count==0){
-							this.isNoData = true
-						}
+						this.pageData =  res.data.data 
+						this.list = this.list.concat(this.pageData.list[this.active].game_list)
+					    this.count = this.pageData.list[this.active].game_list_count
+						// if(this.count==0){
+						// 	this.isNoData = true
+						// }
 						setTimeout(()=>{	
 						this.loadinging = false;
 						this.bind();
@@ -229,8 +180,9 @@
 					this.islogin = true
 				}
 
-			}
+			},
 		},
+	
 
 
 	}

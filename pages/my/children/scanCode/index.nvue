@@ -2,10 +2,8 @@
 	<view class="scanCode">
 		<view class="scanCodeBox">
 			<view class="codeBorder" :style="{width:myWidth+'px'}">
-				<view class="avatar">
-					<image :src="userInfo.avatar" style="width: 140rpx;height: 140rpx;border-radius:140rpx;margin-right: 24rpx;"></image>
+					<image :src="userInfo.avatar" style="width: 140rpx;height: 140rpx;border-radius:140rpx"></image>
 					<text class="userInfo">{{userInfo.nickname}}</text>
-				</view>
 				<text class="ptInfo">{{userFormat.name}}官网请求您的账号登录</text>
 			    <text @click="handleLogin"  class="buttons" >确认登录</text>
 			</view>
@@ -89,26 +87,22 @@
 <style scoped>
 	.scanCode {
 		flex: 1;
-		align-items: center;
 		background-color: #fff;
 	}
-   .avatar{
-	   margin-top: 300rpx;
-	   flex-direction: row;
-	   align-items: center;
-	   margin-bottom: 42rpx;
-   }
    .userInfo{
-	   font-size: 40rpx;
+	   font-size: 32rpx;
 	   color: #1C1C1C;
-	   font-weight: 700;
+	   font-weight: 400;
+	   margin: 24rpx 0;
    }
 	.codeBorder {
+		margin-top: 250rpx;
 		align-items: center;
+		justify-content: center;
 	}
 	.ptInfo{
 		font-size: 32rpx;
-		color: #999;
+		color: #666;
 		margin-bottom: 42rpx;
 	}
 

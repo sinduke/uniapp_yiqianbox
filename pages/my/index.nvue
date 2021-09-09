@@ -327,10 +327,17 @@
 					if (common.isLogin()) {
 						uni.scanCode({
 							success: (res) => {
-								uni.navigateTo({
-									url: url + `?scanType=${res.scanType}&result=${res.result}`
-								})
-
+								if(/qrLogin/i.test(res.result)){
+									uni.navigateTo({
+										url: url + `?scanType=${res.scanType}&result=${res.result}`
+									})
+								}else{
+									uni.showToast({
+										title:'无法识别二维码',
+										position:'bottom'
+									})
+						            return
+								}
 							}
 						});
 					}

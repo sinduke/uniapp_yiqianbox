@@ -1,11 +1,11 @@
 <template>
-	<view class="bigTurntable">
-		<myNavbar title='幸运转盘' :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
+	<view class="bigTurntable" :style="{flex:myHeight<1400?'':1}">
+		<myNavbar title='幸运转盘' style="position: fixed;" :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
 		<image src="@/static/images/my/bigturntablebgi1.png" mode="widthFix" :style="{height:myHeight+'rpx',width:myWidth+'px'}"></image>
 		<view class="bg123" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
 			<view class="bigTitle" :style="{windth:myWidth+'px'}">
-				<text class="dzpjh" v-if="is_free==1">您有一次免费抽奖机会</text>
-				<text class="dzpjh" v-else>您今天免费次数已用完</text>
+				<text class="dzpjh" :style="{marginBottom:myHeight>1400?'90rpx':'84rpx'}" v-if="is_free==1">您有一次免费抽奖机会</text>
+				<text class="dzpjh" :style="{marginBottom:myHeight>1400?'90rpx':'84rpx'}" v-else>您今天免费次数已用完</text>
 				<text class="my_integral">我的积分：{{userInfo.my_integral}}</text>
 			</view>		
 
@@ -109,6 +109,9 @@
 			},
 			myWidth(){
 				return uni.getSystemInfoSync().windowWidth
+			},
+			platform(){
+				return uni.getSystemInfoSync().platform
 			},
 			userInfo() {
 				return globalData.store.state.userInfo
@@ -265,7 +268,7 @@
 
 <style scoped>
 	.bigTurntable{
-		flex: 1;
+	
 		overflow:hidden;
 	}
 	.bg123 {
@@ -295,7 +298,7 @@
 			font-size: 32rpx;
 			font-weight: 700;
 			lines: 1;
-			margin-bottom: 84rpx
+			
 		}
 
 		.my_integral {

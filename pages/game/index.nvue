@@ -395,13 +395,12 @@
                    this.params.page++
 				   this.getgamedata()
 				}else if(this.Category.count==0&&this.categoryData.length==0){
-				
 					this.loadinging = true
 					this.getCategory()
 				}else if(this.Category.count>this.categoryData.length){
-					this.loadinging = true
-					this.Category.key++
-					this.getCategory()
+					// this.Category.key++
+					// this.loadinging = true
+					// this.getCategory()
 					
 				}
 				
@@ -619,7 +618,6 @@
 					//speciallist
 					this.params.count = res.data.data.count
 					this.speciallist = this.speciallist.concat(res.data.data.list)
-					
 					//折扣游戏
 					this.rebate = this.speciallist 
 					//画质精选
@@ -648,7 +646,7 @@
 					...this.Category
 				}).then(res => {
 					this.Category.count = res.data.data.count
-					this.categoryData = this.categoryData.concat(res.data.data.data)  
+					this.categoryData = res.data.data.data  
                     setTimeout(() => {
                     	this.loadinging = false;
                     }, 100)

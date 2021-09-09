@@ -9,11 +9,12 @@
 						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>
 					</view>
 				</refresh>
-				
+				<cell style="height: 48rpx;">
+				</cell>
 				<cell>
 					<hotCard :item='pageData[0]' :type='1'></hotCard>
 				</cell>
-				<cell v-for="(item,index) in pageData" :key='index' v-if="index>1">
+				<cell v-for="(item,index) in pageData" :key='index' v-if="index>0">
 					<gameItem :itemIndex='index' :item="item" :type='3' style="margin:20rpx 0;"></gameItem>
 				</cell>
 				<cell v-if="loadinging">
