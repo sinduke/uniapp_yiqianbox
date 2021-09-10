@@ -14,7 +14,7 @@
 			<list @loadmore='loadmore' loadmoreoffset='10' class="list" :style="{width:$store.state.myWidth+'px',height:myHeight-278+'rpx'}" v-if="list.length>0">
 				<cell :style="{width:$store.state.myWidth+'px'}" v-for="(item,index) in list" v-if="item.is_recycle!=1" :key='index'>
 					<view class="cell" v-if="platform=='android'">
-						<image class="box_left" mode="widthFix" :src="item.icon"  @click="handleRouter(item)"></image>
+						<image class="box_left" mode="widthFix" :src="item.new_icon||item.icon"  @click="handleRouter(item)"></image>
 						<view class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
 							<view class="right_1" :style="{width:($store.state.myWidth-128)*0.75+'px'}" @click="handleRouter(item)">
 								<text class="text1">{{item.name}}</text>

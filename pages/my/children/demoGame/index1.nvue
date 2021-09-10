@@ -24,7 +24,7 @@
 						</view>
 						<view class="item_bottom">
 							<view class="item_1" @click="handleRouter(item.app_id)">
-								<image class="item_1" :src="item.game.icon" mode="widthFix"></image>
+								<image class="item_1" :src="item.game.new_icon||item.game.icon" mode="widthFix"></image>
 							</view>
 							<view class="item_2">
 								<text class="item_2_text1">{{item.game.name}}</text>
@@ -188,6 +188,7 @@
 <style scoped>
 	.demoGame{
 		flex: 1;
+		overflow:hidden;
 		background-color: #fff;
 	}
 	.lineShowdow{
