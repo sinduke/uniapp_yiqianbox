@@ -13,9 +13,9 @@
 						<image  src="@/static/images/QQ-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
 						<text class="text">QQ</text>
 					</view>
-					<view class="share-btn-item" @click="share('WXSenceTimeline','weixin')">
-						<image src="@/static/images/pengyouquan-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
-						<text class="text">朋友圈</text>
+					<view class="share-btn-item" @click="share('','sinaweibo')">
+						<image src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text class="text">微博</text>
 					</view>
 				</view>
 				<view class="" style="flex-direction: row;justify-content: space-between;margin-top: -58rpx;" :style="{width:myWidth-24+'px'}">
@@ -23,21 +23,22 @@
 						<image src="@/static/images/wx-icon.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
 						<text class="text">微信</text>
 					</view>
-					<view class="share-btn-item" @click="share('','sinaweibo')">
-						<image src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
-						<text class="text">微博</text>
+					<view class="share-btn-item" @click="share('WXSenceTimeline','weixin')">
+						<image src="@/static/images/pengyouquan-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text class="text">朋友圈</text>
 					</view>
 				</view>
 			</view>
 			
 			<!-- ios -->
 			<view class="share-btn" :style="{width:myWidth+'px'}" v-else style="position: relative;">
-
+               
 	
 				<view class="" style="flex-direction: row;justify-content: space-between;margin-top: 120rpx;" :style="{width:myWidth-24+'px'}">
-					<view class="share-btn-item" @click="share('WXSceneSession','weixin')" >
-						<image src="@/static/images/wx-icon.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
-						<text class="text">微信</text>
+					<!-- @click="share('','qq')" -->
+					<view class="share-btn-item"  >
+						<image  src="@/static/images/qq-login.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
+						<text class="text">QQ</text>
 					</view>
 					<view class="share-btn-item" @click="share('','sinaweibo')">
 						<image src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
@@ -45,11 +46,12 @@
 					</view>
 				</view>
 				
-				<view :style="{width:myWidth-160+'px'}"  style="flex-direction: row;justify-content: space-between;margin-top: 18rpx;position: absolute;">
-					<view class="share-btn-item"  >
-						<image  src="@/static/images/QQ-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
-						<text class="text">QQ</text>
+				<view :style="{width:myWidth-190+'px'}" style="flex-direction: row;justify-content: space-between;margin-top: 18rpx;position: absolute;">
+					<view class="share-btn-item">
+						<image src="@/static/images/wx-icon.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
+						<text class="text">微信</text>
 					</view>
+				
 					<view class="share-btn-item" >
 						<image src="@/static/images/pengyouquan-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
 						<text class="text">朋友圈</text>
@@ -104,14 +106,14 @@
 		    <view class="" v-if="isAction&&$store.state.platform=='ios'" 
 			style="position: fixed;flex-direction: row;align-items: center;justify-content: space-between;height: 50px;"  
 			:style="{
-			bottom:myHeight<1400?'200px':'410rpx',
-			left:myHeight<1400?myWidth/2-94+'px':myWidth/2-116+'px',
-			width:myHeight<1400?'200px':'440rpx',
+			bottom:myHeights<1400?'200px':'410rpx',
+			left:myHeights<1400?myWidth/2-94+'px':myWidth/2-116+'px',
+			width:myHeights<1400?'200px':'440rpx',
 
 			}"
 			
-			>
-				<view class="a" style="width: 50px;height: 50px;" @click="share('','qq')">
+			>     
+				<view class="a" style="width: 50px;height: 50px;"  @click="share('WXSceneSession','weixin')" >
 					
 				</view>
 				<view class="a" style="width: 50px;height: 50px;" @click="share('WXSenceTimeline','weixin')">
@@ -122,7 +124,7 @@
 		  <view class="" v-if="isAction&&$store.state.platform=='ios'"  
 		  style="position: fixed; width: 50px;height: 50px;"  @click="copy" 
 		  :style="{left:myWidth/2-25+'px',
-		  bottom:myHeight<1400?'210px':'460rpx'
+		  bottom:myHeights<1400?'210px':'460rpx'
 		  }"
 		  
 		  >
@@ -169,6 +171,9 @@
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
+			myHeights() {
+				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 		
@@ -202,13 +207,13 @@
 			},
 			bind3(){
 				this.bindingx(300,common.getEl(this.$refs.fk1),'transform.scale', 'easeOutElastic(t,.2,.8,300)')
-				
+							
 				if(common.isLogin()){
 					uni.navigateTo({
 						url:'/pages/my/comprehensive/feedback/feedback1'
 					})
 				}
-				
+								
 			},
 			bindingx(timer,element,property,expression){
 				let mybindUp = BindingX.bind({

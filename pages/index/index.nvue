@@ -1,7 +1,7 @@
 	<template>
-		<view class="index" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
+		<view class="index">
 			<view  :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
-			<view class="Title">
+			<view class="Title" :style="{width:myWidth+'px'}">
 				<view class="TitleList">
 					<titleLine :number='number' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine>
 				</view>

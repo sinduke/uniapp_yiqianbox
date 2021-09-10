@@ -1,9 +1,9 @@
 {
-    "name" : "闲玩手游",
+    "name" : "闲玩精英版",
     "appid" : "__UNI__94481FE",
     "description" : "",
-    "versionName" : "2.1.2",
-    "versionCode" : 20102,
+    "versionName" : "2.2.1",
+    "versionCode" : 20201,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -64,9 +64,7 @@
             },
             /* SDK配置 */
             "sdkConfigs" : {
-                "ad" : {
-                    "gdt" : {}
-                },
+                "ad" : {},
                 "push" : {
                     "unipush" : {}
                 },
@@ -79,11 +77,11 @@
                         "appkey" : "3046851712",
                         "appsecret" : "8276d6a7c66f26398b2ce57acbbc9aab",
                         "redirect_uri" : "https://api.weibo.com/oauth2/default.html",
-                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
+                        "UniversalLinks" : "https://dcloud.4000yx.com/uni-universallinks/__UNI__94481FE/sina/"
                     },
                     "qq" : {
                         "appid" : "101961430",
-                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
+                        "UniversalLinks" : "https://dcloud.4000yx.com/qq_conn/101961430/"
                     }
                 },
                 "oauth" : {
@@ -95,18 +93,18 @@
                     },
                     "qq" : {
                         "appid" : "101961430",
-                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
+                        "UniversalLinks" : "https://dcloud.4000yx.com/qq_conn/101961430/"
                     },
                     "sina" : {
                         "appkey" : "3046851712",
                         "appsecret" : "8276d6a7c66f26398b2ce57acbbc9aab",
                         "redirect_uri" : "https://api.weibo.com/oauth2/default.html",
-                        "UniversalLinks" : "https://www.4000yx.com/app/ioshz/bjb/xw/"
+                        "UniversalLinks" : "https://dcloud.4000yx.com/uni-universallinks/__UNI__94481FE/sina/"
                     }
                 }
             },
             "splashscreen" : {
-                "androidStyle" : "default",
+                "androidStyle" : "common",
                 "android" : {
                     "hdpi" : "static/launchpage/480x762.png",
                     "xhdpi" : "static/launchpage/720x1242.png",

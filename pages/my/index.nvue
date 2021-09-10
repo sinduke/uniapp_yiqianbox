@@ -400,9 +400,6 @@
 			
 
 		},
-		// onLoad() {
-			
-		// },
 		onReady() {
 			setTimeout(()=>{		
 			this.bind()
