@@ -84,6 +84,7 @@
 			},
 			getPageData() {
 				$api.get('rebate/applyList',
+					this.formData
 				).then(res => {
 					if (res.data.code == 200) {
 						this.isNoData = true

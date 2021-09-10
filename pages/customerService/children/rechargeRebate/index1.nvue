@@ -102,7 +102,7 @@
 				if(this.count>this.list.length){
 					this.loadinging = true
 					this.formData.page++
-					this.getPageData()
+					this.getPageData(this.formData)
 				}	
 			},
 			search() {

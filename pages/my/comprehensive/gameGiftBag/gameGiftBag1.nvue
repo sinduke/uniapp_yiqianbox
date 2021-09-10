@@ -5,7 +5,7 @@
 		<view class="box" :style="{width:$store.state.myWidth+'px'}">
 			<list @loadmore='loadmore' loadmoreoffset='10' class="list" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" v-if="pageData.length">
 				<cell class="cell" :style="{width:$store.state.myWidth+'px'}" v-for="(item,index) in pageData">
-					<image class="box_left" mode="widthFix" :src="item.icon"  @click="toDetail(item.game_id)"></image>
+					<image class="box_left" mode="widthFix" :src="item.new_icon||item.icon"  @click="toDetail(item.game_id)"></image>
 					<view class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
 						<view class="right_1" :style="{width:($store.state.myWidth-128)*0.75+'px'}">
 							<text class="text1">{{item.gift_name}}</text>
@@ -90,7 +90,7 @@
 			}
 		},
 		onLoad() {
-			this.getpageData()
+			this.getpageData(this.params)
 		},
 		methods: {
 			//加载更多
@@ -98,7 +98,7 @@
 				if(this.count>this.pageData.length){
 					this.loadinging = true
 					this.params.page++
-					this.getpageData()
+					this.getpageData(this.params)
 				}	
 			},
 			toDetail(id){
@@ -119,6 +119,7 @@
 						this.isNoData=true,
 						this.loadinging=false,
 						this.pageData = this.pageData.concat(res.data.data.list) ;
+						console.log(this.pageData)
 						this.count = res.data.data.count
 					} else {
 						uni.showToast({
