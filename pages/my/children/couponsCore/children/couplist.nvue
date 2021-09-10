@@ -10,8 +10,9 @@
 								<text :ref="'input_te'+index" :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 							</view>	
 						</view>
-						
-						<view  class="tabs_line" :style="{transform:active? 'translateX('+tableft1+')':'translateX('+tableft2+')'}"></view>
+						{{tabwidth}}
+						<view ref="tabs_line"  class="tabs_line" :style="{transform:active? 'translateX('+0+')':'translateX('+tableft2+')',width:tabwidth+'px'}"></view>
+					{{tabwidth}}
 					</view>
 					
 				</scroller>
@@ -73,8 +74,10 @@
 				number3:0,
 				left:false,	
 				tableft1:0,
-				tableft2:40,
+				tableft2:0,
 				tableft0:0,
+				tabwidth:0,
+				tabwidth1:0,
 				myGame: [],
 				tabsleft:0,
 				pageData: null,
@@ -95,16 +98,17 @@
 				// 	    offset: 100
 				// 	})
 				// }
-				dom.getComponentRect(this.$refs['input_te' + (val-1)][0], res=>{
-					this.tableft2 = res.size.left
-					console.log(this.tableft2)
+				// dom.getComponentRect(this.$refs['input_te' + (val-1)][0], res=>{
+				// 	this.tableft2 = res.size.left
+				// 	console.log(this.tableft2)
 					
-				})
+				// })
 				dom.getComponentRect(this.$refs['input_te' + (val)][0], res=>{
 					this.tableft1 = res.size.left
 					this.tableft1-this.tableft2
+					this.tabwidth1 = res.size.width/2
 				})
-				console.log(1111,)
+				
 				//  dom.getComponentRect(this.$refs['input_te' + (3)][0], res=>{
 				// 	console.log(res.size)
 				// })
@@ -137,6 +141,24 @@
 			},
 		},
 		mounted() {
+			setTimeout(()=>{
+				
+				dom.getComponentRect(this.$refs['input_te' + (0)][0], res=>{
+					
+					this.tableft2 = res.size.width/2
+					
+					console.log(this.tableft2)
+					
+				})
+				dom.getComponentRect(this.$refs.tabs_line , res=>{
+					console.log(this.tableft2)
+					this.tabwidth = this.tableft2
+					
+					console.log(6666,this.tabwidth)
+				})
+			},1000)
+			
+			
 			this.getPageData()
 			
 		},
@@ -265,7 +287,7 @@
 	}
 	.tabs_line{
 		margin:10rpx 0rpx 4rpx 0rpx;
-		width:55rpx;
+		
 		height:6rpx ;
 		border-radius:6rpx;
 		background: #FF5927;
