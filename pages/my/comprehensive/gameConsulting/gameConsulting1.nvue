@@ -33,7 +33,7 @@
 											<text class="right_text2">{{item.post_hits}}</text>
 										</view>
 									</view>
-									<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+									<image class="icon" :src="item.game2.new_icon||item.game2.icon" mode="widthFix"></image>
 								</view>
 								
 								
@@ -69,7 +69,7 @@
 											<text class="right_text2">{{item.post_hits}}</text>
 										</view>
 									</view>
-									<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+									<image class="icon" :src="item.game2.new_icon||item.game2.icon" mode="widthFix"></image>
 								</view>
 								
 							</cell>
@@ -103,7 +103,7 @@
 										<text class="right_text2">{{item.post_hits}}</text>
 									</view>
 								</view>
-								<image class="icon" :src="item.game2.icon" mode="widthFix"></image>
+								<image class="icon" :src="item.game2.new_icon||item.game2.icon" mode="widthFix"></image>
 								</view>
 							</cell>
 							<cell v-if="loadinging">

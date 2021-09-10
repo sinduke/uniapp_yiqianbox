@@ -27,7 +27,7 @@
 					</view>
 				</cell>
 			</list>
-				<view class="button" :style="{width:$store.state.myWidth-55+'px',marginLeft:'20rpx'}">
+				<view class="button" v-if="buttonShow" :style="{width:$store.state.myWidth-55+'px',marginLeft:'20rpx'}">
 					<text class="buttonText h2" @click="handleReset">重 置</text>
 					<text class="h2 buttonText1" @click="handelSubmit">确 定</text>
 			</view>
@@ -69,6 +69,7 @@
 					is_h5: 0
 				},
 				gameSelete: 0,
+				buttonShow:false,
 
 			}
 		},
@@ -152,6 +153,9 @@
 			type: { //深度监听，可监听到对象、数组的变化
 				handler(val) {
 					this.isShow = val
+					setTimeout(()=>{
+						this.buttonShow = val
+					},200)
 
 				},
 				immediate: true
@@ -159,6 +163,8 @@
 			isShowSelet:{
 				handler(val) {
 						this.gameSelete = val
+					
+						
 					},
 					immediate: true
 			},
