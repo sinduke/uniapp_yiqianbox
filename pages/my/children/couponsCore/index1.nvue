@@ -73,7 +73,7 @@
 	import common from "@/common/js/common.js";
 	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	import nloading from '@/components/nvue-loading/nvue-loading';
-	import couplist1 from './children/couplist1.nvue'
+	import couplist1 from './children/couplist.nvue'
 	export default {
 		data() {
 			return {
