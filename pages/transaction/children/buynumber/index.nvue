@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="list">
-			<list :style="{height:myHeight-176-200+'rpx',width: myWidth+'px'}" :show-scrollbar='false'  class="list"  @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="pageData.length">
+			<list :style="{height:myHeight-176-100+'rpx',width: myWidth+'px'}" :show-scrollbar='false'  class="list"  @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="pageData.length">
 			<refresh @refresh="onrefresh" :display=" refreshing ? 'show' : 'hide'" :viewHeight='120'>
 					<view class="refreshImages" :style="{width:myWidth-6+'px'}">
 						<image src="@/static/images/myrefresh.gif" mode="widthFix" class="refreshImage"></image>

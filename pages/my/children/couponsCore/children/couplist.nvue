@@ -75,7 +75,7 @@
 				left:false,	
 				tableft1:0,
 				tableft2:0,
-				tableft0:0,
+				tableft:0,
 				tabwidth:0,
 				tabwidth1:0,
 				marginLeft:0,
@@ -93,37 +93,32 @@
 		},
 		watch:{
 			active(val){
+				
 				this.number1 = this.number
 				this.number = val
 				if(this.number-this.number1>0){
 					this.left = true
 					dom.getComponentRect(this.$refs['input_te' + (val)][0], res=>{
 						this.tableft1 = this.tableft2
-						this.tableft2 = this.tableft1+this.tabwidth1+res.size.width/2
 						this.tabwidth1 = this.tabwidth
 						this.tabwidth = res.size.width/2
-						console.log(this.tableft1,'this.tableft1')
-						console.log(this.tableft2,'this.tableft2')
+						this.tableft2 = this.tableft1+this.tabwidth1+res.size.width/2
+						
 					})
 				}else{
 					this.left = false
 					this.number1 = this.number
-					dom.getComponentRect(this.$refs['input_te' + (val)][0], res=>{
-						this.tableft2 = this.tableft1
-						this.tableft1 = this.tableft2-this.tabwidth/2-res.size.width
-						this.tabwidth = this.tabwidth1
-						this.tabwidth1 = res.size.width/2
-						console.log(this.tableft1,'this.tableft1')
-						console.log(this.tableft2,'this.tableft2')
-					})
+					this.tableft = this.tableft1
+					this.tableft1 = this.tableft2
+					this.tableft2 = this.tableft
 					
-					
-					
-					
-					// tableft = this.tableft2
-					// this.tableft2 = this.tableft1
-					// this.tableft1 = tableft
-					
+					// dom.getComponentRect(this.$refs['input_te' + (val)][0], res=>{
+						
+					// 	this.tableft1 =-tableft2+this.tabwidth+res.size.width/2
+					// 	this.tabwidth = this.tabwidth1
+					// 	this.tabwidth1 = res.size.width/2
+					// 	this.tableft2 = this.tableft	
+					// })	
 				}
 				
 				
@@ -159,7 +154,7 @@
 		mounted() {
 			setTimeout(()=>{	
 				dom.getComponentRect(this.$refs['input_te' + (0)][0], res=>{	
-					this.tableft2 = res.size.width/2
+					// this.tableft2 = res.size.width/2
 					this.tabwidth = res.size.width/2
 					this.marginLeft = res.size.width/4
 				})

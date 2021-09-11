@@ -175,7 +175,8 @@
 						<video id="video" :src="pageData.mp4_url" autoplay objectFit="fill" :enable-progress-gesture='false' :poster='pageData.hot_image'  :style="{width:myWidth-66+'px'}" style="height: 360rpx;margin:20rpx 10rpx;border-radius: 20rpx;" ></video>   	
 					    <cover-image src="@/static/images/view/video-background.png"  :style="{width:myWidth-60+'px',height:'360rpx'}" style="position: absolute;"></cover-image>
 					   </view>
-						<image v-for="(v,i) in pageData.image" :key='i' @click="imageBig(/http/i.test(v)?v:'https:'+v)"	style="width: 200rpx;height: 360rpx;border-radius: 20rpx;margin:20rpx 10rpx;"	:src="/http/i.test(v)?v:'https:'+v"></image>
+						
+						<image v-for="(v,i) in pageData1" :key='i' @click="imageBig(i,pageData1)"	style="width: 200rpx;height: 360rpx;border-radius: 20rpx;margin:20rpx 10rpx;"	:src="/http/i.test(v)?v:'https:'+v"></image>
 					</scroller>
 				</cell>
 				  <cell style="height: 72rpx;background-color: #fff;"></cell>
@@ -276,7 +277,7 @@
 						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" v-if="!isConent">{{evaluateitem.content.length>42?evaluateitem.content.slice(0,40)+'...':evaluateitem.content}}</text>
 						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" v-else>{{evaluateitem.content}}</text>
 					    <text style="position: absolute;right: 10rpx;font-size: 24rpx;color: #666;top:60rpx" v-if="!isConent&&evaluateitem.content.length>42" @click="isConent = true">查看全文</text>
-						<image @click="imageBig(evaluateitem.content_img[0])" :src="evaluateitem.content_img[0]" v-if="evaluateitem.content_img.length>0"  style="border-radius: 20rpx;margin-bottom: 20rpx;" :style="{width:myWidth-40+'px'}" mode="aspectFill"></image>
+						<image @click="imageBig(index,evaluateitem.content_img[0])" :src="evaluateitem.content_img[0]" v-if="evaluateitem.content_img.length>0"  style="border-radius: 20rpx;margin-bottom: 20rpx;" :style="{width:myWidth-40+'px'}" mode="aspectFill"></image>
 						<!-- 点赞 评论 -->
 						<view
 							style="flex-direction: row;justify-content: space-between; width: 300rpx;margin-bottom: 40rpx;">
@@ -351,6 +352,7 @@
 		data() {
 			return {
 				/*  下载 */
+				pageData1:null,
 				getDatas:0,
 				item:null,
 				isAndroid: uni.getSystemInfoSync().platform == "android",
@@ -470,8 +472,8 @@
 				})
 			},
 			//放大图片
-			imageBig(img){
-			 common.previewImage(0,[img])
+			imageBig(index,img){
+			 common.previewImage(index,img)
 			},
 			//去优惠券页面
 			toYouHui(id){
@@ -492,6 +494,16 @@
 					client_id:this.$store.state.client_id
 				}).then(res => {
 					this.pageData = res.data.data;
+					this.pageData1 = this.pageData.image.map(item=>{	
+						if(item.indexOf('http')==1){
+							return item
+						}else{
+							item ='https:' + item
+							return item
+						}
+					})
+					console.log(this.pageData.image)
+					console.log(this.pageData1)
 					setTimeout(()=>{
 						this.isBlur = true
 					},50)
@@ -500,7 +512,6 @@
 					this.$refs.sn_blur.pauseBlur()
 					}
 				},1000)
-					
 					if (plus.runtime.isApplicationExist({
 							pname: this.pageData.package_name
 						})) {

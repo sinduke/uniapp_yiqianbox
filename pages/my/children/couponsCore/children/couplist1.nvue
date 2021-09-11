@@ -4,7 +4,7 @@
 				<!-- tabs -->
 				<!-- <scroller scroll-direction="horizontal" style="flex-direction: row;"> -->
 					<!-- <view class="tab" :style="{width:$store.state.myWidth-56+'px',transform:tableft? 'translateX('+-0.22*myWidth*(number2)+')':'translateX('+-0.22*myWidth*(number3)+')'}"> -->
-					<view class="tab" :style="{width:$store.state.myWidth-56+'px'}">
+					<view class="tab" :style="{width:$store.state.myWidth-56+'px'}" style="margin-bottom: 20rpx;">
 						<view class="tabslist">
 							<view class="tabs"  :active="active" v-for="(item, index) in myGame" :key="index" @click="tabsClick(index)">
 								<text :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
@@ -17,9 +17,9 @@
 				<!-- </scroller> -->
 				
 				<!-- 滑动item -->
-				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth-56+'px',height:580+'rpx'}"  >
+				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth-56+'px',height:700+'rpx'}"  >
 					<swiper-item v-for="(data,i) in pageData" :key='i'>
-						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:580+'rpx'}">
+						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:700+'rpx'}">
 							<view v-for="(item,index) in data.list" :key='index' :style="{width:$store.state.myWidth-56+'px'}">
 								<view class="cell">
 									<view class="cell_left" :style="{width:($store.state.myWidth-56)*0.3+'px'}">
