@@ -849,8 +849,18 @@
 					"bounce": "none"
 				}
 			}
-
-
+		},
+		// 下载nvue
+		{
+		    "path" : "pages/view/downLoad/downLoad1",
+		    "style": {
+		    	// 取消默认的原生导航栏
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"bounce": "none"
+		    	}
+		    }
+		    
 		},
 		// 注册
 		{
@@ -1048,6 +1058,7 @@
 			}
 
 		}   
+        
         
     ],
 

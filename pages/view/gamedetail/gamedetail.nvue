@@ -766,7 +766,7 @@
 				this.$store.commit('setDownTasksList',downList) 
 				uni.setStorageSync('downList',[])
 				uni.setStorageSync('downList',arrList)
-				this.handleRouter('/pages/view/downLoad/downLoad')
+				this.handleRouter('/pages/view/downLoad/downLoad1')
 			},
 			
 			

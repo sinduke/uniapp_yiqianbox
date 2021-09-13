@@ -1,6 +1,7 @@
 <template>
-	<view class="xw-downLoadButton">
+	<!-- <view class="xw-downLoadButton"> -->
 		<view class="" v-if="item">
+			
 			<view class="buttons"  v-if="downtype==3">
 				<text class="button" @click="handleOpenApp">启 动</text>
 			</view>
@@ -11,14 +12,16 @@
 				style="padding:24rpx 16rpx ; border: 2rpx solid #efefef;border-radius: 28rpx;">
 				<nvue-progress :loadLoading='progress' :mheight='8' :wNumber='2.5' :type='1'></nvue-progress>
 			</view>
-			<view class="buttons" v-else>
+			
+			<view class="buttons" style="border-radius: 32rpx;" v-else>
 				<text class="button" @click="handleResume">继 续</text>
 			</view>
 		</view>
-	</view>
+	<!-- </view> -->
 </template>
 
 <script>
+	const globalData = getApp().globalData
 	export default{
 		data(){
 			return{
@@ -43,8 +46,8 @@
 		},
 		computed: {
 			downTasksItem() {
-				return this.$store.state.downTasksList.length>0?this.$store.state.downTasksList[this.sort].downTasks:''
-			}
+				return globalData.store.state.downTasksList.length>0?globalData.store.state.downTasksList[this.sort].downTasks:''
+			},
 		},
 		methods:{
 			//打开
@@ -69,6 +72,7 @@
 			},
 			//继续
 			handleResume(){
+				console.log(1111)
 				this.isTrue = true
 				// 
 				if(this.downTasksItem){
@@ -92,7 +96,7 @@
 					if(status == 200){
 						let arrList = uni.getStorageSync('downList')
 				            arrList.forEach(item=>{
-								this.$store.state.downTasksList.forEach(value=>{
+								globalData.store.state.downTasksList.forEach(value=>{
 									if(item.game_id==value.game_id){
 										if(value.downTasks.filename==downloadFile.filename){
 											item.filename = downloadFile.filename
@@ -109,11 +113,11 @@
 						// arrList[this.sort].filename = downloadFile.filename 
 						// arrList[this.sort].myTotalData = this.item.myTotalData
 					    // arrList[this.sort].myloading = 0  
-				        this.$emit('getData',[arrList,this.$store.state.downTasksList])	 
+				        this.$emit('getData',[arrList,globalData.store.state.downTasksList])	 
 						// uni.setStorageSync('downList',[])
 						uni.setStorageSync('downList',arrList)
 						
-					   console.log(arrList[this.sort],this.sort,this.$store.state.downTasksList,this.downTasksItem,'down_url, indexdown_url, index')
+					   // console.log(arrList[this.sort],this.sort,globalData.store.state.downTasksList,this.downTasksItem,'down_url, indexdown_url, index')
 					   if(isinstallGame){
 						this.installApp(downloadFile.filename)
 					   }else{
@@ -145,16 +149,16 @@
 			//监听
 	         addEventList(item){
 				item.addEventListener("statechanged", (res, status)=>{
-				     this.item.myloading =  (res.downloadedSize / 1024 / 1024) .toFixed(2)+ 'MB'
+				     this.item.myloading =  (res.downloadedSize / 1024 / 1024) .toFixed(2)
 					 this.item.myTotalData = (res.totalSize / 1024 / 1024).toFixed(2) +'MB'
 					 this.progress = Math.round(res.downloadedSize / res.totalSize * 100)  
-                     console.log( this.item.myloading, this.item.myTotalData,'down_url, indexdown_url, index') 
+                     // console.log( this.item.myloading, this.item.myTotalData,'down_url, indexdown_url, index') 
 					  
 				}) 
 				//如果是第一次进入
 				 if(this.downTasks){
 					let downList = []
-					downList = this.$store.state.downTasksList
+					downList = globalData.store.state.downTasksList
 					downList[this.sort].downTasks = this.downTasks 
 					this.$store.commit('setDownTasksList',[])
 				    this.$store.commit('setDownTasksList',downList) 				 
@@ -185,7 +189,7 @@
 						let a = arrList.filter(item=>{
 								return item.game_id!=arrList[this.sort].game_id
 							})
-							let downList = this.$store.state.downTasksList
+							let downList = globalData.store.state.downTasksList
 							let b  = downList.filter(item=>{
 								return item.game_id!=downList[this.sort].game_id
 							})						
@@ -210,25 +214,10 @@
 	
 		},
 		mounted() {
-			// plus.downloader.enumerate( tanks=>{
-			// console.log(tanks,'tanks')	
-			
-			// this.addEventList(tanks)
-			
-			// } );
-			
 			let arrList = uni.getStorageSync('downList')
 			if(!this.checkApp()&&this.downtype!=4){
 				if(this.downTasksItem){
-					plus.downloader.enumerate( tanks=>{
-					console.log(tanks,'tanks')	
-					
-					this.addEventList(tanks[0])
-					// tanks[0].addEventList()()
-					console.log(tanks[0].state=3,'tanks')	
-					} );
-					
-					// this.addEventList(this.downTasksItem)
+					this.addEventList(this.downTasksItem)
 					// this.isTrue=true
 					this.item.status?this.isTrue=true:this.isTrue=false
 				}else{
@@ -239,6 +228,36 @@
 			}
 			
 		},
+		// mounted() {
+			// plus.downloader.enumerate( tanks=>{
+			// console.log(tanks,'tanks')	
+			
+			// this.addEventList(tanks)
+			
+			// } );
+			
+		// 	let arrList = uni.getStorageSync('downList')
+		// 	if(!this.checkApp()&&this.downtype!=4){
+		// 		if(this.downTasksItem){
+		// 			plus.downloader.enumerate( tanks=>{
+		// 			console.log(tanks,'tanks')	
+					
+		// 			this.addEventList(tanks[0])
+		// 			// tanks[0].addEventList()()
+		// 			console.log(tanks[0].state=3,'tanks')	
+		// 			} );
+					
+		// 			// this.addEventList(this.downTasksItem)
+		// 			// this.isTrue=true
+		// 			this.item.status?this.isTrue=true:this.isTrue=false
+		// 		}else{
+						
+		// 			this.createDownload()
+		// 		}
+				
+		// 	}
+			
+		// },
 		watch:{
 			getData:{
 				handler(val){
@@ -254,18 +273,18 @@
 
 <style scoped >
 	.buttons {
-          flex-direction: row;
-		  align-items: center;
-		   justify-content: center;
-			/* width: 140rpx; */
+			
+			
 			border-radius: 32rpx;
+			width: 125rpx;
+			height: 60rpx;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
 			border: 1px solid #efefef;
-			color: #FF5927;
-			padding: 10rpx 32rpx;
-			/* @include button(32rpx, 10rpx, 32rpx); */
-			}
+		}
 		.button {
-			/*  */
+			color: #FF5927;
 			lines: 1;
 			font-size: 28rpx;
 			/* #ifdef APP-VUE */
