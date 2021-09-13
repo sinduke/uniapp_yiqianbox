@@ -17,7 +17,7 @@
 					<hotCard :item='list[0]'></hotCard>
 				</cell>
 				<cell v-for="(item,index) in list" :key='index' v-if="index>0">
-					<gameItem :itemIndex='index' :item="item" :type='1' style="margin:20rpx 0;"></gameItem>
+					<gameItem :itemIndex='index+1' :item="item" :type='1' style="margin:20rpx 0;"></gameItem>
 				</cell>
 				<cell v-if="loadinging">
 					<view class="" style="margin-bottom: 80rpx;flex-direction: row;justify-content: center;" :style="{width:myWidth-32+'px'}">
