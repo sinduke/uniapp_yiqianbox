@@ -10,9 +10,9 @@
 								<text :ref="'input_te'+index" :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 							</view>	
 						</view>
-						{{tabwidth}}
-						<view ref="tabs_line"  class="tabs_line" :style="{transform:active? 'translateX('+0+')':'translateX('+tableft2+')',width:tabwidth+'px'}"></view>
-					{{tabwidth}}
+						
+						<view ref="tabs_line"  class="tabs_line" :style="{transform:left? 'translateX('+tableft2+')':'translateX('+tableft1+')',width:left?tabwidth+'px':tabwidth1+'px',marginLeft:marginLeft+'px'}"></view>
+					
 					</view>
 					
 				</scroller>
@@ -75,15 +75,16 @@
 				left:false,	
 				tableft1:0,
 				tableft2:0,
-				tableft0:0,
+				tableft:0,
 				tabwidth:0,
 				tabwidth1:0,
+				marginLeft:0,
 				myGame: [],
 				tabsleft:0,
 				pageData: null,
 				pramas:{
 					offset:10,
-					game_num:4,
+					game_num:10,
 				}
 			}
 		},
@@ -92,28 +93,38 @@
 		},
 		watch:{
 			active(val){
-				// if(val==1||val==2){
-				// 	console.log(111)
-				// 	dom.scrollToElement(this.$refs.tabslist, {
-				// 	    offset: 100
-				// 	})
-				// }
-				// dom.getComponentRect(this.$refs['input_te' + (val-1)][0], res=>{
-				// 	this.tableft2 = res.size.left
-				// 	console.log(this.tableft2)
-					
-				// })
-				dom.getComponentRect(this.$refs['input_te' + (val)][0], res=>{
-					this.tableft1 = res.size.left
-					this.tableft1-this.tableft2
-					this.tabwidth1 = res.size.width/2
-				})
 				
-				//  dom.getComponentRect(this.$refs['input_te' + (3)][0], res=>{
-				// 	console.log(res.size)
-				// })
-				// this.number1 = this.number
-				// this.number = val
+				this.number1 = this.number
+				this.number = val
+				if(this.number-this.number1>0){
+					this.left = true
+					dom.getComponentRect(this.$refs['input_te' + (val)][0], res=>{
+						this.tableft1 = this.tableft2
+						this.tabwidth1 = this.tabwidth
+						this.tabwidth = res.size.width/2
+						this.tableft2 = this.tableft1+this.tabwidth1+res.size.width/2
+						
+					})
+				}else{
+					this.left = false
+					this.number1 = this.number
+					this.tableft = this.tableft1
+					this.tableft1 = this.tableft2
+					this.tableft2 = this.tableft
+					
+					// dom.getComponentRect(this.$refs['input_te' + (val)][0], res=>{
+						
+					// 	this.tableft1 =-tableft2+this.tabwidth+res.size.width/2
+					// 	this.tabwidth = this.tabwidth1
+					// 	this.tabwidth1 = res.size.width/2
+					// 	this.tableft2 = this.tableft	
+					// })	
+				}
+				
+				
+				
+				
+				
 				// if(this.number-this.number1>0){
 				// 	this.left = true
 				// }else{
@@ -141,26 +152,14 @@
 			},
 		},
 		mounted() {
-			setTimeout(()=>{
-				
-				dom.getComponentRect(this.$refs['input_te' + (0)][0], res=>{
-					
-					this.tableft2 = res.size.width/2
-					
-					console.log(this.tableft2)
-					
-				})
-				dom.getComponentRect(this.$refs.tabs_line , res=>{
-					console.log(this.tableft2)
-					this.tabwidth = this.tableft2
-					
-					console.log(6666,this.tabwidth)
+			setTimeout(()=>{	
+				dom.getComponentRect(this.$refs['input_te' + (0)][0], res=>{	
+					// this.tableft2 = res.size.width/2
+					this.tabwidth = res.size.width/2
+					this.marginLeft = res.size.width/4
 				})
 			},1000)
-			
-			
 			this.getPageData()
-			
 		},
 		computed: {
 			myWidth() {
@@ -291,7 +290,7 @@
 		height:6rpx ;
 		border-radius:6rpx;
 		background: #FF5927;
-		transition-property: transform;
+		transition-property: transform,width;
 		transition-duration:0.4s;
 	}
 	/* item-cell */
