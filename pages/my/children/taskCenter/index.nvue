@@ -182,16 +182,15 @@
 							break;
 						case 26:
 							uni.navigateTo({
-								url: `/pages/index/index`
+								url: `/pages/customerService/index`
 							})
-
 							break;
 						case 2:
 						case 23:
 						case 9:
 						case 7:
 							uni.navigateTo({
-								url: `/pages/my/myAdministration/index`
+								url: `/pages/my/myAdministration/index1`
 							})
 
 							break;

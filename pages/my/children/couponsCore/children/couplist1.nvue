@@ -13,13 +13,11 @@
 						
 						<view  class="tabs_line" :style="{transform:left? 'translateX('+0.22*myWidth*number+')':'translateX('+0.22*myWidth*number1+')'}"></view>
 					</view>
-					
 				<!-- </scroller> -->
-				
 				<!-- 滑动item -->
-				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth-56+'px',height:700+'rpx'}"  >
+				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth-56+'px',height:downHeight-300+'rpx'}"  >
 					<swiper-item v-for="(data,i) in pageData" :key='i'>
-						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:700+'rpx'}">
+						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:downHeight-300+'rpx'}">
 							<view v-for="(item,index) in data.list" :key='index' :style="{width:$store.state.myWidth-56+'px'}">
 								<view class="cell">
 									<view class="cell_left" :style="{width:($store.state.myWidth-56)*0.3+'px'}">
@@ -58,11 +56,13 @@
 	import {
 		$api
 	} from '@/config/api.js';
+	const dom = uni.requireNativePlugin('dom')
 	import common from "@/common/js/common.js";
 	import nloading from '@/components/nvue-loading/nvue-loading'
 	export default {
 		data() {
 			return {
+				downHeight:'',
 				loadinging:false,
 				active: 0,
 				current: 0,
@@ -81,6 +81,11 @@
 					game_num:4,
 				}
 			}
+		},
+		props:{
+			downHeight: {
+				default:750
+			}, 
 		},
 		components:{
 			nloading
