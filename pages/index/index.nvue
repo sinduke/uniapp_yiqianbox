@@ -122,11 +122,11 @@
 		},
 		beforeCreate() {
 			let fontSrc = plus.io.convertLocalFileSystemURL('/static/fonts/iconfont.ttf')
-			var domModule = weex.requireModule("dom");
-			domModule.addRule('fontFace', {
-				'fontFamily': 'iconfont',
-				'src': "url('file:/" + fontSrc + "')"
-			})
+			// var domModule = uni.requireModule("dom");
+			// domModule.addRule('fontFace', {
+			// 	'fontFamily': 'iconfont',
+			// 	'src': "url('file:/" + fontSrc + "')"
+			// })
 		},
 		onHide() {
 			if(this.$refs.recommend){

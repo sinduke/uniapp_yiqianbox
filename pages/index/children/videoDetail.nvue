@@ -284,7 +284,7 @@
 		},
 		beforeCreate() {
 			let fontSrc = plus.io.convertLocalFileSystemURL('/static/fonts/iconfont.ttf')
-			var domModule = weex.requireModule("dom");
+			const dom = uni.requireNativePlugin('dom')
 			domModule.addRule('fontFace', {
 				'fontFamily': 'iconfont1',
 				'src': "url('file:/" + fontSrc + "')"

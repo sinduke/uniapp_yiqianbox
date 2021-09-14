@@ -232,7 +232,7 @@
 					{
 						url: '../../static/images/my/xzgl.png',
 						name: '下载管理',
-						router: '/pages/view/downLoad/downLoad1',
+						router: '/pages/view/downLoad/downLoad',
 						status: 1,
 
 					},

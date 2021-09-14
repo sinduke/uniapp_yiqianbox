@@ -11,13 +11,13 @@
 			this.globalData.$i18n = this.$i18n
 			this.globalData.$t = str => this.$t(str)
 			// 读取client_id
-			// this.channelIDSyncFunc()
+			this.channelIDSyncFunc()
 			// 数据初始化
 			this.dataInit();
 			//自动登录
 			this.autoLogin();
 			// 读取设备信息
-			// this.getEquipmentCode();
+			this.getEquipmentCode();
 			//下载
 			this.getDownLoad()
 			// 获取用户定制信息
@@ -171,18 +171,18 @@
 			//下载管理 
 			/* 无法持久化存储下载  */
 			getDownLoad() {
-				// let arrList = uni.getStorageSync('downList')
-				// if (arrList.length) {
-				// 	let downList = []
-				// 	arrList.map((item, index) => {
-				// 		downList.push({
-				// 			game_id: item.game_id,
-				// 			downTasks: null,
-				// 			status:1
-				// 		})
-				// 	})
-				// 	this.$store.commit('setDownTasksList', downList)
-				// }
+				let arrList = uni.getStorageSync('downList')
+				if (arrList.length) {
+					let downList = []
+					arrList.map((item, index) => {
+						downList.push({
+							game_id: item.game_id,
+							downTasks: null,
+							status:1
+						})
+					})
+					this.$store.commit('setDownTasksList', downList)
+				}
 
 
 			},

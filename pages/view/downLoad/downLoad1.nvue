@@ -61,7 +61,7 @@
 	const globalData = getApp().globalData
 	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
 	import nloading from '@/components/nvue-loading/nvue-loading'
-	import downLoad from '@/components/xw-downLoadButton/xw-downLoadButton.nvue'
+	import downLoad from '@/components/xw-downLoadButton/xw-downLoadButton'
 	export default {
 		data() {
 			return {
@@ -101,9 +101,7 @@
 			
 			},
 			myGetData(list){
-				
 				this.pageDate = list[0]
-				
 				this.$store.commit('setDownTasksList', list[1])
 				
 			},
@@ -162,7 +160,7 @@
 			
 								})
 								console.log(array,'listlistlist')
-								this.$store.commit('setDownTasksList', [])
+						
 								this.$store.commit('setDownTasksList', array)
 								uni.setStorageSync('downList', [])
 								uni.setStorageSync('downList', arrList)

@@ -1,10 +1,8 @@
 <template>
 	<view class="downLoad">
 		<view style="margin-top: 80rpx; " title="" :border-bottom='false' >
-			
 			<view>
 				<view class="title">
-					
 					<view class="slot-wrap" style="align-items: center;display: flex;flex-wrap: row;" @click="goback">
 						<image  ref='handleBack' style="margin-right: 50rpx;width: 35rpx;height: 35rpx;" src="@/static/images/left.png" ></image>
 						<text class="customer" style="font-size: 32rpx;font-weight: 400;margin-left: -20rpx;">下载管理</text>
@@ -39,7 +37,7 @@
 							<!-- <text class="text">{{item.popularity_cnt}}人在玩</text> -->
 						</view>
 						<view class="size"  @click="toDetail(item)">
-							<text style="color: #FF5927;" v-if="item.myloading">{{item.myloading}}</text>
+							<text style="color: #FF5927;width: 140rpx;" v-if="item.myloading">{{item.myloading}}</text>
 							<text style="margin: 0 12rpx;" v-if="item.myloading">/</text>
 							<text>{{item.myTotalData}}</text>
 						</view>
@@ -93,9 +91,9 @@
 				})
 			},
 			toDetail(item) {
-				uni.navigateTo({
-					url: "/pages/view/gamedetail/gamedetail?gameid=" + item.game_id
-				})
+				// uni.navigateTo({
+				// 	url: "/pages/view/gamedetail/gamedetail?gameid=" + item.game_id
+				// })
 			},
 			//删除
 			handleDelete() {
