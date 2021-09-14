@@ -171,18 +171,18 @@
 			//下载管理 
 			/* 无法持久化存储下载  */
 			getDownLoad() {
-				// let arrList = uni.getStorageSync('downList')
-				// if (arrList.length) {
-				// 	let downList = []
-				// 	arrList.map((item, index) => {
-				// 		downList.push({
-				// 			game_id: item.game_id,
-				// 			downTasks: null,
-				// 			status:1
-				// 		})
-				// 	})
-				// 	this.$store.commit('setDownTasksList', downList)
-				// }
+				let arrList = uni.getStorageSync('downList')
+				if (arrList.length) {
+					let downList = []
+					arrList.map((item, index) => {
+						downList.push({
+							game_id: item.game_id,
+							downTasks: null,
+							status:1
+						})
+					})
+					this.$store.commit('setDownTasksList', downList)
+				}
 
 
 			},

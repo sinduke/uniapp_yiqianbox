@@ -464,7 +464,7 @@
 					}, 1200)
 
 					switch (i) {
-						case 1:
+						case 1:			
 						this.bin(common.getEl(this.$refs.icon1), 'transform.rotateZ', `easeOutCubic(t,0,180,600)`)
 						this.rebate[n].game_list = []
 						this.bin1(common.getEl(this.$refs.box_icon1), 'opacity', `easeInOutQuint(t,-1,2,600)`)
@@ -570,6 +570,7 @@
 
 			},
 			switchData(i, id, n) {
+				
 				$api.get('game/related_game', {
 					cate_id: id,
 					tags: 0,
@@ -683,17 +684,12 @@
 			},
 			//切换
 			handleswitch(n,id,i) {
-				i == 2 ? i = 0 : i < 2 ? i++ : i = 0
-				
+			i == 2 ? i = 0 : i < 2 ? i++ : i = 0
 			this.bin(common.getEl(this.$refs.handleswitch), 'transform.rotateZ', `easeOutCubic(t,0,180,600)`)
-			this.rebate[i].game_list = []
+			// this.rebate[i].game_list = []
 			this.numbers = i
 			this.bin1(common.getEl(this.$refs.box_icon1), 'opacity', `easeInOutQuint(t,-1,2,600)`)
-				setTimeout(() => {
-					this.switchData(n,id,i)
-				}, 20)
-				
-
+			
 			},
 			onrefresh() {
 				this.refreshing = true

@@ -27,7 +27,8 @@
 			return{
 				downtype:0,
 				isTrue: true,
-				progress:0,   
+				progress:0, 
+				downTasks:''
 			}
 		},
 		props:{
@@ -46,6 +47,7 @@
 		},
 		computed: {
 			downTasksItem() {
+				console.log(globalData.store.state.downTasksList,'globalData.store.state.downTasksList')
 				return globalData.store.state.downTasksList.length>0?globalData.store.state.downTasksList[this.sort].downTasks:''
 			},
 		},
@@ -72,9 +74,9 @@
 			},
 			//继续
 			handleResume(){
-				console.log(1111)
 				this.isTrue = true
 				// 
+				console.log(this.downTasksItem,'this.downTasksItemthis.downTasksItem')
 				if(this.downTasksItem){
 					this.downTasksItem.resume();
 				}else{
@@ -152,7 +154,7 @@
 				     this.item.myloading =  (res.downloadedSize / 1024 / 1024) .toFixed(2)
 					 this.item.myTotalData = (res.totalSize / 1024 / 1024).toFixed(2) +'MB'
 					 this.progress = Math.round(res.downloadedSize / res.totalSize * 100)  
-                     // console.log( this.item.myloading, this.item.myTotalData,'down_url, indexdown_url, index') 
+                     console.log( this.item.myloading, this.item.myTotalData,'down_url, indexdown_url, index') 
 					  
 				}) 
 				//如果是第一次进入
@@ -160,7 +162,6 @@
 					let downList = []
 					downList = globalData.store.state.downTasksList
 					downList[this.sort].downTasks = this.downTasks 
-					this.$store.commit('setDownTasksList',[])
 				    this.$store.commit('setDownTasksList',downList) 				 
 				 }else{
 					 this.downTasks = this.downTasksItem 
@@ -169,10 +170,7 @@
 			
 			 },
 			//判断App是否存在
-			checkApp(){	
-				
-				
-				
+			checkApp(){		
 				// console.log(this.item,this.downTasksItem ,'this.item.package_namethis.item.package_namethis.item.package_names')
 				if(plus.runtime.isApplicationExist({pname:this.item.package_name})){
 						this.downtype = 3
@@ -215,10 +213,10 @@
 		},
 		mounted() {
 			let arrList = uni.getStorageSync('downList')
+			  console.log(this.downTasksItem,'this.downTasksItem')
 			if(!this.checkApp()&&this.downtype!=4){
 				if(this.downTasksItem){
-					this.addEventList(this.downTasksItem)
-					// this.isTrue=true
+					// this.addEventList(this.downTasksItem)
 					this.item.status?this.isTrue=true:this.isTrue=false
 				}else{
 						
@@ -273,8 +271,6 @@
 
 <style scoped >
 	.buttons {
-			
-			
 			border-radius: 32rpx;
 			width: 125rpx;
 			height: 60rpx;
@@ -287,8 +283,5 @@
 			color: #FF5927;
 			lines: 1;
 			font-size: 28rpx;
-			/* #ifdef APP-VUE */
-			white-space: nowrap;
-			/* #endif */
 		}
 </style>

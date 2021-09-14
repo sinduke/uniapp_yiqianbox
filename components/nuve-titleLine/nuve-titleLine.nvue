@@ -15,7 +15,7 @@
 </template>
 
 <script>
-	const dom = weex.requireModule('dom');
+	const dom = uni.requireNativePlugin('dom')
 	const BindingX = uni.requireNativePlugin('bindingx');
 	import common from "@/common/js/common.js";
 	export default {

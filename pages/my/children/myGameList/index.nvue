@@ -18,7 +18,7 @@
 								<image :src="item.new_icon||item.icon" mode="widthFix" style="width: 126rpx;height: 126rpx;margin-right: 24rpx;"></image>
 								<view class="gameDetail">
 									<text class="game_name">{{item.name.length>10?item.name.slice(0,8)+'..':item.name}}</text>
-									<text class="text" style="margin: 6rpx 0;" v-if="active==0">最近游戏时间：{{item.create_time|dateFormat('MM.dd')}}</text>
+									<text class="text" style="margin: 6rpx 0;" v-if="active==0">最近游戏时间：{{item.time_str}}</text>
 									<text class="text" style="margin: 6rpx 0;" v-else-if="active==1">收藏时间：{{item.collect_time|dateFormat('MM.dd')}}</text>
 									<text class="text" style="font-size: 24rpx;color: #999;">当前游戏小号{{item.trumpet_num}}</text>
 								</view>

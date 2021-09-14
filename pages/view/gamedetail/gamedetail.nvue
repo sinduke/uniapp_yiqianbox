@@ -347,7 +347,8 @@
 	import iosDownLoad from "./children/iosDownLoad/index.nvue";
 	const BindingX = uni.requireNativePlugin('bindingx');
 	import common from '@/common/js/common.js';
-	import downLoadButton from '@/components/xw-downLoadButton/xw-downLoadButton.nvue';
+	import downLoadButton from '@/components/xw-downLoadButton/xw-downLoadButton';
+	const globalData = getApp().globalData
 	export default {
 		data() {
 			return {
@@ -502,8 +503,6 @@
 							return item
 						}
 					})
-					console.log(this.pageData.image)
-					console.log(this.pageData1)
 					setTimeout(()=>{
 						this.isBlur = true
 					},50)
@@ -762,11 +761,10 @@
 						this.item = Mylist[0]
 					}
 					console.log(downList,this.item ,'downListdownLists')
-				this.$store.commit('setDownTasksList',[]) 
-				this.$store.commit('setDownTasksList',downList) 
+				globalData.store.commit('setDownTasksList',downList) 
 				uni.setStorageSync('downList',[])
 				uni.setStorageSync('downList',arrList)
-				this.handleRouter('/pages/view/downLoad/downLoad1')
+				this.handleRouter('/pages/view/downLoad/downLoad')
 			},
 			
 			
