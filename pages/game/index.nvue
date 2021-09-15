@@ -159,7 +159,7 @@
 										<image class="box-content-demo-box-left-image" :src="demoData.game_list[0].new_icon||demoData.game_list[0].icon"	mode="widthFix"></image>
 										<text style="width: 140rpx;font-size: 28rpx;lines: 3;">{{demoData.game_list[0].gamename||demoData.game_list[0].game_name}}</text>
 									</view>
-									<text class="box-content-demo-box-left-text">试玩完成后奖励150积分</text>
+									<text class="box-content-demo-box-left-text" style="lines: 1;text-overflow: ellipsis;width: 270rpx;">{{demoData.game_list[0].task_content}}</text>
 								</view>
 							</view>
 							<view class="box-content-demo-right" ref="boxRight">
@@ -170,7 +170,7 @@
 										<text style="width: 100rpx;font-size: 28rpx;">{{demoData.game_list[1].gamename||demoData.game_list[1].game_name}}</text>
 										<image class="box-content-demo-box-right-image"	:src="demoData.game_list[1].new_icon||demoData.game_list[1].icon" mode="widthFix"></image>
 									</view>
-									<text class="box-content-demo-box-left-text" style="position: absolute;bottom: 40rpx;right: 10rpx;">试玩完成后奖励150积分</text>
+									<text class="box-content-demo-box-left-text" style="position: absolute;bottom: 35rpx;lines: 1;text-overflow: ellipsis;width: 300rpx;">{{demoData.game_list[1].task_content}}</text>
 								</view>
 							</view>
 						</view>
@@ -184,7 +184,7 @@
 										<image class="box-content-demo-box-left-image" :src="demoData.game_list[2].new_icon||demoData.game_list[2].icon"	mode="widthFix"></image>
 										<text style="width: 140rpx;font-size: 28rpx;">{{demoData.game_list[2].gamename||demoData.game_list[2].game_name}}</text>
 									</view>
-									<text class="box-content-demo-box-left-text">试玩完成后奖励150积分</text>
+									<text class="box-content-demo-box-left-text" style="lines: 1;text-overflow: ellipsis;;width: 270rpx;">{{demoData.game_list[2].task_content}}</text>
 								</view>
 							</view>
 							<view class="box-content-demo-right" ref="boxRight1">
@@ -195,7 +195,7 @@
 										<text style="width: 100rpx;font-size: 28rpx;">{{demoData.game_list[3].gamename||demoData.game_list[3].game_name}}</text>
 										<image class="box-content-demo-box-right-image" :src="demoData.game_list[3].new_icon||demoData.game_list[3].icon" mode="widthFix"></image>
 									</view>
-									<text class="box-content-demo-box-left-text" style="position: absolute;bottom: 40rpx;right: 10rpx;">试玩完成后奖励150积分</text>
+									<text  class="box-content-demo-box-left-text" style="position: absolute;bottom: 35rpx;lines: 1;text-overflow: ellipsis;width: 300rpx;">{{demoData.game_list[3].task_content}}</text>
 								</view>
 							</view>
 						</view>
@@ -631,6 +631,8 @@
 					this.memory = this.speciallist[6]
 					// //试玩
 					this.demoData = this.speciallist[7]
+					console.log(555,this.demoData)
+					console.log(666,this.demoData.game_list.game_id)
 					// //精品好游
 					this.boutique = this.speciallist[8]
 					// //火爆
