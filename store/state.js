@@ -9,7 +9,7 @@ export default {
 	// app运行的平台
 	platform: uni.getSystemInfoSync().platform,
 	// 热更最后一位
-	sp: 1,
+	sp: 2,
 	// 加载
 	isLoading: true,
 	// 首页顶部大图数组
