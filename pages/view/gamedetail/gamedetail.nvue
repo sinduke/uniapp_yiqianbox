@@ -663,8 +663,16 @@
 				}
 	
 			},
-			// ios 下载
+			//  预下载
 			handleDownLoad(){
+				
+             console.log(this.pageData.is_third,'ssss')
+             if(this.pageData.is_third===2){
+             	plus.runtime.openURL(this.pageData.down_url);
+             	
+             	return 
+             }
+				
 			  let networkType = ''
 				uni.getNetworkType({
 					success: res=> {
@@ -698,6 +706,9 @@
 			},
 			//andriod 下载 
 			getDownLoad(){
+
+
+				
 				//将数据存入数组
 					let arrList = uni.getStorageSync('downList')||[]
 					let downList = this.$store.state.downTasksList
