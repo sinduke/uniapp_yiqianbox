@@ -15,7 +15,7 @@
 				<text class="button_text isActive" >退出登录</text>
 			</view>	
 		</view>
-		<modal @remove="remove" :isShow="isShow" @confirm="confirm" title='确定要请除缓存？' text="下载，图片缓存将被清空"></modal>
+		<modal @remove="remove" :isShow="isShow" @confirm="confirm" title='确定要清除缓存？' text="下载，图片缓存将被清空"></modal>
 	</view>
 </template>
 
