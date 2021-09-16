@@ -1,14 +1,15 @@
 <template>
 	<!-- 平台币页面 -->
-	<view class="FlatGoldCoins">
-       <myNavbar title='我的平台币' right radius router='/pages/my/FlatGoldCoins/record/record1' src='../../../static/images/my_details.png'></myNavbar>
+	<view :class="['FlatGoldCoins',heiye?'bg':'wg']">
+       <myNavbar v-if="heiye==false" title='我的平台币' right radius router='/pages/my/FlatGoldCoins/record/record1' src='../../../static/images/my_details.png'></myNavbar>
+		 <myNavbar :lines="false" v-else title='我的平台币' right radius router='/pages/my/FlatGoldCoins/record/record1' src='../../../static/images/my_details1.png'></myNavbar>
 		<view class="box" :style="{width:myWidth+'px'}">
 			<view class="head"></view>
 			<view class="bottom" >
 				<text style="color: #666666; font-size: 26rpx;margin-bottom: 24rpx;">平台币余额</text>
-				<text style="color: #1C1C1C; font-size: 48rpx; font-weight: bold;">{{ptb_cnt}}</text>
+				<text  :style="{color:heiye?'#fff':'#1c1c1c'}" style=" font-size: 48rpx; font-weight: bold;">{{ptb_cnt}}</text>
 			</view>
-			<text class="butttons" @click="handleRouter('/pages/my/FlatGoldCoins/topUp/topUp1')">充值</text>
+			<text :class="['butttons',heiye?'hei':'bai']"  @click="handleRouter('/pages/my/FlatGoldCoins/topUp/topUp1')">充值</text>
 		</view>
 
 	</view>
@@ -26,7 +27,18 @@
 				ptb_cnt:0,
 			}
 		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -53,9 +65,10 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.FlatGoldCoins{
 		flex: 1;
-		background-color: #fff;
+		
 	}
 	.box{
 		margin-top: 240rpx;
@@ -65,7 +78,7 @@
 		margin-bottom: 42rpx;
 	}
 	.butttons{
-		background-color: #fff;
+		
 		border-radius: 60rpx;
 		border:1px solid #E1E1E1 ;
 		color: #FF5927;

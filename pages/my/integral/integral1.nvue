@@ -1,12 +1,13 @@
 <template>
-	<view style="flex: 1;">
-		<view class="lineShowdow"></view>
-		<view class="container" :style="{width:$store.state.myWidth+'px'}">
+	<view :class="['container',heiye?'bg':'wg']" style="flex: 1;">
+		<view v-if="heiye==false" class="lineShowdow"></view>
+		<view  :style="{width:$store.state.myWidth+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
 				<!-- tabs -->
 				<view class="tabslist">
 					<view class="tabs" style="margin-right:60rpx ;" :active="active"  v-for="(item,index) in tabslist" @click="tabsClick(index)">
-						<text :style="{color:active==index?'#000000':'#666666',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+						<text v-if="heiye==false" :style="{color:active==index?'#000000':'#666666',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+						<text v-else :style="{color:active==index?'#ffffff':'#666666',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 					</view>	
 				</view>
 				<view class="tabs_line" :style="{transform:active==1?'translateX('+0.255*myWidth+')':'translateX(0)'}"></view>
@@ -14,9 +15,9 @@
 				<swiper @change="swiperClick" :current="current" :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}"  >
 					<swiper-item>
 						<list v-if="ObtainList.length" :show-scrollbar='false' @loadmore='loadmore' loadmoreoffset='10' :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}">
-							<cell  class="cell":style="{width:$store.state.myWidth-32+'px'}" v-for="(item,index) in ObtainList">
+							<cell  class="cell":style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}" v-for="(item,index) in ObtainList">
 								<view class="cell_left">
-									<text class="left_text1">{{item.ia_name}}</text>
+									<text :class="['left_text1',heiye?'isTheme':'noTheme']"  >{{item.ia_name}}</text>
 									<text class="left_text2">{{item.create_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
 								</view>
 								<text class="cell_right">+{{item.integral}} 积分</text>
@@ -31,9 +32,9 @@
 					</swiper-item>
 					<swiper-item>
 						<list @loadmore='loadmore' loadmoreoffset='10' v-if="couponList.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-122+'rpx'}">
-							<cell  class="cell":style="{width:$store.state.myWidth-32+'px'}" v-for="(item,index) in couponList">
+							<cell  class="cell":style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}" v-for="(item,index) in couponList">
 								<view class="cell_left">
-									<text class="left_text1">{{item.goods_name}}</text>
+									<text :class="['left_text1',heiye?'isTheme':'noTheme']">{{item.goods_name}}</text>
 									<text class="left_text2" style="color:#999999;">{{item.create_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
 								</view>
 								<text class="cell_right" style="color:#999999;">-{{item.integral}} 积分</text>
@@ -100,12 +101,23 @@
 			 common.getuserInfo()
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		filters:{
 			// 1.日期格式过滤器
@@ -211,8 +223,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container{
-		background: #fff;
+		
 	}
 	.box{
 		padding:0rpx 32rpx ;
@@ -244,12 +257,10 @@
 		flex-direction: row;
 		justify-content: space-between;
 		padding:40rpx 0;
-		border-bottom:1rpx solid #ECECEC;
 		align-items: center;
 	}
 	.left_text1{
 		font-size:32rpx ;
-		color: #000000;
 		font-weight: bold;
 		margin-bottom:20rpx ;
 	}

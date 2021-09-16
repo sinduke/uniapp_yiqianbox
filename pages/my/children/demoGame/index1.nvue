@@ -1,6 +1,6 @@
 <!-- 试玩游戏 -->
 <template>
-	<view class="demoGame">
+	<view :class="['demoGame',heiye?'bg':'wg']" >
 		<view class="lineShowdow"></view>
 		<view class="bottom" :style="{height:$store.state.mysHeight-160+'rpx'}" >
 			<list  @loadmore='loadmore' loadmoreoffset='10' :show-scrollbar='false' :style="{height:$store.state.mysHeight-160+'rpx'}" v-if="pageData.length">
@@ -27,7 +27,7 @@
 								<image class="item_1" :src="item.game.new_icon||item.game.icon" mode="widthFix"></image>
 							</view>
 							<view class="item_2">
-								<text class="item_2_text1">{{item.game.name}}</text>
+								<text :class="['item_2_text1',heiye?'isTheme':'noTheme']" >{{item.game.name}}</text>
 								<view class="item_2text">
 									<text class="item_2_text2">截止时间：{{item.end_time|dateFormat('yyyy-MM-dd')}}</text>
 									<text class="item_2_text2">|</text>
@@ -80,8 +80,19 @@
 			nloading
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
+			}
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
 			}
 		},
 		filters: {
@@ -186,10 +197,11 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.demoGame{
 		flex: 1;
 		overflow:hidden;
-		background-color: #fff;
+		
 	}
 	.lineShowdow{
 		height:4rpx ;
@@ -241,7 +253,7 @@
 		margin-left:16rpx ;
 	}
 	.item_2_text1{
-		color: #1C1C1C;
+		
 		font-size:32rpx ;
 		font-weight: 600;
 	}

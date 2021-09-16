@@ -1,11 +1,12 @@
 <!-- 意见反馈 -->
 <template>
-	<view style="flex: 1;background: #fff;">
-		<myNavbar :type="1" @click="popClick" class="nav" :style="{opacity:isShow?1:0}" title='意见反馈' right radius  src='../../../../static/images/wen-icon.png'></myNavbar>
+	<view :class="[heiye?'bg':'wg']" style="flex: 1;">
+		<myNavbar v-if="heiye==false" :type="1" @click="popClick" class="nav" :style="{opacity:isShow?1:0}" title='意见反馈' right radius  src='../../../../static/images/wen-icon.png'></myNavbar>
+		<myNavbar v-else :lines="false" :type="1" @click="popClick" class="nav" :style="{opacity:isShow?1:0}" title='意见反馈' right radius  src='../../../../static/images/wen-icon.png1.png'></myNavbar>
 		<view class="container" :style="{width:myWidth+'px'}">
-			<text class="text1">请选择问题类型</text>
+			<text :class="['text1',heiye?'isTheme':'noTheme']" >请选择问题类型</text>
 			<view class="boxAll"  :style="{width:myWidth-32+'px'}">
-				<view class="but"  v-for="(item,index) in typeList" :key="index" @click="buttonClick(item.id)" :class="{buttonColor:item.id==feedbackData.flag}">
+				<view :style="{background:heiye?'4f4f4f':'#F4F4F4'}" class="but"  v-for="(item,index) in typeList" :key="index" @click="buttonClick(item.id)" :class="{buttonColor:item.id==feedbackData.flag}">
 					<text class="but_text" :class="{buttonColor1:item.id==feedbackData.flag}">{{item.name}}</text>
 				</view>
 			</view>
@@ -29,14 +30,14 @@
 		<showpop :isShow="show"  @remove="remove" :textType="false" :titleType="false">
 			<view class="title">
 				<image class="title_img" src="../../../../static/images/wenred.png" mode=""></image>
-				<text class="title_text">帮助</text>
+				<text :class="[heiye?'isTheme':'noTheme']" >帮助</text>
 			</view>
-			<text class="box-center-text">想要：想要APP上搭载怎样的新功能？</text>
-			<text class="box-center-text">体验：APP使用中，有遇到哪些问题/疑惑？</text>
-			<text class="box-center-text">心情：你喜欢APP哪里？想要得到怎样的延伸？</text>
-			<text class="box-center-text">感想：你不喜欢APP哪里，想要得到怎样的改善？</text>
-			<text class="box-center-text">建议：随时说说，你对APP有哪些好建议？</text>
-			<text class="box-center-text">推荐：你用过哪些功能或体验较好的游戏APP？好在哪里？</text>
+			<text :class="['box-center-text',heiye?'noActive':'baicolor']" >想要：想要APP上搭载怎样的新功能？</text>
+			<text :class="['box-center-text',heiye?'noActive':'baicolor']">体验：APP使用中，有遇到哪些问题/疑惑？</text>
+			<text :class="['box-center-text',heiye?'noActive':'baicolor']">心情：你喜欢APP哪里？想要得到怎样的延伸？</text>
+			<text :class="['box-center-text',heiye?'noActive':'baicolor']">感想：你不喜欢APP哪里，想要得到怎样的改善？</text>
+			<text :class="['box-center-text',heiye?'noActive':'baicolor']">建议：随时说说，你对APP有哪些好建议？</text>
+			<text :class="['box-center-text',heiye?'noActive':'baicolor']">推荐：你用过哪些功能或体验较好的游戏APP？好在哪里？</text>
 		</showpop>
 	</view>
 </template>
@@ -74,12 +75,26 @@
 				isShow:true
 			}
 		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		components: {
 			myNavbar,
 			showpop,
 			upLoadImage
 		},
 		methods: {
+			
 			// 隐藏导航栏
 			noTabs(){
 				this.isShow = !this.isShow
@@ -148,6 +163,7 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.nav{
 		opacity:1;
 		transition-property:opacity;
@@ -161,7 +177,7 @@
 		margin-top:40rpx ;
 		font-size:32rpx ;
 		font-weight: 500;
-		color: #1C1C1C;
+		
 	}
 	.boxAll{
 		margin-top:40rpx ;
@@ -170,7 +186,7 @@
 		
 	}
 	.but{
-		background: #F4F4F4;
+		
 		border-radius: 40rpx;
 		padding:20rpx 25rpx ;
 		border: 2rpx solid #f4f4f4;
@@ -220,7 +236,6 @@
 		font-weight:700 ;
 	}
 	.box-center-text {
-		color: #666666;
 		padding: 0 10rpx;
 		margin-top: 20rpx;
 		font-size: 28rpx;

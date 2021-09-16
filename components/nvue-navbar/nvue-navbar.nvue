@@ -1,7 +1,7 @@
 <!-- 自定义导航栏 -->
 <template>
 	<!-- <view v-if="heiye" :class="['nvue-navbar',heiye?'bg':'wg']"  @click.stop="stop" :style="{boxShadow:lines?'0px 0px 8px #111111':''}"> -->
-	<view v-else :class="['nvue-navbar',heiye?'bg':'wg']"  @click.stop="stop" :style="{boxShadow:lines?'0px 0px 6px 0px rgba(221, 221, 221, 0.6)':''}">
+	<view :class="['nvue-navbar',heiye?'bg':'wg']"  @click.stop="stop" :style="{boxShadow:lines?'0px 0px 6px 0px rgba(221, 221, 221, 0.6)':''}">
 		<view :class="['statusBarHeight',heiye?'bg':'wg']" :style="{height:statusBarHeight+'rpx',width:myWidth+'px'}"></view>
 		<view class="title">
 			<view class="slot-left" @click="handleback">
@@ -14,7 +14,7 @@
 				<slot></slot>
 			</view>
 			<view class="slot-right" v-if="right">
-				<view :class="['radius',heiye?'bg':'wg']"  @click="handleRouter" style="box-shadow: 0px 0px 6px 0px rgba(180, 180, 180, 0.6);">
+				<view :class="['radius',heiye?'bg':'wg']" :style="{backgroundColor:heiye?'#1c1c1c':'#fff',boxShadow:heiye?'boxShadow: 0px 0px 6rpx 0px rgba(40,40,40, 0.16)':'0px 0px 6px 0px rgba(180, 180, 180, 0.6)'}"  @click="handleRouter" style="">
 					<image :src="src" mode="widthFix" class="right_icon" ></image>	
 				</view>
 			</view>
@@ -154,8 +154,8 @@
 		align-items: center;
 	}
 	.right_icon{
-		width: 35rpx;
-		height: 35rpx;
+		width: 30rpx;
+		height: 30rpx;
 	
 	}
 	.right_icon1{

@@ -1,13 +1,14 @@
 <template>
-	<view class="FlatGoldCoins">
-	   <myNavbar title='我的积分' right radius router='/pages/my/integral/integral1' src='../../../static/images/my_details.png'></myNavbar>
+	<view :class="['FlatGoldCoins',heiye?'bg':'wg']" >
+	   <myNavbar v-if="heiye==false" title='我的积分' right radius router='/pages/my/integral/integral1' src='../../../static/images/my_details.png'></myNavbar>
+		<myNavbar :lines="false" v-else title='我的积分' right radius router='/pages/my/integral/integral1' src='../../../static/images/my_details1.png'></myNavbar>
 		<view class="box" :style="{width:myWidth+'px'}">
 			<view class="head"></view>
 			<view class="bottom" >
 				<text style="color: #666666; font-size: 28rpx;margin-bottom: 24rpx;text-align: center;">积分余额</text>
-				<text style="color: #1C1C1C; font-size: 48rpx; font-weight: bold;text-align: center;">{{$store.state.userInfo.my_integral}}</text>
+				<text :style="{color:heiye?'#fff':'#1c1c1c'}"  style="font-size: 48rpx; font-weight: bold;text-align: center;">{{$store.state.userInfo.my_integral}}</text>
 			</view>
-			<text class="butttons" @click="handleRouter('/pages/my/integral/dhptb1')">兑换平台币</text>
+			<text :class="['butttons',heiye?'hei':'bai']"  @click="handleRouter('/pages/my/integral/dhptb1')">兑换平台币</text>
 		</view>
 	
 	</view>
@@ -26,7 +27,9 @@
 			myNavbar
 		},
 		computed: {
-			
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -34,6 +37,14 @@
 				return uni.getSystemInfoSync().statusBarHeight
 			},
 			
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			handleRouter(url, type) {
@@ -46,9 +57,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.FlatGoldCoins{
 		flex: 1;
-		background-color: #fff;
 	}
 	.box{
 		margin-top: 240rpx;
@@ -59,7 +70,7 @@
 		margin-bottom: 42rpx;
 	}
 	.butttons{
-		background-color: #fff;
+		
 		border-radius: 70rpx;
 		border:1px solid #E1E1E1 ;
 		color: #FF5927;

@@ -1,11 +1,12 @@
 <template>
 	<view style="flex: 1;">
-		<view class="container" :style="{width:$store.state.myWidth+'px'}">
+		<view :class="['container',heiye?'bg':'wg']":style="{width:$store.state.myWidth+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
 				<!-- tabs -->
 				<view class="tabslist">
 					<view class="tabs" style="margin-right:60rpx ;" :active="active"  v-for="(item,index) in tabslist" @click="tabsClick(index)">
-						<text :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+						<text v-if="heiye==false" :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+						<text v-else :style="{color:active==index?'#ffffff':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 					</view>	
 				</view>
 				<view  class="tabs_line" :style="{transform:left? 'translateX('+0.22*myWidth*number+')':'translateX('+0.22*myWidth*number1+')'}"></view>
@@ -15,17 +16,17 @@
 						<list class="list" @loadmore='loadmore' loadmoreoffset='10' v-if="couponList1.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell v-for="(item,index) in couponList1" :style="{width:$store.state.myWidth-32+'px'}">
 								<view class="cell">
-									<view class="cell_left" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
-										<text class="left_text1">{{item.coupon.coupons_amount}}</text>
-										<text class="left_text2">{{item.coupon.title}}</text>
+									<view :class="['cell_left',heiye?'hei1':'bai1']"  :style="{width:($store.state.myWidth-32)*0.3+'px'}">
+										<text :class="['left_text1',heiye?'isTheme':'noTheme']" >{{item.coupon.coupons_amount}}</text>
+										<text :class="['left_text2',heiye?'noActive':'baicolor']" >{{item.coupon.title}}</text>
 									</view>
-									<view class="cell_right" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
+									<view :class="['cell_right',heiye?'heibut':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
 										<view class="right_head">
 											<view class="head_text">
 												<text class="head_text1">有效期至：{{item.coupon.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
 												<text class="head_text2">领取时间：{{item.coupon.get_time_begin | dateFormat('yyyy-MM-dd')}}后</text>
 											</view>
-											<view class="head_but" @click="handleRouterdetail(item.coupon.game_id)">
+											<view  class="head_but" @click="handleRouterdetail(item.coupon.game_id)">
 												<text class="head_text3">去使用</text>
 											</view>
 										</view>
@@ -47,18 +48,18 @@
 						<list class="list" @loadmore='loadmore' loadmoreoffset='10' v-if="couponList2.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell v-for="(item,index) in couponList2" :style="{width:$store.state.myWidth-32+'px'}">
 								<view class="cell">
-									<view class="cell_left" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
-										<text class="left_text1">{{item.coupon.coupons_amount}}</text>
-										<text class="left_text2">{{item.coupon.title}}</text>
+									<view :class="['cell_left',heiye?'hei1':'bai1']" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
+										<text :class="['left_text1',heiye?'isTheme':'noTheme']" >{{item.coupon.coupons_amount}}</text>
+										<text :class="['left_text2',heiye?'noActive':'baicolor']" >{{item.coupon.title}}</text>
 									</view>
-									<view class="cell_right" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
+									<view :class="['cell_right',heiye?'heibut':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
 										<view class="right_head">
 											<view class="head_text">
 												<text class="head_text1">有效期至：{{item.coupon.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
 												<text class="head_text2">领取时间：{{item.coupon.get_time_begin | dateFormat('yyyy-MM-dd')}}后</text>
 											</view>
-											<view class="head_but" style="background: #DBDBDB;">
-												<text class="head_text3" style="color: #fff;">已使用</text>
+											<view class="head_but" :style="{background:heiye?'BDBDBD':'#DBDBDB' }">
+												<text class="head_text3" :style="{color:heiye?'#FFF':'#FFF'}" >已使用</text>
 											</view>
 										</view>
 										<view class="right_bottom">
@@ -79,11 +80,11 @@
 						<list class="list" @loadmore='loadmore' loadmoreoffset='10' v-if="couponList3.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell v-for="(item,index) in couponList3" :style="{width:$store.state.myWidth-32+'px'}">
 								<view class="cell" style="opacity: 0.1;">
-									<view class="cell_left" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
-										<text class="left_text1">{{item.coupon.coupons_amount}}</text>
-										<text class="left_text2">{{item.coupon.title}}</text>
+									<view :class="['cell_left',heiye?'hei1':'bai1']" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
+										<text :class="['left_text1',heiye?'isTheme':'noTheme']">{{item.coupon.coupons_amount}}</text>
+										<text :class="['left_text2',heiye?'noActive':'baicolor']">{{item.coupon.title}}</text>
 									</view>
-									<view class="cell_right" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
+									<view :class="['cell_right',heiye?'heibut':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
 										<view class="right_head">
 											<view class="head_text">
 												<text class="head_text1">有效期至：{{item.coupon.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
@@ -184,12 +185,23 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		filters:{
 			// 1.日期格式过滤器
@@ -319,9 +331,10 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	/* body */
 	.container{
-		background: #fff;
+		
 	}
 	.box{
 		padding:0rpx 32rpx ;
@@ -363,12 +376,11 @@
 	/* 左边 */
 	.cell_left{
 		border-radius: 40rpx 0rpx 0rpx 40rpx;
-		background-color: #E9E9E9;
+		
 	}
 	.left_text1{
 		margin:30rpx 0rpx 10rpx 0;
 		text-align: center;
-		color: #1C1C1C;
 		font-size:50rpx ;
 		font-weight:700;
 		font-family: PingFang SC;
@@ -378,7 +390,7 @@
 	}
 	.left_text2{
 		text-align: center;
-		color: #666666;
+		
 		font-size:26rpx ;
 		font-family: PingFang SC;
 		font-weight: 500;
@@ -386,7 +398,8 @@
 	}
 	/* 右边 */
 	.cell_right{
-		background: #F8F8F8;
+		
+		
 		padding:22rpx  ;
 		border-radius:0 40rpx 40rpx 0;
 	}
@@ -411,8 +424,8 @@
 	.head_but{
 		height:50rpx ;
 		padding:0rpx 12rpx;
-		border: 1px solid #E4E4E4;
-		background: #FFFFFF;
+		border: 1rpx solid #E4E4E4;
+		
 		border-radius:25rpx;
 		justify-content: center;
 	}

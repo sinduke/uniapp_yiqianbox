@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="container" :style="{width:$store.state.myWidth+'px'}">
+		<view :class="['container',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
 				<view class="head">
 					<text class="head_text1">我的积分</text>
@@ -38,6 +38,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			userInfo(){
 				return globalData.store.state.userInfo
 			},
@@ -47,6 +50,14 @@
 			integral() {
 				return this.ptb_cnt * 100 || 0;
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			exchangePtb() {
@@ -74,8 +85,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container{
-		background: #fff;
+		
 	}
 	.lineShowdow{
 		height:6rpx ;

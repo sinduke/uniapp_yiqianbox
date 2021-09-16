@@ -9,7 +9,7 @@
 				<image class="photo" src="../../../static/images/userp.png" mode="widthFix"></image>
 			</view>
 		</view>
-		<view class="lineShowdow"></view>
+		<view v-if="heiye==false" class="lineShowdow"></view>
 		<view>
 			<view v-if="userInfo.has_bind_mobile == 2" >
 				<gamecell left="手机号" :right="userInfo.mobile"></gamecell>
