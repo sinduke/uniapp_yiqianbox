@@ -1,27 +1,28 @@
 <template>
-	<view class="container">
-		 <myNavbar title='互动消息' :type="1" @click="handleDelete" right radius :src="isActive?'../../../../../static/images/my/xxxx.png':'../../../../../static/images/my/rwzx-xgnc.png'" ></myNavbar>
+	<view :class="['container',heiye?'bg':'wg']">
+		<myNavbar v-if="heiye==false" title='我的赞' :type="1" @click="handleDelete" right radius :src="isActive?'../../../../../static/images/my/xxxx.png':'../../../../../static/images/my/rwzx-xgnc.png'" ></myNavbar>
+		<myNavbar v-else title='我的赞' :type="1" @click="handleDelete" :lines='false' right radius :src="isActive?'../../../../../static/images/my/xxxx1.png':'../../../../../static/images/my/32.png'" ></myNavbar>
 		 <view class="box" :style="{width:myWidth+'px'}">
 			<list :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false" v-if="pageDate">
 				<cell style="height: 32rpx;"></cell>
 				<cell  v-for="(item,index) in pageDate" :key="index">
-					<view class="middle" :style="{width:myWidth-32+'px'}" @click="handleDel(item,index)">
+					<view  class="middle" :style="{width:myWidth-32+'px'}" @click="handleDel(item,index)">
 						<view class="mid_le" v-if="isActive" >
 							<view class="le_box2" v-if="!item.noActive"></view>
 							<image class="le_box1" v-else src="@/static/images/view/down_acitve.png" ></image>
 						</view>
-						<view class="mid_ri" >
+						<view :class="['mid_ri',heiye?'hei':'bai']" >
 							<view class="ri_head" >
 								<view style="flex-direction: row;justify-content:space-between;">
 									<image class="mid_img" :src="item.mem_avatar" mode="" ></image>
 									<view >
 										<view :style="{width:myWidth-64-55+'px'}" class="" style="flex-direction: row;justify-content:space-between;">
-											<text class="mid_text1">{{item.mem_name}}</text>
+											<text :class="['mid_text1',heiye?'isTheme':'noTheme']" >{{item.mem_name}}</text>
 											<text class="mid_text3">{{item.time_str}}</text>
 										</view>
 										
 										
-										<text class="mid_text2">{{item.parent_comment.content}}</text>
+										<text :class="['mid_text2',heiye?'noActive':'baicolor']" >{{item.parent_comment.content}}</text>
 									</view>
 								</view>
 								
@@ -176,6 +177,9 @@
 			},
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -187,9 +191,10 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container{
 		flex: 1;
-		background: #fff;
+		
 	}
 	.box{
 		position: relative;
@@ -229,7 +234,6 @@
 	.mid_ri{
 		flex: 1;
 		padding: 24rpx;
-		background: #F4F4F4;
 		border-radius: 40rpx;
 	}
 	.ri_head{
@@ -247,12 +251,12 @@
 	.mid_text1{
 		font-size: 34rpx;
 		font-weight: bold;
-		color: #1C1C1C;
+		
 	}
 	.mid_text2{
 		font-size: 24rpx;
 		font-weight: 400;
-		color: #666666;
+		
 	}
 	.mid_text3{
 		font-size: 28rpx;

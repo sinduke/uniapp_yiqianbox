@@ -1,30 +1,30 @@
 <template>
 	<!-- 实名认证 -->
-	<view class="container" :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
+	<view :class="['container',heiye?'bg':'wg']" :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
 		<view class="lineShowdow" ></view>
 		<view class="box" :style="{width:myWidth+'px'}">
 			<view class="title">
-				<text class="title_text1">根据国家规定，游戏用户需要进行实名认证</text>
+				<text :class="['title_text1',heiye?'isTheme':'noTheme']" >根据国家规定，游戏用户需要进行实名认证</text>
 				<text class="title_text2">信息仅用于认证且绝对保密</text>
 				<text class="title_text2">未成年人游戏支付额度有限制</text>
 			</view>
 			<!-- 已认证 -->
 			<view class="textList" v-if="hasIdentify && pageData" :style="{width:myWidth-32+'px'}">
-				<text class="list_text1">姓名: {{pageData.real_name}}</text>
-				<text class="list_text1">身份证号: {{pageData.id_card}}</text>
-				<text class="list_text2">已认证</text>
+				<text :class="['list_text1',heiye?'isTheme':'noTheme']" >姓名: {{pageData.real_name}}</text>
+				<text :class="['list_text1',heiye?'isTheme':'noTheme']">身份证号: {{pageData.id_card}}</text>
+				<text  class="list_text2">已认证</text>
 			</view>
-			<view class="" style="align-items: center;" v-else>
-				<view style="margin-top:30rpx ;" class="input_box" :style="{width:myWidth-32+'px'}">
+			<view class="" style="align-items: center;" v-else >
+				<view style="margin-top:30rpx ;" class="input_box" :style="{width:myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 					<input class="input_style" v-model="form.realname" type="text" placeholder="请输入您的真实姓名" />
 					<image @click="cancle" class="img_style" src="../../../../../static/images/close.png" mode=""></image>
 				</view>
-				<picker class="input_box" :style="{width:myWidth-32+'px'}" @change="bindPickerChange" :value="index" :range="array">
+				<picker class="input_box" :style="{width:myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}" @change="bindPickerChange" :value="index" :range="array">
 					<text class="input_style" v-if="show">请选择证件</text>
 					<text class="input_style" v-else>{{array[index]}}</text>
 					<image style="width:20rpx ;height:30rpx;transform: rotate(90deg);margin-right:10rpx;" src="../../../../../static/images/view/left-gred.png" mode=""></image>
 				</picker>
-				<view class="input_box" :style="{width:myWidth-32+'px'}">
+				<view class="input_box" :style="{width:myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 					<input  class="input_style" v-model="form.idcard" type="number" placeholder="请输入您的证件号码" />
 					<image @click="cancle1" class="img_style" src="../../../../../static/images/close.png" mode=""></image>
 				</view>
@@ -60,6 +60,9 @@
 			}
 		},
 		computed:{
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			userInfo(){
 				return globalData.store.state.userInfo
 			},
@@ -69,6 +72,14 @@
 			myWidth(){
 				return uni.getSystemInfoSync().windowWidth
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			cancle(){
@@ -124,8 +135,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container{
-		background: #fff;
+		
 	}
 	.lineShowdow{
 		height:6rpx ;
@@ -141,7 +153,6 @@
 	.list_text1{
 		margin-bottom:10rpx ;
 		text-align: center;
-		color: #000000;
 		font-size:36rpx ;
 		font-weight: bold;
 	}
@@ -153,7 +164,6 @@
 	}
 	.title_text1{
 		text-align: center;
-		color: #000000;
 		font-size: 28rpx;
 		font-weight: bold;
 		margin-bottom:15rpx ;
@@ -167,7 +177,6 @@
 	}
 	.input_box{
 		padding:36rpx 32rpx;
-		border-bottom:2rpx solid #ECECEC;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;

@@ -1,22 +1,23 @@
 <!-- 自定义导航栏 -->
 <template>
-	<view class="nvue-navbar" @click.stop="stop" :style="{boxShadow: lines?'0px 0px 6px 0px rgba(221, 221, 221, 0.6)':''}">
-	 	<view class="statusBarHeight" :style="{height:statusBarHeight+'rpx',width:myWidth+'px'}"></view>
+	<!-- <view v-if="heiye" :class="['nvue-navbar',heiye?'bg':'wg']"  @click.stop="stop" :style="{boxShadow:lines?'0px 0px 8px #111111':''}"> -->
+	<view v-else :class="['nvue-navbar',heiye?'bg':'wg']"  @click.stop="stop" :style="{boxShadow:lines?'0px 0px 6px 0px rgba(221, 221, 221, 0.6)':''}">
+		<view :class="['statusBarHeight',heiye?'bg':'wg']" :style="{height:statusBarHeight+'rpx',width:myWidth+'px'}"></view>
 		<view class="title">
 			<view class="slot-left" @click="handleback">
-			<image class="right_icon" ref='handleBack' style="margin-right: 24rpx;" src="@/static/images/left.png" ></image>
+			<image v-if="heiye" class="right_icon" ref='handleBack' style="margin-right: 24rpx;" src="@/static/images/back.png"></image>
+			<image v-else class="right_icon" ref='handleBack' style="margin-right: 24rpx;" src="@/static/images/left.png"></image>
 			<image v-if="isleft" :src="src1" mode="widthFix" class="right_icon1" ></image>	
-			<text :class="{customer1:isleft==true}" class="customer" >{{title}}</text>
+			<text :class="['customer',heiye?'isTheme':'noTheme',isleft?'customer1':'']" >{{title}}</text>
 			</view>	
 			<view class="slot-center">
 				<slot></slot>
 			</view>
 			<view class="slot-right" v-if="right">
-				<view :class="{radius}"  @click="handleRouter" style="box-shadow: 0px 0px 6px 0px rgba(180, 180, 180, 0.6);">
+				<view :class="['radius',heiye?'bg':'wg']"  @click="handleRouter" style="box-shadow: 0px 0px 6px 0px rgba(180, 180, 180, 0.6);">
 					<image :src="src" mode="widthFix" class="right_icon" ></image>	
 				</view>
 			</view>
-			
 		</view>
 	</view>
 </template>
@@ -65,6 +66,9 @@
 			
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -130,12 +134,13 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.nvue-navbar{
-		background-color:#fff ;
+		
 		position: fixed;
 	}
 	.statusBarHeight{
-		background-color: #fff;
+		
 	}
 	.title{
 		height: 90rpx;
@@ -178,7 +183,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		background-color: #fff;
+		/* background-color: #fff; */
 		
 	}
 

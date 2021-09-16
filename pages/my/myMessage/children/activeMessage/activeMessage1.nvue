@@ -1,16 +1,17 @@
 <template>
-	<view class="container">
-		 <myNavbar title='互动消息' :type="1" @click="handleDelete" right radius :src="isActive?'../../../../../static/images/my/xxxx.png':'../../../../../static/images/my/rwzx-xgnc.png'" ></myNavbar>
+	<view :class="['container',heiye?'bg':'wg']">
+		 <myNavbar v-if="heiye==false" title='互动消息' :type="1" @click="handleDelete" right radius :src="isActive?'../../../../../static/images/my/xxxx.png':'../../../../../static/images/my/rwzx-xgnc.png'" ></myNavbar>
+		 <myNavbar v-else title='互动消息' :type="1" @click="handleDelete" :lines='false' right radius :src="isActive?'../../../../../static/images/my/xxxx1.png':'../../../../../static/images/my/32.png'" ></myNavbar>
 		 <view class="box" :style="{width:myWidth+'px'}">
 			<list :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false" v-if="likeDate.is_like_read||count">
 				<cell style="height: 32rpx;"></cell>
 				<cell  @click="tozan" v-if="likeDate.is_like_read">
-					<view class="head" :style="{width:myWidth-32+'px'}">
+					<view :class="['head',heiye?'hei':'bai']" :style="{width:myWidth-32+'px'}">
 						<view class="head_le">
-							<view class="le_box">
+							<view :class="['le_box',heiye?'bg':'wg']" >
 								<image class="le_img" src="../../../../../static/images/zan-acitve.png" ></image>
 							</view>
-							<text class="head_text1">当前有{{likeDate.is_like_read}}条新点赞</text>
+							<text :class="['head_text1',heiye?'noActive':'baicolor']" >当前有{{likeDate.is_like_read}}条新点赞</text>
 						</view>
 						<view class="haed_ri">
 							<image class="ri_img" src="../../../../../static/images/view/left-gred.png" ></image>
@@ -23,37 +24,37 @@
 							<view class="le_box2" v-if="!item.noActive"></view>
 							<image class="le_box1" v-else src="@/static/images/view/down_acitve.png" ></image>
 						</view>
-						<view class="mid_ri">
+						<view :class="['mid_ri',heiye?'hei':'bai']">
 							<view class="ri_head">
 								<view style="flex-direction: row;">
 									<image class="mid_img" :src="item.mem_avatar" mode="" ></image>
 									<view>
-										<text class="mid_text1">{{item.mem_name}}</text>
+										<text :class="['mid_text1',heiye?'isTheme':'noTheme']" >{{item.mem_name}}</text>
 										<text class="mid_text2">{{item.time_str}} · {{item.game_name}}</text>
 									</view>
 								</view>
 								<text class="mid_text3">回复</text>
 							</view>
-							<text class="ri_mid" >{{item.content}}</text>
-							<view class="ri_bot" v-if="item.parent_comment">
-								<text class="bot_text">{{item.parent_comment.content}}</text>
+							<text :class="['ri_mid',heiye?'isTheme':'noTheme']" >{{item.content}}</text>
+							<view :class="['ri_bot',heiye?'hei1':'bai1']" v-if="item.parent_comment">
+								<text  :class="['bot_text',heiye?'noActive':'baicolor']" class="">{{item.parent_comment.content}}</text>
 							</view>
 						</view>
 					</view>
 				</cell>
 			</list>
 			<nloading :style="{width:myWidth-32+'px'}" v-else :isNoData="isNoData"></nloading>
-			<view class="bottom" :style="{width:myWidth-32+'px'}" v-if="isActive" >
+			<view :class="['bottom',heiye?'bg':'wg']" :style="{width:myWidth-32+'px'}" v-if="isActive" >
 				<view class="bot_box" @click="handleNotall"  v-if="selectAll">
 					<image class="le_box1"  src="@/static/images/view/down_acitve.png" ></image>
-					<text class="bottom_text">全不选</text>	
+					<text :class="['bottom_text',heiye?'isTheme':'noTheme']"  >全不选</text>	
 				</view>
 				<view class="bot_box"  @click="handleAll"  v-else>
 					<view class="le_box2"></view>
 					<text class="bottom_text" >全选</text>	
 				</view>
 				
-				<view class="bot_box1" @click="getDelDate">
+				<view  class="bot_box1" @click="getDelDate">
 					<text class="box1_text">删除当前{{isNumber}}条评论</text>
 				</view>
 			</view>
@@ -88,6 +89,14 @@
 		components: {
 			myNavbar,
 			nloading 
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		onShow(){
 			this.getPageDate()
@@ -202,6 +211,9 @@
 			},
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -213,9 +225,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container{
 		flex: 1;
-		background: #fff;
 	}
 	.box{
 		position: relative;
@@ -223,7 +235,6 @@
 		padding: 32rpx 32rpx;
 	}
 	.head{
-		background: #F4F4F4;
 		padding: 40rpx 32rpx;
 		flex-direction: row;
 		border-radius: 40rpx;
@@ -239,7 +250,6 @@
 		width: 64rpx;
 		height: 64rpx;
 		border-radius: 64rpx;
-		background: #fff;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
@@ -255,8 +265,7 @@
 	}
 	.head_text1{
 		font-size: 30rpx;
-		font-weight: 400;
-		color: #666666;
+		font-weight: 400
 	}
 	.middle{
 		flex-direction: row;
@@ -280,7 +289,6 @@
 	.mid_ri{
 		flex: 1;
 		padding: 24rpx;
-		background: #F4F4F4;
 		border-radius: 40rpx;
 	}
 	.ri_head{
@@ -298,7 +306,7 @@
 	.mid_text1{
 		font-size: 34rpx;
 		font-weight: bold;
-		color: #1C1C1C;
+		
 	}
 	.mid_text2{
 		font-size: 24rpx;
@@ -313,17 +321,15 @@
 	.ri_mid{
 		font-size: 30rpx;
 		font-weight: 400;
-		color: #1C1C1C;
 		margin-top: 15rpx;
 	}
 	.ri_bot{
 		margin-top: 20rpx;
 		padding: 15rpx 24rpx;
 		border-radius: 16rpx;
-		background: #E4E4E4;
 	}
 	.bot_text{	
-		color: #666666;
+		
 		font-size: 28rpx;
 		font-weight: 400;
 		text-overflow: ellipsis;
@@ -335,7 +341,7 @@
 		padding: 20rpx 0rpx;
 		flex-direction: row;
 		justify-content: space-between;
-		background: #fff;
+		
 	}
 	.bottom_text{
 		color: #666666;

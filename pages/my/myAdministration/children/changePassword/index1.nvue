@@ -1,14 +1,14 @@
 <template>
-	<view class="box" :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
-		<view class="input_box" :style="{width:myWidth-32+'px'}">
+	<view :class="['box',heiye?'bg':'wg']" :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
+		<view class="input_box" :style="{width:myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 			<input @input="input1"  class="input_style" type="text" placeholder="请输入原密码"   :password="isshow1"/>
 			<image @click="isShow1" class="img_style" :src="isshow1?'../../../../../static/images/my/password.png':'../../../../../static/images/my/nopassword.png'" mode=""></image>
 		</view>
-		<view class="input_box" :style="{width:myWidth-32+'px'}">
+		<view class="input_box" :style="{width:myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 			<input @input="input2"  class="input_style" type="text" placeholder="请输入新密码"  :password="isshow2"/>
 			<image  @click="isShow2" class="img_style" :src="isshow2?'../../../../../static/images/my/password.png':'../../../../../static/images/my/nopassword.png'" mode=""></image>
 		</view>
-		<view class="input_box" :style="{width:myWidth-32+'px'}">
+		<view class="input_box" :style="{width:myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 			<input @input="input3"  class="input_style" type="text" placeholder="请再次输入新密码"  :password="isshow3"/>
 			<image  @click="isShow3" class="img_style" :src="isshow3?'../../../../../static/images/my/password.png':'../../../../../static/images/my/nopassword.png'" mode=""></image>
 		</view>
@@ -38,12 +38,23 @@
 			}
 		},
 		computed:{
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight(){
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
 			myWidth(){
 			 	return uni.getSystemInfoSync().windowWidth
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			input1(e){
@@ -100,13 +111,14 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 .box{
-	background:#fff;
+	
 	padding:0rpx 32rpx ;
 }
 .input_box{
 	padding:28rpx 32rpx;
-	border-bottom:2rpx solid #ECECEC;
+	
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
