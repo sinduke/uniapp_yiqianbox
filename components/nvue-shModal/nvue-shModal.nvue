@@ -3,15 +3,15 @@
 		<view class="modal_box" :style="{height:$store.state.myHeight+'rpx',width:myWidth+'px'}" @click="noModal">
 			
 		</view>
-		<view @click.stop="stopModal" class="but_box"  
-		:style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:myWidth*0.8+'px',left:myWidth*0.1+'px',top:myHeight*0.2+'rpx',backgroundColor:modalMode?'#fff':'transparent'}">
+		<view :class="['but_box',heiye?'hei':'bai']" @click.stop="stopModal" 
+		:style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:myWidth*0.8+'px',left:myWidth*0.1+'px',top:myHeight*0.2+'rpx'}">
 		<!-- <view @click.stop="stopModal" class="but_box" :style="{height:active?350+'rpx':0+'rpx',opacity:active?1:0,width:active?$store.state.myWidth*0.8+'px':0,left:active?$store.state.myWidth*0.1+'px':$store.state.myWidth*0.5+'px',top:active?$store.state.myHeight*0.2+'rpx':$store.state.myHeight*0.33+'rpx'}"> -->
-			<text class="but_text1">{{title}}</text>
-			<text class="but_text2" v-if="textType">{{text}}</text>
+			<text :class="['but_text1',heiye?'isTheme':'noTheme']" >{{title}}</text>
+			<text :class="['but_text2',heiye?'noActive':'baicolor']"  v-if="textType">{{text}}</text>
 			<slot></slot>
-			<view class="but_but" :style="{width:myWidth*0.8-70+'px'}" v-if="showSubmit">
-				<text class="but_text3" @click="noModal" :style="{width:myWidth*0.4-35+'px'}">取消</text>
-				<text class="but_text4" @click="confirm" :style="{width:myWidth*0.4-35+'px'}">确认</text>
+			<view :class="['but_but',heiye?'hei1':'bai1']" :style="{width:myWidth*0.8-70+'px'}" v-if="showSubmit">
+				<text :class="['but_text3',heiye?'noActive':'baicolor']" @click="noModal" :style="{width:myWidth*0.4-35+'px'}">取消</text>
+				<text  :class="['but_text4',heiye?'heibut':'bai']"  @click="confirm" :style="{width:myWidth*0.4-35+'px'}">确认</text>
 			</view>
 		</view>
 	</view>
@@ -32,6 +32,9 @@
 			},
 			myWidth(){
 				return uni.getSystemInfoSync().windowWidth
+			},
+			heiye(){
+				return uni.getStorageSync('heiye').type
 			},
 		},
 		props: {
@@ -94,7 +97,7 @@
 </script>
 	
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
 	.nvue-shModal{
 		flex: 1;
 		overflow:hidden
@@ -106,8 +109,8 @@
 		
 	}
 	.but_box{
+		
 		position: fixed;
-		/* background: #FFFFFF; */
 		border-radius: 48rpx;
 		padding:36rpx ;
 		transition-duration:0.3s;
@@ -116,7 +119,6 @@
 	.but_text1{
 		font-family: PingFang SC;
 		margin-bottom:40rpx ;
-		color: #000000;
 		font-size:32rpx ;
 		font-weight:400 ;
 	}
@@ -130,7 +132,7 @@
 	.but_text3{
 		font-family: PingFang SC;
 		text-align: center;
-		color: #666666;
+		
 		font-weight:400 ;
 		line-height:60rpx ;
 		font-size:28rpx ;
@@ -144,12 +146,12 @@
 		font-size:28rpx ;
 		border-radius:0 30rpx 30rpx 30rpx ;
 		border:1rpx solid #FF4810; ;
-		background: #fff;
+	
 	}
 	.but_but{
 		flex-direction: row;
 		margin-left:34rpx ;
 		border-radius: 30rpx;
-		background: #F0F0F0;
+		
 	}
 </style>

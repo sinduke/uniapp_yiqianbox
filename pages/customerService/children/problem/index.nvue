@@ -1,7 +1,7 @@
 <!-- 常见问题 -->
 <template>
-	<view class="myMessage">
-		<myNavbar title='常见问题' right radius @click="clear" :type="1" src='../../../../static/images/clear-icon.png'></myNavbar>
+	<view :class="['myMessage',heiye?'bg':'wg']">
+		<myNavbar title='常见问题' right radius @click="clear" :lines="heiye?false:true" :type="1" :src="heiye?'../../../../static/images/clear-icon1.png':'../../../../static/images/clear-icon.png'"></myNavbar>
 		<view class="myshadowLine" />
 
 		<view class="body" :style="{height:myHeight-keyHeight-250+'rpx'}">
@@ -12,17 +12,21 @@
 						<view class="kfItem_left">
 							<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix"></image>
 						</view>
-						<view class="kfItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
-							<text class="kftext">HI，您好，请在底部选择你要咨询的问题！</text>
+						<view :class="['kfItem_Right',heiye?'hei':'bai']" :style="{maxWidth:myWidth/1.4+'px'}">
+							<text :class="['kftext',heiye?'noActive':'baicolor']" >HI，您好，请在底部选择你要咨询的问题！</text>
 						</view>
 					</cell>
                     <cell style="height: 32rpx;"></cell>
 					
-					<cell class="cards" :style="{width:myWidth-32+'px'}" >
+					<cell :class="['cards',heiye?'heibo':'baibo']"  :style="{width:myWidth-32+'px',boShadow:heiye?'0px 0px 4px #040404':''}" >
 						
 						<view class="" v-for="(item,index) in mem_List" :key='index' >	
-							<view class="cardsItem" :style="{borderBottom:index<mem_List.length-1?'1px solid #efefef':'',marginBottom:index<mem_List.length-1?'24rpx':''}" @click="handleClik(item.name)">
-							<text class="itemname" >{{item.name}}</text> 
+							<view v-if="heiye==false" class="cardsItem" :style="{borderBottom:index<mem_List.length-1?'1px solid #efefef':'',marginBottom:index<mem_List.length-1?'24rpx':''}" @click="handleClik(item.name)">
+							<text :class="['itemname',heiye?'noActive':'baicolor']" >{{item.name}}</text> 
+							<image src="@/static/images/666_right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+							</view>
+							<view v-else class="cardsItem" :style="{borderBottom:index<mem_List.length-1?'1px solid #1c1c1c':'',marginBottom:index<mem_List.length-1?'24rpx':''}" @click="handleClik(item.name)">
+							<text :class="['itemname',heiye?'noActive':'baicolor']" >{{item.name}}</text> 
 							<image src="@/static/images/666_right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 							</view>
 						</view>
@@ -35,7 +39,7 @@
 						
 						<view class="yhItem" v-if="item.type==1">
 							
-							<view class="yhItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
+							<view :class="['yhItem_Right',heiye?'heibo':'baibo']" :style="{maxWidth:myWidth/1.4+'px'}">
 								<text class="yhtext">{{item.content}}</text>
 		
 							</view>
@@ -47,13 +51,13 @@
 						
 						<view class="kfItem" v-if="item.type==2">
 							
-							<view class="kfItem_left">
+							<view  class="kfItem_left">
 								<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix"></image>
 							</view>
-							<view class="kfItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
-								<text class="kftitle" v-if="item.title">{{item.title}}</text>
+							<view :class="['kfItem_Right',heiye?'heibo':'baibo']" :style="{maxWidth:myWidth/1.4+'px'}">
+								<text :class="['kftitle',heiye?'isTheme':'noTheme']"  v-if="item.title">{{item.title}}</text>
 								
-								<text class="kftext">{{item.content}}</text>
+								<text :class="['kftext',heiye?'noActive':'baicolor']" >{{item.content}}</text>
 								
 							</view>
 						</view>
@@ -64,19 +68,24 @@
 									<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix">	</image>
 								</view>
 								<view :style="{width:myWidth-32+'px'}">
-									<view class="kfItem_Right" :style="{maxWidth:myWidth/1.4+'px'}">
-										<text class="kftext">你是想问以下问题吗？可以直接点击查看哦！</text>
+									<view :class="['kfItem_Right',heiye?'heibo':'baibo']":style="{maxWidth:myWidth/1.4+'px'}">
+										<text :class="['kftext',heiye?'noActive':'baicolor']" >你是想问以下问题吗？可以直接点击查看哦！</text>
 									</view>
 									
 								</view>
 							</view>
 							
-							<view  class="kfItem_Right" :style="{maxWidth:myWidth/1.1+'px'}">
+							<view style="margin-bottom: 48rpx;" :class="['kfItem_Right',heiye?'heibo':'baibo']"  :style="{maxWidth:myWidth/1.1+'px'}">
 								
 								<view class="" v-for="(v,i) in item.list" :key='i'>
 									
-									<view class="cardsItem" :style="{borderBottom:i<item.list.length-1?'1px solid #efefef':'',marginBottom:i<item.list.length-1?'24rpx':''}"	@click="handleClik(v.title,v.id)">
+									<view v-if="heiye==false" class="cardsItem" :style="{borderBottom:i<item.list.length-1?'1px solid #efefef':'',marginBottom:i<item.list.length-1?'24rpx':''}"	@click="handleClik(v.title,v.id)">
 										<text class="itemname" :style="{maxWidth:myWidth/1.8+'px'}" style="font-size: 28rpx;">{{v.title}}</text>
+										
+										<image src="@/static/images/666_right.png" mode="widthFix" style="width: 24rpx;height: 24rpx;"></image>
+									</view>
+									<view v-else class="cardsItem" :style="{borderBottom:i<item.list.length-1?'1px solid #1c1c1c':'',marginBottom:i<item.list.length-1?'24rpx':''}"	@click="handleClik(v.title,v.id)">
+										<text :class="['itemname',heiye?'noActive':'baicolor']":style="{maxWidth:myWidth/1.8+'px'}" style="font-size: 28rpx;">{{v.title}}</text>
 										
 										<image src="@/static/images/666_right.png" mode="widthFix" style="width: 24rpx;height: 24rpx;"></image>
 									</view>
@@ -87,7 +96,7 @@
 					</cell>
 			</list>
 		</view>
-		<view class="bottom" >
+		<view :class="['bottom',heiye?'bg':'wg']"  >
 			<!-- <view class="bottom_ipnut">
 				 <image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;margin-right: 32rpx;"></image>
 				<input :adjust-position='false' cursor-spacing='55' class="input" type="text" v-model="content" placeholder="请输入您的问题" @confirm='confirm' />
@@ -96,9 +105,9 @@
 				</view>
 			</view> -->
 			<view class="scroll">
-				<text class="text" style="margin-top: 8rpx;">您可能想问</text>
+				<text :class="['text',heiye?'noActive':'baicolor']" style="margin-top: 8rpx;">您可能想问</text>
 				<scroller scroll-direction="horizontal" class="scroller" :style="{width:$store.state.myWidth-120+'px',marginLeft: '180rpx'}">
-				<text class="problemItem" v-for="(item,index) in problemList" :key='index'	@click="handleClik(item.name)">{{item.name}}</text>
+				<text :class="['problemItem',heiye?'isTheme':'noTheme']" v-for="(item,index) in problemList" :key='index'	@click="handleClik(item.name)">{{item.name}}</text>
 				</scroller>
 			</view>
 		</view>
@@ -184,7 +193,18 @@
 
 			}
 		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			client_id() {
 				return globalData.store.state.client_id
 			},
@@ -331,15 +351,16 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.myMessage {
 		flex: 1;
 		overflow: hidden;
-		background-color: #fff;
+		
 	}
 
 	.cards {
 		padding: 24rpx;
-		border: 1px solid #efefef;
+		
 		border-radius: 20rpx;
 	}
 
@@ -351,7 +372,6 @@
 	}
    .itemname{
 	   font-size: 28rpx;
-	   color: #1C1C1C;
 	   font-weight: 700;
 	   text-overflow: ellipsis;
 	   lines: 2;
@@ -427,21 +447,19 @@
 
 
 	.kfItem_Right {
-		border: 1px solid #efefef;
 		border-radius: 20rpx;
 		padding: 16rpx 32rpx;
 	}
 
 	.kftitle {
 		font-size: 32rpx;
-		color: #1C1C1C;
 		font-weight: 700;
 		margin-bottom: 20rpx;
 	}
 
 	.kftext {
 		font-size: 30rpx;
-		color: #1C1C1C;
+		
 	}
 
 
@@ -463,7 +481,7 @@
 		width: 80rpx;
 		height: 80rpx;
 		border-radius: 80rpx;
-		border: 1px solid #efefef;
+		border: 1rpx solid #efefef;
 		/* box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8); */
 
 	}
@@ -472,7 +490,6 @@
 	.yhItem_Right {
 		/* box-shadow: 0px 0px 8rpx 0px rgba(210, 210, 210, 0.8);
 		 */
-		border: 1px solid #efefef;
 		border-radius: 20rpx;
 		padding: 16rpx 32rpx;
 	}
@@ -486,7 +503,7 @@
 
 	.bottom {
 		padding: 20rpx 32rpx;
-		background-color: #fff;
+		
 	}
 
 	.input {
@@ -505,7 +522,7 @@
 
 	.text {
 		position: absolute;
-		color: #666;
+		
 		font-size: 28rpx;
 		lines: 1;
 	}

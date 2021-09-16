@@ -1,13 +1,14 @@
 <!-- 消息 -->
 <template>
-	<view class="container">
+	<view :class="['container',heiye?'bg':'wg']" > 
 		<view class="lineShowdow"></view>
 		<view class="box" v-if="pageData">
 			<view class="head" :style="{width:myWidth-32+'px'}" @click="handleRouter('/pages/my/myMessage/children/officialMess/index1')">
 				<image class="left" src="@/static/images/view/gftz.png"  mode="widthFix"></image>
-				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
+				
+				<view class="right" :style="{width:myWidth-32-48-23+'px',borderBottom:heiye?'1rpx solid #666666':'1rpx solid #EFEFEF'}">
 					<view class="right_le" style="flex-direction: row;justify-content: space-between;">
-						<text class="text1">官方通知</text>
+						<text :class="['text1',heiye?'isTheme':'noTheme']" >官方通知</text>
 						<text class="text3">{{pageData.create_time|dateFormat('yyyy/MM/dd')}}</text>
 						
 					</view>
@@ -21,9 +22,9 @@
 						<text style="font-size:20rpx ;font-weight: 300;color: #fff;text-align: center;">{{likeDate.is_comment_read}}</text>
 					</view>
 				</image>
-				<view class="right" :style="{width:myWidth-32-48-25+'px'}">
+				<view class="right" :style="{width:myWidth-32-48-25+'px',borderBottom:heiye?'1rpx solid #666666':'1rpx solid #EFEFEF'}">
 					<view class="right_le" style="flex-direction: row;justify-content: space-between;">
-						<text class="text1">互动消息</text>
+						<text :class="['text1',heiye?'isTheme':'noTheme']">互动消息</text>
 						<text class="text3">{{page2Data.time_str}}</text>
 						
 					</view>
@@ -33,9 +34,9 @@
 			</view>
 			<view class="head" :style="{width:myWidth-32+'px'}" @click="handleRouter('/pages/my/myMessage/children/customerNotice/index1')">
 				<image class="left" src="@/static/images/view/kftz.png" mode="widthFix" ></image>	
-				<view class="right" :style="{width:myWidth-32-48-25+'px'}">
+				<view class="right" :style="{width:myWidth-32-48-25+'px',borderBottom:heiye?'1rpx solid #666666':'1rpx solid #EFEFEF'}">
 					<view class="right_le" style="flex-direction: row;justify-content: space-between;">
-						<text class="text1">客服通知</text>
+						<text :class="['text1',heiye?'isTheme':'noTheme']">客服通知</text>
 						<text class="text3">今天</text>
 						
 					</view>
@@ -44,9 +45,9 @@
 			</view>
 			<view class="head" :style="{width:myWidth-32+'px'}" @click="handleRouter('/pages/customerService/children/problem/index')">
 				<image class="left" src="@/static/images/view/cjwt.png" mode="widthFix" ></image>
-				<view class="right" :style="{width:myWidth-32-48-23+'px'}">
+				<view class="right" :style="{width:myWidth-32-48-23+'px',borderBottom:heiye?'1rpx solid #666666':'1rpx solid #EFEFEF'}">
 					<view class="right_le" style="flex-direction: row;justify-content: space-between;">
-						<text class="text1">常见问题</text>
+						<text :class="['text1',heiye?'isTheme':'noTheme']">常见问题</text>
 						<text class="text3">今天</text>
 						
 					</view>
@@ -77,10 +78,19 @@
 				pageData:null,
 				page2Data:[],
 				likeDate:[],
+				
 			}
 		},
 		components:{
 			nloading
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		onShow(){
 			this.isMessage = uni.getStorageSync('isMessage').status
@@ -90,6 +100,9 @@
 			this.getPageData()
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -98,6 +111,7 @@
 			},
 		},
 		methods: {
+			
 			// 官方通知
 			getPageData() {
 				$api.get("msg/list", {
@@ -157,9 +171,10 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
+	
 	.container{
 		flex: 1;
-		background: #fff;
 	}
 	.box{
 		padding:0rpx 32rpx ;
@@ -181,10 +196,10 @@
 	}
 	.right{
 		padding:32rpx 0rpx 32rpx 0rpx;
-		border-bottom:1rpx solid #EFEFEF ;
+		
 	}
 	.text1{
-		color: #1C1C1C;
+		/* color: #1C1C1C; */
 		font-weight: bold;
 		font-size: 32rpx;
 		margin-bottom: 15rpx;

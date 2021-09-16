@@ -1,17 +1,17 @@
 <template>
-	<view class="container" :style="{width:$store.state.myWidth+'px'}">
+	<view :class="['container',heiye?'bg':'wg']":style="{width:$store.state.myWidth+'px'}">
 		<view class="head" :style="{width:$store.state.myWidth+'px',height:active?downHeight+'rpx':93+'rpx'}">
-			<view @click="show" class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
+			<view @click="show" class="input_box" :style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 				<text class="input_text" v-if="iftitle">{{title}}</text>
 				<text class="input_style" v-if="iftitle">{{rightTitle}}</text>
 				<image class="isimg" :style="{transform:active?'rotate(0deg)':'rotate(90deg)'}" style="width:20rpx ;height:30rpx;transform: ;margin-right:10rpx;" src="@/static/images/view/left-gred.png" mode=""></image>	
 			</view>
 			<view class="head1" ref="input_te" >
-				<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
+				<view class="input_box" :style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 					<text class="input_text" >{{text1}}</text>
 					<text class="input_style" >{{rightText1}}</text>
 				</view>
-				<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
+				<view class="input_box" :style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 					<text class="input_text" >{{text2}}</text>
 					<text class="input_style" >{{rightText2}}</text>
 				</view>
@@ -64,6 +64,9 @@
 			},
 		},
 		computed:{
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth(){
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -94,8 +97,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 .container{
-	background-color:#fff ;
+	
 }
 .head{
 	flex-direction: column;
@@ -115,7 +119,6 @@
 }
 .input_box{
 	padding:36rpx 32rpx;
-	border-bottom:2rpx solid #ECECEC;
 	flex-direction: row;
 	justify-content: space-between;
 }

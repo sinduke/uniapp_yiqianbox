@@ -1,6 +1,6 @@
 <template>
 	<!-- 账号信息 -->
-	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
+	<view :class="['box',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
 		<view class="avatar_box" :style="{width:$store.state.myWidth+'px'}">
 			<view class="avatar" @click="changeAvatar">
 				<image class="avatar":src="userInfo.avatar"  ></image>
@@ -14,7 +14,7 @@
 			<view v-if="userInfo.has_bind_mobile == 2" >
 				<gamecell left="手机号" :right="userInfo.mobile"></gamecell>
 			</view>
-			<view  v-else @click="handleRouter('/pages/my/myAdministration/children/changeMobile/index1')">
+			<view v-else  @click="handleRouter('/pages/my/myAdministration/children/changeMobile/index1')">
 				<gamecell left="手机号" right="待绑定"></gamecell>
 			</view>
 			
@@ -32,7 +32,7 @@
 			</view>
 		</view>
 		<shModal title="修改昵称" :textType="false" :isShow="nickName.show" @confirm="confirm" @remove="noModal">
-			<view class="nameBox" :style="{width:$store.state.myWidth*0.7+'px'}">
+			<view class="nameBox" :style="{width:$store.state.myWidth*0.7+'px',borderBottom:heiye?'2rpx solid #363636':'2rpx solid #ECECEC'}">
 				<input type="text" class="nameInput" v-model="nickName.value" :placeholder="userInfo.nickname" />
 			</view>
 		</shModal>
@@ -63,12 +63,23 @@
 			shModal
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			userInfo(){
 				return globalData.store.state.userInfo
 			},
 			myHeight(){
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			// 进入图库选图上传
@@ -137,8 +148,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.box{
-		background: #fff;
+		
 	}
 	.avatar_box{
 		position: relative;
@@ -164,7 +176,7 @@
 	}
 	.nameBox{
 		/* width: 600rpx; */
-		border-bottom:2rpx solid #ECECEC;
+		
 		margin-bottom:48rpx ;
 	}
 	.nameInput{

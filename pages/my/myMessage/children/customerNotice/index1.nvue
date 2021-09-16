@@ -1,44 +1,44 @@
 <!-- 客服通知 -->
 <template>
-	<view class="container">
+	<view :class="['container',heiye?'bg':'wg']">
 		<view class="lineShowdow"></view>
 		<view class="box">
 			<list :style="{height:myHeight-1+'rpx'}" :show-scrollbar="false" v-if="pageData['account_sell'].length&&pageData['account_buy']&&pageData['rebate_list']&&pageData['feedback']">
 				<cell  style="height: 32rpx;"></cell>
 				<cell v-for="(item,index) in pageData['account_sell']" :key='index' >
-					<view class="head" :style="{width:myWidth-32+'px'}">
+					<view :class="['head',heiye?'hei':'bai']" :style="{width:myWidth-32+'px'}">
 						<view class="head_1">
-							<text class="text1" >小号出售提醒</text>
+							<text :class="['text1',heiye?'isTheme':'noTheme']" >小号出售提醒</text>
 							<text class="text2" :style="{color:item.status==1?'#19BFFF':item.status==2?'#FF4810':'#666666',fontSize:'28rpx'}">{{item.status==1?'待支付':item.status==2?'已支付':'支付失败'}}</text>
 						</view>
 						<text class="text3">{{item.gamename}}</text>
 						<text class="text3">当前区服：{{item.server_name}}</text>
 						<view class="head_2">
 							<text class="text3">小号ID：{{item.mg_mem_id}}</text>
-							<text class="text1">￥{{item.price}}</text>
+							<text :class="['text1',heiye?'isTheme':'noTheme']">￥{{item.price}}</text>
 						</view>
 						<text class="text3" style="font-size: 26rpx;color: #999999;">{{item.create_time|dateFormat('yyyy/MM/dd hh:mm:ss')}}</text>
 					</view>
 				</cell>
 				<cell v-for="(item,index) in pageData['account_buy']" :key='index' >
-					<view class="head" :style="{width:myWidth-32+'px'}">
+					<view :class="['head',heiye?'hei':'bai']" :style="{width:myWidth-32+'px'}">
 						<view class="head_1">
-							<text class="text1" >小号购买提醒</text>
+							<text :class="['text1',heiye?'isTheme':'noTheme']" >小号购买提醒</text>
 							<text class="text2" :style="{color:item.status==1?'#19BFFF':item.status==2?'#FF4810':'#666666',fontSize:'28rpx'}">{{item.status==1?'待支付':item.status==2?'已支付':'支付失败'}}</text>
 						</view>
 						<text class="text3">{{item.gamename}}</text>
 						<text class="text3">当前区服：{{item.server_name}}</text>
 						<view class="head_2">
 							<text class="text3">小号ID：{{item.mg_mem_id}}</text>
-							<text class="text1">￥{{item.price}}</text>
+							<text :class="['text1',heiye?'isTheme':'noTheme']">￥{{item.price}}</text>
 						</view>
 						<text class="text3" style="font-size: 26rpx;color: #999999;">{{item.create_time|dateFormat('yyyy/MM/dd hh:mm:ss')}}</text>
 					</view>
 				</cell>
 				<cell v-for="(item,index) in pageData['rebate_list']" :key='index' >
-					<view class="head" :style="{width:myWidth-32+'px'}">
+					<view :class="['head',heiye?'hei':'bai']" :style="{width:myWidth-32+'px'}">
 						<view class="head_1">
-							<text class="text1" >返利发放提醒</text>
+							<text :class="['text1',heiye?'isTheme':'noTheme']" >返利发放提醒</text>
 							<text class="text2" :style="{color:item.status==1?'#19BFFF':item.status==2?'#FF4810':'#666666',fontSize:'28rpx'}">{{item.status==1?'待支付':item.status==2?'已支付':'支付失败'}}</text>
 						</view>
 						<text class="text3">{{item.name}}</text>
@@ -50,9 +50,9 @@
 					</view>
 				</cell>
 				<cell v-for="(item,index) in pageData['feedback']" :key='index' >
-					<view class="head" :style="{width:myWidth-32+'px'}">
+					<view :class="['head',heiye?'hei':'bai']" :style="{width:myWidth-32+'px'}">
 						<view class="head_1">
-							<text class="text1" >我的反馈</text>
+							<text :class="['text1',heiye?'isTheme':'noTheme']" >我的反馈</text>
 							<text class="text2" :style="{color:item.status==1?'#19BFFF':item.status==2?'#FF4810':'#666666',fontSize:'28rpx'}">{{item.status==1?'待支付':item.status==2?'已支付':'支付失败'}}</text>
 						</view>
 						<text class="text3">{{item.content}}</text>
@@ -100,6 +100,14 @@
 				})
 			}
 		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		onLoad(){
 			this.getPageData()
 		},
@@ -107,6 +115,9 @@
 			nloading
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -149,9 +160,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container{
 		flex: 1;
-		background: #fff;
 	}
 	.box{
 		padding:0rpx 36rpx ;
@@ -163,7 +174,6 @@
 	.head{
 		margin-bottom: 40rpx;
 		padding: 24rpx;
-		background: #F4F4F4;
 		border-radius: 40rpx;
 	}
 	.head_1{
@@ -171,7 +181,6 @@
 		justify-content: space-between;
 	}
 	.text1{
-		color: #1C1C1C;
 		font-size: 32rpx;
 		font-weight: bold;
 	}
@@ -186,6 +195,7 @@
 		font-size: 28rpx;
 		line-height: 45rpx;
 		font-weight: bold;
+		margin-top: 10rpx;
 	}
 	.head_2{
 		padding-bottom: 15rpx;

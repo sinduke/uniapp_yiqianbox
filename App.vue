@@ -111,6 +111,7 @@
 			},
 			//设置初始化
 			getSetting() {
+				let heiye = uni.getStorageSync('heiye')
 				let isMessage = uni.getStorageSync('isMessage')
 				let isWifi = uni.getStorageSync('isWifi')
 				let isWifiDown = uni.getStorageSync('isWifiDown')
@@ -146,6 +147,12 @@
 					uni.setStorageSync('isClearPackage',{
 						type: 1,
 						status: true
+					})
+				}
+				if (!heiye) {
+					uni.setStorageSync('heiye',{
+						type: false,
+						
 					})
 				}
 				

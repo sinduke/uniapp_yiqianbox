@@ -1,10 +1,11 @@
 <template>
 	<view class="box_cell" :style="{width:myWidth+'px'}">
-		<view class="cell" :style="{borderBottom:borderBottom==true?'1rpx solid #ECECEC':'none'}">
-			<text class="left_text isTheme">{{left}}</text>
+		<view class="cell" :style="{borderBottom:borderBottom==true&&heiye==false?'1rpx solid #ECECEC':borderBottom==true&&heiye?'1rpx solid #363636':'none'}">
+			<text :class="['left_text',heiye?'isTheme':'noTheme']" >{{left}}</text>
 			<view class="right">
-				<text class="right_text noTheme">{{right}}</text>
-				<image v-if="type==1" class="right_icon" src="@/static/images/left.png"></image>
+				<text :class="['right_text',heiye?'noActive':'baicolor']">{{right}}</text>
+				<image v-if="type==1&&heiye==false" class="right_icon" src="@/static/images/left.png"></image>
+				<image v-if="type==1&&heiye" class="right_icon1" src="@/static/images/999_right.png"></image>
 				<switch  style="transform:scale(0.8);" v-if="type==2" :checked="checked" @change="change" color="#FF4810"/>
 			</view>
 		</view>
@@ -52,11 +53,18 @@
 				this.$emit('change',this.checked)
 			}
 		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
+			
+		},
 	}
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 .box_cell{
 	padding:0rpx 28rpx ;
 }
@@ -81,6 +89,13 @@
 }
 .right_icon{
 	transform: rotate(180deg);
+	margin-left:20rpx ;
+	margin-top:5rpx ;
+	width:28rpx ;
+	height:28rpx ;
+}
+.right_icon1{
+	
 	margin-left:20rpx ;
 	margin-top:5rpx ;
 	width:28rpx ;
