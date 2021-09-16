@@ -25,7 +25,7 @@
 						<view class="lins" v-else style="background-color: #fff;"></view>
 					</view>
 
-					<view v-for="(item,index) in myList" :kye='index'>
+					<view v-for="(item,index) in myList" :kye='index' v-if="index<14">
 						<view class="card" :style="{width:myWidth-32+'px',marginBottom:'56rpx'}">
 							<view class="cardServer">
 								<text v-if="typeof item.ser_name=='string'" class="server_name text1" style="color: #FF5927;">{{item.ser_name}}</text>

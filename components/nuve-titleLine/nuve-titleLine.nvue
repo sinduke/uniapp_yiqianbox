@@ -3,14 +3,13 @@
 		<scroller ref="scroller" :style="{width:myWidth/1.6+'px'}" scroll-direction="horizontal" :show-scrollbar="false" style="flex-direction: row;">
 			<view class="titles">
 				<view class="titleItem" :style="{width:titleItemWidth+'px'}" >
-					<view v-for="(item,index) in TitleList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth / 3)-98+'px'}" ref="tabitem" :id="item.id"> 
+					<view v-for="(item,index) in TitleList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth/3)-90+'px'}" ref="tabitem" :id="item.id"> 
 						<text class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
 					</view>
 				</view>
-				  <view :style="{transform:'translateX('+(widthLine)+'rpx)',width:linesWidth+'px'}" class="lines" ref="lines"></view>
+				  <view :style="{transform:'translateX('+(widthLine)+'px)',width:linesWidth+'px'}" class="lines" ref="lines"></view>
 			</view>
 		</scroller>
-
 	</view>
 </template>
 
@@ -71,7 +70,8 @@
 				this.$emit('active', e)
 				this.$emit('isactive', false)
 				this.isActive = false
-				this.widthLine = (this.myWidth / 3) * e
+				console.log(e,this.linesWidth,'eee')
+				this.widthLine = (this.linesWidth+(this.myWidth/3)-90) * e
 			},
 			getline_Width(index){
 				dom.getComponentRect(this.$refs.tabitem[index], res => {
@@ -115,13 +115,13 @@
 			},
 			scrollMove(val) {
 				if(this.number==(this.length-1)&&val>0){
-					this.widthLine = Math.round(this.myWidth / 3) * (this.length-1) + Math.round(val / 3)				
+					this.widthLine = Math.round(this.myWidth / 3 - 60) * (this.length-1) + Math.round(val / 6)				
 				}else if(this.number==0&&val<0){					
 					this.widthLine = 0
 					
 				}else{
 					if (this.isActive) {
-						this.widthLine = Math.round(this.myWidth / 3) * this.number + Math.round(val / 3)
+						this.widthLine = Math.round(this.myWidth / 3 - 60) * this.number + Math.round(val / 6)
 					}
 				}		
 			},
@@ -136,14 +136,11 @@
 			
 			},100)
 		}
-
-
 	}
 </script>
 
 <style scoped>
 	/* @import '@/common/css/nvue-whith.css'; */
-
 	.lines {
 		height: 6rpx;
 		background-color: #FF5927;
@@ -174,8 +171,5 @@
 		color: #1c1c1c;
 		font-weight: 700;
 		/* font-size: 40rpx; */
-	
-
-
 	}
 </style>

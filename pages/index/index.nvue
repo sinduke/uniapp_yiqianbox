@@ -218,6 +218,7 @@
 			transition(e) {
 				if(Math.abs(Math.round(e.detail.dx))==this.$store.state.myWidth){
 					setTimeout(()=>{
+						
 					},400)
 				}else{
 					this.scrollMove = Math.round(e.detail.dx)
