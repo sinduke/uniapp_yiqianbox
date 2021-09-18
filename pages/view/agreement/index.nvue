@@ -1,0 +1,44 @@
+<template>
+	<view class="nvue-agreement">
+          <web-view :src="url" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" :webview-styles="webviewStyles"></web-view>
+	</view>
+</template>
+
+<script>
+    const globalData = getApp().globalData
+	export default {
+		data() {
+			return {
+				type:0,
+				url:'',
+				webviewStyles: {
+					progress: {
+						color: '#ff5927'
+					}
+				}
+
+			}
+		},
+		computed:{
+			myHeight() {
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			},
+			
+		},
+		onLoad(option) {
+			this.type = option.type
+			this.url = 'https://page.4000yx.com/active/agreement?agent_id=' + globalData.store.state.client_id +'&type=' + this.type
+			// console.log(this.url)
+			
+		},
+		onReady() {
+		uni.setNavigationBarTitle({
+				title: this.type == 1 ? '隐私策略': '用户协议'
+			})
+		}
+	}
+</script>
+
+<style scoped>
+
+</style>

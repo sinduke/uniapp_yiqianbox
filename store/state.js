@@ -4,8 +4,8 @@
 // 版本环境
 export default {
 	// api请求头
-	httpAPI: "https://api.sy12306.com/",   // sy12306.com
-	// httpAPI: "https://api.zzchaoyi.cn/", // zzchaoyi.cn
+	// httpAPI: "https://api.sy12306.com/",   // sy12306.com
+	httpAPI: "https://api.zzchaoyi.cn/", // zzchaoyi.cn
 	// app运行的平台
 	platform: uni.getSystemInfoSync().platform,
 	// 热更最后一位

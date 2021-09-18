@@ -25,8 +25,14 @@
 		
 
 		<view class="bottom">
-			<text class="text" style="color: #666;">注册登陆即表示同意</text>&nbsp
-			<text class="text"	style="font-weight: 700;">《平台服务协议》</text>
+			<text class="text" style="color: #666;">注册登陆即表示同意 &nbsp</text>
+			<text class="text" style="color: #FF5927;">《</text>
+			<text class="text"	style="font-weight: 700;color: #FF5927;border-bottom:1px solid #ff5927;" @click="handleAmunt(1)">隐私策略</text>
+			<text class="text" style="color: #FF5927;">》</text>
+			<text class="text">及</text>
+			<text class="text" style="color: #FF5927;">《</text>
+			<text class="text" style="font-weight: 700;color: #FF5927;border-bottom:1px solid #ff5927;" @click="handleAmunt(2)">用户协议</text>
+			<text class="text" style="color: #FF5927;">》</text>
 		</view>
 	</view>
 </template>
@@ -54,6 +60,13 @@
 			}
 		},
 		methods: {
+			// 协议
+			handleAmunt(type){
+				console.log(type)
+			   uni.navigateTo({
+			   	url:'/pages/view/agreement/index?type='+ type
+			   })
+			},
 			// 提交密码修改
 			submitPassword() {
 				if (this.form["mem-password"] != this.again_psd) {
@@ -159,7 +172,7 @@
 		justify-content: center;
 	}
 	.text{
-		font-size: 28rpx;
+		font-size: 26rpx;
 		color: #1C1C1C
 	}
 </style>

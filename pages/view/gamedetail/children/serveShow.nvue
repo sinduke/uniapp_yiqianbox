@@ -81,7 +81,7 @@
 			noclick() {},
 		},
 		mounted() {
-			console.log(this.serveList,'serveListserveList')
+			// console.log(this.serveList,'serveListserveList')
 		},
 		filters: {
 			dateFormat(value, fmt) {

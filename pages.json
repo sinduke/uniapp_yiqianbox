@@ -1057,8 +1057,25 @@
 				}
 			}
 
-		}   
-        
+		} ,  
+      {
+      	"path": "pages/view/agreement/index",
+      	"style": {
+      		"app-plus": {
+      			"bounce": "none", //关闭窗口回弹效果
+      			"titleNView": {
+      				"backgroundColor": "#fff",
+      				"titleColor": "#1C1C1C",
+      				"titleAlign": "left",
+      				"titleText": ""
+      			}
+      		}
+      	}
+      
+      }   
+		
+		
+		 
         
     ],
 

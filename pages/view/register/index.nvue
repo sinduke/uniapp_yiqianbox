@@ -26,39 +26,16 @@
 		</view>
 			<text class="mybutton" v-if="is_reg" @click="register2">注 册/绑 定</text>
 			<text class="mybutton" v-else @click="register1">注 册/绑 定</text>
-		
-	<!-- 	<view >
-			<u-form :model="form2" ref="uForm" label-width="120" :border-bottom="false" label-align="right">
-				<view class="h2">手机号</view>
-				<u-form-item label="">
-					<u-input v-model="form2['sms-mobile']" placeholder="请输入手机号" />
-				</u-form-item>
-				<view class="h2">验证码</view>
-				<u-form-item label="">
-					<u-input v-model="form2['sms-code']" placeholder="请输入验证码" style="margin-right: 30rpx;" />
-					<text size="mini" slot="right" type="warning" @click="getCode">{{codeText}}</text>
-					<u-verification-code style="background: #ffd014;" ref="uCode" @change="codeChange">
-					</u-verification-code>
-				</u-form-item>
-				<view class="h2" v-if="ispassword">密 码</view>
-				<u-form-item label="" v-if="ispassword">
-					<u-input v-model="form2['mem-password']" type="password" placeholder="请输入密码" />
-				</u-form-item>
-			</u-form>
-			<view class="mobile clearfix" v-if="!this.oauth">
-				<text class="fr" @click="changeRegister">{{text}}</text>
+			<view class="bottom">
+				<text class="text" style="color: #666;">注册登陆即表示同意 &nbsp</text>
+				<text class="text" style="color: #FF5927;">《</text>
+				<text class="text"	style="font-weight: 700;color: #FF5927;border-bottom:1px solid #ff5927;" @click="handleAmunt(1)">隐私策略</text>
+				<text class="text" style="color: #FF5927;">》</text>
+				<text class="text">及</text>
+				<text class="text" style="color: #FF5927;">《</text>
+				<text class="text" style="font-weight: 700;color: #FF5927;border-bottom:1px solid #ff5927;" @click="handleAmunt(2)">用户协议</text>
+				<text class="text" style="color: #FF5927;">》</text>
 			</view>
-			<view class="mobile clearfix">
-				<text>首次{{oauth.name}}登录，需要{{is_reg?"注册":"绑定"}}手机号</text>
-			</view>
-			<view class="btn">
-				<text class="buttons" v-if="is_reg" @click="register2">注 册/绑 定</text>
-				<text class="buttons" v-else @click="register1">注 册/绑 定</text>
-
-			</view>
-		</view> -->
-
-		<!-- <view class="bottom">注册即表示同意<text class="txt">《平台服务协议》</text></view> -->
 	</view>
 </template>
 
@@ -85,13 +62,6 @@
 					openid: '',
 					name: ''
 				},
-
-				form1: {
-					"mem-username": "",
-					"mem-password": "",
-					passwordAgain: ""
-				},
-
 				codeText: "",
 				form2: {
 					"sms-mobile": "",
@@ -110,6 +80,13 @@
 			}
 		},
 		methods: {
+			// 协议
+			handleAmunt(type){
+				console.log(type)
+			   uni.navigateTo({
+			   	url:'/pages/view/agreement/index?type='+ type
+			   })
+			},
 			//手机号注册
 			register1() {
 				if (this.oauth) {
@@ -120,7 +97,6 @@
 					...this.form2,
 					equipmentCode: this.equipmentCode,
 				}).then(res => {
-					console.log(res, 'registerregisterregisterregisterregister')
 					if (res.data.code == 200) {
 						uni.showToast({
 							title: "注册成功",
@@ -210,7 +186,6 @@
 					"mem-openid": this.oauth.openid,
 					"mem-oauth_type": this.form2['sms-oauth_type'],
 				}).then(res => {
-					console.log(res, 'registerregisterregisterregisterregister')
 					if (res.data.code == 200) {
 						uni.setStorageSync('mem-openid', this.oauth.openid)
 						this.$store.commit("setLoginInfo", res.data.data)
@@ -352,5 +327,16 @@
 		lines: 1;
 		margin-bottom: 48rpx;
 	}
+	.bottom {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 32rpx;
+	}
+	.text {
+		font-size: 26rpx;
+		color: #1C1C1C;
+	}
+	
 
 </style>
