@@ -16,11 +16,11 @@
 						<list class="list" @loadmore='loadmore' loadmoreoffset='10' v-if="couponList1.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell v-for="(item,index) in couponList1" :style="{width:$store.state.myWidth-32+'px'}">
 								<view class="cell">
-									<view :class="['cell_left',heiye?'hei1':'bai1']"  :style="{width:($store.state.myWidth-32)*0.3+'px'}">
+									<view :class="['cell_left',heiye?'hei666':'bai1']"  :style="{width:($store.state.myWidth-32)*0.3+'px'}">
 										<text :class="['left_text1',heiye?'isTheme':'noTheme']" >{{item.coupon.coupons_amount}}</text>
 										<text :class="['left_text2',heiye?'noActive':'baicolor']" >{{item.coupon.title}}</text>
 									</view>
-									<view :class="['cell_right',heiye?'heibut':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
+									<view :class="['cell_right',heiye?'hei777':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
 										<view class="right_head">
 											<view class="head_text">
 												<text class="head_text1">有效期至：{{item.coupon.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
@@ -48,19 +48,20 @@
 						<list class="list" @loadmore='loadmore' loadmoreoffset='10' v-if="couponList2.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell v-for="(item,index) in couponList2" :style="{width:$store.state.myWidth-32+'px'}">
 								<view class="cell">
-									<view :class="['cell_left',heiye?'hei1':'bai1']" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
+									<view :class="['cell_left',heiye?'hei666':'bai1']" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
 										<text :class="['left_text1',heiye?'isTheme':'noTheme']" >{{item.coupon.coupons_amount}}</text>
 										<text :class="['left_text2',heiye?'noActive':'baicolor']" >{{item.coupon.title}}</text>
 									</view>
-									<view :class="['cell_right',heiye?'heibut':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
+									<view :class="['cell_right',heiye?'hei777':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
 										<view class="right_head">
 											<view class="head_text">
 												<text class="head_text1">有效期至：{{item.coupon.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
 												<text class="head_text2">领取时间：{{item.coupon.get_time_begin | dateFormat('yyyy-MM-dd')}}后</text>
 											</view>
-											<view class="head_but" :style="{background:heiye?'BDBDBD':'#DBDBDB' }">
+											<view class="head_but1" :style="{background:heiye?'#3d3d3d':'#DBDBDB',border:heiye?'':'2rpx solid #E4E4E4' }">
 												<text class="head_text3" :style="{color:heiye?'#FFF':'#FFF'}" >已使用</text>
 											</view>
+											
 										</view>
 										<view class="right_bottom">
 											<text class="head_text2" style="font-size:26rpx ;">适用于《{{item.coupon.game_name}}》</text>
@@ -80,11 +81,11 @@
 						<list class="list" @loadmore='loadmore' loadmoreoffset='10' v-if="couponList3.length" :show-scrollbar='false' :style="{width:$store.state.myWidth+'px',height:myHeight-94+'rpx'}">
 							<cell v-for="(item,index) in couponList3" :style="{width:$store.state.myWidth-32+'px'}">
 								<view class="cell" style="opacity: 0.1;">
-									<view :class="['cell_left',heiye?'hei1':'bai1']" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
+									<view :class="['cell_left',heiye?'hei666':'bai1']" :style="{width:($store.state.myWidth-32)*0.3+'px'}">
 										<text :class="['left_text1',heiye?'isTheme':'noTheme']">{{item.coupon.coupons_amount}}</text>
 										<text :class="['left_text2',heiye?'noActive':'baicolor']">{{item.coupon.title}}</text>
 									</view>
-									<view :class="['cell_right',heiye?'heibut':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
+									<view :class="['cell_right',heiye?'hei777':'bai']" :style="{width:($store.state.myWidth-32)*0.7+'px'}">
 										<view class="right_head">
 											<view class="head_text">
 												<text class="head_text1">有效期至：{{item.coupon.get_time_end | dateFormat('yyyy-MM-dd')}}</text>
@@ -375,7 +376,7 @@
 	}
 	/* 左边 */
 	.cell_left{
-		border-radius: 40rpx 0rpx 0rpx 40rpx;
+		border-radius: 20rpx 0rpx 0rpx 20rpx;
 		
 	}
 	.left_text1{
@@ -401,7 +402,7 @@
 		
 		
 		padding:22rpx  ;
-		border-radius:0 40rpx 40rpx 0;
+		border-radius:0 20rpx 20rpx 0;
 	}
 	.right_head{
 		flex-direction: row;
@@ -425,7 +426,12 @@
 		height:50rpx ;
 		padding:0rpx 12rpx;
 		border: 1rpx solid #E4E4E4;
-		
+		border-radius:25rpx;
+		justify-content: center;
+	}
+	.head_but1{
+		height:50rpx ;
+		padding:0rpx 12rpx;
 		border-radius:25rpx;
 		justify-content: center;
 	}

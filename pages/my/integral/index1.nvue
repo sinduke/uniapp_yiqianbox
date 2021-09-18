@@ -8,7 +8,7 @@
 				<text style="color: #666666; font-size: 28rpx;margin-bottom: 24rpx;text-align: center;">积分余额</text>
 				<text :style="{color:heiye?'#fff':'#1c1c1c'}"  style="font-size: 48rpx; font-weight: bold;text-align: center;">{{$store.state.userInfo.my_integral}}</text>
 			</view>
-			<text :class="['butttons',heiye?'hei':'bai']"  @click="handleRouter('/pages/my/integral/dhptb1')">兑换平台币</text>
+			<text :class="['butttons',heiye?'hei':'wg']"  @click="handleRouter('/pages/my/integral/dhptb1')">兑换平台币</text>
 		</view>
 	
 	</view>

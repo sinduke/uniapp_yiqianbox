@@ -35,7 +35,12 @@
 .bai1{
 	background-color: #E4E4E4;
 }
-
+.hei666{
+	background-color: #3d3d3d;
+}
+.hei777{
+	background-color: #232323;
+}
 
 
 .baicolor{
@@ -47,11 +52,14 @@
 .noActive{
 	color: #C1C1C1;
 }
+.c1Theme{
+	color: #1C1C1C;
+}
 .noTheme{
 	color: #1C1C1C;
 }
 .isTheme{
-	color: #FFFFFF;
+	color: #ffffff;
 }
 
 

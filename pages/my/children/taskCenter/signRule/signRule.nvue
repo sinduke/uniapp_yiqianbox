@@ -1,21 +1,22 @@
 <template>
-	<view class="signRule">
-		<view class="myshadowLine" :style="{width:myWidth+'px'}"/>
+	<view :class="['signRule',heiye?'bg':'wg']" >
+		<view v-if="heiye==false" class="myshadowLine" :style="{width:myWidth+'px'}"/>
 		<view class="body">
-			<text class="title" style="margin-bottom: 32rpx;">规则</text>
-			 <text class="title1">1. 签到领积分：同一账号每天可签到1次，签到可以获 得平台积分，积分直接发放至用户账号；根据用户连续签到的天数，每日积分发放数不同。 </text>
-			 <text class="title1">2. 连续签到规则： </text>
+			<text :class="['title',heiye?'isTheme':'noTheme']"  style="margin-bottom: 32rpx;">规则</text>
+			 <text :class="['title1',heiye?'isTheme':'noTheme']" >1. 签到领积分：</text>
+			 <text :class="['title1',heiye?'noActive':'baicolor']">同一账号每天可签到1次，签到可以获 得平台积分，积分直接发放至用户账号；根据用户连续签到的天数，每日积分发放数不同。</text> 
+			 <text :class="['title1',heiye?'isTheme':'noTheme']">2. 连续签到规则： </text>
 			 <view  style="margin-bottom: 32rpx;">
-			 	<text class="text">1）当连续签到天数小于7天时，签到首日可得1个积分，每日递增1个积分；</text>
-			 	<text class="text">2）当连续签到天数达到7天以上时，每日可得7个积分；</text>
-			 	<text class="text">3）若用户断签，则重新开始计算连续签到天数。</text>
+			 	<text :class="['title1',heiye?'noActive':'baicolor']">1）当连续签到天数小于7天时，签到首日可得1个积分，每日递增1个积分；</text>
+			 	<text :class="['title1',heiye?'noActive':'baicolor']">2）当连续签到天数达到7天以上时，每日可得7个积分；</text>
+			 	<text :class="['title1',heiye?'noActive':'baicolor']">3）若用户断签，则重新开始计算连续签到天数。</text>
 			 </view>
-			 <text class="title1">3. 举例：</text>
-			 <text class="text" style="margin-bottom: 32rpx;">您连续签到10天，则每日可获积分数分别为1，2,  3，4，5, 6，7；若第11天断签，则第12天签到时，重新计算签到天数，发放1个积分。</text>
-			 <text class="title" style="margin-bottom: 32rpx;">其他说明</text>
+			 <text :class="['title1',heiye?'isTheme':'noTheme']">3. 举例：</text>
+			 <text :class="['title1',heiye?'noActive':'baicolor']" style="margin-bottom: 32rpx;">您连续签到10天，则每日可获积分数分别为1，2,  3，4，5, 6，7；若第11天断签，则第12天签到时，重新计算签到天数，发放1个积分。</text>
+			 <text :class="['title1',heiye?'isTheme':'noTheme']" style="margin-bottom: 32rpx;">其他说明</text>
 			 <view class="">
-			 	<text class="title1">1.每日签到+1积分，连续签到翻倍，单日+30封顶  </text>
-				<text class="title1">2.如用户存在违规刷积分行为，我们有权取消用户获得积分的资格，已领取的积分将被扣回。</text>
+			 	<text :class="['title1',heiye?'noActive':'baicolor']">1.每日签到+1积分，连续签到翻倍，单日+30封顶  </text>
+				<text :class="['title1',heiye?'noActive':'baicolor']">2.如用户存在违规刷积分行为，我们有权取消用户获得积分的资格，已领取的积分将被扣回。</text>
 			 </view>
 
 		</view>
@@ -25,17 +26,30 @@
 <script>
 	export default {
 	computed: {
+		heiye(){
+			return uni.getStorageSync('heiye').type
+		},
 		myHeight() {
 			return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 		},
 		myWidth() {
 			return uni.getSystemInfoSync().windowWidth
 		},
+		
+	},
+	onReady() {
+		if(this.heiye){
+			uni.setNavigationBarColor({
+				frontColor: '#ffffff',
+				backgroundColor: '#090909',
+			})	
+		}
 	},
 }
 </script>
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
 	.text{
       font-size: 28rpx;
 
@@ -43,15 +57,13 @@
 	.signRule {
 		flex: 1;
 		overflow: hidden;
-		background-color: #fff;
 	}
 		.title{
-			color: #1C1C1C;
 			font-weight: 700;
 			font-size: 34rpx;
 		}
 		.title1{
-			color: #1C1C1C;
+			
 			font-weight: 600;
 			font-size: 32rpx;
 			margin-bottom: 24rpx;

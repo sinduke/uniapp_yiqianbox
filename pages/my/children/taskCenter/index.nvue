@@ -1,14 +1,14 @@
 <!-- 任务中心 -->
 <template>
-	<view class="tankCenter">
-	<myNavbar title='任务中心' :lines="false" right radius router='/pages/my/children/taskCenter/signRule/signRule' src='../../../../static/images/my_details.png'></myNavbar>
-		
+	<view :class="['tankCenter',heiye?'hei':'bai']" >
+	<myNavbar v-if="heiye==false" title='任务中心' :lines="false" right radius router='/pages/my/children/taskCenter/signRule/signRule' src='../../../../static/images/my_details.png'></myNavbar>
+	<myNavbar v-else title='任务中心' :lines="false" right radius router='/pages/my/children/taskCenter/signRule/signRule' src='../../../../static/images/my_details1.png'></myNavbar>	
 		<view class="body" :style="{width:myWidth+'px',marginTop:statusBarHeight+90+'rpx'}">
 			<list :style="{height:myHeight-160+'rpx',width:myWidth+'px'}" @loadmore='loadmore'	 loadmoreoffset='20' :show-scrollbar='false'   class="list" ref="list"  >
 				<cell>
 					<view class="banner">
 						<image src="@/static/images/my/rwzx-banner.png" mode="widthFix" :style="{width:myWidth+'px',height:'380rpx'}"></image>
-						<view class="myjf">
+						<view class="myjf" >
 							<text class="myjf_text" style="font-weight: 700;font-size: 32rpx;">当前剩余积分</text>
 							<view class="jfrouter" @click="handleRouter('/pages/my/integral/integral')">
 								<text class="myjf_text" style="font-weight: 900;font-size: 48rpx;">{{userInfo.my_integral}}</text>
@@ -21,11 +21,11 @@
 					</view>
 				</cell>
 				<cell>
-					<view class="qdjf">
+					<view class="qdjf" :style="{backgroundColor:heiye?'#090909':'#ffffff'}">
 						<view class="qdjf_tit">
-							<text class="title">已连续签到</text>
+							<text :class="['title',heiye?'isTheme':'noTheme']" >已连续签到</text>
 							<text style="color: #FF5927;font-size: 38rpx;">{{userInfo.continuous_sign}}</text>
-							<text class="title">天,明天签到+2积分</text>
+							<text :class="['title',heiye?'isTheme':'noTheme']">天,明天签到+2积分</text>
 						</view>
 						<view class="qdjf_body">
 							<view class="qdjf_item" v-for="(item,index) in 7" :key='index'>
@@ -36,36 +36,43 @@
 									</view>
 									<view class="qdjf_line" v-if="index<6" :style="{backgroundColor:index<userInfo.continuous_sign?'#FF5927':'#999'}"></view>
 								</view>
-								<text class="text" v-if="!index" >今天</text>
+								<text  class="text" v-if="!index" >今天</text>
 								<text class="text" v-else >{{new Date()/1000+(86400*index)|dateFormat('MM.dd')}}</text>
 							</view>
 						</view>
 					</view>
 				</cell>
 				<cell>
-					<view class="zptz">
-						<image src="@/static/images/my/rwzx-xyzp.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="height: 340rpx;margin-right: 24rpx;" @click="handleRouter('/pages/my/children/bigTurntable/index')"></image>
-						<image src="@/static/images/my/rwzx-qmtg.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="margin-right: 24rpx;height: 340rpx;"	@click="handleRouter('/pages/my/children/share/index')"></image>
-						<image src="@/static/images/my/rwzx-jfsc.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="height: 340rpx;" @click="handleRouter('/pages/my/children/pointMall/index1')"></image>		
+					<view class="zptz" :style="{backgroundColor:heiye?'#090909':'#ffffff'}">
+						<image v-if="heiye==false" src="@/static/images/my/rwzx-xyzp.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="height: 340rpx;margin-right: 24rpx;" @click="handleRouter('/pages/my/children/bigTurntable/index')"></image>
+						<image v-else src="@/static/images/my/rwzx-xyzp1.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="height: 340rpx;margin-right: 24rpx;" @click="handleRouter('/pages/my/children/bigTurntable/index')"></image>
+						<image v-if="heiye==false" src="@/static/images/my/rwzx-qmtg.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="margin-right: 24rpx;height: 340rpx;"	@click="handleRouter('/pages/my/children/share/index')"></image>
+						<image v-else src="@/static/images/my/rwzx-qmtg1.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="margin-right: 24rpx;height: 340rpx;"	@click="handleRouter('/pages/my/children/share/index')"></image>
+						<image v-if="heiye==false" src="@/static/images/my/rwzx-jfsc.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="height: 340rpx;" @click="handleRouter('/pages/my/children/pointMall/index1')"></image>		
+						<image v-else src="@/static/images/my/rwzx-jfsc1.png" mode="widthFix" :style="{width:myWidth/3.5+'px'}" style="height: 340rpx;" @click="handleRouter('/pages/my/children/pointMall/index1')"></image>
 					</view>
 				</cell>
 				<cell>
-					<!-- 日常任务 -->
-					<view class="rcrw" style="margin-bottom: 24rpx;">
-						<text class="title">日常任务</text>
+					<!-- 日常任务 --> 
+					<view :class="['rcrw',heiye?'bg':'wg']"  style="margin-bottom: 24rpx;">
+						<text :class="['title',heiye?'isTheme':'noTheme']">日常任务</text>
 						<view class="rcrw_body" v-if="pageData">
 							<view class="rcrw_item" v-for="(item,index) in pageData.daily.list" :key='index'>
-								<view class="left">
+								<view :style="{border:heiye?'':'1px solid #e4e4e4',backgroundColor:heiye?'#1c1c1c':''}" class="left">
 									<image :src="/http/.test(item.icon)?item.icon:'https:'+item.icon" mode="widthFix" style="width: 60rpx; height: 60rpx;"></image>
 								</view>
-								<view class="right" style="margin-left: 32rpx;">
+								<view :style="{borderBottom:heiye?'1rpx solid #363636':'2rpx solid #efefef'}" class="right" style="margin-left: 32rpx;">
 									<view :style="{width:myWidth/1.7+'px'}">
-										<text class="right_title">{{item.ia_name}}</text>
-										<text class="text">{{item.ia_desc}}</text>
+										<text :class="['right_title',heiye?'isTheme':'noTheme']" >{{item.ia_name}}</text>
+										<text  class="text">{{item.ia_desc}}</text>
 									</view>
-									<view>
+									<view v-if="heiye==false">
 										<text v-if="item.ia_code == 'sign'" @click="signIn(item.finish_flag)"	:class="{active:item.finish_flag==2}" class="button">{{item.finish_flag == 1 ? '领&emsp;取' : '已完成'}}</text>
 										<text v-else class="button" @click="handleClick(item.finish_flag,item.ia_id)" :class="{active:item.finish_flag==2}">{{item.finish_flag == 1 ? '去完成' : '已完成'}}</text>
+									</view>
+									<view v-else>
+										<text v-if="item.ia_code == 'sign'" @click="signIn(item.finish_flag)"	:class="{active1:item.finish_flag==2}" class="button">{{item.finish_flag == 1 ? '领&emsp;取' : '已完成'}}</text>
+										<text v-else class="button" @click="handleClick(item.finish_flag,item.ia_id)" :class="{active1:item.finish_flag==2}">{{item.finish_flag == 1 ? '去完成' : '已完成'}}</text>
 									</view>
 								</view>
 							</view>
@@ -75,20 +82,23 @@
 				<cell>
 					
 					<!-- 新手任务 -->
-					<view class="rcrw">
-						<text class="title">新手任务</text>
+					<view :class="['rcrw',heiye?'bg':'wg']">
+						<text :class="['title',heiye?'isTheme':'noTheme']" >新手任务</text>
 						<view class="rcrw_body" v-if="pageData">
 							<view class="rcrw_item" v-for="(item,index) in pageData.one.list" :key='index'>
-								<view class="left">
+								<view :style="{border:heiye?'':'1px solid #e4e4e4',backgroundColor:heiye?'#1c1c1c':''}" class="left">
 									<image :src="/http/.test(item.icon)?item.icon:'https:'+item.icon" mode="widthFix" style="width: 60rpx; height: 60rpx;"></image>
 								</view>
-								<view class="right" style="margin-left: 32rpx;">
+								<view :style="{borderBottom:heiye?'1rpx solid #363636':'2rpx solid #efefef'}"  class="right" style="margin-left: 32rpx;">
 									<view :style="{width:myWidth/1.7+'px'}">
-										<text class="right_title">{{item.ia_name}}</text>
+										<text :class="['right_title',heiye?'isTheme':'noTheme']" >{{item.ia_name}}</text>
 										<text class="text">{{item.ia_desc}}</text>
 									</view>
-									<view>
+									<view v-if="heiye==false">
 										<text class="button" :class="{active:item.finish_flag==2}"	@click="handleClick(item.finish_flag,item.ia_id)">{{item.finish_flag == 1 ? '去完成' : '已完成'}}</text>
+									</view>
+									<view v-else>
+										<text class="button" :class="{active1:item.finish_flag==2}"	@click="handleClick(item.finish_flag,item.ia_id)">{{item.finish_flag == 1 ? '去完成' : '已完成'}}</text>
 									</view>
 								</view>
 							</view>
@@ -117,6 +127,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			statusBarHeight() {
 				return uni.getSystemInfoSync().statusBarHeight* (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -133,6 +146,14 @@
 				return globalData.store.state.loginInfo
 			}
 
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			//获取
@@ -244,10 +265,10 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.tankCenter {
 		flex: 1;
 		overflow: hidden;
-		background-color: #F4F4F4;
 	}
 	.icon {
 		width: 40rpx;
@@ -319,7 +340,7 @@
 		flex-direction: row;
 		align-items: center;
 		margin-bottom: 20rpx;
-		background-color: #fff;
+		
 	}
 
 	.image {
@@ -345,7 +366,7 @@
 
 	.rcrw {
 		padding: 20rpx 32rpx;
-		background-color: #fff;
+		
 		
 	}
 	.rcrw_body{
@@ -353,7 +374,7 @@
 	}
 
 	.title {
-		color: #1C1C1C;
+		
 		font-weight: 700;
 		font-size: 32rpx;
 		/* margin-bottom: 20rpx; */
@@ -372,7 +393,6 @@
 		width: 100rpx;
 		height: 100rpx;
 		border-radius: 100rpx;
-		border: 1px solid #e4e4e4;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
@@ -380,7 +400,7 @@
 	}
 
 	.right {
-		border-bottom:1px solid #efefef ;
+		
 		padding-bottom: 20rpx;
 		flex-direction: row;
 		align-items: center;
@@ -414,5 +434,10 @@
 		background-color: #C1C1C1 !important;
 		color: #fff !important;
 		border: 1px solid #C1C1C1 !important;
+	}
+	.active1 {
+		background-color: #1C1C1C !important;
+		color: #fff !important;
+		border: 1px solid #1C1C1C !important;
 	}
 </style>
