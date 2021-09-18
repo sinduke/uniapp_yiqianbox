@@ -1,7 +1,7 @@
 <template>
 	<view class="nvue-upLoadImage">
 		<view class="uploadList" :style="{width:myWidth-32-24+'px'}">
-			<view class="border" :style="{width:myWidth/3-32+'px',height:myWidth/3-32+'px',background:heiye?'#4f4f4f':'#f4f4f4'}"  v-for="(src,index) in imageList" :key='index'  bubble="true">
+			<view class="border" :style="{width:myWidth/3-32+'px',height:myWidth/3-32+'px',background:heiye?'#333333':'#f4f4f4'}"  v-for="(src,index) in imageList" :key='index'  bubble="true">
 				<image @click="upLoadImage" v-if="!src" src="@/static/images/jia.png" mode="widthFix" :style="{width:myWidth/3-80+'px',height:myWidth/3-80+'px',margin:'24rpx 0'}"></image>
 				<text  v-if="!src" class="text">最多上传{{max_number-imageList.length+1}}张</text>
 				<image @click="imageClick(index)" v-if="src" :src="src" class="image" mode="scaleToFill" :style="{width:myWidth/3-32+'px',height:myWidth/3-32+'px'}"></image>

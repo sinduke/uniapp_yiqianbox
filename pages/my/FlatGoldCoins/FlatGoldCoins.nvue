@@ -9,7 +9,7 @@
 				<text style="color: #666666; font-size: 26rpx;margin-bottom: 24rpx;">平台币余额</text>
 				<text  :style="{color:heiye?'#fff':'#1c1c1c'}" style=" font-size: 48rpx; font-weight: bold;">{{ptb_cnt}}</text>
 			</view>
-			<text :class="['butttons',heiye?'hei':'bai']"  @click="handleRouter('/pages/my/FlatGoldCoins/topUp/topUp1')">充值</text>
+			<text :class="['butttons',heiye?'hei':'wg']"  @click="handleRouter('/pages/my/FlatGoldCoins/topUp/topUp1')">充值</text>
 		</view>
 
 	</view>

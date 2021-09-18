@@ -6,23 +6,26 @@
 		<view class="container" :style="{width:myWidth+'px'}">
 			<text :class="['text1',heiye?'isTheme':'noTheme']" >请选择问题类型</text>
 			<view class="boxAll"  :style="{width:myWidth-32+'px'}">
-				<view :style="{background:heiye?'4f4f4f':'#F4F4F4'}" class="but"  v-for="(item,index) in typeList" :key="index" @click="buttonClick(item.id)" :class="{buttonColor:item.id==feedbackData.flag}">
+				<view v-if="heiye==false"  class="but"  v-for="(item,index) in typeList" :key="index" @click="buttonClick(item.id)" :class="{buttonColor:item.id==feedbackData.flag}">
 					<text class="but_text" :class="{buttonColor1:item.id==feedbackData.flag}">{{item.name}}</text>
 				</view>
+				<view v-if="heiye" class="but10"  v-for="(item,index) in typeList" :key="index" @click="buttonClick(item.id)" :class="{buttonColor3:item.id==feedbackData.flag}">
+					<text class="but_text1" :class="{buttonColor1:item.id==feedbackData.flag}">{{item.name}}</text>
+				</view>
 			</view>
-			<view class="text_box" :style="{width:myWidth-32+'px'}">
+			<view  class="text_box" :style="{width:myWidth-32+'px',border:heiye?'':'2rpx solid #E4E4E4',backgroundColor:heiye?'#1C1C1C':'#ffffff'}">
 				<textarea v-model="feedbackData.content" class="box_input"  :placeholder-style="{color:'#E4E4E4',fontSize:13+'px',}" placeholder="提出您宝贵的意见或建议有助于我们为您提供更好的服务" />
 				<view class="upload" :style="{width:myWidth-32+'px'}">
 					<upLoadImage :max_number='3'  @upLoadSuccess='uploadSuccess'></upLoadImage>
 				</view>
 			</view>
-			<view class="input_p">
+			<view class="input_p" :style="{border:heiye?'':'2rpx solid #E4E4E4',backgroundColor:heiye?'#1C1C1C':'#ffffff'}">
 				<input class="p_text" type="number" v-model="feedbackData.linkman" :placeholder-style="{color:'#E4E4E4',fontSize:14+'px',}" placeholder="请留下您的手机号"/>
 			</view>
-			<view class="input_p" >
+			<view class="input_p" :style="{border:heiye?'':'2rpx solid #E4E4E4',backgroundColor:heiye?'#1C1C1C':'#ffffff'}">
 				<input @focus="noTabs" @blur="showTabs" class="p_text" v-model="feedbackData.qq" type="number" :placeholder-style="{color:'#E4E4E4',fontSize:14+'px',}" placeholder="请留下您的QQ号"/>
 			</view>
-			<view class="input_p" @click="submit">
+			<view class="input_p" :style="{border:heiye?'2rpx solid #c1c1c1':'2rpx solid #E4E4E4',backgroundColor:heiye?'#1C1C1C':'#ffffff'}" @click="submit">
 				<text class="input_text">提交</text>
 			</view>
 		</view>
@@ -94,7 +97,6 @@
 			upLoadImage
 		},
 		methods: {
-			
 			// 隐藏导航栏
 			noTabs(){
 				this.isShow = !this.isShow
@@ -186,13 +188,25 @@
 		
 	}
 	.but{
-		
+		background-color: #f4f4f4;
 		border-radius: 40rpx;
 		padding:20rpx 25rpx ;
 		border: 2rpx solid #f4f4f4;
 	}
+	.but10{
+		background-color: #1C1C1C;
+		border-radius: 40rpx;
+		padding:20rpx 25rpx ;
+		border: 2rpx solid #1C1C1C;
+	}
 	.but_text{
 		color: #666666;
+		font-weight: 400;
+		font-size: 30rpx;
+		text-align: center;
+	}
+	.but_text1{
+		color: #C1C1C1;
 		font-weight: 400;
 		font-size: 30rpx;
 		text-align: center;
@@ -201,7 +215,7 @@
 		margin-top: 40rpx;
 		padding:21rpx ;
 		border-radius: 20rpx;
-		border: 2rpx solid #E4E4E4;
+		
 	}
 	.box_input{
 		height: 190rpx;
@@ -212,7 +226,7 @@
 	.input_p{
 		margin-top:40rpx ;
 		border-radius: 36rpx;
-		border: 2rpx solid #E4E4E4;
+		
 		padding:10rpx 15rpx;
 	}
 	.p_text{
@@ -226,6 +240,10 @@
 		font-size: 32rpx;
 		text-align: center;
 		font-weight: 500;
+	}
+	.buttonColor3 {
+		background-color: #090909;
+		border: 2rpx solid #FF5927;
 	}
 	.buttonColor {
 		background-color: #fff;

@@ -1,30 +1,30 @@
 <template>
-	<view class="container" :style="{width:myWidth+'px',height:myHeight-1+'rpx'}">
+	<view :class="['container',heiye?'bg':'wg']" :style="{width:myWidth+'px',height:myHeight-1+'rpx'}">
 		<view class="box" :style="{height:myHeight-1+'rpx'}">
 			<list v-if="list.length" :show-scrollbar="false" :crollable="true" :style="{width:myWidth-32+'px',height:myHeight-1+'rpx'}">
 				<cell v-for="(item,index) in list" :key="index">
-					<view class="head" :style="{width:myWidth-32+'px'}">
-						<text class="head_text1">游戏名称：{{type?item.name:item.gamename}}</text>
-						<text class="head_text1" v-if="type">游戏账号：{{item.nickname}}</text>
-						<text class="head_text1" v-if="!type">小号ID：{{item.role_id}}</text>
-						<text class="head_text1" v-if="type">角色名称：{{item.role_name}}</text>
-						<text class="head_text1" v-if="type">角色ID：   {{item.role_id}}</text>
-						<text class="head_text1">区服：       {{type?item.server_name:item.server_name}}</text>
-						<text class="head_text1">{{ type?'充值金额':'支付金额'}}：{{type?item.money:item.price}}元</text>
-						<text class="head_text1" v-if="!type">支付方式：{{item.payway}}</text>
+					<view class="head" :style="{width:myWidth-32+'px',border:heiye?'':'1rpx solid #E4E4E4',backgroundColor:heiye?'#1c1c1c':''}">
+						<text :class="['head_text1',heiye?'noActive':'baicolor']" >游戏名称：{{type?item.name:item.gamename}}</text>
+						<text :class="['head_text1',heiye?'noActive':'baicolor']" v-if="type">游戏账号：{{item.nickname}}</text>
+						<text :class="['head_text1',heiye?'noActive':'baicolor']" v-if="!type">小号ID：{{item.role_id}}</text>
+						<text :class="['head_text1',heiye?'noActive':'baicolor']" v-if="type">角色名称：{{item.role_name}}</text>
+						<text :class="['head_text1',heiye?'noActive':'baicolor']" v-if="type">角色ID：   {{item.role_id}}</text>
+						<text :class="['head_text1',heiye?'noActive':'baicolor']">区服：       {{type?item.server_name:item.server_name}}</text>
+						<text :class="['head_text1',heiye?'noActive':'baicolor']">{{ type?'充值金额':'支付金额'}}：{{type?item.money:item.price}}元</text>
+						<text :class="['head_text1',heiye?'noActive':'baicolor']" v-if="!type">支付方式：{{item.payway}}</text>
 						<!-- <text class="head_text1" v-if="!type&&item.goods.update_time">支付时间：{{item.goods.update_time | dateFormat("yyyy-MM-dd hh:mm")}}</text> -->
 						<view class="head_1">
-							<text class="head_text2" v-if="item.status == 1">状态：待处理</text>
-							<text class="head_text2" v-else-if="item.status == 2">状态：{{type?'审核通过':'成功'}}</text>
-							<text class="head_text2" v-else-if="item.status == 3">状态：{{type?'审核不通过':'失败'}}</text>
+							<text :class="['head_text2',heiye?'isTheme':'noTheme']" v-if="item.status == 1">状态：待处理</text>
+							<text :class="['head_text2',heiye?'isTheme':'noTheme']" v-else-if="item.status == 2">状态：{{type?'审核通过':'成功'}}</text>
+							<text :class="['head_text2',heiye?'isTheme':'noTheme']" v-else-if="item.status == 3">状态：{{type?'审核不通过':'失败'}}</text>
 							<view class="head_2" @click="common.routerTo({path: '/pages/views/payMethods/index', query: {order_id: item.order_id}})" v-if="item.status == 1&&!type">
 								<text class="head_text3">去支付</text>
 							</view>
 							<view class="" v-else>
-								<view v-if="item.status==1" class="head_2">
+								<view v-if="item.status==1" :style="{border:heiye?'1rpx solid #c1c1c1':'2rpx solid #E4E4E4'}" class="head_2">
 									<text @click="handleClick(item,3)" class="head_text3" >取消申请</text>
 								</view>
-								<view v-if="item.status==3" class="head_2" style="background-color: #ccc">
+								<view v-if="item.status==3" class="head_2" :style="{backgroundColor:heiye?'':'#ccc',border:heiye?'1rpx solid #c1c1c1':''}">
 									<text  style="color: #fff" @click="handleClick(item,1)" class="head_text3" >重新申请</text>
 								</view>
 							</view>
@@ -63,6 +63,9 @@
 			nloading
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -73,7 +76,16 @@
 		onLoad() {
 			this.getPageData()
 		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		methods: {
+			
 			//加载更多
 			onloading(e){
 				if(this.count>this.list.length){
@@ -126,23 +138,22 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container{
 		flex: 1;
-		background: #fff;
 	}
 	.box{
 		padding: 0rpx 32rpx  ;
 	}
 	.head{
 		margin-top: 32rpx;
-		border: 1rpx solid #E4E4E4;
+		
 		border-radius: 28rpx;
 		padding: 24rpx;
 		
 	}
 	.head_text1{
 		font-size: 30rpx;
-		color: #666666;
 		font-weight: 400;
 		margin-bottom: 10rpx;
 	}
@@ -152,12 +163,11 @@
 		align-items: center;
 	}
 	.head_text2{
-		color: #1C1C1C;
 		font-weight: bold;
 		font-size: 36rpx;
 	}
 	.head_2{
-		border: 1rpx solid #E4E4E4;
+		
 		padding: 10rpx 20rpx;
 		border-radius: 30rpx;
 	}
