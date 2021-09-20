@@ -1,5 +1,5 @@
 	<template>
-		<view class="index" :style="{width:myWidth+'px'}">
+		<view :class="['index',heiye?'bg':'wg']" :style="{width:myWidth+'px'}">
 			<view  :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
 			<view class="Title">
 				<view class="TitleList">
@@ -7,11 +7,13 @@
 				</view>  
 				<view class="TitleRight" style="flex-direction: row;align-items: center;height: 80rpx;margin-bottom: 8rpx;">
 					
-					<view elevation="5px" class="Righticon">
-						<image src="@/static/images/my_details.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/transactionRecords/index')" ></image>
+					<view :style="{backgroundColor:heiye?'#1c1c1c':'#fff'}" elevation="5px" class="Righticon">
+						<image v-if="heiye==false" src="@/static/images/my_details.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/transactionRecords/index')" ></image>
+						<image v-else src="@/static/images/my_details1.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/transactionRecords/index')" ></image>
 					</view>
-					<view class="Righticon" elevation="5px" style="margin:0 6rpx 0 24rpx;">
-						<image src="@/static/images/wen-icon.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/tradeNotes/index')" ></image>
+					<view :style="{backgroundColor:heiye?'#1c1c1c':'#fff'}" class="Righticon" elevation="5px" style="margin:0 6rpx 0 24rpx;">
+						<image v-if="heiye==false" src="@/static/images/wen-icon.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/tradeNotes/index')" ></image>
+						<image v-else src="@/static/images/wen-icon.png1.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouters('/pages/transaction/children/tradeNotes/index')" ></image>
 					</view>
 				</view>
 			</view>
@@ -85,6 +87,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -98,6 +103,14 @@
 				return uni.getSystemInfoSync().statusBarHeight
 			},
 			
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			//路由跳转
@@ -162,15 +175,10 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
-
-
-
+	@import '@/common/css/nvue-black.css';
 	.index {
 		overflow: hidden;
 		flex: 1;
-		background-color: #FFFFFF;
-
 	}
 
 	.Title {
@@ -192,7 +200,7 @@
 		height: 64rpx;
 		width: 64rpx;
 		border-radius: 64rpx;
-		background-color: #fff;
+		
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;

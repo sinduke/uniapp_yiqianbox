@@ -1,44 +1,45 @@
 <!-- 商品详情 -->
 <template>
-	<view class="commodityDetail">
+	<view :class="['commodityDetail',heiye?'bg':'wg']" >
 	<!-- <view class="myshadowLine"/> -->
 	<view  class="container" v-if="pageData">
 		<view class="game" @click="handleRouter('/pages/view/gamedetail/gamedetail?gameid='+pageData.game_id)">
 			<view class="game_left">
 			<image :src="pageData.game_icon||pageData.game_new_icon" mode="widthFix" style="width: 176rpx;height: 176rpx;margin-right: 16rpx;"></image>
-			<view class="h2 gamename">{{pageData.gamename}}</view>
+			<text :style="{color:heiye?'#fff':'#1C1C1C'}" class="gamename"  >{{pageData.gamename}}</text>
 			</view>
 			<view  >
-				<image src="@/static/images/right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+				<image v-if="heiye==false" src="@/static/images/right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
+				<image v-else src="@/static/images/right_white.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 			</view>
 		</view>
-		<view class="xiaohao" >
+		<view class="xiaohao" :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}">
 		<view class="flex" style="margin-bottom: 24rpx;" >
-			<text class="text">区服：</text>	
-			<text class="text">{{pageData.server_id}}</text>
+			<text :class="['text',heiye?'noActive':'baicolor']" >区服：</text>	
+			<text :class="['text',heiye?'noActive':'baicolor']">{{pageData.server_id}}</text>
 		</view>
 		<view  class="flex" style="margin-bottom: 24rpx;" >
-			<text class="text">小号ID：</text> 
-			<text class="text">{{pageData.mg_mem_id}}</text>
+			<text :class="['text',heiye?'noActive':'baicolor']">小号ID：</text> 
+			<text :class="['text',heiye?'noActive':'baicolor']">{{pageData.mg_mem_id}}</text>
 		</view>
 		<view  class="flex" style="justify-content: space-between;"> 
 		<view class="flex" style="align-items: flex-end;">
-			<text style="font-weight: 700;color: #1C1C1C;font-size: 32rpx;">￥{{pageData.price}}</text>
-			<text style="font-weight: 700;color: #1C1C1C;font-size: 26rpx;">.00</text>
+			<text :style="{color:heiye?'#fff':'#1C1C1C'}" style="font-weight: 700;font-size: 32rpx;">￥{{pageData.price}}</text>
+			<text :style="{color:heiye?'#fff':'#1C1C1C'}" style="font-weight: 700;font-size: 26rpx;">.00</text>
 		</view>
 			<text class="buttons"  @click="show = true">购买</text>
 		</view>
 		</view>
-		<view class="leiji">
-			 <text class="text" style="margin-bottom: 24rpx;"> 累计充值：{{pageData.sum_money}}元</text>
-			 <text class="text">上架时间：{{pageData.create_time | dateFormat("yyyy-MM-dd hh:mm")}} </text>
+		<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="leiji">
+			 <text :class="['text',heiye?'noActive':'baicolor']" style="margin-bottom: 24rpx;"> 累计充值：{{pageData.sum_money}}元</text>
+			 <text :class="['text',heiye?'noActive':'baicolor']">上架时间：{{pageData.create_time | dateFormat("yyyy-MM-dd hh:mm")}} </text>
 		</view>
 		
 		
 		
 		<view class="desc">
-			<text class="h3">卖家描述</text>
-			<text class="text" style="margin-bottom: 24rpx;font-size: 30rpx;">{{pageData.description}}</text>
+			<text :class="['h3',heiye?'isTheme':'noTheme']" >卖家描述</text>
+			<text :class="['text',heiye?'noActive':'baicolor']" style="margin-bottom: 24rpx;font-size: 30rpx;">{{pageData.description}}</text>
 			<view  class="imageList" :style="{width:myWidth+'px'}">
 			<image :src="item" v-for="(item,index) in images" :key="index" class="imageItem" :style="{width:myWidth/2.4+'px'}" @click="handleImage(index,images)"></image>
 			</view>
@@ -107,6 +108,9 @@
 			},
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 					return globalData.$t('my')
 				},
@@ -129,6 +133,14 @@
 		// 		title: this.$t('Productdetails')
 		// 	})
 		// },
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		methods: {
 			getData(params) {
 			 $api.get( "account/goods/detail",{
@@ -165,12 +177,13 @@
 
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
 	.flex{
 		flex-direction: row;
 		align-items: center;
 	}
 	.commodityDetail{
-		background-color: #fff;
+		
 		flex: 1;
 	}
 /* 	.myshadowLine {
@@ -196,18 +209,18 @@
 		}
 			.gamename {
 				lines: 1;
-				font-size: 30rpx;
+				font-size: 36rpx;
 				font-weight: 700;
 			}
 		
 
 		.xiaohao {
 			padding-bottom: 48rpx;
-			border-bottom: 1px solid #efefef;
+			
 			}
                .text{
 				   font-size: 28rpx;
-				   color: #666;
+				   
 				   
 			   }
 			   .buttons{	 
@@ -231,7 +244,7 @@
 		.leiji{
 			margin-top: 48rpx;
 			padding-bottom: 48rpx;
-			border-bottom: 1px solid #efefef;
+			
 		}
 
 		.desc {

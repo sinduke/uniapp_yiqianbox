@@ -2,7 +2,7 @@
 <template>
 	<view class="buynumber">
 		<view class="search">
-			<view class="inputs">
+			<view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" class="inputs">
 				<image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 				<input class="input"
 				  type="text"
@@ -61,6 +61,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 				myHeight() {
 					return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 				},
@@ -110,8 +113,7 @@
 </script>
 
 <style scoped>
-		@import '@/common/css/nvue-whith.css';
-
+	@import '@/common/css/nvue-black.css';
 	.buynumber {
 		}
 		.search {
@@ -121,7 +123,7 @@
 			.inputs {
 				flex-direction: row;
 				align-items: center;
-				background-color: #F4F4F4;
+				
 				border-radius: 40rpx;
 				padding: 12rpx 32rpx;
 			}
