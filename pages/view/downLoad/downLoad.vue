@@ -109,50 +109,46 @@
 			//确认删除
 			handleconfirm() {
 				if (this.isNumber > 0) {
-					uni.showModal({
-						title: '删除任务',
-						content: '清除当前选择的任务？',
-						success: (res) => {
-							if (res.confirm) {
-								let arrList = []
-								let downList = []
-								let array = []
-								downList = this.$store.state.downTasksList
-								arrList = this.pageList.filter((item) => {
-									return !item.noActive
-								})
-								
-								this.pageList = arrList
-								if(arrList.length==0){
-									this.isActive = false
-									uni.setStorageSync('downList', [])
-									this.$store.commit('setDownTasksList', [])
-									return 
-								}
-								// console.log(this.pageList,'this.pageListthis.pageList')
-								
-								 downList.map(item => {
-									arrList.map(v => {
-										 if( item.game_id == v.game_id){
-											 array.push(item)
-										 }			
-									})
-									// console.log(array,'arrayarrayarrayarrayarray')
-									return array
-
-								})
-								console.log(array,'listlistlist')
-								this.$store.commit('setDownTasksList', [])
-								this.$store.commit('setDownTasksList', array)
-								uni.setStorageSync('downList', [])
-								uni.setStorageSync('downList', arrList)
-
-							}
-							this.isActive = false
-						}
+					// uni.showModal({
+					// 	title: '删除任务',
+					// 	content: '清除当前选择的任务？',
+					// 	success: (res) => {
+					// 		if (res.confirm) {
+					let arrList = []
+					let downList = []
+					let array = []
+					downList = this.$store.state.downTasksList
+					arrList = this.pageList.filter((item) => {
+						return !item.noActive
 					})
-				}
+					
+					this.pageList = arrList
+					if(arrList.length==0){
+						this.isActive = false
+						uni.setStorageSync('downList', [])
+						this.$store.commit('setDownTasksList', [])
+						return 
+					}
+					// console.log(this.pageList,'this.pageListthis.pageList')
+					
+					 downList.map(item => {
+						arrList.map(v => {
+							 if( item.game_id == v.game_id){
+								 array.push(item)
+							 }			
+						})
+						// console.log(array,'arrayarrayarrayarrayarray')
+						return array
 
+					})
+					console.log(array,'listlistlist')
+					this.$store.commit('setDownTasksList', [])
+					this.$store.commit('setDownTasksList', array)
+					uni.setStorageSync('downList', [])
+					uni.setStorageSync('downList', arrList)
+
+				}
+				this.isActive = false
 			},
 			//全选
 			handleAll() {

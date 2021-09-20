@@ -13,7 +13,7 @@
 						<image class="img" :src="commentData.mem_avatar" mode="" ></image>
 						<view class="textList">
 							<text class="text1">{{commentData.mem_name}}</text>
-							<text class="text2">游戏时长 53分钟</text>
+							<!-- <text class="text2">游戏时长 53分钟</text> -->
 						</view>
 					</view>
 					<text class="head_ri"></text>

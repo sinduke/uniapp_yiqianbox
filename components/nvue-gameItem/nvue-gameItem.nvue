@@ -20,22 +20,22 @@
 			</view>
 			
 			</view>
-			<view class="gameDetail" :style="{borderBottom:type?'1rpx solid #f3f3f3':''}" @click="handleRouter(item.game_id)">
+			<view class="gameDetail" :style="{borderBottom:type==true&&heiye==false?'1rpx solid #f3f3f3':heiye==true?'2rpx solid #3d3d3d':''}" @click="handleRouter(item.game_id)">
 				<view style="width: 360rpx;">
-					<text class="gamename h1">{{item.gamename.length>11?item.gamename.slice(0,10)+'..':item.gamename}}</text>
+					<text :class="['gamename',heiye?'isTheme':'noTheme']">{{item.gamename.length>11?item.gamename.slice(0,10)+'..':item.gamename}}</text>
 					<view class="tags">
-						<text class="tag">#{{item.one_word.length>14?item.one_word.slice(0,12)+'..':item.one_word}}</text>
+						<text :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" :class="['tag',heiye?'noActive':'baicolor']" >#{{item.one_word.length>14?item.one_word.slice(0,12)+'..':item.one_word}}</text>
 						<image src="@/static/images/index/tagst.png" mode="widthFix" style="width: 20rpx;height: 20rpx;" class="tagImage"></image>
 					</view>
 					<view class="listBottom">
 						<view class="" style="flex-direction: row;align-items: center;" v-if="item.start_time.length||typeof item.start_time=='number'">
-						<text class="text" style="color: #FF5927;" v-if="typeof item.start_time=='number'"> {{item.start_time|dateFormat('hh:mm')}}</text>
-						<text class="text" style="color: #FF5927;" v-else> {{item.start_time[0]|dateFormat('hh:mm')}}</text>
-						<text class="text"> 开服 | </text>
+						<text :class="['text',heiye?'noActive':'baicolor']" style="color: #FF5927;" v-if="typeof item.start_time=='number'"> {{item.start_time|dateFormat('hh:mm')}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" style="color: #FF5927;" v-else> {{item.start_time[0]|dateFormat('hh:mm')}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" > 开服 | </text>
 						</view>
-						<text class="type text" v-if="item.classify==5">H5</text>
-						<text class="type text" v-for="(v,i) in item.type" :key="i" v-if="i<2">{{v}}</text>
-						<text class="user_cnt text"> | 已有{{item.popularity_cnt}}人在玩</text>
+						<text :class="['type',heiye?'noActive':'baicolor']" v-if="item.classify==5">H5</text>
+						<text :class="['type',heiye?'noActive':'baicolor']" v-for="(v,i) in item.type" :key="i" v-if="i<2">{{v}}</text>
+						<text :class="['type',heiye?'noActive':'baicolor']" > | 已有{{item.popularity_cnt}}人在玩</text>
 					</view>
 				</view>
 				<view class="rates" v-if="type==1||type==3">
@@ -67,6 +67,12 @@
 				type: Number,
 				default: 1
 			}
+		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
+			
 		},
 		methods: {
 			handleRouter(id) {
@@ -112,6 +118,7 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.item {
 		flex-direction: row;
 		align-items: center;
@@ -126,7 +133,6 @@
 	}
 
 	.gamename {
-		color: #1C1C1C;
 		font-weight: 700;
 		font-size: 32rpx;
 		lines: 1;
@@ -140,10 +146,12 @@
 
 	.type {
 		margin: 0 4rpx;
+		font-size: 22rpx;
+		font-weight: 300;
 	}
 
 	.text {
-		color: #666666;
+		
 		font-size: 22rpx;
 		font-weight: 300;
 	}
@@ -166,13 +174,13 @@
 	}
 
 	.tag {
-		color: #666666;
+		
 		font-weight: 300;
 		font-size: 22rpx;
 		lines: 1;
 		padding: 4rpx 20rpx 4px 36rpx;
 		border-radius: 20rpx;
-		background-color: #F4F4F4;
+		
 
 	}
 

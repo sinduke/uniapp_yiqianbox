@@ -11,6 +11,9 @@
 		</view>
 		<view v-if="heiye==false" class="lineShowdow"></view>
 		<view>
+			<view @click="copy(userInfo.username)">
+				<gamecell left="账号" :right="userInfo.username" :type="3" ></gamecell>
+			</view>
 			<view v-if="userInfo.has_bind_mobile == 2" >
 				<gamecell left="手机号" :right="userInfo.mobile"></gamecell>
 			</view>
@@ -62,6 +65,9 @@
 			gamecell,
 			shModal
 		},
+		onLoad(){
+			console.log(this.userInfo)
+		},
 		computed: {
 			heiye(){
 				return uni.getStorageSync('heiye').type
@@ -82,6 +88,12 @@
 			}
 		},
 		methods: {
+			//复制
+			copy(value) {
+				uni.setClipboardData({
+					data: value,
+				});
+			},
 			// 进入图库选图上传
 			changeAvatar() {
 				let that = this;

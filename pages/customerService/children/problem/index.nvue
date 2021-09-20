@@ -1,7 +1,8 @@
 <!-- 常见问题 -->
 <template>
 	<view :class="['myMessage',heiye?'bg':'wg']">
-		<myNavbar title='常见问题' right radius @click="clear" :lines="heiye?false:true" :type="1" :src="heiye?'../../../../static/images/clear-icon1.png':'../../../../static/images/clear-icon.png'"></myNavbar>
+		<myNavbar v-if="heiye==false" title='常见问题' :lines="true" right radius @click="clear"  :type="1" src="../../../../static/images/clear-icon.png"></myNavbar>
+		<myNavbar v-else title='常见问题' right radius @click="clear" :lines="false" :type="1" src="../../../../static/images/clear-icon1.png"></myNavbar>
 		<view class="myshadowLine" />
 
 		<view class="body" :style="{height:myHeight-keyHeight-250+'rpx'}">
@@ -12,20 +13,20 @@
 						<view class="kfItem_left">
 							<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix"></image>
 						</view>
-						<view :class="['kfItem_Right',heiye?'hei':'bai']" :style="{maxWidth:myWidth/1.4+'px'}">
+						<view :class="['kfItem_Right',heiye?'hei':'wg']" :style="{maxWidth:myWidth/1.4+'px',border:heiye?'':'1px solid #efefef'}">
 							<text :class="['kftext',heiye?'noActive':'baicolor']" >HI，您好，请在底部选择你要咨询的问题！</text>
 						</view>
 					</cell>
                     <cell style="height: 32rpx;"></cell>
 					
-					<cell :class="['cards',heiye?'heibo':'baibo']"  :style="{width:myWidth-32+'px',boShadow:heiye?'0px 0px 4px #040404':''}" >
+					<cell :class="['cards',heiye?'heibo':'wg']"  :style="{width:myWidth-32+'px',boShadow:heiye?'0px 0px 4px #040404':'',border:heiye?'':'1px solid #efefef'}" >
 						
 						<view class="" v-for="(item,index) in mem_List" :key='index' >	
 							<view v-if="heiye==false" class="cardsItem" :style="{borderBottom:index<mem_List.length-1?'1px solid #efefef':'',marginBottom:index<mem_List.length-1?'24rpx':''}" @click="handleClik(item.name)">
 							<text :class="['itemname',heiye?'noActive':'baicolor']" >{{item.name}}</text> 
 							<image src="@/static/images/666_right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 							</view>
-							<view v-else class="cardsItem" :style="{borderBottom:index<mem_List.length-1?'1px solid #1c1c1c':'',marginBottom:index<mem_List.length-1?'24rpx':''}" @click="handleClik(item.name)">
+							<view v-else class="cardsItem" :style="{borderBottom:index<mem_List.length-1?'1px solid #3d3d3d':'',marginBottom:index<mem_List.length-1?'24rpx':''}" @click="handleClik(item.name)">
 							<text :class="['itemname',heiye?'noActive':'baicolor']" >{{item.name}}</text> 
 							<image src="@/static/images/666_right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 							</view>
@@ -39,7 +40,7 @@
 						
 						<view class="yhItem" v-if="item.type==1">
 							
-							<view :class="['yhItem_Right',heiye?'heibo':'baibo']" :style="{maxWidth:myWidth/1.4+'px'}">
+							<view :class="['yhItem_Right',heiye?'heibo':'wg']" :style="{maxWidth:myWidth/1.4+'px',border:heiye?'':'1px solid #efefef'}">
 								<text class="yhtext">{{item.content}}</text>
 		
 							</view>
@@ -54,7 +55,7 @@
 							<view  class="kfItem_left">
 								<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix"></image>
 							</view>
-							<view :class="['kfItem_Right',heiye?'heibo':'baibo']" :style="{maxWidth:myWidth/1.4+'px'}">
+							<view :class="['kfItem_Right',heiye?'heibo':'wg']" :style="{maxWidth:myWidth/1.4+'px',border:heiye?'':'1px solid #efefef'}">
 								<text :class="['kftitle',heiye?'isTheme':'noTheme']"  v-if="item.title">{{item.title}}</text>
 								
 								<text :class="['kftext',heiye?'noActive':'baicolor']" >{{item.content}}</text>
@@ -68,14 +69,14 @@
 									<image class="images" src="@/static/images/customerService/kf.png" mode="widthFix">	</image>
 								</view>
 								<view :style="{width:myWidth-32+'px'}">
-									<view :class="['kfItem_Right',heiye?'heibo':'baibo']":style="{maxWidth:myWidth/1.4+'px'}">
+									<view :class="['kfItem_Right',heiye?'heibo':'wg']":style="{maxWidth:myWidth/1.4+'px',border:heiye?'':'1px solid #efefef'}">
 										<text :class="['kftext',heiye?'noActive':'baicolor']" >你是想问以下问题吗？可以直接点击查看哦！</text>
 									</view>
 									
 								</view>
 							</view>
 							
-							<view style="margin-bottom: 48rpx;" :class="['kfItem_Right',heiye?'heibo':'baibo']"  :style="{maxWidth:myWidth/1.1+'px'}">
+							<view style="margin-bottom: 48rpx;" :class="['kfItem_Right',heiye?'heibo':'wg']"  :style="{maxWidth:myWidth/1.1+'px',border:heiye?'':'1px solid #efefef'}">
 								
 								<view class="" v-for="(v,i) in item.list" :key='i'>
 									
@@ -84,7 +85,7 @@
 										
 										<image src="@/static/images/666_right.png" mode="widthFix" style="width: 24rpx;height: 24rpx;"></image>
 									</view>
-									<view v-else class="cardsItem" :style="{borderBottom:i<item.list.length-1?'1px solid #1c1c1c':'',marginBottom:i<item.list.length-1?'24rpx':''}"	@click="handleClik(v.title,v.id)">
+									<view v-else class="cardsItem" :style="{borderBottom:i<item.list.length-1?'1px solid #3d3d3d':'',marginBottom:i<item.list.length-1?'24rpx':''}"	@click="handleClik(v.title,v.id)">
 										<text :class="['itemname',heiye?'noActive':'baicolor']":style="{maxWidth:myWidth/1.8+'px'}" style="font-size: 28rpx;">{{v.title}}</text>
 										
 										<image src="@/static/images/666_right.png" mode="widthFix" style="width: 24rpx;height: 24rpx;"></image>
@@ -96,6 +97,7 @@
 					</cell>
 			</list>
 		</view>
+		<modal :topHeight="0.35" @remove="remove" :isShow="isShow" @confirm="confirm1" title='清空' text="确定清空对话？"></modal>
 		<view :class="['bottom',heiye?'bg':'wg']"  >
 			<!-- <view class="bottom_ipnut">
 				 <image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;margin-right: 32rpx;"></image>
@@ -120,14 +122,17 @@
 	} from '@/config/api.js';
 	import common from "@/common/js/common.js";
 	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
+	import modal from '@/components/nvue-shModal/nvue-shModal.nvue';
 	const globalData = getApp().globalData
 	// const dom = weex.requireModule('dom')
 	export default {
 		components:{
-			myNavbar
+			myNavbar,
+			modal
 		},
 		data() {
 			return {
+				isShow:false,
 				scrollTop: 999,
 				keyHeight:0,
 				old: {
@@ -311,22 +316,33 @@
 
 				})
 			},
-			//清空问题
-			clear() {
-				uni.showModal({
-					title: '清空',
-					content: '确定清空对话？',
-					success: res => {
-						if (res.confirm) {
-
-							this.$store.commit('setServiceList', [])
-
-						} else if (res.cancel) {
-							return
-						}
-					}
-				})
+			remove(){
+				this.isShow=false
 			},
+			clear(){
+				this.isShow=true
+			},
+			//确认
+			confirm1(){
+				this.isShow=false
+				this.$store.commit('setServiceList', [])
+			},
+			//清空问题
+			// clear() {
+			// 	uni.showModal({
+			// 		title: '清空',
+			// 		content: '确定清空对话？',
+			// 		success: res => {
+			// 			if (res.confirm) {
+
+			// 				this.$store.commit('setServiceList', [])
+
+			// 			} else if (res.cancel) {
+			// 				return
+			// 			}
+			// 		}
+			// 	})
+			// },
 			//提交问题
 			confirm() {
 				if (this.content == false) {

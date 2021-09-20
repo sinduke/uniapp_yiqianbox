@@ -5,16 +5,16 @@
 			<list ref="list" loadmoreoffset='10' style="margin-top: 20rpx;">
 				<cell>
 					<view class="is_h5">
-						<text class="text h5text" :class="{text1:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
+						<text class="h5text" :class="{text1:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
 					</view>
 					<view class="tags">
-						<text class="h2 titles">游戏福利</text>
+						<text class="titles">游戏福利</text>
 						<view style="flex-direction: row;flex-wrap: wrap;">
 							<text class="text h5text" v-for="(item,index) in tagsList" @click="handeltags(item.id,item.name)" :class="{text1:active1==item.id}">{{item.name}}</text>
 						</view>
 					</view>
 					<view class="cates" v-if="gameSelete">
-						<text class="h2 titles">游戏类型</text>
+						<text class="titles">游戏类型</text>
 						<view style="flex-direction: row;" class="catesList">
 							<view v-for="(item,index) in pageList" @click="handelCates(item.id,item.name)"
 								class="catesitem" :class="{catesitem1:active2==item.id}">
@@ -28,8 +28,8 @@
 				</cell>
 			</list>
 				<view class="button" v-if="buttonShow" :style="{width:$store.state.myWidth-55+'px',marginLeft:'20rpx'}">
-					<text class="buttonText h2" @click="handleReset">重 置</text>
-					<text class="h2 buttonText1" @click="handelSubmit">确 定</text>
+					<text class="buttonText" @click="handleReset">重 置</text>
+					<text class="buttonText1" @click="handelSubmit">确 定</text>
 			</view>
 		</popdown>
 	</view>
@@ -74,7 +74,9 @@
 			}
 		},
 		computed: {
-
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight - 200
 			},
@@ -207,8 +209,7 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
-
+	@import '@/common/css/nvue-black.css';
 	.listcontent {
 		margin-top: 172rpx;
 	}
@@ -220,6 +221,9 @@
 	}     
 
 	.titles {
+		font-size: 36rpx;
+		font-weight: 700;
+		color: #1C1C1C;
 		margin-bottom: 28rpx;
 	}
 
@@ -239,6 +243,9 @@
 	}
 
 	.h5text {
+		font-size: 30rpx;
+		font-weight: 300;
+		color: #666;
 		padding: 12rpx 32rpx;
 		border-radius: 40rpx;
 		margin: 10rpx 32rpx 20rpx 0;
@@ -302,14 +309,15 @@
 		color: #666;
 		padding: 18rpx 112rpx;
 		border-radius: 46rpx;
-
-
+		font-size: 36rpx;
+		font-weight: 700;
 	}
 
 	.buttonText1 {
+		font-size: 36rpx;
+		font-weight: 700;
 		color: #FF5927;
 		padding: 18rpx 140rpx 18rpx 112rpx;
-		/* border-radius: 46rpx; */
 		background-color: #FFFFFF;
 		border: 1px solid #FF5927;
 		border-bottom-right-radius: 46rpx;

@@ -1,6 +1,6 @@
 <template>
 	<view v-if="isshow" class="mask" @click.stop="show">
-		<view class="bbox" ref="bbox">
+		<view :style="{backgroundColor:heiye?'#F6F6F6':'#F6F6F6'}" class="bbox" ref="bbox">
 			<view class="share-btn" :style="{width:myWidth+'px'}" v-if="$store.state.platform=='android'">
 				<view class="share3" >
 					<view class="share-btn-item" @click="copy">
@@ -68,7 +68,7 @@
 			
 
     	</view>
-		<view class="box" ref="pirotate">
+		<view :style="{backgroundColor:heiye?'#ffffff':'#ffffff'}"  class="box" ref="pirotate">
 			<view class="box-item" :style="{width:myWidth+'px'}">
 				<view class="box-item1" @click="bind1" ref="share1"  :style="{marginBottom:type?'80rpx':''}">
 					<view class="" class="shareImage">
@@ -145,6 +145,7 @@
 			}
 		},
 		props: {
+			
 			isshow: {
 				type: Boolean
 			},
@@ -164,7 +165,9 @@
 
 		},
 		computed: {
-			
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -282,6 +285,7 @@
 </script>
 
 <style>
+	@import '@/common/css/nvue-black.css';
 	.mask {
 		flex: 1;
 		position: fixed;
@@ -295,7 +299,7 @@
 		position: absolute;
 		bottom: -420rpx;
 		right: 375rpx;
-		background-color: #F6F6F6;
+		
 		width: 1000rpx;
 		height: 1000rpx;
 		border-radius: 1200rpx 0 0 0;
@@ -308,7 +312,6 @@
 		position: absolute;
 		bottom: -440rpx;
 		right: 375rpx;
-		background-color: #fff;
 		width: 800rpx;
 		height: 800rpx;
 		border-radius: 800rpx 0 0 0;

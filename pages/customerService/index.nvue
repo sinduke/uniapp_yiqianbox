@@ -1,6 +1,6 @@
 <!-- 客服中心 -->
 <template>
-	<view class="customerService">
+	<view :class="['customerService',heiye?'bg':'wg']">
 		<!-- <view :style="{height:statusBarHeight+'px',width:myWidth+'px'}" /> -->
 	<!-- 	<view class="Title" >
 			<view class="titleLeft">
@@ -13,17 +13,18 @@
 				</view>
 			</view>
 		</view> -->
-		<myNavbar title='客服中心'  right radius router='/pages/my/comprehensive/feedback/feedback1' src='../../static/images/customerService/kfzx-icon.png'></myNavbar>
-		<view class="Body" :style="{height:myHeight-252+'rpx'}">
-			<scroller :show-scrollbar="false" :style="{height:myHeight-252+'rpx'}">
+		<myNavbar v-if="heiye==false" title='客服中心'  right radius router='/pages/my/comprehensive/feedback/feedback1' src='../../static/images/customerService/kfzx-icon.png'></myNavbar>
+		<myNavbar :lines="false" v-else title='客服中心'  right radius router='/pages/my/comprehensive/feedback/feedback1' src='../../static/images/customerService/kfzx-icon1.png'></myNavbar>
+		<view class="Body" :style="{height:myHeight-230+'rpx'}">
+			<scroller :show-scrollbar="false" :style="{height:myHeight-230+'rpx'}">
 				<view>
-				<text class="Bodytitle">在使用中遇到任何问题请联系在线客服</text>
+				<text :class="['Bodytitle',heiye?'noActive':'baicolor']">在使用中遇到任何问题请联系在线客服</text>
 					<view class="Body__back">
 						<view class="Body__back__left backimg" @click="handleRouters('/pages/customerService/children/problem/index')" :style="{width:myWidth/2+'px',height:'240rpx'}">
 							<image src="@/static/images/customerService/serverBackgorund1.png" :style="{width:myWidth/2+'px',height:'240rpx'}"></image>
 							<view class="body_absloute" :style="{width:myWidth/2-46+'px'}">
 								<view class="backitem">
-									<text class="backName">常见问题</text>
+									<text  class="backName">常见问题</text>
 									<text class="backsname">FAQ答疑</text>
 								</view>
 								<view>
@@ -47,31 +48,31 @@
 				
 						</view>
 					</view>
-					<view class="kfqq-Item">
+					<view class="kfqq-Item" :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #EFEFEF'}">
 						<view class="kfqq-Item__left">
 						<image src="@/static/images/qq-icon.png"  class="images"  mode="widthFix"></image>
 							<view class="detail">
-								<text class="detailname">游戏客服QQ: {{userFormat1.QQ_customerService}}</text>
+								<text :class="['detailname',heiye?'isTheme':'noTheme']" >游戏客服QQ: {{userFormat1.QQ_customerService}}</text>
 								<text class="detailtell">在线时间：09:00-22:00</text>
 							</view>
 						</view>
 						<text class="kfqq-Item__Right" @click="telme(userFormat1.QQ_customerService)">去联系</text>
-					</view>
-					<view class="kfqq-Item">
+					</view>  	
+					<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #EFEFEF'}" class="kfqq-Item">
 						<view class="kfqq-Item__left">
 						<image src="@/static/images/phone-icon.png" class="images" mode="widthFix"></image>
 							<view class="detail">
-								<text class="detailname">游戏客服电话:{{userFormat1.footer_mobile}}</text>
+								<text :class="['detailname',heiye?'isTheme':'noTheme']" >游戏客服电话:{{userFormat1.footer_mobile}}</text>
 								<text class="detailtell">在线时间：09:00-22:00</text>
 							</view>
 						</view>
 						<text class="kfqq-Item__Right" @click="go">拨 打</text>
 					</view>
-					<view class="kfqq-Item">
+					<view class="kfqq-Item" :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #EFEFEF'}">
 						<view class="kfqq-Item__left">
 						<image src="@/static/images/wx-icon.png"  class="images"  mode="widthFix"></image>
 							<view class="detail">
-								<text class="detailname">游戏客服微信: {{userFormat1.footer_wechat_number}}</text>
+								<text :class="['detailname',heiye?'isTheme':'noTheme']" >游戏客服微信: {{userFormat1.footer_wechat_number}}</text>
 								<text class="detailtell">在线时间：09:00-22:00</text>
 							</view>
 						</view>
@@ -82,7 +83,7 @@
 				</view>
 				<view class="bottom" :style="{width:myWidth-32+'px'}">
 					<image @click="saveImage" :src="userFormat1.footer_wechatCode_number" class="erweima" mode="widthFix"></image>
-					<view class="scanning" @click="saveImage" >
+					<view style="margin-top: 20rpx;" class="scanning" @click="saveImage" >
 						<image src="@/static/images/erweima.png" mode="widthFix" style="width: 28rpx;height: 28rpx;margin-right: 8rpx;"></image>
 						<text class="text" style="color: #fff;font-size: 24rpx;" >微信扫码</text>
 					</view>
@@ -104,6 +105,9 @@
 			myNavbar
 		},
 		computed:{
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			// 导航栏高度
 			statusBarHeight(){
 				return 	uni.getSystemInfoSync().statusBarHeight
@@ -118,6 +122,14 @@
 				return globalData.store.state.userFormat
 			},
 			
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			telme(qq) { //QQ号聊天
@@ -196,9 +208,9 @@
 </script>
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
   .customerService{
 	  flex: 1;
-	  background-color: #fff;
   }
 	.Title {
 		flex-direction: row;
@@ -255,7 +267,6 @@
 			justify-content: space-between;
 		}
 	.Bodytitle {
-		color: #666;
 		margin: 48rpx 0;
 		font-size: 28rpx;
 	}
@@ -277,7 +288,7 @@
 		align-items: center;
 		justify-content: space-between;
 		padding-bottom: 46rpx;
-		border-bottom: 1px solid #EFEFEF;	
+		
 		}
 		.kfqq-Item__left{
 			flex-direction: row;
@@ -290,7 +301,7 @@
 				margin-right: 20rpx;
 			}
 		.detailname {
-			color: #1C1C1C;
+			
 			font-size:30rpx;
 			font-weight: 700;
 			margin-bottom: 14rpx;

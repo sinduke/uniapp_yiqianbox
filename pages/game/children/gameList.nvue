@@ -1,25 +1,28 @@
 <template> 
-	<view class="nvuelist" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
+	<view :class="['nvuelist',heiye?'bg':'wg']" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
 		<view class="TitleBar" :style="{height:statusBarHeight+'px',width:myWidth+'px'}"/>
 
-		<view class="Title" style="position: fixed;top: 32rpx;" :style="{width:myWidth+'px'}">
+		<view :class="['Title',heiye?'bg':'wg']"  class="" style="position: fixed;top: 32rpx;" :style="{width:myWidth+'px'}">
 			<view class="TitleLeft" style="flex-direction: row;align-items: center;">
 				<view ref="handleBack" style="margin:0rpx 24rpx 0 0rpx;" @click="handleBack">
-					<image src="@/static/images/left.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+					<image v-if="heiye==false" src="@/static/images/left.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+					<image v-else src="@/static/images/11.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
 				</view>
 				<view  style="flex-direction: row;align-items: center;" v-if="formData.is_h5name||formData.tagsname||formData.catesname">
-					<text class="titlename h1">{{params.is_h5==0?'全部': params.is_h5==2?'手游':'H5'}}</text>
-					<text class="titlename h1" v-if="formData.tagsname&&formData.tagsname!='全部'">·{{formData.tagsname}}</text>
-					<text class="titlename h1"	v-if="formData.catesname&&formData.catesname!='全部'">·{{formData.catesname}}</text>
+					<text :class="['titlename',heiye?'isTheme':'noTheme']" >{{params.is_h5==0?'全部': params.is_h5==2?'手游':'H5'}}</text>
+					<text :class="['titlename',heiye?'isTheme':'noTheme']" v-if="formData.tagsname&&formData.tagsname!='全部'">·{{formData.tagsname}}</text>
+					<text :class="['titlename',heiye?'isTheme':'noTheme']"	v-if="formData.catesname&&formData.catesname!='全部'">·{{formData.catesname}}</text>
 				</view>
-				<text v-else class="titlename h1"> 手游</text>
+				<text :class="['titlename',heiye?'isTheme':'noTheme']" v-else > 手游</text>
 			</view>
 			<view class="TitleRight" style="flex-direction: row;align-items: center;">
-				<view class="titleRadius" ref="titleRadius1" @click="handleDwon">
-					<image src="@/static/images/down.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+				<view :style="{backgroundColor:heiye?'#1c1c1c':'#fff'}" class="titleRadius" ref="titleRadius1" @click="handleDwon">
+					<image v-if="heiye==false" src="@/static/images/down.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+					<image v-else src="@/static/images/22.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
 				</view>
-				<view class="titleRadius" style="margin-left:24rpx;" ref="titleRadius2" @click="handleSelete" >
-					<image src="@/static/images/selete.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+				<view :style="{backgroundColor:heiye?'#1c1c1c':'#fff'}" class="titleRadius" style="margin-left:24rpx;" ref="titleRadius2" @click="handleSelete" >
+					<image v-if="heiye==false" src="@/static/images/selete.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
+					<image v-else src="@/static/images/33.png" mode="widthFix" style="width: 36rpx;height:36rpx;"></image>
 				</view>
 			</view>
 		</view>
@@ -50,7 +53,7 @@
 					</refresh>
 					<cell v-if="Object.keys(serverData).length > 0">
 						<view style="margin:72rpx 0 48rpx 0;">
-							<text class="h2">今日新服</text>
+							<text :class="['h2',heiye?'isTheme':'noTheme']" >今日新服</text>
 						</view>
 					</cell>
 					<cell >
@@ -60,7 +63,7 @@
 					</cell>
 					<cell v-if="list.length>0">
 						<view style="margin:32rpx 0 48rpx 0;">
-							<text class="h2">所有游戏</text>
+							<text :class="['h2',heiye?'isTheme':'noTheme']">所有游戏</text>
 						</view>
 					</cell>
 					<cell v-for="(item,index) in list" :key="index" v-if="list.length>0">
@@ -152,7 +155,18 @@
 				list: []
 			}
 		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}	
+		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -501,18 +515,17 @@
 
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
-
+	@import '@/common/css/nvue-black.css';
 	.Title {
 		flex-direction: row;
 		margin-top: 44rpx;
 		justify-content: space-between;
 		align-items: center;
 		padding: 0rpx 32rpx 16rpx 32rpx;
-		background-color: #fff;
+		/* background-color: #fff; */
 	}
 	.TitleBar{
-		background-color: #fff;
+		/* background-color: #fff; */
 	}
 
 	.titleRadius {
@@ -522,7 +535,7 @@
 		width: 64rpx;
 		height: 64rpx;
 		border-radius: 64rpx;
-		background-color: #fff;
+	
 		/* border: 2rpx solid #E3E3E3; */
 		box-shadow: 0px 0px 8px rgba(111, 111, 111, 0.16);
 	}
@@ -534,12 +547,15 @@
 	}
 
 	.nvuelist {
-		background-color: #fff;
 		overflow: hidden;
 		flex: 1;
 
 	}
-
+.h2 {
+	font-size: 36rpx;
+	font-weight: 700;
+	
+}
 
 	.tagsName {
 		font-size: 28rpx;
@@ -659,7 +675,8 @@
 		position: relative;
 	}
 	.titlename{
-		color: #1C1C1C;
+		font-size: 40rpx;
+		font-weight: 700;
 	}
 	.middle_left{
 		margin-left: 50rpx;

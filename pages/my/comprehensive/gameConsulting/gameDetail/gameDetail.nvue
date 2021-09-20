@@ -1,28 +1,30 @@
 <!-- 游戏资讯详情 -->
 <template>
-	<view class="container">
+	<view :class="['container',heiye?'bg':'wg']">
+		<myNavbar v-if="heiye==false" :type="1" @click="popClick"  title='资讯详情' :lines='false' right :radius='false'  src='../../../../../static/images/my/1.png'></myNavbar>
+		<myNavbar v-else :type="1" @click="popClick"  title='资讯详情' :lines='false' right :radius='false'  src='../../../../../static/images/my/2.png'></myNavbar>
 		<!-- 内容部分 -->
-		<view class="box" v-if="detailList">
-			<view class="box_head" @click="handleRouterdetail(detailList.game_id)">
+		<view style="margin-top: 190rpx;" class="box" v-if="detailList">
+			<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #ECECEC'}" class="box_head" @click="handleRouterdetail(detailList.game_id)">
 				<view class="head_left">
 					<image :src="detailList.icon" mode="widthFix" style="width: 140rpx;height: 140rpx"></image>
 				</view>
 				<view class="head_mid">
-					<text class="head_mid1" :style="{width:myWidth-140+'px'}">{{detailList.title}}</text>
+					<text :class="['head_mid1',heiye?'isTheme':'noTheme']"  :style="{width:myWidth-140+'px'}">{{detailList.title}}</text>
 					<view style="flex-direction: row;align-items: center;">
-						<text class="text">{{detailList.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
-						<text class="text" style="margin: 0 20rpx;">|</text>
-						<text class="text">{{post_hits}} 浏览</text>
+						<text :class="['text',heiye?'noActive':'baicolor']"  >{{detailList.start_time | dateFormat('yyyy-MM-dd hh:mm')}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" style="margin: 0 20rpx;">|</text>
+						<text :class="['text',heiye?'noActive':'baicolor']">{{post_hits}} 浏览</text>
 					</view>
 				</view>
 			</view>
 			<scroller :show-scrollbar='false'  :style="{height:myHeight-320+'rpx'}">
 			<view class="box_middle">
-				<text class="title">{{detailList.excerpt}}</text>
+				<text :class="['title',heiye?'isTheme':'noTheme']" >{{detailList.excerpt}}</text>
 				<view class="" >
 					<image :src="detailList.img"  style="height: 380rpx;border-radius: 20rpx;margin-bottom: 36rpx;" :style="{width:myWidth-32+'px'}"></image>
 				</view>
-				<text class="texts">{{content}}</text>
+				<text :class="['texts',heiye?'noActive':'baicolor']" >{{content}}</text>
 			</view>
 			</scroller>
 		</view>
@@ -38,9 +40,11 @@
 		$api
 	} from '@/config/api.js';
 	import common from "@/common/js/common.js";
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
 	export default {
 		components: {
-			propup
+			propup,
+			myNavbar,
 		},
 		data() {
 			return {
@@ -53,12 +57,23 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			//跳转资讯详情页
@@ -155,8 +170,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container {
-		background-color: #fff;
+		
 		flex: 1;
 		
 	}
@@ -171,7 +187,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		padding-bottom: 32rpx;
-		border-bottom: 1px solid #ECECEC;
+		
 	}
 
 	.head_left {
@@ -183,7 +199,7 @@
 		text-overflow: ellipsis;
 		font-size: 32rpx;
 		font-weight: 700;
-		color: #252525;
+		/* color: #252525; */
 		margin-bottom: 24rpx;
 
 	}
@@ -191,16 +207,15 @@
 	.title {
 		font-size: 40rpx;
 		font-weight: 700;
-		color: #252525;
+		
 		margin: 36rpx 0
 	}
 
 	.text {
 		font-size: 24rpx;
-		color: #666666;
+		
 	}
 	.texts{
-		color: #666666;
 		font-weight: 300;
 		font-size: 32rpx;
 		line-height: 42rpx;

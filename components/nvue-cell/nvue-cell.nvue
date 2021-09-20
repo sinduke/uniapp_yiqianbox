@@ -4,8 +4,11 @@
 			<text :class="['left_text',heiye?'isTheme':'noTheme']" >{{left}}</text>
 			<view class="right">
 				<text :class="['right_text',heiye?'noActive':'baicolor']">{{right}}</text>
+				
 				<image v-if="type==1&&heiye==false" class="right_icon" src="@/static/images/left.png"></image>
 				<image v-if="type==1&&heiye" class="right_icon1" src="@/static/images/999_right.png"></image>
+				<image v-if="type==3&&heiye==false" class="right_icon1" src="@/static/images/my_details.png"></image>
+				<image v-if="type==3&&heiye" class="right_icon1" src="@/static/images/my_details1.png"></image>
 				<switch  style="transform:scale(0.8);" v-if="type==2" :checked="checked" @change="change" color="#FF4810"/>
 			</view>
 		</view>

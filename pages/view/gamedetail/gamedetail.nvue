@@ -271,7 +271,7 @@
 					<view style="flex-direction: row;align-items: center;" v-if="evaluateitem">
 						<uni-rate v-if='evaluateitem.star_cnt>0' :value="evaluateitem.star_cnt/2" :margin="6"
 							:readonly="true" color="#DADADA" :size="12" active-color="#FF5927" />
-						<text v-if='evaluateitem.star_cnt>0' style="color: #666;font-size: 20rpx;">游戏时长{{Math.floor(Math.random()*(100-1)+1)}}分钟</text>
+						<text v-if='evaluateitem.star_cnt>0' style="color: #666;font-size: 20rpx;">游戏时长53分钟</text>
 					</view>
 					<view v-if="evaluateitem.content" style="margin-bottom: 40rpx;position: relative;">
 						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" v-if="!isConent">{{evaluateitem.content.length>42?evaluateitem.content.slice(0,40)+'...':evaluateitem.content}}</text>

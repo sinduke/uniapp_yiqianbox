@@ -63,7 +63,7 @@
 				<!-- 热门功能 -->
 				<view class="hot">
 					<text class="title">热门功能</text>
-					<view class="hot_cate" v-if="userFormat.hotSearch">
+					<view :style="{width:myWidth-32-20+rpx}" class="hot_cate" v-if="userFormat.hotSearch">
 						<view class="hotItem" v-for="(item,index) in commonList" style="margin-bottom: 48rpx;" v-if="index<3" :key='index' @click="handleRouter(item.router)">
 							<view class="hotItem_i" >
 								<image :src="item.url" mode="widthFix" style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
@@ -314,7 +314,6 @@
 		background-color: #F4F4F4;
 		border-radius: 40rpx; 
 		padding: 20rpx 24rpx;
-		margin-right: 20rpx;
 		align-items: center;
 		flex-direction: row;
 	}

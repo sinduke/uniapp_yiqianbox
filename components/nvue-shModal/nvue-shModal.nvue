@@ -4,7 +4,7 @@
 			
 		</view>
 		<view :class="['but_box',heiye?'hei':'bai']" @click.stop="stopModal" 
-		:style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:myWidth*0.8+'px',left:myWidth*0.1+'px',top:myHeight*0.2+'rpx'}">
+		:style="{opacity:active?1:0,transform:active?'scale(1,1)':'scale(0,0)',width:myWidth*0.8+'px',left:myWidth*0.1+'px',top:myHeight*topHeight+'rpx'}">
 		<!-- <view @click.stop="stopModal" class="but_box" :style="{height:active?350+'rpx':0+'rpx',opacity:active?1:0,width:active?$store.state.myWidth*0.8+'px':0,left:active?$store.state.myWidth*0.1+'px':$store.state.myWidth*0.5+'px',top:active?$store.state.myHeight*0.2+'rpx':$store.state.myHeight*0.33+'rpx'}"> -->
 			<text :class="['but_text1',heiye?'isTheme':'noTheme']" >{{title}}</text>
 			<text :class="['but_text2',heiye?'noActive':'baicolor']"  v-if="textType">{{text}}</text>
@@ -64,6 +64,10 @@
 			modalMode:{
 				type: Boolean,
 				default:true
+			},
+			topHeight:{
+				type: Number,
+				default:0.2
 			},
 		},
 		watch:{
