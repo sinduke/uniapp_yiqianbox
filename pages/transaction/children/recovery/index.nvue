@@ -2,7 +2,8 @@
 <template>
 	<view class="buynumber" :style="{width:myWidth+'px'}">
 		<view class="search">
-			<text  class="search_item" v-for="(item,index) in Data" :key='index' :class="{isacivte:active==index}"	@click="handleClick(index)">{{item}}</text>
+			<text v-if="heiye==false" class="search_item" v-for="(item,index) in Data" :key='index' :class="{isacivte:active==index}"	@click="handleClick(index)">{{item}}</text>
+			<text v-if="heiye==true" class="search_item1" v-for="(item,index) in Data" :key='index' :class="{isacivte1:active==index}"	@click="handleClick(index)">{{item}}</text>
 		</view>
 		<view class="list">
 			<list :style="{height:myHeight-232+'rpx',width:myWidth+'px'}" @loadmore='loadmore'	 loadmoreoffset='20' :show-scrollbar='false'   class="list" ref="list"  v-if="pageData.length">
@@ -61,6 +62,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -171,7 +175,14 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
+	.refreshImages {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		height: 80rpx
+	}
 	.buynumber {
 		flex: 1;
 		overflow:hidden;
@@ -192,6 +203,16 @@
 				border: 1px solid #F4F4F4;
 				font-size: 32rpx;
 			}
+			.search_item1 {
+				margin-right: 32rpx;
+				background-color: #1C1C1C;
+				border-radius: 32rpx;
+				padding: 12rpx 32rpx;
+				color: #C1C1C1;
+				border: 1px solid #1C1C1C;
+				font-size: 32rpx;
+			}
+			
 
 		
 
@@ -202,6 +223,11 @@
 
 		.isacivte {
 			background-color: #fff !important;
+			border: 1px solid #FF5927 !important;
+			color: #FF5927 !important;
+		}
+		.isacivte1 {
+			background-color: #090909 !important;
 			border: 1px solid #FF5927 !important;
 			color: #FF5927 !important;
 		}

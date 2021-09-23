@@ -1,6 +1,6 @@
 <!-- 卖号 -->
 <template>
-	<view class="container">
+	<view :class="['container',heiye?'bg':'wg']">
 			<scroller  :style="{height:myHeight-160+'rpx'}" :show-scrollbar="false">
 				<view class="body">
 					<group type='select' title='添加游戏' :borderTop='false' :value="form.gamename" @click="addxh"></group>
@@ -8,7 +8,7 @@
 					<group type='select' title='区服' :borderTop='false' :value="form.server_name" :right="false"></group>
 					
 					<group type='slot' :borderTop='false' :right="false">
-						<text class="title">标题</text>
+						<text :class="['title',heiye?'isTheme':'noTheme']" >标题</text>
 					    <input type="text" class="inputs" v-model="form.title" placeholder="请输入核心卖点" maxlength="20" style="width: 200rpx;" placeholder-style="color:#e1e1e1"/>
 					</group>
 					<group type='slot'  :borderTop='false' :right="false">
@@ -98,6 +98,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -132,6 +135,14 @@
 			 	this.form.mg_mem_id = data.id
 			 	this.form.mg_role_id = data.mg_id			
 			 })
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			// 图片上传
@@ -287,6 +298,7 @@
 </script>
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
 	.slot-content{
 		margin-bottom: 32rpx;
 	}
@@ -299,11 +311,10 @@
 	.container {
 		flex: 1;
 		overflow:hidden;
-		background-color: #fff;
    }
    .title{
 	   font-size: 32rpx;
-	   color: #1c1c1c;
+	   
 	     font-weight: 700;
    }
    .inputs{

@@ -1,6 +1,6 @@
 <!-- 赎回支付 -->
 <template>
-	<view class="container" :style="{width:myWidth+'px'}">
+	<view :class="['container',heiye?'bg':'wg']" :style="{width:myWidth+'px'}">
 		
 		<view class="Title" :style="{width:myWidth+'px'}">
 			<text class='text'>请选择你的支付方式</text>
@@ -18,6 +18,9 @@
 			group
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -33,6 +36,14 @@
 				order_id: '',
 				payway: '',
 				isShow: false,
+			}
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
 			}
 		},
 		methods: {
@@ -111,10 +122,11 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container {
 		flex: 1;
 		overflow:hidden;
-		background-color: #fff;
+		
 		}
 		.Title {
 			flex-direction: row;

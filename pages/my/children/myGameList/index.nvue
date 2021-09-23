@@ -1,8 +1,9 @@
 <template>
 	<view class="myGameLists">
-		<view class="mygameList" :style="{width:myWidth-32+'px'}">
+		<view  class="mygameList" :style="{width:myWidth-32+'px',borderBottom:heiye?'1rpx solid #3d3d3d':'1rpx solid #ECECEC'}">
 			<view class="listitem" v-for="(item,index) in myGame" :key='index' @click="handleClick(index)">
-				<text class="mygametext" :class="{mygametext1:active==index}">{{item.name}}</text>
+				<text v-if="heiye==false" class="mygametext" :class="{mygametext1:active==index}">{{item.name}}</text>
+				<text v-else class="mygametext" :class="{mygametext3:active==index}">{{item.name}}</text>
 				<view class="lines" :class="{line:active==index}" />
 				<!-- <titleLine :number='number' :myWidth='myWidth' :length='TitleList.length' :isActives='isActive' @isactive='isactive' :TitleList="TitleList" :scrollMove='scrollMove' :active='active' @active='handleActive'></titleLine> -->
 			</view>
@@ -13,20 +14,20 @@
 				<scroller :show-scrollbar="false"  :style="{height:myHeight-440+'rpx'}">
 					<view class="">
 						<view class="" style="height: 48rpx;"/>
-						<view class="item"  v-for="(item,i) in value.list" :key='i' v-if="value.list.length">
+						<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #ECECEC'}" class="item"  v-for="(item,i) in value.list" :key='i' v-if="value.list.length">
 							<view class="itemLeft" style="flex-direction: row;align-items: center;">
 								<image :src="item.new_icon||item.icon" mode="widthFix" style="width: 126rpx;height: 126rpx;margin-right: 24rpx;"></image>
 								<view class="gameDetail">
-									<text class="game_name">{{item.name.length>10?item.name.slice(0,8)+'..':item.name}}</text>
-									<text class="text" style="margin: 6rpx 0;" v-if="active==0">最近游戏时间：{{item.time_str}}</text>
-									<text class="text" style="margin: 6rpx 0;" v-else-if="active==1">收藏时间：{{item.collect_time|dateFormat('MM.dd')}}</text>
+									<text :class="['game_name',heiye?'isTheme':'noTheme']" >{{item.name.length>10?item.name.slice(0,8)+'..':item.name}}</text>
+									<text :class="['text',heiye?'noActive':'baicolor']" style="margin: 6rpx 0;" v-if="active==0">最近游戏时间：{{item.time_str}}</text>
+									<text :class="['text',heiye?'noActive':'baicolor']" style="margin: 6rpx 0;" v-else-if="active==1">收藏时间：{{item.collect_time|dateFormat('MM.dd')}}</text>
 									<text class="text" style="font-size: 24rpx;color: #999;">当前游戏小号{{item.trumpet_num}}</text>
 								</view>
 							</view>
 							<view class="itemRight">
 								<view class="buttons">
-									<text class="mybuttont" v-if="item.classify==5" @click="handleRouter(0,item.game_id)">开玩</text>
-									<text class="mybuttont" :style="{color:getpack(item.package_name)?'#ff5927':'#999'}"  @click="handleRouter(item.package_name,item.game_id)" v-else>{{getpack(item.package_name)?'启动':'未下载' }}</text>
+									<text :style="{border:heiye?'1px solid #C1C1C1':'1px solid #f5f5f5'}" class="mybuttont" v-if="item.classify==5" @click="handleRouter(0,item.game_id)">开玩</text>
+									<text class="mybuttont" :style="{color:getpack(item.package_name)?'#ff5927':'#999',border:heiye?'1px solid #C1C1C1':'1px solid #f5f5f5'}"  @click="handleRouter(item.package_name,item.game_id)" v-else>{{getpack(item.package_name)?'启动':'未下载' }}</text>
 								</view>
 							</view>
 						</view>
@@ -82,6 +83,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -207,12 +211,23 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
 	.mygameList{
 		flex-direction: row;
 		justify-content: space-between;
-		border-bottom:1rpx solid #ECECEC;
+		
 		padding:0 68rpx;
+	}
+	.lines {
+		padding: 0 10rpx;
+		width: 26px;
+		margin-bottom: 4rpx;
+	}
+	.line {
+		height: 6rpx;
+		border-radius: 6rpx;
+		background-color: #FF5927;
+		bottom: 0;
 	}
 	.listitem{
 		margin-right: 62rpx;
@@ -226,6 +241,9 @@
 	}
 	.mygametext1{
 		color: #1C1C1C;
+	}
+	.mygametext3{
+		color: #FFFFFF;
 	}
 	.buttony{
 		flex-direction: row;
@@ -247,12 +265,12 @@
 		border-radius: 40rpx;
 		padding: 8rpx 0;
 		text-align: center;
-		border: 1px solid #f5f5f5;
+		
 	}
 	.game_name{
-		font-size: 36rpx;
+		font-size: 32rpx;
 		font-weight: 700;
-		color: #1C1C1C;
+		
 	}
 	.item{
 		flex-direction: row;
@@ -260,11 +278,11 @@
 		justify-content: space-between;
 		padding-bottom: 32rpx;
 		margin-bottom: 32rpx;
-		border-bottom:1px solid #ECECEC;
+		
 	}
 	.text{
 		font-size: 24rpx;
-		color: #666;
+		
 	}
 	
 	

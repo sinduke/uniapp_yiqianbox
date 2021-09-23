@@ -1,12 +1,12 @@
 <!-- 交易须知 -->
 <template>
-	<view class="tradeNotes">
-		<view class="shadow" style=" box-shadow: 0px 0px 8rpx 0px rgba(210, 210,210, 0.8);"/>
+	<view :class="['tradeNotes',heiye?'bg':'wg']" >
+		<view v-if="heiye==false" class="shadow" style=" box-shadow: 0px 0px 8rpx 0px rgba(210, 210,210, 0.8);"/>
 		<view class="body">
 			<scroller :show-scrollbar='false' :style="{height:myHeight-32+'rpx',width:myWidth-32+'px'}">
-				<view class="title" style="margin-top: 20rpx;">
-					<text class="title_text">抵制不良游戏，拒绝盗版游戏，注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身，合理安排时间，享受健康生活。</text>
-				</view>
+				<view :style="{backgroundColor:heiye?'#090909':'#ffffff',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #efefef'}" class="title" style="margin-top: 20rpx;">
+					<text :class="['title_text',heiye?'isTheme':'noTheme']" >抵制不良游戏，拒绝盗版游戏，注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身，合理安排时间，享受健康生活。</text>
+				</view> 
 				<view class="purchase" style="margin-bottom: 64rpx;">
 					<text class="my_title" style="margin-bottom: 64rpx;">购买流程</text>
 				    <view class="purchase_body">
@@ -130,7 +130,18 @@
 
 <script>
 	export default {
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -150,8 +161,9 @@
 </script>
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
   .tradeNotes{
-	  background-color: #FFFFFF;
+	  
 	  flex: 1;
     }
 	  .shadow{
@@ -162,10 +174,10 @@
 		  padding: 0 32rpx;
 	  }
 	  .title{
-		  background-color: #fff;
+		 
 		  padding-bottom: 40rpx;
 		  margin-bottom: 32rpx;
-          border-bottom:1px solid #efefef;
+         
 		 }
 		  .title_text{
 			  font-size: 32rpx;

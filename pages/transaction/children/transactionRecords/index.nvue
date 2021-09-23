@@ -1,9 +1,10 @@
 <!-- 交易记录 -->
 <template>
-	<view class="transactionRecords" :style="{height:myHeight+'rpx'}">
+	<view :class="['transactionRecords',heiye?'bg':'wg']" :style="{height:myHeight+'rpx'}">
 		<view class="mygameList">
 			<view class="listitem" v-for="(item,index) in myGame" :key='index' @click="handleClick(index)">
-				<text class="mygametext" :class="{mygametext1:active==index}">{{item}}</text>
+				<text v-if="heiye==false" class="mygametext" :class="{mygametext1:active==index}">{{item}}</text>
+				<text v-else class="mygametext2" :class="{mygametext3:active==index}">{{item}}</text>
 				<view class="lines" :class="{line:active==index}" />
 			</view>
 		</view>
@@ -88,12 +89,23 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			handleClick(i) {
@@ -161,10 +173,8 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
-
+	@import '@/common/css/nvue-black.css';
 	.transactionRecords{
-		background-color: #fff;
 		flex:1;
 	}
 	.mygameList {
@@ -194,4 +204,28 @@
 		font-weight: 700;
 		font-size: 34rpx;
 	}
+	.mygametext2 {
+		margin-bottom: 18rpx;
+		color: #C1C1C1;
+		font-size: 30rpx;
+	}
+	
+	.mygametext3 {
+		color: #FFFFFF;
+		font-weight: 700;
+		font-size: 34rpx;
+	}
+	.lines {
+		padding: 0 10rpx;
+		width: 26px;
+		margin-bottom: 4rpx;
+	}
+	
+	.line {
+		height: 6rpx;
+		border-radius: 6rpx;
+		background-color: #FF5927;
+		bottom: 0;
+	}
+	
 </style>

@@ -1,18 +1,18 @@
 <!-- 个人中心 -->
 <template>
-	<view class="my" :style="{width:myWidth+'px'}">
+	<view :class="['my',heiye?'bg':'bai888']" :style="{width:myWidth+'px'}">
 		<view :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
 		<view class="title">
 			<view class="titleLeft">
 				<view style="flex-direction: row;" :style="{opacity: opacity}"  ref="titles">
 					<!-- <image :src="userInfo.avatar" style="width: 60rpx;height: 60rpx;border-radius: 60rpx;margin: 0 24rpx 0 32rpx;"></image> -->
-					<text  class="titlename" style="margin-left: 12rpx;" v-if="Object .keys(userInfo).length">{{userInfo.nickname}}</text>
+					<text :class="['titlename',heiye?'isTheme':'noTheme']" style="margin-left: 12rpx;" v-if="Object .keys(userInfo).length">{{userInfo.nickname}}</text>
 				</view>
 			</view>
 			<view class="titleRight">
 				<image src="@/static/images/my/news.png" mode="widthFix" style="width: 42rpx;height: 42rpx;" @click="handleRouter('/pages/my/myMessage/index1',1)">	</image>
 				<image src="@/static/images/my/setting.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/Setting')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
-				<image  src="@/static/images/my/black-mode.png" @click="isblack" mode="widthFix" style="width: 42rpx;height: 42rpx;"></image>
+				<image src="@/static/images/my/black-mode.png" @click="isblack" mode="widthFix" style="width: 42rpx;height: 42rpx;"></image>
 			</view>
 		</view>
 		<view class="list"> 
@@ -29,28 +29,28 @@
 				<view class="login flex" @click="handleRouter('/pages/my/children/login')" v-if="!Object.keys(userInfo).length">
 					<image class="images2" src="@/static/images/my/myAvart.png"></image>
 					<view class="loginText">
-						<text class="h1">点击后登录</text>
-						<text class="loginText-text">未实名认证 &nbsp ></text>
+						<text :class="['h10',heiye?'isTheme':'noTheme']">点击后登录</text>
+						<text :style="{color:heiye?'#666666':'#252525',backgroundColor:heiye?'':'#E9E8EA'}" class="loginText-text">未实名认证 &nbsp ></text>
 					</view>
 				</view>
 				<view class="login flex" v-else >
 					<image class="images2" @click="handleRouter('/pages/my/myAdministration/index1')" :src="/http/i.test(userInfo.avatar)?userInfo.avatar:'https:'+userInfo.avatar"></image>
 					<view class="loginText">
-						<text class="h1" @click="handleRouter('/pages/my/myAdministration/index1')">{{userInfo.nickname}}</text>
-						<text class="loginText-text" v-if="userInfo.is_real_name">已实名认证</text>
-						<text class="loginText-text" v-else @click.stop="handleRouter('/pages/my/myAdministration/children/changeRealname/index1')">未实名认证 &nbsp ></text>
+						<text :class="['h10',heiye?'isTheme':'noTheme']" @click="handleRouter('/pages/my/myAdministration/index1')">{{userInfo.nickname}}</text>
+						<text :style="{color:heiye?'#666666':'#252525',backgroundColor:heiye?'':'#E9E8EA'}" class="loginText-text" v-if="userInfo.is_real_name">已实名认证</text>
+						<text :style="{color:heiye?'#666666':'#252525',backgroundColor:heiye?'':'#E9E8EA'}" class="loginText-text" v-else @click.stop="handleRouter('/pages/my/myAdministration/children/changeRealname/index1')">未实名认证 &nbsp ></text>
 					</view>
 				</view>
 				</cell>
 				<cell>
 				<!-- 常用功能 -->
-					<view class="card" :style="{width:myWidth-32+'px'}">
+					<view class="card" :style="{width:myWidth-32+'px',backgroundColor:heiye?'#1C1C1C':'#fff'}">
 						<view class="mycard" >
-							<text class="h2">常用功能</text>
+							<text :class="['h2',heiye?'isTheme':'noTheme']" >常用功能</text>
 							<view class="grid">
 								<view class="grid-item" v-for="(item,index) in commonList" :key='index'	@click="handleRouter(item.router,item.type)">
 									<image :src="item.url" mode="widthFix" class="images"></image>
-									<text class="grid-text">{{item.name}}</text>
+									<text :class="['grid-text',heiye?'noActive':'noTheme']"  >{{item.name}}</text>
 								</view>
 							</view>
 						</view>
@@ -58,33 +58,33 @@
 				</cell>	
 				<cell>
 				<!-- 我的资产 -->
-				<view class="card" :style="{width:myWidth-32+'px'}">
+				<view class="card" :style="{width:myWidth-32+'px',backgroundColor:heiye?'#1C1C1C':'#fff'}">
 				<view class="mycard">
-					<text class="h2">我的资产</text>
+					<text :class="['h2',heiye?'isTheme':'noTheme']" >我的资产</text>
 					<view class="grid" style="padding-left:60rpx;padding-right: 60rpx;" >
 						<view class="grid-item" @click="handleRouter('/pages/my/FlatGoldCoins/FlatGoldCoins?ptb_cnt='+userInfo.ptb_cnt,1)">
 							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-ptb.png" mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
-							<text class="myrate" >{{userInfo.ptb_cnt}}</text>
-							<text style="font-weight: 300;font-size:22rpx;">个</text>
+							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.ptb_cnt}}</text>
+							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">个</text>
 							</view>
-							<text class="grid-text">平台币</text>
+							<text :class="['grid-text',heiye?'noActive':'noTheme']">平台币</text>
 						</view>
 						<view class="grid-item" @click="handleRouter('/pages/my/coupons/coupons1',1)">
 							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-yhq.png"	mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
-							<text class="myrate" >{{userInfo.coupon_count}}</text>
-							<text style="font-weight: 300;font-size:22rpx;">张</text>
+							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.coupon_count}}</text>
+							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">张</text>
 							</view>
-							<text class="grid-text">优惠券</text>
+							<text :class="['grid-text',heiye?'noActive':'noTheme']">优惠券</text>
 						</view>
 						<view class="grid-item" @click="handleRouter('/pages/my/integral/index1',1)">
 							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-jf.png"	mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
-							<text class="myrate" >{{userInfo.my_integral}}</text>
-							<text style="font-weight: 300;font-size:22rpx;">分</text>
+							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.my_integral}}</text>
+							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">分</text>
 							</view>
-							<text class="grid-text">积分</text>
+							<text :class="['grid-text',heiye?'noActive':'noTheme']">积分</text>
 						</view>
 					 </view>
 			       </view>
@@ -92,19 +92,19 @@
 		     	</cell>
 				<cell>
 				<!-- 综合功能 -->
-				<view class="card" :style="{width:myWidth-32+'px'}" style="margin-bottom: 48rpx;">	
+				<view class="card" :style="{width:myWidth-32+'px',backgroundColor:heiye?'#1C1C1C':'#fff'}" style="margin-bottom: 48rpx;">	
 				<view class="mycard">
-					<text class="h2">综合功能</text>
+					<text :class="['h2',heiye?'isTheme':'noTheme']" >综合功能</text>
 					<view class="grid" style="margin-bottom: 32rpx;">
 						<view class="grid-item" v-for="(item,index) in mergeList" :key='index' @click="handleRouter(item.router,item.type)" v-if="($store.state.platform=='ios'?item.status!=1:true)&&index<5">
 							<image :src="item.url" mode="widthFix" class="images"></image>
-							<text class="grid-text">{{item.name}}</text>
+							<text :class="['grid-text',heiye?'noActive':'noTheme']">{{item.name}}</text>
 						</view>
 					</view>
 					<view class="grid" >
 						<view class="grid-item" v-for="(item,index) in mergeList" :key='index' @click="handleRouter(item.router,item.type)" v-if="($store.state.platform=='ios'?item.status!=1:true)&&index>4">
 							<image :src="item.url" mode="widthFix" class="images"></image>
-							<text class="grid-text">{{item.name}}</text>
+							<text :class="['grid-text',heiye?'noActive':'noTheme']">{{item.name}}</text>
 						</view>
 					</view>	
 				</view>
@@ -116,7 +116,7 @@
 							<view class="lins" v-if="Object .keys(userInfo).length"></view>
 							<view class="lins" v-if="Object .keys(userInfo).length" style="width: 50rpx;"></view>
 						</view>
-						<view class="card" :style="{width:myWidth-32+'px',marginTop:0}">
+						<view class="card" :style="{width:myWidth-32+'px',marginTop:0,backgroundColor:heiye?'#1C1C1C':'#fff'}">
 						<view class="mycard">
 							<myGameList ref="myGameList"></myGameList>
 						</view>
@@ -242,6 +242,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -443,10 +446,10 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 	.my {
 		overflow: hidden;
-		background-color: #F9F9F9;
 		flex: 1;
 	}
 
@@ -461,20 +464,15 @@
 	.titlename {
 		font-weight: 700;
 		font-size: 30rpx;
-		color: #1c1c1c;
+		margin-bottom: 8rpx;
 	}
-
-
 	.titleItem {
 		align-items: center;
 		margin-right: 64rpx;
 	}
-
 	.titleRight {
-		
 		flex-direction: row;
 		align-items: center;
-
 	}
 	.login{
 		padding: 0 32rpx;
@@ -501,13 +499,11 @@
 	.loginText-text{
 		font-size: 26rpx;
 		font-weight: 400;
-		color: #252525;
-		background-color:#E9E8EA;
+		
 		border-radius: 20rpx;
 		padding: 2rpx 12rpx;
 	}
 	.card{
-		background-color: #fff;
 		margin-left: 16px;
 		border-radius: 20rpx;
 		margin-top: 48rpx;
@@ -525,21 +521,24 @@
 		align-items: center;
 	}
 	.grid-text{
-		color: #1C1C1C;
+		
 		font-size: 28rpx;
 		font-weight: 300;
 	}
 	.myrate{
 		font-weight: 700;
 		font-size: 32rpx;
-		color: #1C1C1C;
 		margin-bottom: 12rpx;
 	}
-	
-	.h1{
+	.h10 {
+		font-size: 40rpx;
+		font-weight: 700;
 		margin-bottom: 12rpx;
 	}
-	.h2{
+	.h2 {
+		font-size: 36rpx;
+		font-weight: 700;
+		
 		margin-bottom: 28rpx;
 	}
     .game_line{

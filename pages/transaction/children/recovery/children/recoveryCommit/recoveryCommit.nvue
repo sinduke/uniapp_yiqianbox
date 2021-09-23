@@ -1,94 +1,95 @@
 <!-- 回收确认 -->
 <template>
-	<view class="recoveryCommit" :style="{width: myWidth+'px',height:myHeight+'rpx'}">
-		<navbar :title="formData.active==0?'回收确认':'赎回确认'" :right='false'></navbar>
+	<view :class="['recoveryCommit',heiye?'bg':'wg']" :style="{width: myWidth+'px',height:myHeight+'rpx'}">
+		<navbar v-if="heiye==false" :title="formData.active==0?'回收确认':'赎回确认'" :right='false'></navbar>
+		<navbar v-else :lines="false" :title="formData.active==0?'回收确认':'赎回确认'" :right='false'></navbar>
 	<view class="Application">
-		<view class="input" >
+		<view :style="{backgroundColor:heiye?'#090909':'#fff',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #efefef'}" class="input" >
 			<view class="my-row">
 				<view  class="my-col" :style="{width:myWidth/4+'px'}">
-					<text color='#1c1c1c' class="title">游戏名</text>
+					<text :class="['title',heiye?'isTheme':'noTheme']" >游戏名</text>
 				</view>
 				<view class="my-col">
-					<text class="value">{{formData.game_name}}</text>
+					<text  :class="['value',heiye?'isTheme':'noTheme']" >{{formData.game_name}}</text>
 				</view>
 			</view>
 		</view>
  		
-		<view class="input" >
+		<view :style="{backgroundColor:heiye?'#090909':'#fff',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #efefef'}" class="input" >
 			<view class="my-row">
 				<view  class="my-col" :style="{width:myWidth/4+'px'}">
-					<text color='#1c1c1c' class="title">充值小号</text>
+					<text :class="['title',heiye?'isTheme':'noTheme']">充值小号</text>
 				</view>
 				<view class="my-col">
-					<text class="value">{{formData.nickname}}</text>
+					<text :class="['value',heiye?'isTheme':'noTheme']">{{formData.nickname}}</text>
 				</view>
 			</view>
 		</view>
 
-		<view class="input">
+		<view :style="{backgroundColor:heiye?'#090909':'#fff',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #efefef'}" class="input">
 			<view class="my-row">
 				<view  class="my-col" :style="{width:myWidth/4+'px'}">
-					<text color='#1c1c1c' class="title">游戏角色</text>
+					<text :class="['title',heiye?'isTheme':'noTheme']">游戏角色</text>
 				</view>
 				<view class="my-col">
-					<text class="value">{{formData.role_name}}</text>
+					<text :class="['value',heiye?'isTheme':'noTheme']">{{formData.role_name}}</text>
 				</view>
 			</view>	
 		</view>
 		
 	
-		<view class="input">
+		<view :style="{backgroundColor:heiye?'#090909':'#fff',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #efefef'}" class="input">
 			<view class="my-row">
 				<view  class="my-col" :style="{width:myWidth/4+'px'}">
-					<text color='#1c1c1c' class="title">角色ID</text>
+					<text :class="['title',heiye?'isTheme':'noTheme']">角色ID</text>
 				</view>
 				<view class="my-col">
-					<text class="value">{{formData.role_id}}</text>
+					<text :class="['value',heiye?'isTheme':'noTheme']">{{formData.role_id}}</text>
 				</view>
 			</view>	
 			
 		</view>
 		
 
-		<view class="input">
+		<view :style="{backgroundColor:heiye?'#090909':'#fff',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #efefef'}" class="input">
 
 			<view class="my-row">
 				<view  class="my-col" :style="{width:myWidth/4+'px'}">
-					<text color='#1c1c1c' class="title">游戏区服</text>
+					<text :class="['title',heiye?'isTheme':'noTheme']">游戏区服</text>
 				</view>
 				<view class="my-col">
-					<text class="value">{{formData.server_name}}</text>
+					<text :class="['value',heiye?'isTheme':'noTheme']">{{formData.server_name}}</text>
 				</view>
 			</view>	
 			
 		</view>
 		
-		<view class="input">
+		<view :style="{backgroundColor:heiye?'#090909':'#fff',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #efefef'}" class="input"> 
 			<view class="my-row">
 				<view  class="my-col" :style="{width:myWidth/4+'px'}">
-					<text color='#1c1c1c' class="title">充值金额</text>
+					<text :class="['title',heiye?'isTheme':'noTheme']">充值金额</text>
 				</view>
 				<view class="my-col" :style="{width:myWidth/2+'px'}">
-					<text class="value">{{formData.sum_money}}</text>
+					<text :class="['value',heiye?'isTheme':'noTheme']">{{formData.sum_money}}</text>
 				</view>
 				<view class="my-col">
-					<text style="color: #666;font-size: 26rpx;">元</text>
+					<text :class="['',heiye?'noActive':'baicolor']"  style="font-size: 26rpx;">元</text>
 				</view>
 			</view>	
 		</view>
 		
 	
-		<view class="input">
+		<view :style="{backgroundColor:heiye?'#090909':'#fff',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #efefef'}" class="input">
 			<view class="my-row">
 				<view  class="my-col" :style="{width:myWidth/4+'px'}">
 					<text class="title" v-if="formData.active==0">回收可得</text>
 					<text class="title" v-else>赎回扣除</text>
 				</view>
 				<view class="my-col" :style="{width:myWidth/2.2+'px'}">
-					<text class="value">{{formData.amount}}</text>
+					<text :class="['value',heiye?'isTheme':'noTheme']">{{formData.amount}}</text>
 				</view>
 				<view class="my-col">
-					<text style="color: #666;font-size: 26rpx;">平台币</text>
+					<text :class="['',heiye?'noActive':'baicolor']" style="font-size: 26rpx;">平台币</text>
 				</view>
 			</view>	
 			
@@ -132,6 +133,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -139,6 +143,14 @@
 				return uni.getSystemInfoSync().windowWidth
 			},
 			
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			//提交
@@ -192,11 +204,12 @@
 </script>
 
 <style  scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 	.recoveryCommit{
 		flex: 1;
 		overflow:hidden;
-		background-color: #fff;
+		
 	}
 		.title {
 			flex: 1;
@@ -225,10 +238,10 @@
 
 		.input {
 			padding: 0 32rpx;
-			background-color: #fff;
+			
 			margin-bottom: 40rpx;
 			padding-bottom: 32rpx;
-			border-bottom:1px solid #efefef;
+			
             }
 			.my-row{
 				flex-direction: row;
@@ -247,7 +260,7 @@
 			}
 
 			.value {
-				color: #1c1c1c;
+				
 				font-size: 30rpx;
 				
 			}

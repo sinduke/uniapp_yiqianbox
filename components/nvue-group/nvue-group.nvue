@@ -1,6 +1,6 @@
 <template>
 	<view class="nvue-group">
-		<view class="item" v-if="type=='noCustom'" :style="{borderTop:borderTop&&heiye==false?'1px solid #ececec':heiye?'1px solid #1c1c1c':'',borderBottom:borderBottom&&heiye==false?'1px solid #ececec':heiye?'1px solid #1c1c1c':''}" @click="click">
+		<view class="item" v-if="type=='noCustom'" :style="{borderTop:borderTop&&heiye==false?'1px solid #ececec':heiye?'1px solid #1c1c1c':'',borderBottom:borderBottom&&heiye==false?'1px solid #ececec':heiye==true?'1px solid #1c1c1c':''}" @click="click">
 			<view class="left" style="flex-direction: row;align-items: center;">
 				<image :src="src" v-if="src" mode="widthFix" style="width: 60rpx;height: 60rpx;"></image>
 				<text v-if="src" :class="['text',heiye?'isTheme':'noTheme']" style="margin-left: 20rpx;">{{title1}}</text>
@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		
-		<view class="item" v-else-if="type=='select'" :style="{borderTop:borderTop?'1px solid #ececec':'',borderBottom:borderBottom?'1px solid #ececec':''}" @click="click">
+		<view class="item" v-else-if="type=='select'" :style="{borderTop:borderTop&&heiye==false?'1px solid #ececec':heiye?'1px solid #1c1c1c':'',borderBottom:borderBottom&&heiye==false?'1px solid #ececec':heiye==true?'1px solid #1c1c1c':''}" @click="click">
 			<view class="left">
 				<text :class="['text',heiye?'isTheme':'noTheme']">{{title}}</text>
 			</view>
@@ -26,7 +26,7 @@
 			</view>
 		</view>
 
-		<view class="item" v-else :style="{borderTop:borderTop?'1px solid #ececec':'',borderBottom:borderBottom?'1px solid #ececec':''}"  @click="click">
+		<view class="item" v-else :style="{borderTop:borderTop&&heiye==false?'1px solid #ececec':heiye?'1px solid #1c1c1c':'',borderBottom:borderBottom&&heiye==false?'1px solid #ececec':heiye==true?'1px solid #1c1c1c':''}"  @click="click">
 			<slot></slot>
 		</view>
 	</view>
