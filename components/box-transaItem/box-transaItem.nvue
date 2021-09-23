@@ -8,32 +8,32 @@
 				@click="handleRouter(`/pages/transaction/children/recovery/children/recoveryCommit/recoveryCommit?id=${item.id}&game_name=${item.game_name}&nickname=${item.nickname}&server_name=${item.server_name}&role_name=${item.role_name}&amount=${item.amount}&role_id=${item.role_id}&mg_mem_id=${item.mg_mem_id}&sum_money=${item.sum_money}&active=${active}`)"></image>
 				<image :src="item.game_new_icon||item.game_icon||item.icon||item.new_icon" mode="widthFix" v-else-if="status==2"   style="width: 160rpx;height: 160rpx;"></image>
 			</view>
-			<view class='cols'>
+			<view class='cols':style="{borderBottom:heiye?'1rpx solid #3d3d3d':'1rpx solid #EFEFEF'}">
 				<view style="flex-direction: row;align-items: center;justify-content: space-between;" >
 					<view class="detail" :style="{width:myWidth/2+'px'}" v-if="status==1&&item.back_status==2" @click="showtoasts" >
-						<text class="gamename">{{item.game_name.length>11?item.game_name.slice(0,10)+'..':item.game_name}}</text>
-						<text class="text">上架时间：{{item.create_time|dateFormat('yyyy-MM-dd')}}</text>
-						<text class="text">当前区服：{{item.server_name}}</text>
-						<text class="text" style="margin-bottom: 36rpx;">充值小号：{{item.role_name}}</text>
+						<text :class="['gamename',heiye?'isTheme':'noTheme']" >{{item.game_name.length>11?item.game_name.slice(0,10)+'..':item.game_name}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" >上架时间：{{item.create_time|dateFormat('yyyy-MM-dd')}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']">当前区服：{{item.server_name}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" style="margin-bottom: 36rpx;">充值小号：{{item.role_name}}</text>
 					</view>
 					<view class="detail" :style="{width:myWidth/2+'px'}" v-else-if="status==1"
 					 @click="handleRouter(`/pages/transaction/children/recovery/children/recoveryCommit/recoveryCommit?id=${item.id}&game_name=${item.game_name}&nickname=${item.nickname}&server_name=${item.server_name}&role_name=${item.role_name}&amount=${item.amount}&role_id=${item.role_id}&mg_mem_id=${item.mg_mem_id}&sum_money=${item.sum_money}&active=${active}`)">
-						<text class="gamename">{{item.game_name}}</text>
-						<text class="text">上架时间：{{item.create_time|dateFormat('yyyy-MM-dd')}}</text>
-						<text class="text">当前区服：{{item.server_name}}</text>
-						<text class="text" style="margin-bottom: 36rpx;">充值小号：{{item.role_name}}</text>
+						<text :class="['gamename',heiye?'isTheme':'noTheme']" >{{item.game_name}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']">上架时间：{{item.create_time|dateFormat('yyyy-MM-dd')}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']">当前区服：{{item.server_name}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" style="margin-bottom: 36rpx;">充值小号：{{item.role_name}}</text>
 					</view>
 					<view class="detail" :style="{width:myWidth/2+'px'}" v-else-if="status==2" >
-						<text class="gamename">{{item.gamename}}</text>
-						<text class="text">当前区服：{{item.server_name}}</text>
-						<text class="text" >充值小号：{{item.role_name}}</text>
-						<text class="text" style="margin-bottom: 36rpx;">上架时间：{{item.create_time||item.goods.create_time |dateFormat('yyyy-MM-dd')}}</text>
+						<text :class="['gamename',heiye?'isTheme':'noTheme']" >{{item.gamename}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']">当前区服：{{item.server_name}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" >充值小号：{{item.role_name}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" style="margin-bottom: 36rpx;">上架时间：{{item.create_time||item.goods.create_time |dateFormat('yyyy-MM-dd')}}</text>
 					</view>
 					<view class="detail" :style="{width:myWidth/2+'px'}" v-else-if="status==3||status==0" @click="handleRouter('/pages/transaction/children/buynumber/children/commodityDetail?goods_id='+item.goods_id)">
-						<text class="gamename">{{item.gamename}}</text>
-						<text class="text">当前区服：{{item.server_name}}</text>
-						<text class="text">当前累充：{{item.sum_money}}元</text>
-						<text class="text" style="margin-bottom: 36rpx;">上架时间：{{item.create_time|dateFormat('yyyy-MM-dd')}}</text>
+						<text :class="['gamename',heiye?'isTheme':'noTheme']" >{{item.gamename}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']">当前区服：{{item.server_name}}</text>
+						<text :class="['text',heiye?'noActive':'baicolor']">当前累充：{{item.sum_money}}元</text>
+						<text :class="['text',heiye?'noActive':'baicolor']" style="margin-bottom: 36rpx;">上架时间：{{item.create_time|dateFormat('yyyy-MM-dd')}}</text>
 					</view>
 				
 					<view class="" v-if="status==1" style="margin-top: -30rpx;">
@@ -49,8 +49,8 @@
 						<text :style="{color:item.status==1?'#19BFFF' :item.status==2?'#FF5927':'#999',fontSize:'30rpx'}">{{ item.status==1?'正在审核':item.status==2?'已上架' :item.status==3?'已下架':item.status==4?'已出售':item.status==5?'审核不通过':'锁定中'}}</text>	
 					</view>
 					<view class="flex" style="align-items: flex-end;" v-else>
-						<text class="Price">￥{{item.price}}.</text>
-						<text style="font-weight: 700;font-size: 26rpx;">00</text>
+						<text :class="['Price',heiye?'isTheme':'noTheme']" >￥{{item.price}}.</text>
+						<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 700;font-size: 26rpx;">00</text>
 					</view>
 				</view>
 			</view>
@@ -112,6 +112,9 @@
 			},
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 				myHeight() {
 					return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
 				},
@@ -140,6 +143,7 @@
 </script>
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
 	.flex{
 		flex-direction: row;
 		align-items: center;
@@ -155,7 +159,7 @@
 		   margin-right: 12rpx;
 	   }
 	   .cols{
-		 border-bottom: 1rpx solid #EFEFEF;
+		 
 	   }
 		.detail {
 		    justify-content: center;
@@ -168,7 +172,6 @@
 		
 
 		.gamename {
-			color: #1C1C1C;
 			font-size: 34rpx;
 			font-weight: 700;
 			margin-bottom: 12rpx;
@@ -176,14 +179,14 @@
 			flex-wrap: nowrap;
       }
 	  .Price{
-		  color: #1C1C1C;
+		  
 		  font-size: 34rpx;
 		  font-weight: 700;
 		  lines: 1;
 		  flex-wrap: nowrap;
 	  }
 		.text {
-			color: #666;
+			
 			font-size: 24rpx;
 		}
 	

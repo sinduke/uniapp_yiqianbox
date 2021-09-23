@@ -1,6 +1,6 @@
 <template>
-	<view class="nvue-popdown" :style="{width:$store.state.myWidth+'px',height:$store.state.myHeight+'rpx'}" v-if="myIsshow">
-		<view class="popdown" ref='popdown' :style="{width:$store.state.myWidth+'px'}">
+	<view   class="nvue-popdown" :style="{width:$store.state.myWidth+'px',height:$store.state.myHeight+'rpx'}" v-if="myIsshow">
+		<view :class="['popdown',heiye?'bg':'wg']"  ref='popdown' :style="{width:$store.state.myWidth+'px'}">
 			<slot></slot>
 		</view>
 	</view>
@@ -31,6 +31,11 @@
 			return {
 				myIsshow: false,
 			}
+		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 		},
 		methods: {
 			getdwon() {
@@ -102,14 +107,12 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.nvue-popdown {
 		background: rgba(0, 0, 0, .4);
-
-
 	}
 
 	.popdown {
-		background-color: #FFFFFF;
 		padding: 20rpx 32rpx 0 32rpx;
 		border-bottom-left-radius: 40rpx;
 		border-bottom-right-radius: 40rpx;

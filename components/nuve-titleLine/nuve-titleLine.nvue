@@ -3,8 +3,9 @@
 		<scroller ref="scroller" :style="{width:myWidth/1.6+'px'}" scroll-direction="horizontal" :show-scrollbar="false" style="flex-direction: row;">
 			<view class="titles">
 				<view class="titleItem" :style="{width:titleItemWidth+'px'}" >
-					<view v-for="(item,index) in myTitleList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth/3)-90+'px'}" ref="tabitem" :id="item.id"> 
-						<text class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
+					<view v-for="(item,index) in TitleList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth/3)-90+'px'}" ref="tabitem" :id="item.id"> 
+						<text v-if="heiye==false" class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
+						<text v-else class="TitleName2" @click="handleClick(index)" ref='TitleName' :class="[{TitleName3:active==index}]">{{item.name}}</text>
 					</view>
 				</view>
 				  <view :style="{transform:'translateX('+(widthLine)+'px)',width:linesWidth+'px'}" class="lines" ref="lines"></view>
@@ -48,7 +49,6 @@
 		},
 		data() {
 			return {
-				myTitleList:[],
 				actives: 0,
 				isActive: false,
 				widthLine:0,
@@ -58,6 +58,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			// widthLine() {
 			// 	return this.scrollMove / 3
 			// },
@@ -77,20 +80,18 @@
 			getline_Width(index){
 				dom.getComponentRect(this.$refs.tabitem[index], res => {
 					this.linesWidth = res.size.width 
-					 console.log(this.linesWidth,res,'res.size.width')
+					 console.log(this.linesWidth,'res.size.width')
 				});
 			},
 			
 			getWidth(){
-				this.$refs.tabitem.map((item,index)=>{
+				this.$refs.tabitem.map(item=>{
 					dom.getComponentRect(item, res => {
 						this.titleItemWidth += res.size.width + ( this.myWidth / 3 - 100)
-						this.myTitleList[index].width = res.size.width
-						console.log(this.myTitleList,res,'this.myTitleList')
-			
+					   
 					});
 				})
-			 console.log(this.myTitleList,'this.myTitleList')
+				
 			},
 			scrollTabTo(index) {
 			  const el = this.$refs.tabitem[index];
@@ -133,16 +134,17 @@
 			}
 		},
 		mounted() {
-			this.myTitleList = this.TitleList
 			setTimeout(()=>{
 			  this.getWidth()
 			  this.getline_Width(0)
-			},200)
+			
+			},100)
 		}
 	}
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	/* @import '@/common/css/nvue-whith.css'; */
 	.lines {
 		height: 6rpx;
@@ -158,6 +160,9 @@
 		flex-direction: row;
 		
 	}
+
+
+
 	.TitleName {
 		color: #666666;
 		padding-bottom: 10rpx;
@@ -169,6 +174,20 @@
 
 	.TitleName1 {
 		color: #1c1c1c;
+		font-weight: 700;
+		/* font-size: 40rpx; */
+	}
+	.TitleName2 {
+		color: #C1C1C1;
+		padding-bottom: 10rpx;
+		font-weight: 300;
+		font-size: 34rpx;
+		lines: 1;
+		
+	}
+	
+	.TitleName3 {
+		color: #ffffff;
 		font-weight: 700;
 		/* font-size: 40rpx; */
 	}
