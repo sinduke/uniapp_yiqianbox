@@ -76,15 +76,18 @@
 				isalign: 'felx-start',
 				TitleList: [{
 						id: 0,
-						name: '推荐'
+						name: '推荐',
+						width:''
 					},
 					{
 						id: 1,
-						name: '排行'
+						name: '排行',
+						width:''
 					},
 					{
 						id: 2,
-						name: '新服'
+						name: '新服',
+						width:''
 					}
 				],
 				active: 0,
@@ -149,7 +152,8 @@
 			if(this.custom_name){
 				this.TitleList.push({
 						id: 3,
-						name: this.custom_name
+						name: this.custom_name,
+						width:''
 					},)
 			}
 			this.checkHotUpdate()
