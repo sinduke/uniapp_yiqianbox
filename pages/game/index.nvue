@@ -7,11 +7,13 @@
 				<input :style="{backgroundColor:heiye?'#2E2E2E':'#f5f5f5'}" class="input-box-input" placeholder="去找你要看到的" placeholder-style="color:#C1C1C1" :disabled="true" @click="handleRouter('/pages/view/search/search')" />
 			</view>
 			<view class="TitleRight" style="flex-direction: row;align-items: center;height: 80rpx;margin-bottom: 8rpx;">
-				<view elevation="5px" class="Righticon" v-if="$store.state.platform=='android'">
-					<image src="@/static/images/downLoad-black.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouter('/pages/view/downLoad/downLoad')" ></image>
+				<view :style="{backgroundColor:heiye?'#1c1c1c':'#fff'}" elevation="5px" class="Righticon" v-if="$store.state.platform=='android'">
+					<image v-if="heiye==false" src="@/static/images/downLoad-black.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouter('/pages/view/downLoad/downLoad')" ></image>
+					<image v-else src="@/static/images/downLoad-black1.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouter('/pages/view/downLoad/downLoad')" ></image>
 				</view>
-				<view class="Righticon" elevation="5px" style="margin:0 6rpx 0 24rpx;">
-					<image src="@/static/images/load-app.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouter('/pages/game/children/gameList')" ></image>
+				<view :style="{backgroundColor:heiye?'#1c1c1c':'#fff'}" class="Righticon" elevation="5px" style="margin:0 6rpx 0 24rpx;">
+					<image v-if="heiye==false" src="@/static/images/load-app.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouter('/pages/game/children/gameList')" ></image>
+					<image v-else src="@/static/images/load-app1.png" mode="widthFix" style="width: 34rpx;height: 34rpx;" @click="handleRouter('/pages/game/children/gameList')" ></image>
 				</view>
 			</view>
 		</view>
@@ -55,8 +57,8 @@
 						<view class="box-header">
 							<view style="flex-direction: row;align-items: center;justify-content: flex-start;">
 								<text :class="['box-header-item',heiye?'isTheme':'noTheme']" style="margin-right: 16rpx;" v-if="rebate">{{rebate[numbers].topic_name}}</text>
-							    <image src="@/static/images/rate-qie.png" ref="handleswitch" class="getnew-icon"  mode="widthFix"   @click="handleswitch(1,rebate[numbers].topic_id,numbers)"></image>
-
+							    <image v-if="heiye==false" src="@/static/images/rate-qie.png" ref="handleswitch" class="getnew-icon"  mode="widthFix"   @click="handleswitch(1,rebate[numbers].topic_id,numbers)"></image>
+								<image v-else src="@/static/images/rate-qie1.png" ref="handleswitch" class="getnew-icon"  mode="widthFix"   @click="handleswitch(1,rebate[numbers].topic_id,numbers)"></image>
 							</view>
 							<text class="box-header-item1" v-if="rebate"
 								@click="handleList('tags',rebate[numbers].topic_name =='折扣游戏'?1375:rebate[numbers].topic_name =='返利游戏'?3000:2000,rebate[numbers].topic_name =='折扣游戏'?'折扣':rebate[numbers].topic_name =='返利游戏'?'返利':'优惠券')">查看分类</text>
@@ -936,7 +938,7 @@
 		height: 64rpx;
 		width: 64rpx;
 		border-radius: 64rpx;
-		background-color: #fff;
+		
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;

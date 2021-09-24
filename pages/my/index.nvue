@@ -10,9 +10,12 @@
 				</view>
 			</view>
 			<view class="titleRight">
-				<image src="@/static/images/my/news.png" mode="widthFix" style="width: 42rpx;height: 42rpx;" @click="handleRouter('/pages/my/myMessage/index1',1)">	</image>
-				<image src="@/static/images/my/setting.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/Setting')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
-				<image src="@/static/images/my/black-mode.png" @click="isblack" mode="widthFix" style="width: 42rpx;height: 42rpx;"></image>
+				<image v-if="heiye==false" src="@/static/images/my/news.png" mode="widthFix" style="width: 42rpx;height: 42rpx;" @click="handleRouter('/pages/my/myMessage/index1',1)">	</image>
+				<image v-else src="@/static/images/my/news1.png" mode="widthFix" style="width: 42rpx;height: 42rpx;" @click="handleRouter('/pages/my/myMessage/index1',1)">	</image>
+				<image v-if="heiye==false" src="@/static/images/my/setting.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/Setting')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
+				<image v-else src="@/static/images/my/set1.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/mySetting')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
+				<image v-if="heiye==false" src="@/static/images/my/black-mode.png" @click="isblack" mode="widthFix" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
+				<image v-else src="@/static/images/my/baitian.png" @click="isblack" mode="widthFix" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
 			</view>
 		</view>
 		<view class="list"> 
@@ -97,13 +100,15 @@
 					<text :class="['h2',heiye?'isTheme':'noTheme']" >综合功能</text>
 					<view class="grid" style="margin-bottom: 32rpx;">
 						<view class="grid-item" v-for="(item,index) in mergeList" :key='index' @click="handleRouter(item.router,item.type)" v-if="($store.state.platform=='ios'?item.status!=1:true)&&index<5">
-							<image :src="item.url" mode="widthFix" class="images"></image>
+							<image v-if="heiye" :src="item.url1" mode="widthFix" class="images"></image>
+							<image v-else :src="item.url" mode="widthFix" class="images"></image>
 							<text :class="['grid-text',heiye?'noActive':'noTheme']">{{item.name}}</text>
 						</view>
 					</view>
 					<view class="grid" >
 						<view class="grid-item" v-for="(item,index) in mergeList" :key='index' @click="handleRouter(item.router,item.type)" v-if="($store.state.platform=='ios'?item.status!=1:true)&&index>4">
-							<image :src="item.url" mode="widthFix" class="images"></image>
+							<image v-if="heiye" :src="item.url1" mode="widthFix" class="images"></image>
+							<image v-else :src="item.url" mode="widthFix" class="images"></image>
 							<text :class="['grid-text',heiye?'noActive':'noTheme']">{{item.name}}</text>
 						</view>
 					</view>	
@@ -178,58 +183,68 @@
 				mergeList: [
 					{
 						url: '../../static/images/my/smdl.png',
+						url1: '../../static/images/my/smdl1.png',
 						name: '扫码登陆',
 						router:'/pages/my/children/scanCode/index',
 						type: 2
 					},
 					{
 						url: '../../static/images/my/kfzx.png',
+						url1: '../../static/images/my/kfzx1.png',
 						name: '客服中心',
 						router: '/pages/customerService/index',
 						type: 1
 					},
 					{
 						url: '../../static/images/my/rwzx.png',
+						url1: '../../static/images/my/rwzx1.png',
 						name: '任务中心',
 						router: '/pages/my/children/taskCenter/index',
 						type: 1,
 					},
 					{
 						url: '../../static/images/my/czfl.png',
+						url1: '../../static/images/my/czfl1.png',
 						name: '充值返利',
 						router: '/pages/customerService/children/rechargeRebate/index1',
 						type: 1
 					},
 					{
 						url: '../../static/images/my/yjfk.png',
+						url1: '../../static/images/my/yjfk1.png',
 						name: '意见反馈',
 						router: '/pages/my/comprehensive/feedback/feedback1',
 						type: 1,
 					},
 					{
 						url: '../../static/images/my/yxlb.png',
+						url1: '../../static/images/my/yxlb1.png',
 						name: '游戏礼包',
 						router: '/pages/my/comprehensive/gameGiftBag/gameGiftBag1',
 						type: 1,
 					},
 					{
 						url: '../../static/images/my/yxzx.png',
+						url1: '../../static/images/my/yxzx1.png',
 						name: '游戏资讯',
 						router: '/pages/my/comprehensive/gameConsulting/gameConsulting1',
 						type: 0,
 					},
 					{
 						url: '../../static/images/my/yxfl.png',
+						url1: '../../static/images/my/yxfl1.png',
 						name: '游戏分类',
 						router: '/pages/game/children/gameList',
 
 					},
 					{
 						url: '../../static/images/my/yxsp.png',
+						url1: '../../static/images/my/yxsp1.png',
 						name: '游戏视频',
 						router: '/pages/index/children/videoDetail'
 					},
 					{
+						url1: '../../static/images/my/xzgl1.png',
 						url: '../../static/images/my/xzgl.png',
 						name: '下载管理',
 						router: '/pages/view/downLoad/downLoad',
