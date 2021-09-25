@@ -350,13 +350,14 @@
 		// 		'src': "url('file:/" + fontSrc + "')"
 		// 	})
 		// },
-		onLoad() {
+		// onLoad() {
+			
+
+		// },
+		onReady() {
 			this.getBannerData()
 			this.getgamedata()
 			this.getInitData()
-
-		},
-		onReady() {
 			if(this.heiye){
 				uni.setNavigationBarColor({
 					frontColor: '#ffffff',
@@ -412,12 +413,8 @@
 				}else if(this.Category.count>this.categoryData.length){
 					// this.Category.key++
 					// this.loadinging = true
-					// this.getCategory()
-					
+					// this.getCategory()	
 				}
-				
-				
-
 			},
 			// 重置 loadmore
 			resetLoadMore() {
@@ -643,8 +640,6 @@
 					this.memory = this.speciallist[6]
 					// //试玩
 					this.demoData = this.speciallist[7]
-					console.log(555,this.demoData)
-					console.log(666,this.demoData.game_list.game_id)
 					// //精品好游
 					this.boutique = this.speciallist[8]
 					// //火爆
@@ -682,13 +677,9 @@
 			},
 			//路由跳转
 			handleList(type, id, name) {
-
 				uni.navigateTo({
 					url: `/pages/game/children/gameList?id=${id}&type=${type}&name=${name}`
 				})
-
-
-
 			},
 			//专题跳转
 			specialRouter(name, id) {
@@ -712,10 +703,6 @@
 				setTimeout(() => {
 					this.refreshing = false;
 				}, 1000)
-			},
-
-			domebatch() {
-				console.log(111);
 			},
 			//动画
 			bin(ref, property, expression, type) {

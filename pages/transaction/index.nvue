@@ -147,15 +147,17 @@
 					this.scrollMove = Math.round(e.detail.dx)
 				}
 			},
-			swiperChange(e) {
+			swiperChange(e){
 				this.active = e.detail.current
 			},
-	
+			
 		},
     	onShow() {
 			if(this.active==2){
-				this.$refs.recovery.getData()
-			    this.activ1--
+				if(this.$refs.recovery){
+					this.$refs.recovery.getData()
+					this.activ1--
+				}			    
 			}
 			
 		},
