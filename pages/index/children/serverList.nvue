@@ -2,9 +2,10 @@
 <template>
 	<view class="serverList">
 		<view class="titleTime" style="margin-top: 24rpx;">
-			<text class="timer">{{mytimes}}</text>
-			<view class="titleLine" ref="titleLine" :style="{width:myWidth+'px',height:'3rpx',marginTop:'16rpx'}">
+			<text :class="['timer',heiye?'isTheme':'noTheme']"  >{{mytimes}}</text>
+			<view v-if="heiye==false" class="titleLine" ref="titleLine" :style="{width:myWidth+'px',height:'3rpx',marginTop:'16rpx'}">
 			</view>
+			
 		</view>
 		<view class="myList" :style="{height:myHeight-320+'rpx',width:myWidth+'px'}">
 			<list class="list" :style="{height:myHeight-320+'rpx'}" loadmoreoffset='10' :show-scrollbar='false' ref="list" @loadmore='loadmore'>
@@ -15,7 +16,7 @@
 				</refresh>
 				<cell v-for="(myList,myindex) in pageData" :kye='myindex'>
 					<view :style="{width:$store.state.myWidth+'px'}" v-if="typeof myList[0].game_start_time=='number'" class="cardLines" @disappear='handleDiss($event,getmonth(myList[0].game_start_time),weekday[new Date(myList[0].game_start_time*1000).getDay()])' >
-						<text class="timers" v-if="getmonth(myList[0].game_start_time)!=getmonth(new Date()/1000)">{{myList[0].game_start_time | dateFormat('MM-dd')}} {{weekday[new Date(myList[0].game_start_time*1000).getDay()]}}</text>
+						<text :class="['timers',heiye?'isTheme':'noTheme']"   v-if="getmonth(myList[0].game_start_time)!=getmonth(new Date()/1000)">{{myList[0].game_start_time | dateFormat('MM-dd')}} {{weekday[new Date(myList[0].game_start_time*1000).getDay()]}}</text>
 						<view class="lins" v-if="getmonth(myList[0].game_start_time)!=getmonth(new Date()/1000)"></view>
 						<view class="lins" v-else style="background-color: #fff;"></view>
 					</view>
@@ -116,7 +117,11 @@
 				timeList:[],
 			}
 		},
+		
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			newTime() {
 				return (new Date().getDay())
 			},
@@ -257,8 +262,11 @@
 				    // this.mytimes = this.getmonth(new Date()/1000) + ' '+this.weekday[this.newTime]
 					this.mytimes = '今日'+' '+this.weekday[this.newTime]
 					this.getpageData()
-					this.bind();
+					
 					this.islogin = true
+				}
+				if(val&&this.heiye==false){
+					this.bind();
 				}
 
 			}
@@ -301,7 +309,8 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 	.rate_item {
 		border: 2rpx solid #E4E4E4;
 		flex-direction: row;
@@ -334,7 +343,7 @@
 		padding: 0rpx 32rpx;
 		font-size: 36rpx;
 		font-weight: 600;
-		color: #1C1C1C;
+		
 
 	}
 	.timers {
@@ -342,7 +351,7 @@
 		margin-right: 24rpx;
 		font-size: 36rpx;
 		font-weight: 600;
-		color: #1C1C1C;
+		
 	
 	}
 

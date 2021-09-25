@@ -13,7 +13,7 @@
 				<image v-if="heiye==false" src="@/static/images/my/news.png" mode="widthFix" style="width: 42rpx;height: 42rpx;" @click="handleRouter('/pages/my/myMessage/index1',1)">	</image>
 				<image v-else src="@/static/images/my/news1.png" mode="widthFix" style="width: 42rpx;height: 42rpx;" @click="handleRouter('/pages/my/myMessage/index1',1)">	</image>
 				<image v-if="heiye==false" src="@/static/images/my/setting.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/Setting')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
-				<image v-else src="@/static/images/my/set1.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/mySetting')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
+				<image v-else src="@/static/images/my/set1.png" mode="widthFix"	@click="handleRouter('/pages/my/mySetting/Setting')" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
 				<image v-if="heiye==false" src="@/static/images/my/black-mode.png" @click="isblack" mode="widthFix" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
 				<image v-else src="@/static/images/my/baitian.png" @click="isblack" mode="widthFix" style="width: 42rpx;height: 42rpx;margin-left:32rpx"></image>
 			</view>
@@ -428,6 +428,12 @@
 			setTimeout(()=>{		
 			this.bind()
 			},200)
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		
 		},
 		onShow() {

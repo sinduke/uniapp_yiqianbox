@@ -14,7 +14,7 @@
 				<text style="position: absolute;font-size: 20rpx;color: #fff;left: 20rpx;top: 2rpx;">优惠券</text>
 			</image>
 		</view>
-		<text class="gametitle">{{iconData.game_name}}</text>
+		<text :class="['gametitle',heiye?'isTheme':'noTheme']" >{{iconData.game_name}}</text>
 	</view>
 </template>
 
@@ -45,6 +45,12 @@
 				}
 			}
 		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
+			
+		},
 		methods: {
 			topage(id){
 				uni.navigateTo({
@@ -58,6 +64,7 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.gameicon {
 		position: relative;
 		/* margin: 20rpx; */

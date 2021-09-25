@@ -1,17 +1,17 @@
 
 <!-- 福利 -->
 <template>
-	<view class="welfareitem">
+	<view :class="['welfareitem',heiye?'bg':'wg']" >
 		<view v-if="pageData.activity.count>0" style="padding: 0 32rpx;">
 			<view class="new-list">
 				<view v-for="(item,index) in pageData.activity.list" :key="index" class="coupons">
-					<view class="title" :style="{width:myWidth-32+'px'}" @click="handleClick(index)">
-						<text class="title_name" :style="{width:myWidth-120+'px'}">{{item.title}}</text>
+					<view class="title" :style="{width:myWidth-32+'px',borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" @click="handleClick(index)">
+						<text :class="['title_name',heiye?'isTheme':'noTheme']" :style="{width:myWidth-120+'px'}">{{item.title}}</text>
 						<image ref='image' src="@/static/images/999_right.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 					</view>
 					<view class="body" ref="body">
 					 <text class="pub_time">{{item.pub_time}}</text>
-					 <text class="content" :style="{width:myWidth-32+'px'}">{{item.content.replace(/<[^<>]+>/g,'')}}</text>
+					 <text :class="['content',heiye?'noActive':'baicolor']" :style="{width:myWidth-32+'px'}">{{item.content.replace(/<[^<>]+>/g,'')}}</text>
 					</view>	  
 				</view>
 			</view>
@@ -35,10 +35,14 @@
 			myloading,
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
 		},
+		
 		methods:{
 			handleClick(i){
 				if(this.active!=i){
@@ -89,17 +93,18 @@
 </script>
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
   .title{
     flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	border-bottom:1px solid #efefef ;
+	
 	padding-bottom: 32rpx;
   }
   .title_name{
 	  font-size: 32rpx;
 	  font-weight: 700;
-	  color: #1C1C1C;
+	  
 	  lines: 1;
 	  text-overflow: ellipsis;
   }
@@ -120,6 +125,6 @@
   .content{
 	font-weight: 400;
 	font-size: 28rpx;
-	color: #666666;
+	
   }
 </style>

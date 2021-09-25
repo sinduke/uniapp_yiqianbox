@@ -1,10 +1,11 @@
 <template>
 	<!-- 搜索页面 -->
-	<view class="search_page" :style="{backgrounColor:isSearch?'#F4F4F4':'#fff'}">
+	<view  class="search_page" style="flex: 1;" :style="{background:heiye?'#090909':'#fff',}">
 		<!-- 自定义导航 -->
-		<navbar :right='false'>
+		<navbar :lines='false' :right='false' >
 			<view style="flex-direction: row;align-items: center;">
-				<view class="inputs">
+				
+				<view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" class="inputs">
 					<image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;">
 					</image>
 					<input class="input" type="text" v-model="keyword" placeholder='去找你要看到的'
@@ -14,33 +15,33 @@
 				<text class="search_text" @click="handleSearch">搜索</text>
 			</view>
 		</navbar>
-		<view class="body">
-			<scroller class="" v-if="isSearch" :style="{height:myHeight-180+'rpx'}">
+		<view class="body" :style="{backgrounColor:heiye?'#090909':'#F4F4F4'}">
+			<scroller   v-if="isSearch" :style="{height:myHeight-180+'rpx',background:heiye?'#1c1c1c':'#F4F4F4'}">
 				<!-- 历史记录 -->
-				<view class="history">
-					<view class="history_item" v-for="(v,i) in historyData" :key='i' v-if="i<number">
+				<view :class="['history',heiye?'bg':'wg']" >
+					<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="history_item" v-for="(v,i) in historyData" :key='i' v-if="i<number">
 						<view style="flex-direction: row;align-items: center;width:500rpx;" @click="clickSearch(v)">
 							<image src="@/static/images/timer-icon.png" mode="widthFix" style="width: 32rpx;height: 32rpx;margin-right: 32rpx;" @click="close(i)"></image>
-							<text class="text" >{{v}}</text>
+							<text :class="['text',heiye?'isTheme':'noTheme']" >{{v}}</text>
 						</view>
 						<image src="@/static/images/close.png" mode="widthFix" style="width: 32rpx;height: 32rpx;" @click="close(i)"></image>
 					</view>
 					<text class="showall" v-if="historyData.length>2&&isshow" @click="showall">显示全部</text>
 				</view>
 				<!-- 热门搜索 -->
-				<view class="hot" v-if="$store.state.platform=='android'">
-					<text class="title">热门搜索</text>
+				<view :class="['hot',heiye?'bg':'wg']"  v-if="$store.state.platform=='android'">
+					<text :class="['title',heiye?'isTheme':'noTheme']" >热门搜索</text>
 					<view class="hotList" v-if="userFormat.hotSearch&&userFormat.hotSearch.split(',').length<4" :style="{width:myWidth+'px'}">
 						<view class="hotItem" v-for="(v,i) in userFormat.hotSearch.split(',')"	:style="{width:myWidth/2.3+'px',marginBottom: '48rpx'}" :key='i' @click="clickSearch(v)">
 							<text class="text" style="color: #FF5927;margin-right: 16rpx;">{{i+1}}</text>
-							<text class="text">{{v}}</text>
+							<text :class="['text',heiye?'isTheme':'noTheme']">{{v}}</text>
 						</view>
 					</view>
 					<view class="" v-else>
-						<view class="hotList" style="border-bottom: 1px solid #efefef;" v-if="userFormat.hotSearch" :style="{width:myWidth+'px'}">
+						<view  class="hotList" style="" v-if="userFormat.hotSearch" :style="{width:myWidth+'px',borderBottom:heiye?'':'1px solid #efefef'}">
 							<view class="hotItem" v-for="(v,i) in userFormat.hotSearch.split(',')" v-if="i<number1" :style="{width:myWidth/2.3+'px',marginBottom: '48rpx'}" :key='i' @click="clickSearch(v)">
 								<text class="text" style="color: #FF5927;margin-right: 16rpx;">{{i+1}}</text>
-								<text class="text">{{v}}</text>
+								<text :class="['text',heiye?'isTheme':'noTheme']">{{v}}</text>
 							</view>
 						</view>
 						<text class="showall"  @click="allShow" v-if="userFormat.hotSearch.split(',').length<4">显示全部</text>
@@ -49,33 +50,35 @@
 
 				</view>
 				<!-- 热门游戏标签 -->
-				<view class="hot">
-					<text class="title">热门游戏标签</text>
+				<view :class="['hot',heiye?'bg':'wg']">
+					<text :class="['title',heiye?'isTheme':'noTheme']" >热门游戏标签</text>
 					<view class="cate" v-if="userFormat.hotSearch" >
 						<view class="hotItem" v-for="v in tagsList" style="margin-bottom: 48rpx;" :key='v.id'	@click="handleList('tags',v.id,v.name)">
-							<text class="cate_item">{{v.name}}</text>
+							<text :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4',color:heiye?'#c1c1c1':'#666;'}"  class="cate_item">{{v.name}}</text>
 						</view>
 						<view class="hotItem" v-for="(v,i) in cateList" style="margin-bottom: 48rpx;" v-if="i<6" :key='i' @click="handleGames(v.id,v.name)">
-							<text class="cate_item">{{v.name}}</text>
+							<text :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4',color:heiye?'#c1c1c1':'#666;'}" class="cate_item">{{v.name}}</text>
 						</view>
 					</view>
 				</view>
 				<!-- 热门功能 -->
-				<view class="hot">
-					<text class="title">热门功能</text>
+				<view :class="['hot',heiye?'bg':'wg']">
+					<text :class="['title',heiye?'isTheme':'noTheme']">热门功能</text>
 					<view :style="{width:myWidth-32-20+rpx}" class="hot_cate" v-if="userFormat.hotSearch">
 						<view class="hotItem" v-for="(item,index) in commonList" style="margin-bottom: 48rpx;" v-if="index<3" :key='index' @click="handleRouter(item.router)">
-							<view class="hotItem_i" >
-								<image :src="item.url" mode="widthFix" style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
-								<text class="text" style="color: #666;lines:1;font-size: 30rpx;">{{item.name}}</text>
+							<view class="hotItem_i" :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}">
+								<image v-if="heiye==false" :src="item.url" mode="widthFix" style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
+								<image v-else :src="item.url1" mode="widthFix" style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
+								<text :style="{color:heiye?'#c1c1c1':'#666;'}" class="text" style="lines:1;font-size: 30rpx;">{{item.name}}</text>
 							</view>
 						</view>
 					</view>
 					<view class="hot_cate" v-if="userFormat.hotSearch">
 						<view class="hotItem" v-for="(item,index) in commonList" style="margin-bottom: 48rpx;" v-if="index>2" :key='index' @click="handleRouter(item.router)">
-							<view class="hotItem_i">
-								<image :src="item.url" mode="widthFix" style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
-								<text class="text" style="color: #666;lines:1;font-size: 30rpx;">{{item.name}}</text>
+							<view class="hotItem_i" :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}">
+								<image v-if="heiye==false" :src="item.url" mode="widthFix" style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
+								<image v-else :src="item.url1" mode="widthFix" style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
+								<text :style="{color:heiye?'#c1c1c1':'#666;'}" class="text" style="lines:1;font-size: 30rpx;">{{item.name}}</text>
 							</view>
 						</view>
 					</view>
@@ -122,18 +125,21 @@
 				tagsList: [],
 				commonList: [{
 						url: '../../../static/images/view/swyx.png',
+						url1: '../../../static/images/view/swyx1.png',
 						router: '/pages/my/children/demoGame/index1',
 						name: '试玩游戏',
 						type: '1'
 					},
 					{
 						url: '../../../static/images/view/jfsc.png',
+						url1: '../../../static/images/view/jfsc1.png',
 						name: '积分商城',
 						router: '/pages/my/children/pointMall/index1',
 						type: 1
 					},
 					{
 						url: '../../../static/images/view/qmtg.png',
+						url1: '../../../static/images/view/qmtg1.png',
 						name: '全民推广',
 						router: '/pages/my/children/share/index',
 						type: 1
@@ -141,6 +147,7 @@
 
 					{
 						url: '../../../static/images/view/xyzp.png',
+						url1: '../../../static/images/view/xyzp1.png',
 						name: '幸运转盘',
 						router: '/pages/my/children/bigTurntable/index',
 						type: 1
@@ -148,6 +155,7 @@
 
 					{
 						url: '../../../static/images/view/lqzx.png',
+						url1: '../../../static/images/view/lqzx1.png',
 						name: '领券中心',
 						router: '/pages/my/children/couponsCore/index1',
 						type: 1
@@ -155,6 +163,7 @@
 
 					{
 						url: '../../../static/images/view/rwzx.png',
+						url1: '../../../static/images/view/rwzx1.png',
 						name: '任务中心',
 						router: '/pages/my/children/taskCenter/index',
 						type: 1,
@@ -164,7 +173,19 @@
 			}
 
 		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		computed: {
+			
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -303,15 +324,16 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.body {
 		margin-top: 180rpx;
-		background-color: #F4F4F4;
+		
 	}
 	.list{
 		padding: 0 32rpx
 	}
 	.hotItem_i{
-		background-color: #F4F4F4;
+		
 		border-radius: 40rpx; 
 		padding: 20rpx 24rpx;
 		align-items: center;
@@ -323,7 +345,7 @@
 	   justify-content: space-between;
    }
 	.search_page {
-		background-color: #fff;
+		
 		flex: 1;
 		overflow: hidden
 	}
@@ -334,10 +356,10 @@
 		flex-wrap: wrap;
 	}
 	.cate_item{
-		background-color: #F4F4F4;
+		
 		border-radius: 30rpx; 
 		padding: 6rpx 24rpx;
-		color: #666;
+		
 		font-size: 30rpx;
 		margin-right: 24rpx;
 	}
@@ -345,7 +367,7 @@
 	.inputs {
 		flex-direction: row;
 		align-items: center;
-		background-color: #F4F4F4;
+		
 		border-radius: 40rpx;
 		padding: 8rpx 32rpx;
 		margin-right: 32rpx;
@@ -365,12 +387,12 @@
 
 	.text {
 		font-size: 32rpx;
-		color: #1C1C1C;
+		
 
 	}
 
 	.history {
-		background-color: #fff;
+		
 		padding: 0 32rpx;
 		
 	}
@@ -380,14 +402,14 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		border-bottom: 1px solid #efefef;
+		
 	}
     .hotItem{
     	flex-direction: row;
 		align-items: center;
     }
 	.hot {
-		background-color: #fff;
+		
 		padding: 0 32rpx;
 		margin-top: 20rpx;
 	}
@@ -411,7 +433,7 @@
 	.title {
 		font-size: 34rpx;
 		font-weight: 700;
-		color: #1C1C1C;
+		
 		margin: 48rpx 0;
 	}
 </style>

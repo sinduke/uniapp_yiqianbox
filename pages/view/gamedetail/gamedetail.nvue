@@ -59,27 +59,29 @@
 					</view>
 					
 				<!--  隐藏区域-->
-				<view  style="background-color: #FFFFFF;">
+				<!-- :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" --> 
+				<view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" >
 					
-				<view class="cards" ref="box1">
-					<view class="box1" style="background-color: #fff;" >
+				<view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}"  class="cards" ref="box1">
+					<view class="box1" style="background-color: #090909;" >
 												<!-- 优惠券 -->
-						<view  class="youhuiquan" v-if="pageData.coupons.count" @click="toYouHui(pageData.game_id)">
+						<view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}"  class="youhuiquan" v-if="pageData.coupons.count" @click="toYouHui(pageData.game_id)">
 					    	<image src="@/static/images/view/rateQuan.png" style="width: 48rpx;height: 30rpx;" mode="widthFix"   ></image>
-							<text style="margin-left: 20rpx;font-size: 28rpx;" :style="{color:pageData.coupons.count?'#1c1c1c':'#666'}">优惠券</text>
+							<text v-if="heiye==false" style="margin-left: 20rpx;font-size: 28rpx;" :style="{color:pageData.coupons.count?'#1c1c1c':'#666'}">优惠券</text>
+							<text v-else style="margin-left: 20rpx;font-size: 28rpx;" :style="{color:pageData.coupons.count?'#c1c1c1':'#666'}">优惠券</text>
 					     </view>
-						 <view  class="youhuiquan" v-else>
+						 <view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" class="youhuiquan" v-else>
 						 	<image src="@/static/images/view/yhq-black.png" style="width: 48rpx;height: 30rpx;" mode="widthFix" ></image>
 						 	<text style="margin-left: 20rpx;font-size: 28rpx;" :style="{color:pageData.coupons.count?'#1c1c1c':'#666'}">优惠券</text>
 						  </view>
 						 
 							<!-- 开服 -->
-						  <view class="kaifu" @click="IsServeShow=true">			
+						  <view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" class="kaifu" @click="IsServeShow=true">			
 									<image class="kf_image" src="@/static/images/view/PlayGame.png" mode="widthFix"  v-if="pageData.game_start_time"></image>
 									 <image  class="kf_image" src="@/static/images/view/noPlayGame.png" v-else mode="widthFix"></image>
 									<view style="margin-right: 10rpx;" v-if="pageData.game_start_time">
-									<text style="color: #c1c1c1;font-size: 24rpx;text-align: center;">{{pageData.serlistNew.list[0].server_name}}</text>
-									<text style="color: #666;font-size: 32rpx;text-align: center;">今天 {{pageData.game_start_time|dateFormat('hh:mm')}}</text>
+									<text :style="{color:heiye?'#666666':'#c1c1c1'}" style="font-size: 24rpx;text-align: center;">{{pageData.serlistNew.list[0].server_name}}</text>
+									<text :style="{color:heiye?'#c1c1c1':'#666666'}" style="color: ;font-size: 32rpx;text-align: center;">今天 {{pageData.game_start_time|dateFormat('hh:mm')}}</text>
 							        </view>
 								<view style="margin-right: 10rpx;" v-else>
 								<text style="color: #666;font-size: 32rpx;text-align: center;">暂无新服</text>
@@ -101,7 +103,7 @@
 			  	</view>
 				<!-- 下载  -->		
 				<!-- android -->
-				<view class="cards" ref="down" v-if="pageData.classify==3" @click="handleDownLoad" >
+				<view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}"  class="cards" ref="down" v-if="pageData.classify==3" @click="handleDownLoad" >
 				<view class="down">
 					<image class="operation-item_image" src="@/static/images/dwonLoad.png" mode="widthFix" style="margin-right: 12rpx;"  v-if="status=='下 载'"></image>
 					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"  v-else></image>
@@ -114,7 +116,7 @@
 				</view>
 				
 				<!-- h5 -->
-	         <view class="cards" ref="down" v-else-if="pageData.classify==5" @click="handleh5play">
+	         <view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}"  class="cards" ref="down" v-else-if="pageData.classify==5" @click="handleh5play">
 				<view class="down"  >
 					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"></image>
 					   <text class="down_text"  v-if="pageData.game_task_content" >试玩</text>
@@ -123,7 +125,7 @@
 					<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
 		    	</view>
 	        <!-- IOS -->
-	         <view class="cards" ref="down" v-else @click="handleIOSDown">
+	         <view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" class="cards" ref="down" v-else @click="handleIOSDown">
 				<view class="down"  >
 					<image class="operation-item_image" src="@/static/images/dwonLoad.png" mode="widthFix" style="margin-right: 12rpx;"  v-if="status=='下 载'"></image>
 					<image class="operation-item_image" src="@/static/images/play-game.png" mode="widthFix" style="margin-right: 12rpx;"  v-else></image>
@@ -137,27 +139,27 @@
 				
                </view>
      					<!-- 收藏 福利 资讯攻略 -->
-						 <view class="cards" ref="operation">
+						 <view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" class="cards" ref="operation">
 						 	<view class="operation" >
 						 		<!-- 收藏 -->
 						 		<view class="operation-item" @click="handleOperation(pageData.game_id,pageData.is_collect)">
 						 		<image class="operation-item_image" src="@/static/images/view/ysc.png"  v-if="pageData.is_collect==1" mode="widthFix"></image>
 						 		<image class="operation-item_image" src="@/static/images/view/sc.png" v-else mode="widthFix"></image>
-						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;" v-if="pageData.is_collect==1">已收藏</text>
-						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;" v-else>收藏</text>
+						 			<text :style="{color:heiye?'#C1C1C1':'#666'}" style="font-size: 32rpx;margin-left: 15rpx;" v-if="pageData.is_collect==1">已收藏</text>
+						 			<text :style="{color:heiye?'#C1C1C1':'#666'}" style="font-size: 32rpx;margin-left: 15rpx;" v-else>收藏</text>
 									
 						 		</view>
 						 			<text class="operation-item_line"> | </text>
 						 		<!-- 福利 -->
 						 		<view class="operation-item" @click="handleRouter('/pages/view/gamedetail/children/welfare/index?game_id='+pageData.game_id)">
 						 			<image class="operation-item_image" src="@/static/images/view/fl.png" mode="widthFix"></image>
-						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;">福利</text>
+						 			<text :style="{color:heiye?'#C1C1C1':'#666'}" style="font-size: 32rpx;margin-left: 15rpx;">福利</text>
 						 		</view>
 						 		<text class="operation-item_line"> | </text>
 						 		<!-- 资讯攻略 -->
 						 		<view class="operation-item" @click="handleRouter('/pages/view/gamedetail/children/zxDetail?game_id='+pageData.game_id)">
 						 		<image class="operation-item_image" src="@/static/images/view/zxgl.png" mode="widthFix"></image>
-						 			<text style="color: #666;font-size: 32rpx;margin-left: 15rpx;">资讯攻略</text>
+						 			<text :style="{color:heiye?'#C1C1C1':'#666'}" style="font-size: 32rpx;margin-left: 15rpx;">资讯攻略</text>
 						 		</view>
 						 	</view>
 						 </view>
@@ -169,46 +171,47 @@
 				   </cell>
 				   
 				<!-- 轮播图 -->
-				<cell class="cards" style="padding-left: 40rpx 0rpx 0rpx 0rpx;">
-					<scroller class="scroller" style="flex-direction: row;background-color: #fff;align-items: center;" scroll-direction='horizontal' :show-scrollbar='false'>
+				<cell :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" class="cards" style="padding-left: 40rpx 0rpx 0rpx 0rpx;">
+					<scroller :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}"  class="scroller" style="flex-direction: row;align-items: center;" scroll-direction='horizontal' :show-scrollbar='false'>
 					   <view v-if="pageData.mp4_type==1" :style="{width:myWidth-60+'px',height:'360rpx',position:'relative',borderRadius:'20rpx'}" style="background-color: #000;flex-direction: row;justify-content: center;align-items: center;margin-left: 24rpx;margin-bottom: -10rpx;">
 						<video id="video" :src="pageData.mp4_url" autoplay objectFit="fill" :enable-progress-gesture='false' :poster='pageData.hot_image'  :style="{width:myWidth-66+'px'}" style="height: 360rpx;margin:20rpx 10rpx;border-radius: 20rpx;" ></video>   	
-					    <cover-image src="@/static/images/view/video-background.png"  :style="{width:myWidth-60+'px',height:'360rpx'}" style="position: absolute;"></cover-image>
-					   </view>
+					    <cover-image v-if="heiye==false" src="@/static/images/view/video-background.png"  :style="{width:myWidth-60+'px',height:'360rpx'}" style="position: absolute;"></cover-image>
+					    <cover-image v-else  :style="{width:myWidth-60+'px',height:'360rpx'}" style="position: absolute;"></cover-image>
+						</view>
 						
 						<image v-for="(v,i) in pageData1" :key='i' @click="imageBig(i,pageData1)"	style="width: 200rpx;height: 360rpx;border-radius: 20rpx;margin:20rpx 10rpx;"	:src="/http/i.test(v)?v:'https:'+v"></image>
 					</scroller>
 				</cell>
-				  <cell style="height: 72rpx;background-color: #fff;"></cell>
+				  <cell :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}"  style="height: 72rpx;"></cell>
 				<!-- 游戏简介 -->
-				<cell class="cards">
-					<view style="flex-direction: row;align-items: center;justify-content: space-between;background-color: #fff;">
-						<text style="font-size: 40rpx;color: #000;font-weight: 700;">简介</text>
+				<cell :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" class="cards">
+					<view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" style="flex-direction: row;align-items: center;justify-content: space-between;">
+						<text :style="{color:heiye?'#fff':'#000'}" style="font-size: 40rpx;font-weight: 700;">简介</text>
 						<text style="font-size: 28rpx;color: #666;" @click="topage">查看全部</text>
 					</view>
-					<view style="flex-direction: row;align-items: center;background-color: #fff;margin-top: 40rpx;">
+					<view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" style="flex-direction: row;align-items: center;margin-top: 40rpx;">
 						<view style="flex-direction: row;margin: 0 10rpx;padding: 16rpx;border-radius: 40rpx; background-color: #D0F2FE; align-items: center;" v-if="pageData.tag">
 							<text style="color: #19BFFF;font-size: 24rpx;"  v-if="pageData.detailtype==1">NO:{{pageData.tag}} 新游榜 </text>
 							<text style="color: #19BFFF;font-size: 24rpx;"  v-if="pageData.detailtype==2">NO:{{pageData.tag}} 热门榜 </text>
 							<image src="@/static/images/view/left-black.png" mode="widthFix" style="width: 14rpx;height: 14rpx;margin-left: 4rpx;"></image>
 						</view>
-						<view style="flex-direction: row;margin: 0 10rpx;padding: 16rpx;border-radius: 40rpx; background-color: #F4F4F4; align-items: center;"	v-for="(item,index) in pageData.type" :key='index' @click="handleCates(index,item)">
-							<text style="font-size: 24rpx;color: #666;">{{item}}</text>		
+						<view :style="{backgroundColor:heiye?'#1C1C1C':'#F4F4F4'}" style="flex-direction: row;margin: 0 10rpx;padding: 16rpx;border-radius: 40rpx; align-items: center;"	v-for="(item,index) in pageData.type" :key='index' @click="handleCates(index,item)">
+							<text :style="{color:heiye?'#C1C1C1':'#666'}" style="font-size: 24rpx;">{{item}}</text>		
 							<image src="@/static/images/view/left-gred.png" mode="widthFix" style="width: 14rpx;height: 14rpx;margin-left: 4rpx;"></image>
 						</view>
 					</view>
-					<text style="font-size: 28rpx;margin: 20rpx 0;line-height: 50rpx;"	v-if="pageData.desc">{{pageData.desc.slice(0,70)+'...'}}</text>
+					<text :style="{color:heiye?'#C1C1C1':'#666'}" style="font-size: 28rpx;margin: 20rpx 0;line-height: 50rpx;"	v-if="pageData.desc">{{pageData.desc.slice(0,70)+'...'}}</text>
 				</cell>
-				<cell style="height: 72rpx;background-color: #fff;"></cell>
+				<cell :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}"  style="height: 72rpx;"></cell>
 				<!-- 评分 -->
-				<cell class="cards" >
-					<view @click="toDetail(pageData.game_id)" style="flex-direction: row;align-items: center;justify-content: space-between;background-color: #fff;margin-bottom: 20rpx;">
-						<text style="font-size: 40rpx;color: #000;font-weight: 700;">评价</text>
+				<cell :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" class="cards" >
+					<view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" @click="toDetail(pageData.game_id)" style="flex-direction: row;align-items: center;justify-content: space-between;margin-bottom: 20rpx;">
+						<text :style="{color:heiye?'#FFFFFF':'#000000'}"  style="font-size: 40rpx;font-weight: 700;">评价</text>
 						<text style="font-size: 28rpx;color: #666;">查看全部</text>
 					</view>
 					<!-- 玩家评价 -->
 					<view style="margin-bottom: 40rpx;">
-						<view style="background-color: #fff;flex-direction: row;margin-bottom: 24rpx;">
+						<view  :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" style="flex-direction: row;margin-bottom: 24rpx;">
 							<view class="pf-left">
 								<text style="color: #FF5927;font-size: 80rpx;">{{pageData.star_cnt}}</text>
 								<uni-rate v-model="pageData.star_cnt" :margin="4" :readonly="true" color="#DADADA"
@@ -263,7 +266,7 @@
 					<view style="margin-bottom: 20rpx;flex-direction: row;" v-if="Object.keys(evaluateitem)" @click="toDetail(pageData.game_id)">
 						<image v-if="evaluateitem.mem_avatar" :src="/http/i.test(evaluateitem.mem_avatar)?evaluateitem.mem_avatar:'https:'+ evaluateitem.mem_avatar" style="width: 80rpx;height: 80rpx;border-radius: 40rpx;"></image>
 						<view style="margin-left: 30rpx;justify-content: space-between;">
-							<text style="font-size: 30rpx;font-weight: 700;">{{evaluateitem.mem_name}}</text>
+							<text :class="['',heiye?'isTheme':'noTheme']" style="font-size: 30rpx;font-weight: 700;">{{evaluateitem.mem_name}}</text>
 							<text style="font-size: 24rpx;color: #666;"
 								v-if="evaluateitem.create_time">{{ evaluateitem.create_time | dateFormat('yyyy-MM-dd hh:mm:ss') }}</text>
 						</view>
@@ -310,10 +313,10 @@
 					<!-- 相关游戏 -->
 					<view style="margin-bottom: 60rpx;">
 						<view style="flex-direction: row;align-items: center;justify-content: space-between;margin-bottom: 40rpx;">
-							<text style="font-size: 40rpx;color: #000;font-weight: 700;">相关游戏</text>
+							<text :class="['',heiye?'isTheme':'noTheme']" style="font-size: 40rpx;font-weight: 700;">相关游戏</text>
 							<view style="flex-direction: row;align-items: center;width: 200rpx;justify-content: flex-end;" @tap="getrelevantData">
 								<image src="@/static/images/Refresh-icon.png" mode="widthFix" style="width: 40rpx;height: 40rpx;" ref="icon1"></image>
-								<text style="font-size: 24rpx;margin-left: 6rpx;">换一批</text>
+								<text :style="{color:heiye?'#C1C1C1':'#666'}" style="font-size: 24rpx;margin-left: 6rpx;">换一批</text>
 							</view>
 						</view>
 						<view ref="box_icon1" style="height:520rpx;">
@@ -403,7 +406,9 @@
 	         
 		},
 		computed: {
-			
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -430,6 +435,7 @@
 			}
 			
 		},
+		
 		onShow(){
 			setTimeout(()=>{
 				this.getEvaluate()
@@ -447,7 +453,12 @@
 		 
 		},
 		onReady() {
-			
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 			let fontSrc = plus.io.convertLocalFileSystemURL('/static/fonts/iconfont.ttf')
 			var domModule = weex.requireModule("dom");
 			domModule.addRule('fontFace', {
@@ -1063,8 +1074,9 @@
 
 	}
 </script>
-
+	
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.iconfont {
 		font-family: iconfont;
 	}
@@ -1123,7 +1135,7 @@
 		/* position: absolute; */
 		/* height: 10000rpx; */
 		
-		background-color: #fff;
+		
 		padding: 12rpx 32rpx 0rpx 32rpx;
 		position: relative;
 	}
@@ -1180,7 +1192,7 @@
 	}
 
 	.youhuiquan {
-		background-color: #F4F4F4;
+		
 		padding: 0 20rpx;
 		flex-direction: row;
 		align-items: center;
@@ -1188,7 +1200,7 @@
 	}
 
 	.kaifu {
-		background-color: #F4F4F4;
+		
 		padding: 0 20rpx;
 		flex-direction: row;
 		align-items: center;

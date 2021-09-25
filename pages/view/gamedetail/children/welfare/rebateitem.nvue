@@ -5,12 +5,12 @@
 			<view class="new-list">
 				<view v-for="(item,index) in pageData.rebate.list" :key="index" v-if="index<1" class="coupons">
 					<view class="title" :style="{width:myWidth-32+'px'}">
-						<text class="title_name"  :style="{width:myWidth-120+'px'}">{{item.title}}</text>
+						<text :class="['title_name',heiye?'isTheme':'noTheme']"  :style="{width:myWidth-120+'px'}">{{item.title}}</text>
 						<text class="buttons" @click="handleRouter">返利申请</text>
 					</view>
 					<view class="body">
 					 <text class="pub_time">{{item.pub_time}}</text>
-					 <text class="content" :style="{width:myWidth-32+'px'}">{{item.content.replace(/<[^<>]+>/g,'')}}</text>
+					 <text :class="['content',heiye?'noActive':'baicolor']"  :style="{width:myWidth-32+'px'}">{{item.content.replace(/<[^<>]+>/g,'')}}</text>
 					 <!-- <u-parse :content="item.content"  style="transform: scale(0.8);" class="u-parse" ></u-parse> -->
 					</view>	  
 				</view>
@@ -39,6 +39,9 @@
 			uParse
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -62,6 +65,7 @@
 </script>
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
   .title{
     flex-direction: row;
 	align-items: center;
@@ -70,7 +74,7 @@
   .title_name{
 	  font-size: 32rpx;
 	  font-weight: 700;
-	  color: #1C1C1C;
+	  
 	  lines: 1;
 	  text-overflow: ellipsis;
   }
@@ -102,6 +106,6 @@
   .content{
   	font-weight: 400;
   	font-size: 28rpx;
-	color: #666666;
+	
   }
 </style>

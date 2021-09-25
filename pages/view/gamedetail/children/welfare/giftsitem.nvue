@@ -1,16 +1,16 @@
 <template>
-	<view class="giftItem"  >
-		<view class="giftDetail"  v-for="(item,index) in pageData" :key='index' v-if="pageData.length>0">
+	<view :class="['giftItem',heiye?'bg':'wg']" >
+		<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="giftDetail"  v-for="(item,index) in pageData" :key='index' v-if="pageData.length>0">
 		<view class="row">
 			<image :src="item.icon" mode="widthFix" style="width: 120rpx;height: 120rpx;margin-right:12rpx"></image>
 			<view class="detail" :style="{width:myWidth/1.8+'px'}">
 				<view class="col desc" >
-				    <text class="text">{{item.gift_name}}</text>
-					<text class="text"> (</text>
-					<text class="text" style="color:#FF5927;">{{item.remain_cnt}}</text>
-					<text class="text">/</text>
-					<text class="text" style="color:#FF5927;">{{item.total_cnt}}</text>
-					<text class="text">)</text>
+				    <text :class="['text',heiye?'isTheme':'noTheme']" >{{item.gift_name}}</text>
+					<text :class="['text',heiye?'isTheme':'noTheme']" > (</text>
+					<text :class="['text',heiye?'isTheme':'noTheme']"  style="color:#FF5927;">{{item.remain_cnt}}</text>
+					<text :class="['text',heiye?'isTheme':'noTheme']" >/</text>
+					<text :class="['text',heiye?'isTheme':'noTheme']"  style="color:#FF5927;">{{item.total_cnt}}</text>
+					<text :class="['text',heiye?'isTheme':'noTheme']" >)</text>
 				</view>
 				<view style="padding: 0 32rpx;" :style="{width:myWidth/2.4+'px'}">
 					<progress  :percent="Math.floor(item.remain_cnt/item.total_cnt*100)" activeColor="#FF5927" border-radius='10' active stroke-width="4" style="border-radius: 6rpx;" />
@@ -44,6 +44,9 @@
 			},
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -101,10 +104,11 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.giftDetail {
 		/* flex-direction: row;
 		align-items: center; */
-		border-bottom:1px solid #efefef;
+		
 		padding-bottom: 40rpx;
 		margin-bottom: 40rpx;
 		}
@@ -123,7 +127,7 @@
 		.text{
 			font-size: 32rpx;
 			font-weight: 700;
-			color: #1C1C1C;
+			
 		}
 		
 		.giftButton {

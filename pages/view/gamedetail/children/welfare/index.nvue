@@ -1,6 +1,6 @@
 <!-- 福利 -->
 <template>
-	<view class="welfare" v-if="pageData">
+	<view  class="welfare" v-if="pageData">
 		<view class="top">
 			<view class="backImages" v-if="pageData&&platform=='android'">
 				<image :src="pageData.app_hot_image" :style="{width:myWidth+'px'}"></image>
@@ -26,12 +26,13 @@
 				</view>
 			</view>
 		</view>
-		<view class="cardRidus" :style="{width:myWidth+'px'}" ></view>
+		<view class="cardRidus" :style="{width:myWidth+'px',backgroundColor:heiye?'#090909':' #fff'}" ></view>
 		<!-- 详细信息 -->
-		<view class="mycard" :style="{height:myHeight-462+'rpx',width:myWidth+'px'}">
+		<view class="mycard" :style="{height:myHeight-462+'rpx',width:myWidth+'px',backgroundColor:heiye?'#090909':' #fff'}">
 		<view class="tabslist" :style="{width:myWidth+'px'}">
 			<view class="tabs" style="margin-right:60rpx ;" :active="active"  v-for="(item,index) in tabslist" @click="tabsClick(index)">
-				<text :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+				<text v-if="heiye==false" :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+				<text v-else :style="{color:active==index?'#fff':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 			</view>	
 		</view>
 		<view  class="tabs_line" :style="{transform:left? 'translateX('+0.18*myWidth*number+')':'translateX('+0.18*myWidth*number1+')'}"></view>
@@ -96,6 +97,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			platform() {
 				return globalData.store.state.platform
 			},
@@ -112,6 +116,14 @@
 			rebateitem,
 			vipitem
 
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			tabsClick(index){
@@ -217,7 +229,8 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 	/* 滑块 */
 	.tabslist{
 		margin-top:30rpx ;
@@ -314,14 +327,14 @@
 		border-radius: 20px 20px 0 0;
 		position: absolute;
 		top: 426rpx;
-		background-color: #fff;
+		
 
 	}
 
 	.mycard {
 	
 		padding: 0 32rpx;
-		background-color: #fff;
+		
 
 	}
 </style>

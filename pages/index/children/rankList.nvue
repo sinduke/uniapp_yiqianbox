@@ -2,9 +2,10 @@
 <template>
 	<view class="ranklist">
 		<scroller class="scroller" scroll-direction='horizontal' :show-scrollbar='false'  >
-			<text @click="handletab(index)" class="text" :class="{text1:active==index}" v-for="(item,index) in tabList" :key='index'>{{item}}</text>
+			<text v-if="heiye==false" @click="handletab(index)" class="text" :class="{text1:active==index}" v-for="(item,index) in tabList" :key='index'>{{item}}</text>
+			<text v-if="heiye" @click="handletab(index)" class="text10" :class="{text11:active==index}" v-for="(item,index) in tabList" :key='index'>{{item}}</text>
 		</scroller>
-		<view class="titleLine" ref="titleLine" :style="{width:myWidth+'px',height:'2rpx'}"></view>
+		<view v-if="heiye==false" class="titleLine" ref="titleLine" :style="{width:myWidth+'px',height:'2rpx'}"></view>
 		<view class="myList" :style="{height:myHeight-400+'rpx',width:myWidth+'px'}">
 			<list :show-scrollbar='false'  class="list" :style="{height:myHeight-400+'rpx'}" @loadmore='loadmore' loadmoreoffset='10'  ref="list" v-if="list.length">
 				<refresh @refresh="onrefresh" @pullingdown="onpullingdown" :display=" refreshing ? 'show' : 'hide'" :style="{width:myWidth-32+'px'}" :viewHeight='120'>
@@ -82,6 +83,12 @@
 				active: 0,
 				scrollTop:0,
 			}
+		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
+			
 		},
 		methods: {
 			onpullingdown(e) {
@@ -189,8 +196,8 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
-
+	@import '@/common/css/nvue-black.css';
+	
 	.myList {
 		padding: 0rpx 32rpx;
 	}
@@ -198,8 +205,9 @@
 	.ranklist {
 		/* padding: rpx 0; */
 	}
-
+	
 	.text {
+		font-weight: 300;
 		padding: 10rpx 32rpx;
 		margin-right: 32rpx;
 		color: #666666;
@@ -216,6 +224,25 @@
 		color: #FF5927;
 		 font-weight: 700; 
 	}
+	.text10 {
+		font-weight: 300;
+		padding: 10rpx 32rpx;
+		margin-right: 32rpx;
+		color: #C1C1C1;
+		font-size: 32rpx;
+		background-color: #1C1C1C;
+		border-radius: 40rpx;
+		border: 2rpx solid #1C1C1C;
+	
+	}
+	
+	.text11 {
+		border: 2rpx solid #FF5927;
+		background-color: #090909;
+		color: #FF5927;
+		 font-weight: 700; 
+	}
+	
 
 	.loadmoreText {
 		font-size: 22rpx;
