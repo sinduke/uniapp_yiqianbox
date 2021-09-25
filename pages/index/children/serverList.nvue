@@ -18,12 +18,12 @@
 					<view :style="{width:$store.state.myWidth+'px'}" v-if="typeof myList[0].game_start_time=='number'" class="cardLines" @disappear='handleDiss($event,getmonth(myList[0].game_start_time),weekday[new Date(myList[0].game_start_time*1000).getDay()])' >
 						<text :class="['timers',heiye?'isTheme':'noTheme']"   v-if="getmonth(myList[0].game_start_time)!=getmonth(new Date()/1000)">{{myList[0].game_start_time | dateFormat('MM-dd')}} {{weekday[new Date(myList[0].game_start_time*1000).getDay()]}}</text>
 						<view class="lins" v-if="getmonth(myList[0].game_start_time)!=getmonth(new Date()/1000)"></view>
-						<view class="lins" v-else style="background-color: #fff;"></view>
+						<view class="lins" v-else :style="{backgroundColor:heiye?'':'#fff'}" ></view>
 					</view>
 					<view :style="{width:$store.state.myWidth+'px'}" v-else class="cardLines" @disappear='handleDiss($event,getmonth(myList[0].game_start_time[0]),weekday[new Date(myList[0].game_start_time[0]*1000).getDay()])'>
 						<text class="timers" v-if="getmonth(myList[0].game_start_time[0])!=getmonth(new Date()/1000)">{{myList[0].game_start_time[0] | dateFormat('MM-dd')}} {{weekday[new Date(myList[0].game_start_time[0]*1000).getDay()]}}</text>
 						<view class="lins" v-if="getmonth(myList[0].game_start_time[0])!=getmonth(new Date()/1000)"></view>
-						<view class="lins" v-else style="background-color: #fff;"></view>
+						<view class="lins" v-else :style="{backgroundColor:heiye?'':'#fff'}"></view>
 					</view>
 
 					<view v-for="(item,index) in myList" :kye='index' v-if="index<14">
@@ -43,11 +43,11 @@
 							</view>
 							<view class="gameDetail" @click="handleRouter(item.game_id)">
 								<view class="detatilLeft">
-									<text class="gamename" style="margin-bottom:10rpx ;">{{item.gamename}}</text>
+									<text :class="['gamename',heiye?'isTheme':'noTheme']" style="margin-bottom:10rpx ;">{{item.gamename}}</text>
 									<view class="listBottom">
-										<text class="type text" v-if="item.classify==5">H5</text>
-										<text class="type text" v-for="(v,i) in item.type" :key="i" v-if="i<2">{{v}}</text>
-										<text class="user_cnt text">| 已有{{item.popularity_cnt}}人在玩</text>
+										<text :style="{color:heiye?'#c1c1c1':'#666'}" class="type text" v-if="item.classify==5">H5</text>
+										<text :style="{color:heiye?'#c1c1c1':'#666'}" class="type text" v-for="(v,i) in item.type" :key="i" v-if="i<2">{{v}}</text>
+										<text :style="{color:heiye?'#c1c1c1':'#666'}" class="user_cnt text">| 已有{{item.popularity_cnt}}人在玩</text>
 									</view>
 								</view>
 								<view class="detatilRight">
@@ -262,12 +262,10 @@
 				    // this.mytimes = this.getmonth(new Date()/1000) + ' '+this.weekday[this.newTime]
 					this.mytimes = '今日'+' '+this.weekday[this.newTime]
 					this.getpageData()
-					
+					this.bind();
 					this.islogin = true
 				}
-				if(val&&this.heiye==false){
-					this.bind();
-				}
+				
 
 			}
 		},
@@ -406,7 +404,7 @@
 	.gamename {
 		font-size: 32rpx;
 		font-weight: 600;
-		color: #1C1C1C;
+		
 	}
 
 	.listBottom {
@@ -419,7 +417,7 @@
 	}
 
 	.text {
-		color: #666666;
+		
 		font-size: 26rpx;
 	}
 
