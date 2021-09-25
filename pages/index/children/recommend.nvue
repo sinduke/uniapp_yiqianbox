@@ -16,7 +16,7 @@
 				<cell v-for="(item,index) in pageData" :key='index' v-if="pageData.length" style="overflow:hidden">
 					<view  class="card" :style="{width:myWidth-32+'px',backgroundColor:heiye?'#1c1c1c':'#fff',
 					boxShadow:$store.state.platform!='android'?'0px 0px 4px rgba(0, 0, 0, 0.16)':'',
-					marginBottom:$store.state.platform=='android'?'6rpx':'40rpx',height:'620rpx'}" ref="card" 
+					marginBottom:$store.state.platform=='android'&&heiye==false?'6rpx':'40rpx',height:heiye?'600rpx':'620rpx'}" ref="card" 
 					@touchstart='touchstart(index,$event)' @touchend='touchend(index,$event)'  >
 					<cover-view class="cover-view" :style="{width:myWidth-34+'px',height:'400rpx'}" >
 						<video :style="{width:myWidth-34+'px',height:'400rpx'}"
@@ -66,6 +66,7 @@
 							<image v-if="heiye==false" src="@/static/images/index/cards.png" :style="{width:myWidth-32+'px',height:'620rpx'}">	</image>
 	
 						</view>
+						
 					</view>
 				</cell>
 				<cell>
