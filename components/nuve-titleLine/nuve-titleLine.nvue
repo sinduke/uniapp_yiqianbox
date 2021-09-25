@@ -3,7 +3,7 @@
 		<scroller ref="scroller" :style="{width:myWidth/1.6+'px'}" scroll-direction="horizontal" :show-scrollbar="false" style="flex-direction: row;">
 			<view class="titles">
 				<view class="titleItem" :style="{width:titleItemWidth+'px'}" >
-					<view v-for="(item,index) in TitleList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth/3)-90+'px'}" ref="tabitem" :id="item.id"> 
+					<view v-for="(item,index) in myList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth/3)-90+'px'}" ref="tabitem" :id="item.id"> 
 						<text v-if="heiye==false" class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
 						<text v-else class="TitleName2" @click="handleClick(index)" ref='TitleName' :class="[{TitleName3:active==index}]">{{item.name}}</text>
 					</view>
@@ -54,6 +54,7 @@
 				widthLine:0,
 				titleItemWidth:0,
 				linesWidth:0,
+				myList:[]
 			
 			}
 		},
@@ -74,9 +75,20 @@
 				this.$emit('active', e)
 				this.$emit('isactive', false)
 				this.isActive = false
-				console.log(e,this.linesWidth,'eee')
-				this.widthLine = (this.linesWidth+(this.myWidth/3)-90) * e
+				 this.widthLine = this.getWidthLines(e)
+
 			},
+			getWidthLines(e){
+				let width = 0
+			     this.myList.map((item,index)=>{
+					 if(e>index){
+						 width += item.width+(this.myWidth/3)-90
+					 }
+				 })
+				return width
+			},
+			
+			
 			getline_Width(index){
 				dom.getComponentRect(this.$refs.tabitem[index], res => {
 					this.linesWidth = res.size.width 
@@ -84,14 +96,15 @@
 				});
 			},
 			
-			getWidth(){
-				this.$refs.tabitem.map(item=>{
+			getWidth(){	
+				this.$refs.tabitem.map((item,index)=>{
 					dom.getComponentRect(item, res => {
+						this.myList[index].width =  res.size.width
+						// console.log(index,this.myList,'this.myList')
 						this.titleItemWidth += res.size.width + ( this.myWidth / 3 - 100)
 					   
 					});
 				})
-				
 			},
 			scrollTabTo(index) {
 			  const el = this.$refs.tabitem[index];
@@ -104,6 +117,32 @@
 			  // } 
 			  dom.scrollToElement(el, { offset});
 			},
+			switchTab(val){
+					console.log(this.widthLine,this.number,this.myWidth,val,'this.widthLine')
+				if(this.number==(this.length-1)&&val>0){	
+				}else if(this.number==0&&val<0){					
+					this.widthLine = 0
+				}
+				else if(val==0){
+					this.widthLine = this.getWidthLines(this.number)
+					
+				}
+				else if(Math.abs(val)>(this.myWidth-4)&&Math.abs(val)<=this.myWidth){
+					if(val>0){
+						 this.widthLine = this.getWidthLines(this.number+1)
+					}else{
+						this.widthLine = this.getWidthLines(this.number-1)
+					}
+				}
+				else
+				{
+					if (this.isActive) {
+						this.widthLine = Math.round(this.myWidth / 3 - 50) * this.number + Math.round(val / 5.5)
+						
+					}
+				}	
+			}
+			
 			
 			
 		},
@@ -118,28 +157,24 @@
 				 this.getline_Width(val)
 			},
 			scrollMove(val) {
-				if(this.number==(this.length-1)&&val>0){
-					this.widthLine = Math.round(this.myWidth / 3 - 60) * (this.length-1) + Math.round(val / 6)				
-				}else if(this.number==0&&val<0){					
-					this.widthLine = 0
+				if(this.isActive){
 					
-				}else{
-					if (this.isActive) {
-						this.widthLine = Math.round(this.myWidth / 3 - 60) * this.number + Math.round(val / 6)
-					}
-				}		
+	           this.switchTab(val)
+				}
 			},
 			isActives(val) {
 				this.isActive = val 
 			}
 		},
 		mounted() {
+	    this.myList = JSON.parse(JSON.stringify(this.TitleList))
 			setTimeout(()=>{
 			  this.getWidth()
 			  this.getline_Width(0)
-			
 			},100)
+			
 		}
+		
 	}
 </script>
 
@@ -151,9 +186,9 @@
 		background-color: #FF5927;
 		/* margin-left: 6px; */
 		border-radius: 6rpx;
-/* 		transition-property:width,transform;
-		transition-duration:0.2s;
-		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1); */
+/* 		transition-property:transform,width;
+		transition-duration:0.04s;
+		transition-timing-function: cubic-bezier(0, 0, 1, 1); */
 	}
 
 	.titleItem {
