@@ -1,10 +1,10 @@
 <template>
 	<view :style="{height:myHeight+'rpx',overflow:'hidden',flex:1}">
 		<!-- 评分部分 -->
-			<list :show-scrollbar="false"  class="listAll" loadmoreoffset='30'  :style="{height:myHeight-1+'rpx'}" >
+			<list :show-scrollbar="false"  class="listAll" loadmoreoffset='30'  :style="{height:myHeight-1+'rpx',background:heiye?'#090909':'#fff'}" >
 				<cell>
 					<view style="padding-top: 48rpx;" v-if="pageData">
-						<view style="background-color: #fff;display: flex;flex-flow: row;">
+						<view :style="{background:heiye?'#090909':'#fff'}" style="display: flex;flex-flow: row;">
 							<view class="pf-left">
 								<text style="color: #FF5927;font-size: 80rpx;">{{pageData.star_cnt}}</text>
 			
@@ -102,8 +102,7 @@
 								</view>
 								<view class="" style="margin-left: 24rpx;">
 									<view>
-										<text
-											style="font-size: 24rpx;color: #1C1C1C;font-weight: bold;line-height: 45rpx;">{{item.mem_name}}</text>
+										<text :style="{color:heiye?'#fff':'#1C1C1C'}" style="font-size: 24rpx;font-weight: bold;line-height: 45rpx;">{{item.mem_name}}</text>
 									</view>
 									<view>
 										<text
@@ -118,7 +117,7 @@
 							</view>
 							<view>
 								<view class="" v-if="item.content.length>44" style="position: relative;">
-									<text  style="color: #121212;font-size: 28rpx;font-weight: 400;" >{{item.isAll==false?item.content.slice(0,44):item.content}}{{item.isAll==false?"...":""}}</text>
+									<text :style="{color:heiye?'#c1c1c1':'#121212'}" style="font-size: 28rpx;font-weight: 400;" >{{item.isAll==false?item.content.slice(0,44):item.content}}{{item.isAll==false?"...":""}}</text>
 									<view class="" @click="lookAll(index)" v-if="item.isAll==false"  style="position: absolute;right:1rpx ;top:40rpx ;">
 										<text style=" color: #C1C1C1;;font-size: 26rpx;font-weight: 400;">查看全部</text>
 										
@@ -127,7 +126,7 @@
 								</view>
 								
 								
-								<text  style="color: #121212;font-size: 28rpx;font-weight: 400;" v-else>{{item.content}}</text>
+								<text :style="{color:heiye?'#c1c1c1':'#121212'}"  style="font-size: 28rpx;font-weight: 400;" v-else>{{item.content}}</text>
 								
 							</view>
 							
@@ -166,8 +165,8 @@
 						<!-- 子回复 -->
 						<view class="">
 							<view class="" v-if="item.sub.length==0"></view>
-							<view class="item6" v-else-if='item.sub.length==1' @click="commentDetail(item,index)"
-								style="width: 100%;height: 70rpx;margin-bottom: 48rpx;background: #F8F8F8;border-radius: 40rpx;">
+							<view :style="{background:heiye?'#1c1c1c':' #F8F8F8'}" class="item6" v-else-if='item.sub.length==1' @click="commentDetail(item,index)"
+								style="width: 100%;height: 70rpx;margin-bottom: 48rpx;border-radius: 40rpx;">
 								<view class="" style="margin-bottom: 7rpx;flex-direction: row; "
 									v-for="(item,index) in item.sub" :key='index'>
 									<text
@@ -175,17 +174,17 @@
 										style="color: #666666;font-weight: 400;opacity: 0.6;font-size:28rpx;line-height:70rpx;">{{item.content}}</text>
 								</view>
 							</view>
-							<view class="item6" v-else @click="commentDetail(item,index) "
-								style="width: 100%;height: 170rpx;margin-bottom: 48rpx;background: #F8F8F8;border-radius: 40rpx;">
+							<view :style="{background:heiye?'#1c1c1c':' #F8F8F8'}" class="item6" v-else @click="commentDetail(item,index) "
+								style="width: 100%;height: 170rpx;margin-bottom: 48rpx;border-radius: 40rpx;">
 								<view class="" style="flex-direction: row;margin:15rpx 0 15rpx 20rpx">
 									<text
-										style="color: #121212;margin-right: 6rpx;font-weight: 600;font-size:28rpx;">{{item.sub[0].mem_name}}：</text>
+										style="margin-right: 6rpx;font-weight: 600;font-size:28rpx;" :style="{color:heiye?'#c1c1c1':'#121212'}">{{item.sub[0].mem_name}}：</text>
 									<text
-										style="color: #666666;font-weight: 400;opacity: 0.6;font-size:28rpx;">{{item.sub[0].content}}</text>
+										style="color: #666666;font-weight: 400;opacity: 0.6;font-size:28rpx;" >{{item.sub[0].content}}</text>
 								</view>
 								<view class="" style="margin:0 0 15rpx 20rpx;flex-direction: row;">
 									<text
-										style="color: #121212;margin-right: 6rpx;font-weight: 600;font-size:28rpx;">{{item.sub[1].mem_name}}：</text>
+										style="margin-right: 6rpx;font-weight: 600;font-size:28rpx;" :style="{color:heiye?'#c1c1c1':'#121212'}">{{item.sub[1].mem_name}}：</text>
 									<text
 										style="color: #666666;font-weight: 400;opacity: 0.6;font-size:28rpx;">{{item.sub[1].content}}</text>
 								</view>
@@ -194,7 +193,8 @@
 							</view>
 						</view>
 			
-						<view style="width:750rpx; border-bottom: 1px solid #EFEFEF;margin-bottom: 48rpx; "></view>
+						<view v-if="heiye==false" style="width:750rpx; border-bottom: 1px solid #EFEFEF;margin-bottom: 48rpx; "></view>
+						<view v-else style="width:750rpx; border-bottom: 1px solid #3d3d3d;margin-bottom: 48rpx; "></view>
 					</view>
 				</cell>
 				<cell>
@@ -209,7 +209,10 @@
 				</loading>
 			</list>
 		<view class="" style="position: fixed;bottom: 70rpx;right: 32rpx;width: 120rpx;height: 120rpx;">
-			<image @click="toComment" src="../../../static/images/my/pl.png" mode=""
+			<image v-if="heiye==false" @click="toComment" src="../../../static/images/my/pl.png" mode=""
+				style="width: 120rpx;height: 120rpx;border-radius: 50%;">
+			</image>
+			<image v-if="heiye" @click="toComment" src="../../../static/images/my/pl1.png" mode=""
 				style="width: 120rpx;height: 120rpx;border-radius: 50%;">
 			</image>
 		</view>
@@ -230,6 +233,9 @@
 			myloading
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			...mapState({
 				userInfo: "userInfo"
 			}),
@@ -264,6 +270,14 @@
 				
 				
 				
+			}
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
 			}
 		},
 		onShow(){
@@ -434,8 +448,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.listAll {
-		background-color: #fff;
+		
 		padding: 0 32rpx;
 	}
 

@@ -1,5 +1,5 @@
 <template>
-		<view class="container" :style="{width:$store.state.myWidth-56+'px'}">
+		<view :class="['container',heiye?'hei':'wg']"  :style="{width:$store.state.myWidth-56+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth-56+'px'}">
 				<!-- tabs -->
 				<!-- <scroller scroll-direction="horizontal" style="flex-direction: row;"> -->
@@ -7,7 +7,8 @@
 					<view class="tab" :style="{width:$store.state.myWidth-56+'px'}" style="margin-bottom: 20rpx;">
 						<view class="tabslist">
 							<view class="tabs"  :active="active" v-for="(item, index) in myGame" :key="index" @click="tabsClick(index)">
-								<text :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+								<text v-if="heiye==false" :style="{color:active==index?'#000000':'#666666',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
+								<text v-else :style="{color:active==index?'#fff':'#c1c1c1',fontWeight:active==index?'bold':'400',transform:active==index?'scale(1)':'scale(0.9)'}" class="tabs_text">{{item}}</text>
 							</view>	
 						</view>
 						
@@ -20,20 +21,20 @@
 						<scroll-view :show-scrollbar="false" class="list" :scroll-y="true" :style="{width:$store.state.myWidth-56+'px',height:downHeight-300+'rpx'}">
 							<view v-for="(item,index) in data.list" :key='index' :style="{width:$store.state.myWidth-56+'px'}">
 								<view class="cell">
-									<view class="cell_left" :style="{width:($store.state.myWidth-56)*0.3+'px'}">
-										<text class="left_text1">{{item.coupons_amount}}</text>
-										<text class="left_text2">{{item.title}}</text>
+									<view :class="['cell_left',heiye?'hei666':'bai1']" :style="{width:($store.state.myWidth-56)*0.3+'px'}">
+										<text :class="['left_text1',heiye?'isTheme':'noTheme']" >{{item.coupons_amount}}</text>
+										<text :class="['left_text2',heiye?'noActive':'baicolor']" >{{item.title}}</text>
 									</view>
-									<view class="cell_right" :style="{width:($store.state.myWidth-56)*0.7+'px'}">
+									<view :class="['cell_right',heiye?'hei777':'bai']" :style="{width:($store.state.myWidth-56)*0.7+'px'}">
 										<view class="right_head">
 											<view class="head_text">
 												<text class="head_text1">有效期至：{{item.get_time_end|dateFormat('yyyy.MM.dd')}}</text>
 												<text class="head_text2">领取时间：{{item.get_time_begin|dateFormat('yyyy.MM.dd')}}后</text>
 											</view>
-											<view  v-if="!item.have_got" class="head_but" @click="handleClick(item.id,item.period_type,item)">
+											<view :style="{background:heiye?'#3d3d3d':'#DBDBDB',border:heiye?'':'2rpx solid #E4E4E4'}"  v-if="!item.have_got" class="head_but" @click="handleClick(item.id,item.period_type,item)">
 												<text class="head_text3">领 取</text>
 											</view>
-											<view v-else class="head_but3" >
+											<view :style="{background:heiye?'#3d3d3d':'#DBDBDB',border:heiye?'':'2rpx solid #E4E4E4'}" v-else class="head_but3" >
 												<text style="color: #fff;" class="head_text3">已领取</text>
 											</view>
 										</view>
@@ -135,6 +136,9 @@
 			this.getPageData()
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
@@ -252,9 +256,10 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	/* body */
 	.container{
-		background: #fff;
+		
 	}
 	.box{
 		
@@ -301,12 +306,12 @@
 	/* 左边 */
 	.cell_left{
 		border-radius: 40rpx 0rpx 0rpx 40rpx;
-		background-color: #E9E9E9;
+		
 	}
 	.left_text1{
 		margin:30rpx 0rpx 10rpx 0;
 		text-align: center;
-		color: #1C1C1C;
+		
 		font-size:50rpx ;
 		font-weight:700;
 		font-family: PingFang SC;
@@ -316,7 +321,7 @@
 	}
 	.left_text2{
 		text-align: center;
-		color: #666666;
+		
 		font-size:26rpx ;
 		font-family: PingFang SC;
 		font-weight: 500;
@@ -324,7 +329,7 @@
 	}
 	/* 右边 */
 	.cell_right{
-		background: #F8F8F8;
+		
 		padding:22rpx  ;
 		border-radius:0 40rpx 40rpx 0;
 	}
@@ -349,7 +354,7 @@
 	.head_but{
 		height:50rpx ;
 		padding:0rpx 30rpx;
-		border: 1px solid #E4E4E4;
+		
 		background: #FFFFFF;
 		border-radius:25rpx;
 		justify-content: center;
@@ -357,7 +362,7 @@
 	.head_but3{
 		height:50rpx ;
 		padding:0rpx 16rpx;
-		border: 1px solid #E4E4E4;
+		
 		background: #C1C1C1;
 		border-radius:25rpx;
 		justify-content: center;

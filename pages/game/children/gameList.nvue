@@ -33,11 +33,15 @@
 		<!-- 分类 -->
 		<view :style="{height:myHeight-160+'rpx'}" class="slideBar" ref='slideBarref'>
 			<view class="list-left" ref='slideLeft'>
-				<list class="slide-left" :style="{height:myHeight-160+'rpx'}" :show-scrollbar='false' :scrollTop='scrollTop'>
+				<list class="slide-left" :style="{height:myHeight-160+'rpx',backgroundColor:heiye?'#1c1c1c':'#f2f2f2'}" :show-scrollbar='false' :scrollTop='scrollTop'>
 					<cell v-for="(item, index) in pageList" :key="index">
-						<view class="listItem" :class="{active1: item.id == activeIndex}"	@click="changeCate(item, index)">
+						<view v-if="heiye==false" class="listItem" :class="{active1: item.id == activeIndex}"	@click="changeCate(item, index)">
 							<text class="lines" :class="{actives: item.id == activeIndex}"></text>
 							<text class="textList" :class="{active: item.id == activeIndex}">{{item.name}}</text>
+						</view>
+						<view v-else class="listItem" :class="{active3: item.id == activeIndex}"	@click="changeCate(item, index)">
+							<text class="lines" :class="{actives: item.id == activeIndex}"></text>
+							<text class="textList" :class="{active4: item.id == activeIndex}">{{item.name}}</text>
 						</view>
 					</cell>
 				</list> 
@@ -626,6 +630,12 @@
 		background-color: #FF5927;
 
 	}
+	.active3 {
+		background-color: #3d3d3d;
+		/* border-radius: 0 20rpx  20rpx 0 ; */
+		/* border-radius: 20rpx; */
+		/* border-radius:0 0  0 0 ; */
+	}
 
 
 	.list-left {
@@ -641,7 +651,7 @@
 	.slide-left {
 		/* width: 150rpx; */
 		flex-direction: column;
-		background-color: #f2f2f2;
+		
 		overflow: hidden;
 
 	}
@@ -661,6 +671,12 @@
 		color: #1C1C1C;
 		font-weight: 700;
 
+	}
+	.active4 {
+		background-color: #3d3d3d;
+		color: #fff;
+		font-weight: 700;
+	
 	}
 
 	.name {

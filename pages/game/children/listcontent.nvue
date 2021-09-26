@@ -5,12 +5,14 @@
 			<list ref="list" loadmoreoffset='10' style="margin-top: 20rpx;">
 				<cell>
 					<view class="is_h5">
-						<text class="h5text" :class="{text1:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
+						<text v-if="heiye==false" class="h5text" :class="{text1:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
+						<text v-else class="h5text1" :class="{text1:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
 					</view>
 					<view class="tags">
 						<text :class="['titles',heiye?'isTheme':'noTheme']" >游戏福利</text>
 						<view style="flex-direction: row;flex-wrap: wrap;">
-							<text class="h5text" v-for="(item,index) in tagsList" @click="handeltags(item.id,item.name)" :class="{text1:active1==item.id}">{{item.name}}</text>
+							<text class="h5text" v-if="heiye==false" v-for="(item,index) in tagsList" @click="handeltags(item.id,item.name)" :class="{text1:active1==item.id}">{{item.name}}</text>
+							<text class="h5text1" v-else v-for="(item,index) in tagsList" @click="handeltags(item.id,item.name)" :class="{text1:active1==item.id}">{{item.name}}</text>
 						</view>
 					</view>
 					<view class="cates" v-if="gameSelete">
@@ -252,6 +254,18 @@
 		border: 1px solid #F8F8F8;
 		lines: 4;
 
+	}
+	.h5text1 {
+		font-size: 30rpx;
+		font-weight: 300;
+		color: #C1C1C1;
+		padding: 12rpx 32rpx;
+		border-radius: 40rpx;
+		margin: 10rpx 32rpx 20rpx 0;
+		background-color: #1C1C1C;
+		border: 1px solid #1C1C1C;
+		lines: 4;
+	
 	}
 
 	.text1 {

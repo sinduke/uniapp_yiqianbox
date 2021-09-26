@@ -1,6 +1,7 @@
 <template>
 	<view  class="bigTurntable" :style="{flex:myHeight<1400?'':1}">
-		<myNavbar title='幸运转盘' style="position: fixed;" :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
+		<myNavbar v-if="heiye==false" title='幸运转盘' style="position: fixed;" :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
+		<myNavbar v-else title='幸运转盘' style="position: fixed;" :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details1.png'></myNavbar>
 		<image src="@/static/images/my/bigturntablebgi1.png" mode="widthFix" :style="{height:myHeight+'rpx',width:myWidth+'px'}"></image>
 		<view class="bg123" :style="{height:myHeight+'rpx',width:myWidth+'px'}">
 			<view class="bigTitle" :style="{windth:myWidth+'px'}">

@@ -1,41 +1,42 @@
 <!-- 积分商城 -->
 <template>
 	<view :style="{height:myHeight-1+'rpx',width:myWidth+'px'}">
-		<myNavbar title='积分商城' :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
-		<view class="container" :style="{width:myWidth+'px'}">
+		<myNavbar v-if="heiye==false" title='积分商城' :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details.png'></myNavbar>
+		<myNavbar v-else title='积分商城' :lines="false" right radius router='/pages/my/integral/integral1' src='../../../../static/images/my_details1.png'></myNavbar>
+		<view :class="['container',heiye?'bg':'wg']" :style="{width:myWidth+'px'}">
 			<view :style="{marginTop:statusBarHeight+45+'px'}"></view>
 			<scroll-view scroll-y :style="{height:myHeight-153+'rpx'}" :show-scrollbar="false">
 				<view class="demoTitle" :style="{width:myWidth+'px'}">
 					<image :style="{width:myWidth+'px'}" src="@/static/images/my/jfsc_banner.png" mode="widthFix" ></image>
 				</view>
 				<view class="demotext">
-					<text class="text_le">我的积分：{{userInfo.my_integral}}</text>
+					<text :style="{color:heiye?'#fff':'#252525'}" class="text_le">我的积分：{{userInfo.my_integral}}</text>
 					<view class="text_ri">
 						<image class="ri_img" src="@/static/images/my/rhhqjf.png" mode="widthFix" @click="isShow= true"></image>
 						<text class="ri_text"  @click="isShow= true">如何获得积分</text>
 					</view>
 				</view>
-				<view class="itemlist">
-					<view class="item" :style="{width:myWidth*0.5-24+'px'}">
-						<view class="item_head" :style="{width:myWidth*0.5-24-16+'px'}" @click="handleRouter('/pages/my/children/bigTurntable/index')">
+				<view :style="{backgroundColor:heiye?'#090909':'#F6F6F8'}" class="itemlist">
+					<view class="item" :style="{width:myWidth*0.5-24+'px',backgroundColor:heiye?'#1c1c1c':'#FFFFFF'}">
+						<view class="item_head" :style="{width:myWidth*0.5-24-16+'px',backgroundColor:heiye?'#090909':'#F6F6F8'}" @click="handleRouter('/pages/my/children/bigTurntable/index')">
 							<image src="@/static/images/my/jfsc-xyzp.png" style="width: 140rpx;" mode="widthFix"></image>
 							<text class="head_text">积分“转”大奖</text>
 						</view>
-						<text class="item_mi">幸运转盘</text>
+						<text :style="{color:heiye?'#fff':'#000000'}" class="item_mi">幸运转盘</text>
 						<view class="item_bo" @click="handleRouter('/pages/my/children/bigTurntable/index')">
 							<text class="bo_text" >立即兑换</text>
 						</view>
 					</view>
-					<view class="item" :style="{width:myWidth*0.5-24+'px'}" v-for="item in pageData" :key='item.id'>
-						<view class="item_head" v-if="item.goods_img" :style="{width:myWidth*0.5-24-16+'px'}" >
+					<view class="item" :style="{width:myWidth*0.5-24+'px',backgroundColor:heiye?'#1c1c1c':'#FFFFFF'}" v-for="item in pageData" :key='item.id'>
+						<view class="item_head" v-if="item.goods_img" :style="{width:myWidth*0.5-24-16+'px',backgroundColor:heiye?'#090909':'#F6F6F8'}" >
 							<image :src="item.goods_img" style="width: 140rpx;" mode="widthFix"></image>
 							<text class="head_text">{{item.goods_content.length>12?item.goods_content.slice(0,10)+'..':item.goods_content}}</text>
 						</view>
-						<view class="item_head" v-else :style="{width:myWidth*0.5-24-16+'px'}" >
+						<view class="item_head" v-else :style="{width:myWidth*0.5-24-16+'px',backgroundColor:heiye?'#090909':'#F6F6F8'}" >
 							<image :src="item.integral<=500?'../../../../static/images/my/jfsc-5ptb.png':(item.integral>500&&item.integral<=1000)?'../../../../static/images/my/jfsc-10ptb.png':(item.integral>1000&&item.integral<=2000)?'../../../../static/images/my/jfsc-20ptb.png':'../../../../static/images/my/jfsc-30ptb.png'" style="width: 140rpx;" mode="widthFix"></image>
 							<text class="head_text">{{item.goods_content.length>12?item.goods_content.slice(0,10)+'..':item.goods_content}}</text>
 						</view>
-						<text class="item_mi">{{item.goods_name.length>12?item.goods_name.slice(0,10)+'..':item.goods_name}}</text>
+						<text :style="{color:heiye?'#fff':'#000000'}" class="item_mi">{{item.goods_name.length>12?item.goods_name.slice(0,10)+'..':item.goods_name}}</text>
 						<view class="item_bo" @click="handleClick(item)">
 							<text class="bo_text" >立即兑换</text>
 						</view>
@@ -116,6 +117,9 @@
 			showpop
 		},
 		computed:{
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			userInfo(){
 				return globalData.store.state.userInfo
 			},
@@ -128,6 +132,14 @@
 			myHeight(){
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			} 
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			handleRouter(url) {
@@ -227,8 +239,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 .container{
-	background: #fff;
+	
 }
 .demoTitle {
 	height: 400rpx;
@@ -239,7 +252,7 @@
 	padding:10rpx 28rpx;
 }
 .text_le{
-	color: #252525;
+	
 	font-size:26rpx ;
 	font-weight: 500;
 }
@@ -261,7 +274,7 @@
 .itemlist{
 	flex-wrap: wrap;
 	padding:32rpx 28rpx;
-	background: #F6F6F8;
+	
 	flex-direction: row;
 	justify-content: space-between;
 }
@@ -269,14 +282,14 @@
 	padding:16rpx ;
 	margin-bottom: 40rpx;
 	height: 360rpx;
-	background: #FFFFFF;
+	
 	border-radius:40rpx ;
 	flex-direction: column;
 	align-items: center;
 }
 .item_head{
 	height:200rpx;
-	background: #F6F6F8;
+	
 	border-radius: 20px;
 	flex-direction: column;
 	justify-content: center;
@@ -291,7 +304,7 @@
 .item_mi{
 	font-size:36rpx ;
 	font-weight: 800;
-	color: #000000;
+	
 	text-align: center;
 	margin-top:15rpx ;
 }

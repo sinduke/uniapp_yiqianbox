@@ -1,9 +1,9 @@
 <!-- 获取记录 -->
 <template>
-	<view class="withdrawalRecord">
+	<view :class="['withdrawalRecord',heiye?'bg':'wg']" >
 		<view class="body" :style="{height:myHeight+'rpx'}" >
 			<list class="list" :style="{height:myHeight+'rpx',width:myWidth+'px'}" loadmoreoffset='10' v-if="pageData.length>0" :show-scrollbar='false' ref="list" @loadmore='loadmore'>
-				<cell class="card" v-for="(item,index) in pageData" :key='index' :style="{width:myWidth-32+'px'}">
+				<cell  class="card" v-for="(item,index) in pageData" :key='index' :style="{width:myWidth-32+'px',borderBottom:heiye?'1px solid #1c1c1c':'1px solid #ececec'}">
 					<view class="cardLeft">
 						<text class="cardLeft-text">领取金额</text>
 						<text class="cardLeft-time">{{item.create_time | dateFormat("yyyy-MM-dd hh:mm:ss")}}</text>
@@ -39,11 +39,22 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
+			}
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
 			}
 		},
 		methods: {
@@ -105,11 +116,12 @@
 </script>
 
 <style  scoped>
+	@import '@/common/css/nvue-black.css';
 	.list{
 		padding: 0 32rpx;
 	}
 	.withdrawalRecord{
-		background-color: #fff;
+		
 		flex: 1;
 		overflow:hidden;
 	}
@@ -117,7 +129,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		border-bottom: 1px solid #ececec;
+		
    }
 		.cardLeft {
 			padding: 24rpx 0;
