@@ -147,7 +147,7 @@
 					...params
 				}).then(res => {
 					this.pageData = res.data.data;
-					console.log(this.pageData)
+	
 				})
 			},
 			handleRouter(url){
