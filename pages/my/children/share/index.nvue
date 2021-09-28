@@ -25,17 +25,17 @@
 		<gameporp :isshow='show' @close='show=false' :shareData='shareData' ref='propup' type='1'></gameporp>
 		<view class=""  v-if="txshow" style="position: relative;">
 			<view class="modal_box" @click.stop="stop" :style="{height:$store.state.myHeight+'rpx',width:$store.state.myWidth+'px'}" >
-				<image style="background: no-repeat center;position: fixed;top:300rpx" :style="{width:$store.state.myWidth*0.7+'px',left:$store.state.myWidth*0.15+'px'}" src="../../../../static/images/my/share-popup.png" mode="widthFix"></image>
-				
+				<image v-if="heiye==false" style="background: no-repeat center;position: fixed;top:300rpx" :style="{width:$store.state.myWidth*0.7+'px',left:$store.state.myWidth*0.15+'px'}" src="../../../../static/images/my/share-popup.png" mode="widthFix"></image>
+				<image v-else style="background: no-repeat center;position: fixed;top:300rpx" :style="{width:$store.state.myWidth*0.7+'px',left:$store.state.myWidth*0.15+'px'}" src="../../../../static/images/my/share-popup1.png" mode="widthFix"></image>
 				<view class="" style="position: fixed;top:550rpx ;" :style="{width:$store.state.myWidth*0.6+'px',left:$store.state.myWidth*0.2+'px'}">
-					<view class="titlelie" >
-						<text class="lineText" @click.stop="handleClick">领取方式</text>
+					<view class="titlelie" :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #ECECEC'}">
+						<text :style="{color:heiye?'#fff':'#252525'}" class="lineText" @click.stop="handleClick">领取方式</text>
 						<text style="color: #999999;font-size:28rpx;font-weight:400 ;" @click.stop="handleClick">{{payWay.name?payWay.name:'请选择领取方式'}}</text>
 					</view>
-				    <input v-model="form.amount" type="number" placeholder="请输入领取金额" class="input"></input>
-					<view class="titlelie" style="position: relative;" :style="{width:$store.state.myWidth*0.6+'px'}">
+				    <input :style="{color:heiye?'#c1c1c1':''}"  v-model="form.amount" type="number" placeholder="请输入领取金额" class="input"></input>
+					<view class="titlelie" style="position: relative;" :style="{width:$store.state.myWidth*0.6+'px',borderBottom:heiye?'1px solid #3d3d3d':'1px solid #ECECEC'}">
 					</view>
-					<text style="position: absolute;top: 96rpx;" class="lineText">领取金额</text>
+					<text :style="{color:heiye?'#fff':'#252525'}" style="position: absolute;top: 96rpx;" class="lineText">领取金额</text>
 					<view @click.stop="withdraw" class="buttons"  :style="{width:$store.state.myWidth*0.6+'px'}">
 						<text class="buts">提交</text>
 					</view>
@@ -45,19 +45,22 @@
 		</view>
 		<mypopup :nheight='460'  style="position: fixed;" v-if="payWay.show" @click.stop='stop'>
 			<view class="prouptitle">
-				<text class="pup_text" @click.stop="payWay.show=false">取消</text>
+				<text :style="{color:heiye?'#fff':''}" class="pup_text" @click.stop="payWay.show=false">取消</text>
 				<text class="pup_text" style="color: #ff5927;" @click="handleSelect">确认</text>
 			</view>
 
 			<view class="proup_body" >
-				<view class="prop_lines">
+				<view v-if="heiye==false" class="prop_lines">
+					
+				</view>
+				<view v-else class="prop_lines1">
 					
 				</view>
 				<scroller offset-accuracy='1' style="height: 280rpx;" @scrollend='scrollend'>
 					<view class="proup_List" :style="{width:myWidth+'px'}">
 						<view class="proup_item" v-for="(item,index) in payWay.payList"
 						 :key='index' :style="{marginTop:index==0?'48px':'',marginBottom:index==payWay.payList.length-1?'62px':'32rpx'}">
-							<text>{{item.label}}</text>
+							<text :style="{color:heiye?'#c1c1c1':''}">{{item.label}}</text>
 						</view>
 					</view>
 				</scroller>
@@ -267,6 +270,15 @@
 		border-top:1px solid #efefef;
 		
 	}
+	.prop_lines1{
+		position: absolute;
+	    top: 40px;
+		height: 44px;
+		width: 800px;
+		border-bottom:1px solid #3d3d3d;
+		border-top:1px solid #3d3d3d;
+		
+	}
 	.proup_item{
 		margin-bottom: 32rpx;
 		padding:12rpx 100rpx; 
@@ -310,7 +322,7 @@
 		border: 1px solid #E3E3E3;
 	}
 	.lineText{
-		 color:#252525 ;
+		 
 		 font-size:32rpx ;
 		 font-weight:400 ;
 		 margin-right:28rpx;
@@ -320,7 +332,7 @@
 		flex-direction: row;
 		align-items: center;
 		margin-bottom: 24rpx;
-		border-bottom:1px solid #ECECEC;
+		
 	}
 	.text1{
 		color: #1C1C1C;

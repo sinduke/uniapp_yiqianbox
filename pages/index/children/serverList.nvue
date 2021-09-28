@@ -33,7 +33,7 @@
 								<text v-else class="server_name text1" style="color: #FF5927;">{{item.ser_name[0]}}</text>
 								
 								<view v-if="typeof item.game_start_time=='object'" style="flex-direction: row;">
-									<text class="serverTimes text1" :class="{isServerTime:active1==v}"	:style="{backgroundColor:active==v?'#fff':v%2==0?'#F2F2F2':'#F8F8F8'}" v-for="(i,v) in item.game_start_time" v-if="v<5"	:key='v'>{{i|dateFormat('hh:mm')}}46464</text>
+									<text class="serverTimes text1" :class="{isServerTime:active1==v}"	:style="{backgroundColor:active==v?'#fff':v%2==0?'#F2F2F2':'#F8F8F8'}" v-for="(i,v) in item.game_start_time" v-if="v<5"	:key='v'>{{i|dateFormat('hh:mm')}}</text>
 								</view>
 
 								<text v-else style="background-color: #F2F2F2;" class="serverTimes text1">{{item.game_start_time|dateFormat('hh:mm')}}</text>
