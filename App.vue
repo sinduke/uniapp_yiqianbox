@@ -83,7 +83,6 @@
 						"mem-username": uni.getStorageSync('mem-username'),
 						"mem-oauth_type": uni.getStorageSync('mem-oauth_type'),
 					}).then(res => {
-						console.log(res,'mem-openidmem-openid')
 						if (res.data.code == 200) {
 							// 将登录获取的数据记录下来
 							this.$store.commit("setLoginInfo", res.data.data)
