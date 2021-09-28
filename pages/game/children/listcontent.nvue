@@ -207,7 +207,6 @@
 			
 			mycates:{
 				handler(val) {
-					console.log(val,'mycates')
 					this.active2 = val
 					this.formData.cates = val
 					},
