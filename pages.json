@@ -8,6 +8,7 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					
 					"bounce": "none" //关闭窗口回弹效果
 				}
 			}
@@ -18,6 +19,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"subNVues": [{
 						"id": "popup",
@@ -45,6 +48,8 @@
 				// 取消默认的原生导航栏
 				// "navigationStyle": "custom"
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"softinputNavBar": "none",
 					"titleNView": {
@@ -62,7 +67,9 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
-					"bounce": "none"
+					"bounce": "none",
+					"background": "#666",
+					"animationAlphaBGColor": "#666"
 					// "subNVues": [{
 					// 	"id": "navigationBar",
 					// 	"path": "pages/game/subNvue/homeTitleNvue",
@@ -83,7 +90,11 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
-				"bounce": "none" //关闭窗口回弹效果
+				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
+					"bounce": "none"
+				}
 			}
 		},
 
@@ -95,8 +106,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
-					// "background": "#666",
-					// "animationAlphaBGColor": "#666",
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -110,7 +121,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
-
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -122,6 +134,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					// "softinputMode": "adjustResize",
 					"bounce": "none"
 				}
@@ -134,6 +148,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -143,6 +159,8 @@
 			"path": "pages/customerService/children/rechargeRebate/children/guide1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -159,9 +177,12 @@
 		{
 			"path": "pages/customerService/children/rechargeRebate/children/applicationform1",
 			"style": {
+				
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -171,6 +192,8 @@
 			"path": "pages/customerService/children/rechargeRebate/children/applicatRecord1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -189,6 +212,8 @@
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -199,6 +224,8 @@
 			"path": "pages/transaction/children/Sellingnumber/addGame/addGame",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -216,6 +243,8 @@
 			"path": "pages/transaction/children/Sellingnumber/someNumber/someNumber",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -234,6 +263,8 @@
 			"path": "pages/transaction/children/buynumber/children/commodityDetail",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -249,6 +280,8 @@
 			"path": "pages/transaction/children/tradeNotes/index",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -266,6 +299,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -283,6 +318,8 @@
 				"navigationStyle": "custom",
 				// "enablePullDownRefresh": true,
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -295,6 +332,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -304,6 +343,8 @@
 			"path": "pages/my/myMessage/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -319,6 +360,8 @@
 			"path": "pages/my/myMessage/children/customerNotice/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -337,6 +380,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -349,6 +394,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -359,6 +406,8 @@
 			"path": "pages/my/myMessage/children/officialMess/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -375,6 +424,8 @@
 			"path": "pages/my/myAdministration/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -395,6 +446,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -407,6 +460,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -418,6 +473,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -441,6 +498,8 @@
 				// "enablePullDownRefresh": true,
 				"onReachBottomDistance": 20,
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -456,6 +515,8 @@
 			"path": "pages/my/myAdministration/children/changeMobile/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -472,6 +533,8 @@
 			"path": "pages/my/myAdministration/children/changePassword/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -488,6 +551,8 @@
 			"path": "pages/my/myAdministration/children/changeRealname/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -505,6 +570,8 @@
 			"path": "pages/my/myAdministration/children/withdrawal/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -521,6 +588,8 @@
 			"path": "pages/my/myAdministration/children/withdrawalList/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -539,7 +608,8 @@
 			"path": "pages/my/children/scanCode/index",
 			"style": {
 				"app-plus": {
-
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -560,6 +630,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -572,6 +644,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -581,6 +655,8 @@
 			"path": "pages/view/gamedetail/comment1234",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -598,6 +674,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -607,6 +685,8 @@
 			"path": "pages/view/gamedetail/children/WrComment1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -621,7 +701,12 @@
 			"path": "components/nvue-propup/nvue-propup",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666"
+					
+				}
 			}
 
 		}
@@ -630,6 +715,8 @@
 			"path": "pages/view/gamedetail/children/introduce",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -647,6 +734,8 @@
 			"style": {
 
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -662,6 +751,8 @@
 			"path": "pages/view/gamedetail/children/youhui",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -680,6 +771,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -689,6 +782,8 @@
 			"path": "pages/my/integral/integral1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -707,6 +802,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -719,6 +816,8 @@
 			"path": "pages/my/children/taskCenter/signRule/signRule",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -733,7 +832,12 @@
 			"path": "components/nvue-tabs/nvue-tabs",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666"
+					
+				}
 			}
 
 		},
@@ -744,6 +848,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -754,6 +860,8 @@
 			"path": "pages/my/children/demoGame/index1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -771,6 +879,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -780,6 +890,8 @@
 			"path": "pages/view/payMethods/index",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -795,6 +907,8 @@
 			"path": "pages/my/FlatGoldCoins/topUp/topUp1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -810,6 +924,8 @@
 			"path": "pages/my/FlatGoldCoins/record/record1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -828,6 +944,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none" //关闭窗口回弹效果
 
 				}
@@ -840,6 +958,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -861,6 +981,8 @@
 			"path": "pages/view/register/index",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -876,6 +998,8 @@
 			"path": "pages/transaction/children/transactionRecords/index",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -893,6 +1017,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -902,6 +1028,8 @@
 			"path": "pages/my/comprehensive/gameGiftBag/gameGiftBag1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -918,6 +1046,8 @@
 			"path": "pages/my/comprehensive/gameConsulting/gameConsulting1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -935,6 +1065,8 @@
 				// 取消默认的原生导航栏
 				"navigationStyle": "custom",
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none"
 				}
 			}
@@ -944,6 +1076,8 @@
 			"path": "pages/my/children/forgetPwd",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -959,6 +1093,8 @@
 			"path": "pages/view/gamedetail/children/zxDetail",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -975,6 +1111,8 @@
 			"path": "pages/my/children/bindingPssword/bindingPssword",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -989,6 +1127,8 @@
 			"path": "pages/transaction/children/recovery/children/payRedeem/payRedeem",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -1003,6 +1143,8 @@
 			"path": "pages/my/integral/dhptb1",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -1018,6 +1160,8 @@
 			"path": "pages/my/mySetting/Setting",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",
@@ -1032,6 +1176,8 @@
 			"path": "pages/my/mySetting/tySet",
 			"style": {
 				"app-plus": {
+					"background": "#666",
+					"animationAlphaBGColor": "#666",
 					"bounce": "none", //关闭窗口回弹效果
 					"titleNView": {
 						"backgroundColor": "#fff",

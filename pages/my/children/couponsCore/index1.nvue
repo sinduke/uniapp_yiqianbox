@@ -33,7 +33,7 @@
 				</view>
 		</cell>
 			<header  >
-				<view class="" :style="{backgroundColor:heiye?'#090909':''}" style="">
+				<view class="" :style="{backgroundColor:heiye?'#090909':'#fff'}" style="">
 					<view ref="head" :class="['head1',heiye?'hei':'wg']"  :style="{width:myWidth-32+'px'}">
 						<text :class="['head_text1',heiye?'isTheme':'noTheme']" >今日好券</text>
 						<scroller scroll-direction="horizontal" :style="{width:myWidth-58+'px'}" style="flex-direction: row;" v-if="lengthList">

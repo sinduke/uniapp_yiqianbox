@@ -4,8 +4,8 @@
 			<view class="titles">
 				<view class="titleItem" :style="{width:titleItemWidth+'px'}" >
 					<view v-for="(item,index) in myList" :key='index'  style="align-items: center;" :style="{marginRight:(myWidth/3)-90+'px'}" ref="tabitem" :id="item.id"> 
-						<text v-if="heiye==false" class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
-						<text v-else class="TitleName2" @click="handleClick(index)" ref='TitleName' :class="[{TitleName3:active==index}]">{{item.name}}</text>
+						<text v-if="!heiye" class="TitleName" @click="handleClick(index)" ref='TitleName' :class="[{TitleName1:active==index}]">{{item.name}}</text>
+						<text v-if="heiye" class="TitleName2" @click="handleClick(index)" ref='TitleName' :class="[{TitleName3:active==index}]">{{item.name}}</text>
 					</view>
 				</view>
 				  <view :style="{transform:'translateX('+(widthLine)+'px)',width:linesWidth+'px'}" class="lines" ref="lines"></view>

@@ -1,55 +1,56 @@
 <template>
 	<!-- 登录 -->
-	<view class="login">
+	<view :style="{backgroundColor:heiye?'#090909':'#fff'}" class="login">
 		<view class="backimg" style="position: relative;">
-			<image src="@/static/images/my/login-backimage.png" mode="widthFix" :style="{width: myWidth+'px'}"></image>
+			<image v-if="heiye==false" src="@/static/images/my/login-backimage.png" mode="widthFix" :style="{width: myWidth+'px'}"></image>
+			<image v-else src="@/static/images/my/login-backimage1.png" mode="widthFix" :style="{width: myWidth+'px'}"></image>
 			<image ref='Loginimages' class="Loginimages" @click="handleClick" :src="userFormat.icon" :style="{left:myWidth/2-45+'px'}"></image>
 		</view>
 		<view class="body">
 				<view class="log">
-					<text class="h1 log_text">登录</text>
+					<text :style="{color:heiye?'#fff':'#1C1C1C'}" class="h1 log_text">登录</text>
 				</view>
 			<view class="qita" v-if="notPhone">
 				<view class="userInfo">
-					<text class="h2">账号</text>
-					<view class="select flex" >
-						<input type="text" class="inputs" v-model="form['mem-username']" placeholder="请输入手机号或账号" maxlength="20" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+					<text :style="{color:heiye?'#c1c1c1':'#1C1C1C'}" class="h2">账号</text>
+					<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="select flex" >
+						<input  type="text" class="inputs" v-model="form['mem-username']" placeholder="请输入手机号或账号" maxlength="20" :style="{width:myWidth/1.4+'px',color:heiye?'#c1c1c1':''}" :placeholder-style="{color:heiye?'#666':'#e1e1e1'}"/>
 						<image src="@/static/images/down_999.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 					</view>
-					<text class="h2">密码</text>
-					<view class="select flex">
-						<input type="text" class="inputs" v-if="is_eye" v-model="form['mem-password']"  placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
-						<input type="password" class="inputs" v-else v-model="form['mem-password']" placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+					<text :style="{color:heiye?'#c1c1c1':'#1C1C1C'}"  class="h2">密码</text>
+					<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="select flex">
+						<input type="text" class="inputs" v-if="is_eye" v-model="form['mem-password']"  placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.4+'px',color:heiye?'#c1c1c1':''}" :placeholder-style="{color:heiye?'#666':'#e1e1e1'}"/>
+						<input type="password" class="inputs" v-else v-model="form['mem-password']" placeholder="请输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.4+'px',color:heiye?'#c1c1c1':''}" :placeholder-style="{color:heiye?'#666':'#e1e1e1'}"/>
 						<image src="@/static/images/eye_open.png" v-if="is_eye" mode="widthFix" @click="is_eye=false" style="width: 30rpx;height: 30rpx;"></image>
 						<image src="@/static/images/eye_close.png" v-else mode="widthFix" @click="is_eye=true" style="width: 30rpx;height: 30rpx;"></image>
 					</view>
 				</view>
-					<text class="mybutton" @click="doLogin">立即登录</text>
+					<text :style="{backgroundColor:heiye?'#1c1c1c':'',border:heiye?'':'1px solid #efefef'}" class="mybutton" @click="doLogin">立即登录</text>
 			</view>
 
 			<!-- 手机号登录 -->
 			<view class="myPhone" v-else>
 				<view class="userInfo">
-					<text class="h2">手机号</text>
-					<view class="select flex" >
-						<input type="text" class="inputs" v-model="phone['sms-mobile']" placeholder="请输入手机号" maxlength="20" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+					<text :style="{color:heiye?'#c1c1c1':'#1C1C1C'}" class="h2">手机号</text>
+					<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="select flex" >
+						<input type="text" class="inputs" v-model="phone['sms-mobile']" placeholder="请输入手机号" maxlength="20" :style="{width:myWidth/1.4+'px',color:heiye?'#c1c1c1':''}" :placeholder-style="{color:heiye?'#666':'#e1e1e1'}"/>
 						<image src="@/static/images/down_999.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 					</view>
-					<text class="h2">验证码</text>
-					<view class="select flex" >
-						<input type="number" maxlength="6" v-model="phone['sms-code']" class="inputs" placeholder="请输入验证码" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
+					<text :style="{color:heiye?'#c1c1c1':'#1C1C1C'}" class="h2">验证码</text>
+					<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="select flex" >
+						<input type="number" maxlength="6" v-model="phone['sms-code']" class="inputs" placeholder="请输入验证码" :style="{width:myWidth/1.4+'px',color:heiye?'#c1c1c1':''}" :placeholder-style="{color:heiye?'#666':'#e1e1e1'}"/>
 						<verificationCode @click="getCode" :contentCode='contentCode'></verificationCode>	
 					</view>
 				</view>
-					<text class="mybutton" @click="iphoneLogin">登录/注册</text>
+					<text :style="{backgroundColor:heiye?'#1c1c1c':'',border:heiye?'':'1px solid #efefef'}" class="mybutton" @click="iphoneLogin">登录/注册</text>
 			</view>
 
 
 			<view class="phonelogin">
-				<text class="text" style="font-weight: 700;color: #1C1C1C;" v-if="notPhone"	@click="notPhone=false">手机登录</text>
-				<text class="text" style="font-weight: 700;color: #1C1C1C;" v-else @click="notPhone=true">账号登录</text>
+				<text class="text" :style="{color:heiye?'#666':'#1C1C1C'}" style="font-weight: 700;" v-if="notPhone"	@click="notPhone=false">手机登录</text>
+				<text class="text" :style="{color:heiye?'#666':'#1C1C1C'}" style="font-weight: 700;" v-else @click="notPhone=true">账号登录</text>
 				<text class="text" style="margin: 0 56rpx;">|</text>
-				<text class="text" style="color: #666;" @click="forgetPw">忘记密码</text>
+				<text class="text" :style="{color:heiye?'#c1c1c1':'#666'}" @click="forgetPw">忘记密码</text>
 			</view>
 			<text class="dologin">————————— 其他登录方式 ————————</text>
 			<view class="wxlogin">
@@ -125,6 +126,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			// 导航栏高度
 			userFormat() {
 				return globalData.store.state.userFormat
@@ -161,6 +165,14 @@
 			setTimeout(()=>{
 				this.phonelogin()
 			},800)
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			// 协议
@@ -592,7 +604,8 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 	.back {
 		position: fixed;
 		width: 66rpx;
@@ -612,17 +625,20 @@
 		justify-content: space-between;
 	}
 	.h2{
+		font-size: 36rpx;
+		font-weight: 700;
+		
 		margin-bottom: 8rpx;
 	}
 	.select{
 	    margin-bottom: 48rpx;
 	  	padding-bottom:12rpx;
-		border-bottom:1px solid #efefef;
+		
 	}
 
 	.login {
 		overflow: hidden;
-		background-color: #fff;
+		
 	}
 	.dologin{
 		color: #999;
@@ -639,6 +655,9 @@
 	}
 	.log_text {
 		font-size: 52rpx;
+		
+		font-weight: 700;
+		
 	}
 
 	.userInfo {
@@ -663,7 +682,7 @@
 
 	.mybutton {
 		text-align: center;
-		border: 1px solid #efefef;
+		
 		color: #FF5927;
 		padding:24rpx 0;
 		border-radius: 60rpx;

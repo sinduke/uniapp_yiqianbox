@@ -16,7 +16,7 @@
 								<view style="flex-direction: row;justify-content:space-between;">
 									<image class="mid_img" :src="item.mem_avatar" mode="" ></image>
 									<view >
-										<view :style="{width:myWidth-64-55+'px'}" class="" style="flex-direction: row;justify-content:space-between;">
+										<view :style="{width:myWidth-64-55+'px'}" class="rei" >
 											<text :class="['mid_text1',heiye?'isTheme':'noTheme']" >{{item.mem_name}}</text>
 											<text class="mid_text3">{{item.time_str}}</text>
 										</view>
@@ -76,6 +76,14 @@
 		},
 		onLoad(){
 			this.getDate()
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			handleDelete() {
@@ -201,7 +209,11 @@
 		margin-top: 131rpx;
 		padding: 32rpx 32rpx;
 	}
-	
+	.rei{
+		flex-direction: row;
+		justify-content:space-between;
+		
+	}
 	.le_box{
 		width: 64rpx;
 		height: 64rpx;
