@@ -8,6 +8,17 @@
 			store
 		},
 		onLaunch() {
+			// let date = new Date(),
+			// hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
+			// if(!this.heiye&&hour!==15){
+			// 	console.log(2222)
+			// 	uni.setStorageSync('heiye',{type:false})
+			// }
+			// if(this.heiye===null&&hour==15){
+			// 	console.log(1111)
+			// 	uni.setStorageSync('heiye',{type:true})
+			// }
+			
 			this.globalData.$i18n = this.$i18n
 			this.globalData.$t = str => this.$t(str)
 			// 读取client_id
@@ -27,6 +38,11 @@
 			}, 100)
 			//设置初始化
 			this.getSetting()
+		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 		},
 		methods: {
 			// 页面初始化
@@ -149,10 +165,10 @@
 						status: true
 					})
 				}
+				
 				if (!heiye) {
 					uni.setStorageSync('heiye',{
 						type: false,
-						
 					})
 				}
 				

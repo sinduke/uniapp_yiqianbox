@@ -17,7 +17,7 @@
 			</view>
 			
 			
-			<shModal  title="" :textType="false" :isShow="show" :showSubmit='false' :modalMode='false' >
+			<shModal :type="false"  title="" :textType="false" :isShow="show" :showSubmit='false' :modalMode='false' >
 				<!-- 兑换抽奖机会 -->
 				<view class="dzp-tc" v-if="handleShow" :style="{width:myWidth/1.4+'px',height: '600rpx'}" style="flex-direction: row;align-items: center; justify-content: center;">
 					<image src="@/static/images/my/dzp-tck.png" :style="{width:myWidth/1.1+'px',height: '600rpx'}"></image>

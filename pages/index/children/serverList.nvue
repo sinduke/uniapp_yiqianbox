@@ -28,15 +28,25 @@
 
 					<view v-for="(item,index) in myList" :kye='index' v-if="index<14">
 						<view class="card" :style="{width:myWidth-32+'px',marginBottom:'56rpx'}">
-							<view class="cardServer">
+							<view v-if="heiye==false" class="cardServer">
 								<text v-if="typeof item.ser_name=='string'" class="server_name text1" style="color: #FF5927;">{{item.ser_name}}</text>
 								<text v-else class="server_name text1" style="color: #FF5927;">{{item.ser_name[0]}}</text>
 								
 								<view v-if="typeof item.game_start_time=='object'" style="flex-direction: row;">
-									<text class="serverTimes text1" :class="{isServerTime:active1==v}"	:style="{backgroundColor:active==v?'#fff':v%2==0?'#F2F2F2':'#F8F8F8'}" v-for="(i,v) in item.game_start_time" v-if="v<5"	:key='v'>{{i|dateFormat('hh:mm')}}</text>
+									<text class="serverTimes text1" :class="{isServerTime:active1==v}"	:style="{backgroundColor:active==v?'#fff':v%2==0?'#F2F2F2':'#F8F8F8'}" v-for="(i,v) in item.game_start_time" v-if="v<5"	:key='v'>{{i|dateFormat('hh:mm')}}46464</text>
 								</view>
 
 								<text v-else style="background-color: #F2F2F2;" class="serverTimes text1">{{item.game_start_time|dateFormat('hh:mm')}}</text>
+							</view>
+							<view v-else class="cardServer">
+								<text v-if="typeof item.ser_name=='string'" class="server_name1 text1" style="color: #FF5927;">{{item.ser_name}}</text>
+								<text v-else class="server_name1 text1" style="color: #FF5927;">{{item.ser_name[0]}}</text>
+								
+								<view v-if="typeof item.game_start_time=='object'" style="flex-direction: row;">
+									<text class="serverTimes text1" :class="{isServerTime1:active1==v}"	:style="{backgroundColor:active==v?'#666':v%2==0?'#535353':'#4A4A4A'}" v-for="(i,v) in item.game_start_time" v-if="v<5"	:key='v'>{{i|dateFormat('hh:mm')}}</text>
+								</view>
+							
+								<text v-else style="background-color: #666" class="serverTimes text1">{{item.game_start_time|dateFormat('hh:mm')}}</text>
 							</view>
 							<view class="imageBack" style="margin-bottom: 16rpx">
 								<image class="images" :src="item.hot_image" :style="{width:myWidth-32+'px'}" mode="widthFix" @click="handleRouter(item.game_id)"></image>
@@ -358,6 +368,11 @@
 		border-bottom: transparent;
 		color: #1C1C1C !important;
 	}
+	.isServerTime1 {
+		
+		border-bottom: transparent;
+		color: #c1c1c1 !important;
+	}
 
 	.cardLines {
 		margin-bottom: 56rpx;
@@ -384,6 +399,12 @@
 		border: 1rpx solid #C1C1C1;
 		border-bottom: transparent;
 	}
+	.server_name1 {
+		padding: 6rpx 14rpx;
+		border-top-left-radius: 20rpx;
+		border: 1rpx solid #C1C1C1;
+		border-bottom: transparent;
+	}
 
 	.serverTimes {
 		padding: 6rpx 16rpx;
@@ -391,7 +412,7 @@
 
 
 	.text1 {
-		color: #C1C1C1;
+		color: #777;
 		font-size: 24rpx;
 	}
 

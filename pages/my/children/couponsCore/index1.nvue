@@ -10,7 +10,7 @@
 					<image :style="{width:myWidth+'px'}" class="img" src="@/static/images/my/lqzx-banner.png" mode="widthFix" ></image>
 				</view>
 
-				<view :class="['head',heiye?'bg':'bai1']" >
+				<view :style="{background:heiye?'#090909':'#F7F7F7'}" class="head"  >
 					<view class="head_top">
 						<text class="top_text1">{{new Date()/1000|dateFormat('yyyy.MM.dd')}}</text>
 						<text class="top_text2">{{new Date()/1000+86400|dateFormat('yyyy.MM.dd')}}</text>

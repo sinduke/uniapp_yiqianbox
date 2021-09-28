@@ -8,7 +8,7 @@
 					<text :class="['title_text',heiye?'isTheme':'noTheme']" >抵制不良游戏，拒绝盗版游戏，注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身，合理安排时间，享受健康生活。</text>
 				</view> 
 				<view class="purchase" style="margin-bottom: 64rpx;">
-					<text class="my_title" style="margin-bottom: 64rpx;">购买流程</text>
+					<text :style="{color:heiye?'#fff':''}" class="my_title" style="margin-bottom: 64rpx;">购买流程</text>
 				    <view class="purchase_body">
 						<view class="purchase_Back">
 							<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
@@ -36,7 +36,7 @@
 					</view>
 				</view>
 				<view class="nodes" style="margin-bottom: 32rpx;">
-					<text class="my_title" style="margin-bottom: 32rpx;">买家须知</text>
+					<text :style="{color:heiye?'#fff':''}" class="my_title" style="margin-bottom: 32rpx;">买家须知</text>
 				   <view class="nodes_body">
 				    <view class="nodes_tlt"> 
 					<text class="nodes_raidus">1</text> 
@@ -57,7 +57,7 @@
 				    </view>
 				</view>
 				<view class="purchase" style="margin-bottom: 32rpx;">
-					<text class="my_title" style="margin-bottom: 32rpx;">出售流程</text>
+					<text :style="{color:heiye?'#fff':''}" class="my_title" style="margin-bottom: 32rpx;">出售流程</text>
 				    	<view class="purchase_body">
 							<view class="purchase_Back">
 								<image src="@/static/images/transaction/nodes_background.png" style="width: 140rpx;height: 140rpx;" mode="widthFix"></image>
@@ -106,7 +106,7 @@
 				
 				</view>
 				<view class="nodes" style="margin-bottom: 12rpx;">
-					<text class="my_title" style="margin-bottom: 32rpx;">回收须知</text>
+					<text :style="{color:heiye?'#fff':''}" class="my_title" style="margin-bottom: 32rpx;">回收须知</text>
 				    <view class="nodes_body">
 				    	<view class="nodes_tlt">
 							<text class="nodes_raidus">1</text> 

@@ -1,13 +1,14 @@
 <!-- 专题 -->
 <template>
-	<view class="special" :style="{width:myWidth+'px'}">
+	<view :class="['special',heiye?'bg':'wg']"   :style="{width:myWidth+'px'}">
 		<view class="" :style="{height:statusBarHeight+'px',width:myWidth+'px'}" />
 		<view class="Title">
 			<view class="TitleLeft" style="flex-direction: row;align-items: center;">
 				<view ref="handleBack" style="margin:0 32rpx 0 8rpx;" @click="handleBack" >
-				<image src="@/static/images/left.png" mode="widthFix" style="width: 32rpx;height:32rpx;"></image>
+				<image v-if="heiye==false" src="@/static/images/left.png" mode="widthFix" style="width: 32rpx;height:32rpx;"></image>
+				<image v-else src="@/static/images/leftB.png" mode="widthFix" style="width: 32rpx;height:32rpx;"></image>
 				</view>
-					<text class="titlename h1">{{name}}</text>
+					<text :class="['titlename',heiye?'isTheme':'noTheme']" >{{name}}</text>
 			</view>
 		</view>
 		<view class="speciallist"  :style="{height:myHeight-180+'rpx',width:myWidth+'px'}">	
@@ -81,6 +82,9 @@
 	
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -94,6 +98,14 @@
 				return uni.getSystemInfoSync().statusBarHeight
 			}
 
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods:{
 			//专题
@@ -183,9 +195,10 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 	.special{
-		background-color: #fff;
+		
 		overflow:hidden;
 		flex: 1;
 	}
@@ -205,8 +218,13 @@
 		/* align-items: center; */
 		/* justify-content: center; */
 	}
-	.titlename{
-		color: #1C1C1C;
+	
+	.titlename {
+		margin-bottom: 8rpx;
+		
+		font-size: 40rpx;
+		font-weight: 700;
+		
 	}
 	.swiper-box {
 		height: 400rpx;

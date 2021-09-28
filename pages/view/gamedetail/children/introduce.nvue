@@ -1,7 +1,7 @@
 <template>
-	<view class="content">
-		<text class="title">关于{{title}}</text>
-		<text class="content_text">{{content}}</text>
+	<view :class="['content',heiye?'bg':'wg']" >
+		<text :class="['title',heiye?'isTheme':'noTheme']" >关于{{title}}</text>
+		<text :class="['content_text',heiye?'noActive':'baicolor']" >{{content}}</text>
 	</view>
 </template>
 
@@ -13,6 +13,19 @@
 				content:''
 			};
 		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		onLoad(e){
 			this.title = e.title
 			this.content= e.content
@@ -21,19 +34,19 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.content{
 		padding: 0 32rpx;
-		background-color: #fff;
 		flex:1
 		}
 		.title{
-			color: #1C1C1C;
+			
 			font-size: 44rpx;
 			font-weight: 700;
 			margin-bottom: 40rpx;
 		}
 		.content_text{
 			font-size: 32rpx;
-			color: #666;
+			
 		}
 </style>

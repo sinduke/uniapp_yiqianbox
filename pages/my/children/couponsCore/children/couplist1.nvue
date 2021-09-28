@@ -31,10 +31,10 @@
 												<text class="head_text1">有效期至：{{item.get_time_end|dateFormat('yyyy.MM.dd')}}</text>
 												<text class="head_text2">领取时间：{{item.get_time_begin|dateFormat('yyyy.MM.dd')}}后</text>
 											</view>
-											<view :style="{background:heiye?'#3d3d3d':'#DBDBDB',border:heiye?'':'2rpx solid #E4E4E4'}"  v-if="!item.have_got" class="head_but" @click="handleClick(item.id,item.period_type,item)">
+											<view :style="{background:heiye?'#3d3d3d':'#F8F8F8',border:heiye?'':'2rpx solid #E4E4E4'}"  v-if="!item.have_got" class="head_but" @click="handleClick(item.id,item.period_type,item)">
 												<text class="head_text3">领 取</text>
 											</view>
-											<view :style="{background:heiye?'#3d3d3d':'#DBDBDB',border:heiye?'':'2rpx solid #E4E4E4'}" v-else class="head_but3" >
+											<view :style="{background:heiye?'#3d3d3d':'#c1c1c1',border:heiye?'':'2rpx solid #E4E4E4'}" v-else class="head_but3" >
 												<text style="color: #fff;" class="head_text3">已领取</text>
 											</view>
 										</view>

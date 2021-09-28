@@ -1,9 +1,9 @@
 <template>
-	<view class="content" @click.stop="noclick">
+	<view  class="content" @click.stop="noclick">
 		<!--评论 弹出框 -->
 		<mypopup :nheight='460'>
 			<view class="title">
-				<text class="titleLeft">全部评论（{{count}}）</text>
+				<text :class="['titleLeft',heiye?'isTheme':'noTheme']" >全部评论（{{count}}）</text>
 				<image src="@/static/images/close.png" mode="widthFix" style="width: 48rpx;height: 48rpx;" @click="handleClose"></image>
 			</view>
 			<view class="list">
@@ -14,12 +14,12 @@
 							<view class="avatar">
 								<image :src="/http/i.test(item.mem_avatar)?item.mem_avatar:'https:'+item.mem_avatar"	style="width: 100rpx;height: 100rpx;border-radius: 100rpx;"></image>
 							</view>
-							<view class="contentDetail">
+							<view :style="{borderBottom:heiye?'2rpx solid #3d3d3d':'2rpx solid #f3f3f3'}" class="contentDetail">
 								<view class="detailLeft">
 									<text class="mem_name">{{item.mem_name}}</text>
-									<text class="content" v-if="/desc/g.test(item.content)"
+									<text :class="['content',heiye?'isTheme':'noTheme']" v-if="/desc/g.test(item.content)"
 										:style="{width:JSON.parse(item.content).desc.length>30?'450rpx':''}">{{JSON.parse(item.content).desc}}</text>
-									<text class="content" v-else>{{item.content}}</text>
+									<text :class="['content',heiye?'isTheme':'noTheme']" v-else>{{item.content}}</text>
 									<text class="times">{{item.time_str}}</text>
 								</view>
 								<view class="detailRight"  @click="handleSupport(item, index)" >
@@ -37,14 +37,14 @@
 							class="loadmoreText">{{status=='loadMore'?'——— 上拉加载更多 ———':status=='loading'?'正在加载.....':'——— 没有更多了 ———'}}</text>
 					</cell>
 				</list>
-				<view class="bottom">
-					<view class="inputs">
+				<view :style="{backgroundColor:heiye?'#090909':'#fff',borderTop:heiye?'':'5rpx solid #f3f3f3'}" class="bottom">
+					<view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" class="inputs">
 						<image src="@/static/images/index/detail-comment.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
-						<input class="input" cursor-spacing='20' placeholder-style='font-size:16px' type="text" v-model="rate.content" @confirm="publicComment" maxlength='80' placeholder='说点什么吧' />
+						<input :style="{color:heiye?'#c1c1c1':'#666'}" class="input" cursor-spacing='20' placeholder-style='font-size:16px' type="text" v-model="rate.content" @confirm="publicComment" maxlength='80' placeholder='说点什么吧' />
 					</view>
-					<view class="radius" elevation="2px" @click="publicComment">
-						<image src="@/static/images/index/detail-button.png" mode="widthFix" style="width: 50rpx;height: 50rpx;"></image>
-
+					<view :style="{backgroundColor:heiye?'#1c1c1c':'#fff'}" class="radius" elevation="2px" @click="publicComment">
+						<image v-if="heiye==false" src="@/static/images/index/detail-button.png" mode="widthFix" style="width: 50rpx;height: 50rpx;"></image>
+						<image v-else src="@/static/images/index/detail-button1.png" mode="widthFix" style="width: 50rpx;height: 50rpx;"></image>
 					</view>
 				</view>
 			</view>
@@ -81,6 +81,12 @@
 					type_name: "game",
 				},
 			}
+		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			}
+			
 		},
 		props: {
 			type: {
@@ -229,7 +235,8 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 	.content {}
 
 	.title {
@@ -240,7 +247,7 @@
 	}
 
 	.titleLeft {
-		color: #1C1C1C;
+		
 		font-size: 36rpx;
 		font-weight: 700;
 	}
@@ -264,7 +271,7 @@
 		align-items: center;
 		justify-content: space-between;
 		padding-bottom: 32rpx;
-		border-bottom: 2rpx solid #f3f3f3;
+		
 
 	}
 
@@ -274,7 +281,7 @@
 	}
 
 	.content {
-		color: #1C1C1C;
+		
 		font-size: 30rpx;
 		margin: 10rpx 0;
 	}
@@ -285,17 +292,17 @@
 	}
 
 	.bottom {
-		border-top: 5rpx solid #f3f3f3;
+		
 		padding: 40rpx 10rpx 40rpx 10rpx;
 		justify-content: space-between;
 		flex-direction: row;
 		margin-top: -40rpx;
-		background-color: #fff;
+		
 	}
 
 	.inputs {
 		flex-direction: row;
-		background-color: #F4F4F4;
+		
 		border-radius: 40rpx;
 		align-items: center;
 		padding: 2rpx 30rpx;
@@ -313,7 +320,7 @@
 		width: 80rpx;
 		height: 80rpx;
 		border-radius: 80rpx;
-		background-color: #fff;
+		
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;

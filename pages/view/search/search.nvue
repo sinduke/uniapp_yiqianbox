@@ -10,7 +10,7 @@
 					</image>
 					<input class="input" type="text" v-model="keyword" placeholder='去找你要看到的'
 						placeholder-style='font-size:16px;color:#c1c1c1' @confirm='handleSearch'
-						:style="{width:myWidth/1.8+'px'}"></input>
+						:style="{width:myWidth/1.8+'px',color:heiye?'#c1c1c1':''}"></input>
 				</view>
 				<text class="search_text" @click="handleSearch">搜索</text>
 			</view>
@@ -85,7 +85,7 @@
 				</view>
 			</scroller>
 			<!-- 搜索 -->
-			<view class="" v-else style="background-color: #fff;">
+			<view class="" :style="{backgrounColor:heiye?'#090909':'#fff'}" v-else >
             <list :style="{height:myHeight-180+'rpx',width:myWidth+'px'}" v-if="pageData.length"  @loadmore='loadmore'oadmoreoffset='20' :show-scrollbar='false'  @scrollend='scrollend' alwaysScrollableVertical class="list" ref="list" >
 			    <cell v-for="(item,index) in pageData">
 			     <gameItem :itemIndex='index' :item="item" type='3' style="margin:20rpx 0;"></gameItem>

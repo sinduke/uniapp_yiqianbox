@@ -1,19 +1,19 @@
 <!-- 添加游戏 -->
 <template>
 
-	<view class="container">
+	<view :class="['container',heiye?'bg':'wg']">
 		<list v-if="pageData" @loadmore='loadmore' loadmoreoffset='10' class="list">
 			<cell style="height: 48rpx;">
 			</cell>
 			<cell v-for="(item,index) in pageData" :key="index" >
-				<view class="u-col">
+				<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="u-col">
 					<view class="u-row">
 						<view class="row_left" @click="handleRouter(item.game_id, item.gamename)">
 							<image style="width: 140rpx;height: 140rpx;margin-right: 24rpx;"	:src="item.game_new_icon||item.game_icon"></image>
 						</view>
 						<view class="row_right" @click="handleRouter(item.game_id, item.gamename)">
-							<text class="gamename">{{item.gamename}}</text>
-							<text class="xiaohao">小号数：{{item.account_cnt}}</text>
+							<text :class="['gamename',heiye?'isTheme':'noTheme']" >{{item.gamename}}</text>
+							<text :class="['xiaohao',heiye?'isTheme':'noTheme']" >小号数：{{item.account_cnt}}</text>
 
 						</view>
 					</view>
@@ -54,6 +54,9 @@
 			nloading
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -61,6 +64,14 @@
 				return uni.getSystemInfoSync().windowWidth
 			},
 
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			//加载更多
@@ -110,10 +121,11 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container {
-		background-color: #fff;
+		
 		flex: 1;
-		background: #fff;
+		
 	}
 
 	.list {
@@ -131,7 +143,7 @@
 	.u-col {
 		margin: 0 32rpx 32rpx 0;
 		padding-bottom: 24rpx;
-		border-bottom: 1px solid #efefef;
+		
 		flex: 1;
 
 	}
@@ -153,6 +165,6 @@
 
 	.xiaohao {
 		font-size: 32rpx;
-		color: #1c1c1c;
+		
 	}
 </style>

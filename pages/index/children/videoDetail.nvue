@@ -1,14 +1,15 @@
 <template>
-	<view class="videoDetail" :style="{width:myWidth+'px'}" @touchstart='touchstart'  @touchmove='touchmove' >
+	<view :class="['videoDetail',heiye?'bg':'wg']" :style="{width:myWidth+'px'}" @touchstart='touchstart'  @touchmove='touchmove' >
 		<list class="list" :pagingEnabled="true"  :show-scrollbar='false'  @scrollstart='scrollstart' @scrollend='scrollend' >
 			<cell v-for="(item,index) in pageData" :key='index' :style="{width:myWidth+'px',height:myHeight+'rpx'}" class="cell"  >
-				<view class="bottom">
-					<view class="inputs" >
+				<view :style="{borderTop:heiye?'#3d3d3d':'5rpx solid #f3f3f3'}" class="bottom"> 
+					<view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" class="inputs" >
 						<image src="@/static/images/index/detail-comment.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
-						<input hideDoneButton='false' cursor-spacing='20' class="input" placeholder-style='font-size:16px;color:#c1c1c1' type="text" @confirm='handleConent(item.game_id)' v-model="rate.content" maxlength='80' placeholder='说点什么吧' />
+						<input :style="{color:heiye?'#c1c1c1':''}"  hideDoneButton='false' cursor-spacing='20' class="input" placeholder-style='font-size:16px;color:#c1c1c1' type="text" @confirm='handleConent(item.game_id)' v-model="rate.content" maxlength='80' placeholder='说点什么吧' />
 					</view>
-					<view class="radius" elevation="2px" @click="handleConent(item.game_id)">
-						<image src="@/static/images/index/detail-button.png" mode="widthFix" style="width: 50rpx;height: 50rpx;"></image>
+					<view :style="{backgroundColor:heiye?'#1c1c1c':'#fff'}"  class="radius" elevation="2px" @click="handleConent(item.game_id)">
+						<image v-if="heiye==false" src="@/static/images/index/detail-button.png" mode="widthFix" style="width: 50rpx;height: 50rpx;"></image>
+						<image v-else src="@/static/images/index/detail-button1.png" mode="widthFix" style="width: 50rpx;height: 50rpx;"></image>
 					</view>
 				</view>
 				<view class="games" v-if="screenHeight>700">
@@ -20,14 +21,14 @@
 				<view class="body">
 					<view class="bodyleft" v-if="screenHeight>700">
 						<view class="" v-if="item.comment.length==0">
-							<text class="commentItem">{{commentList[index%3]}}</text> 
+							<text  class="commentItem">{{commentList[index%3]}}</text> 
 						</view>
 						<view class="" v-else>
 						<view v-for="(i,v) in item.comment" :key='v' v-if="v<5">
-							<view class="memItem">
-								<text class="mem_name">{{i.mem.nickname}}：</text>
-								<text class="content"  v-if="/desc/g.test(i.content)" :style="{maxWidth:'360rpx',alignItems:JSON.parse(i.content).desc.length>30?'flex-start':'center'}">{{JSON.parse(i.content).desc.length>20?JSON.parse(i.content).desc.slice(0,16)+'..':JSON.parse(i.content).desc}}</text>
-								<text class="content" v-else style="text-overflow:ellipsis;max-width:360rpx">{{i.content.length>20?i.content.slice(0,16)+'..':i.content}}</text>
+							<view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" class="memItem">
+								<text :class="['mem_name',heiye?'isTheme':'noTheme']" >{{i.mem.nickname}}：</text>
+								<text :class="['content',heiye?'noActive':'baicolor']"  v-if="/desc/g.test(i.content)" :style="{maxWidth:'360rpx',alignItems:JSON.parse(i.content).desc.length>30?'flex-start':'center'}">{{JSON.parse(i.content).desc.length>20?JSON.parse(i.content).desc.slice(0,16)+'..':JSON.parse(i.content).desc}}</text>
+								<text :class="['content',heiye?'noActive':'baicolor']" v-else style="text-overflow:ellipsis;max-width:360rpx">{{i.content.length>20?i.content.slice(0,16)+'..':i.content}}</text>
 							</view>
 						</view>
 						</view>
@@ -39,10 +40,10 @@
 						</view>
 						<view class="" v-else>
 						<view v-for="(i,v) in item.comment" :key='v' v-if="v<3">
-							<view class="memItem">
-								<text class="mem_name">{{i.mem.nickname}}：</text>
-								<text class="content" v-if="/desc/g.test(i.content)" :style="{maxWidth:'360rpx',alignItems:JSON.parse(i.content).desc.length>30?'flex-start':'center'}">{{JSON.parse(i.content).desc.length>20?JSON.parse(i.content).desc.slice(0,16)+'..':JSON.parse(i.content).desc}}</text>
-								<text class="content" v-else style="text-overflow:ellipsis;max-width:360rpx" >{{i.content.length>20?i.content.slice(0,16)+'..':i.content}}</text>
+							<view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}" class="memItem">
+								<text :class="['mem_name',heiye?'isTheme':'noTheme']">{{i.mem.nickname}}：</text>
+								<text :class="['content',heiye?'noActive':'baicolor']" v-if="/desc/g.test(i.content)" :style="{maxWidth:'360rpx',alignItems:JSON.parse(i.content).desc.length>30?'flex-start':'center'}">{{JSON.parse(i.content).desc.length>20?JSON.parse(i.content).desc.slice(0,16)+'..':JSON.parse(i.content).desc}}</text>
+								<text :class="['content',heiye?'noActive':'baicolor']" v-else style="text-overflow:ellipsis;max-width:360rpx" >{{i.content.length>20?i.content.slice(0,16)+'..':i.content}}</text>
 							</view>
 						</view>
 						<gameItem style="margin-top: 20rpx;" :item='item'></gameItem>
@@ -290,7 +291,18 @@
 				'src': "url('file:/" + fontSrc + "')"
 			})
 		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
+		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			i18n() {
 				return globalData.$t('index')
 			},
@@ -744,7 +756,8 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	
 	.chunleiVideo{
 
 	}
@@ -820,7 +833,7 @@
 
 	.videoDetail {
 		flex: 1;
-		background-color: #fff;
+		
 	}
 
 	.list {
@@ -846,20 +859,20 @@
 		border-radius: 20rpx;
 		/* align-items: center; */
 		padding: 8rpx 12rpx;
-		background-color: #F4F4F4;
+		
 	}
 
 	.mem_name {
 		font-size: 28rpx;
 		font-weight: 600;
-		color: #1C1C1C;
+		
 		lines: 1;
 		margin-left: 6rpx;
 	}
 
 	.content {
 		font-size: 24rpx;
-		color: #666666;
+		
 		lines: 2;
 		margin-top: 4rpx;
 		
@@ -898,7 +911,7 @@
 	}
 
 	.bottom {
-		border-top: 5rpx solid #f3f3f3;
+		
 		padding: 20rpx 30rpx 20rpx 30rpx;
 		margin-bottom: 30rpx;
 		justify-content: space-between;
@@ -907,7 +920,7 @@
 
 	.inputs {
 		flex-direction: row;
-		background-color: #F4F4F4;
+		
 		border-radius: 40rpx;
 		align-items: center;
 		padding: 2rpx 30rpx;
@@ -925,7 +938,7 @@
 		width: 80rpx;
 		height: 80rpx;
 		border-radius: 80rpx;
-		background-color: #fff;
+		
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;

@@ -154,7 +154,9 @@
 						</view>
 						<view class="box-content-demo">
 							<view class="box-content-demo-left" ref="boxLeft">
-								<image src="@/static/images/domeleft.png" style="width: 375rpx;" mode="widthFix">
+								<image v-if="heiye==false" src="@/static/images/domeleft.png" style="width: 375rpx;" mode="widthFix">
+								</image>
+								<image v-else src="@/static/images/domeleft1.png" style="width: 375rpx;" mode="widthFix">
 								</image>
 								<view class="box-content-demo-box-left"	@click="handleRouter('/pages/view/gamedetail/gamedetail?gameid='+demoData.game_list[0].game_id)">
 									<view style="flex-direction: row; align-items: center;" v-if="demoData">
@@ -165,7 +167,9 @@
 								</view>
 							</view>
 							<view class="box-content-demo-right" ref="boxRight">
-								<image src="@/static/images/domeright.png" style="width: 375rpx;" mode="widthFix">
+								<image v-if="heiye==false" src="@/static/images/domeright.png" style="width: 375rpx;" mode="widthFix">
+								</image>
+								<image v-else src="@/static/images/domeright1.png" style="width: 375rpx;" mode="widthFix">
 								</image>
 								<view class="box-content-demo-box-right"	@click="handleRouter('/pages/view/gamedetail/gamedetail?gameid='+demoData.game_list[1].game_id)">
 									<view style="flex-direction: row;justify-content: flex-end;align-items: center;"	v-if="demoData">
@@ -178,7 +182,9 @@
 						</view>
 						<view class="box-content-demo">
 							<view class="box-content-demo-left" ref="boxLeft1">
-								<image src="@/static/images/domeleft.png" style="width: 375rpx;" mode="widthFix">
+								<image v-if="heiye==false" src="@/static/images/domeleft.png" style="width: 375rpx;" mode="widthFix">
+								</image>
+								<image v-else src="@/static/images/domeleft1.png" style="width: 375rpx;" mode="widthFix">
 								</image>
 								<view class="box-content-demo-box-left"
 									@click="handleRouter('/pages/view/gamedetail/gamedetail?gameid='+demoData.game_list[2].game_id)">
@@ -190,7 +196,9 @@
 								</view>
 							</view>
 							<view class="box-content-demo-right" ref="boxRight1">
-								<image src="@/static/images/domeright.png" style="width: 375rpx;" mode="widthFix">
+								<image v-if="heiye==false" src="@/static/images/domeright.png" style="width: 375rpx;" mode="widthFix">
+								</image>
+								<image v-else src="@/static/images/domeright1.png" style="width: 375rpx;" mode="widthFix">
 								</image>
 								<view class="box-content-demo-box-right"	@click="handleRouter('/pages/view/gamedetail/gamedetail?gameid='+demoData.game_list[3].game_id)">
 									<view style="flex-direction: row;justify-content: flex-end;align-items: center;"	v-if="demoData">
@@ -362,8 +370,11 @@
 				uni.setNavigationBarColor({
 					frontColor: '#ffffff',
 					backgroundColor: '#090909',
-				})	
+				})
+				
 			}
+			
+			
 		},
 		computed: {
 			heiye(){

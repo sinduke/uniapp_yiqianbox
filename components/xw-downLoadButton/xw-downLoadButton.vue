@@ -22,7 +22,7 @@
 		data(){
 			return{
 				downtype:0,
-				isTrue: true,
+				isTrue: false,
 				progress:0,   
 			}
 		},
@@ -83,65 +83,73 @@
 			},
 			// 创建下载任务函数
 			createDownload() {
-				let  isinstallGame = uni.getStorageSync('isinstallGame').status
-	        	console.log(this.item.down_url,'down_url, indexdown_url, index')
-				this.downTasks = plus.downloader.createDownload(this.item.down_url, {}, (downloadFile, status) => {
-					// 下载完成后的回调函数，成功失败都会进来
-					if(status == 200){
-						let arrList = uni.getStorageSync('downList')
-				            arrList.forEach(item=>{
-								this.$store.state.downTasksList.forEach(value=>{
-									if(item.game_id==value.game_id){
-										if(value.downTasks.filename==downloadFile.filename){
-											item.filename = downloadFile.filename
-											item.myTotalData = this.item.myTotalData
-											item.myloading = 0
+				
+				// if(this.isTrue){
+					
+					let  isinstallGame = uni.getStorageSync('isinstallGame').status
+					console.log(this.item.down_url,'down_url, indexdown_url, index')
+					this.downTasks = plus.downloader.createDownload(this.item.down_url, {}, (downloadFile, status) => {
+						// 下载完成后的回调函数，成功失败都会进来
+						if(status == 200){
+							let arrList = uni.getStorageSync('downList')
+					            arrList.forEach(item=>{
+									this.$store.state.downTasksList.forEach(value=>{
+										if(item.game_id==value.game_id){
+											if(value.downTasks.filename==downloadFile.filename){
+												item.filename = downloadFile.filename
+												item.myTotalData = this.item.myTotalData
+												item.myloading = 0
+											}
+											
 										}
 										
-									}
-									
-									
-									
+										
+										
+									})
 								})
+							// arrList[this.sort].filename = downloadFile.filename 
+							// arrList[this.sort].myTotalData = this.item.myTotalData
+						    // arrList[this.sort].myloading = 0  
+					        this.$emit('getData',[arrList,this.$store.state.downTasksList])	 
+							// uni.setStorageSync('downList',[])
+							uni.setStorageSync('downList',arrList)
+							
+						   console.log(arrList[this.sort],this.sort,this.$store.state.downTasksList,this.downTasksItem,'down_url, indexdown_url, index')
+						   if(isinstallGame){
+							this.installApp(downloadFile.filename)
+						   }else{
+							   uni.showToast({
+							   	title:"下载完成",
+								icon:'none'
+							   })
+							   this.downtype = 4
+						   }
+						}else{
+							uni.showToast({
+								title:'下载失败，请重新下载',
+								icon:'none',
+								success: () => {
+									
+								}
 							})
-						// arrList[this.sort].filename = downloadFile.filename 
-						// arrList[this.sort].myTotalData = this.item.myTotalData
-					    // arrList[this.sort].myloading = 0  
-				        this.$emit('getData',[arrList,this.$store.state.downTasksList])	 
-						// uni.setStorageSync('downList',[])
-						uni.setStorageSync('downList',arrList)
-						
-					   console.log(arrList[this.sort],this.sort,this.$store.state.downTasksList,this.downTasksItem,'down_url, indexdown_url, index')
-					   if(isinstallGame){
-						this.installApp(downloadFile.filename)
-					   }else{
-						   uni.showToast({
-						   	title:"下载完成",
-							icon:'none'
-						   })
-						   this.downtype = 4
-					   }
-					}else{
-						uni.showToast({
-							title:'下载失败，请重新下载',
-							icon:'none',
-							success: () => {
-								
-							}
-						})
+						}
+					})
+					if(this.isTrue){
+						this.startApp()
 					}
-				})
-
-				  this.startApp()
-				  this.addEventList(this.downTasks)
-
-				// if(this.sort){
-				//     this.handleStop()
+					  
+					  this.addEventList(this.downTasks)
+					
+					// if(this.sort){
+					//     this.handleStop()
+					// }
 				// }
+				
 			   
 			},
 			//监听
 	         addEventList(item){
+				 console.log(666,this.isTrue)
 				item.addEventListener("statechanged", (res, status)=>{
 				     this.item.myloading =  (res.downloadedSize / 1024 / 1024) .toFixed(2)+ 'MB'
 					 this.item.myTotalData = (res.totalSize / 1024 / 1024).toFixed(2) +'MB'

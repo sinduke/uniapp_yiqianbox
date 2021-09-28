@@ -14,7 +14,7 @@
 				<slot></slot>
 			</view>
 			<view class="slot-right" v-if="right">
-				<view :class="['radius',heiye?'bg':'wg']" :style="{backgroundColor:heiye?'#1c1c1c':'#fff',boxShadow:heiye?'boxShadow: 0px 0px 6rpx 0px rgba(40,40,40, 0.16)':'0px 0px 6px 0px rgba(180, 180, 180, 0.6)'}"  @click="handleRouter" style="">
+				<view :class="['radius',heiye?'bg':'wg']" :style="{backgroundColor:heiye?'#1c1c1c':'#fff',boxShadow:heiye&&type1?'0px 0px 6rpx 0px rgba(40,40,40, 0.16)':heiye==false&&type1?'0px 0px 6px 0px rgba(180, 180, 180, 0.6)':''}"  @click="handleRouter" style="">
 					<image :src="src" mode="widthFix" class="right_icon" ></image>	
 				</view>
 			</view>
@@ -62,6 +62,9 @@
 			},
 			type:{
 				default:0
+			},
+			type1:{
+				default:1
 			},
 			
 		},

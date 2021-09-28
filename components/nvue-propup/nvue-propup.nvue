@@ -1,31 +1,32 @@
 <template>
 	<view v-if="isshow" class="mask" @click.stop="show">
-		<view :style="{backgroundColor:heiye?'#F6F6F6':'#F6F6F6'}" class="bbox" ref="bbox">
+		<view :style="{backgroundColor:heiye?'#111111':'#F6F6F6'}" class="bbox" ref="bbox">
 			<view class="share-btn" :style="{width:myWidth+'px'}" v-if="$store.state.platform=='android'">
 				<view class="share3" >
 					<view class="share-btn-item" @click="copy">
 						<image src="@/static/images/fzlj-share.png" style="width: 80rpx;height: 80rpx;margin-top: 30rpx;"mode="widthFix" />
-						<text class="text">复制链接</text>
+						<text :class="['text',heiye?'isTheme':'noTheme']" >复制链接</text>
 					</view>
 				</view>
 				<view :style="{width:myWidth-160+'px'}"  style="flex-direction: row;justify-content: space-between;margin-top: -70rpx;" >
 					<view class="share-btn-item"  @click="share('','qq')">
 						<image  src="@/static/images/QQ-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
-						<text class="text">QQ</text>
+						<text :class="['text',heiye?'isTheme':'noTheme']">QQ</text>
 					</view>
 					<view class="share-btn-item" @click="share('','sinaweibo')">
-						<image src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
-						<text class="text">微博</text>
+						<image v-if="heiye==false" src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<image v-else src="@/static/images/wb-icon1.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text :class="['text',heiye?'isTheme':'noTheme']">微博</text>
 					</view>
 				</view>
 				<view class="" style="flex-direction: row;justify-content: space-between;margin-top: -58rpx;" :style="{width:myWidth-24+'px'}">
 					<view class="share-btn-item" @click="share('WXSceneSession','weixin')" >
 						<image src="@/static/images/wx-icon.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
-						<text class="text">微信</text>
+						<text :class="['text',heiye?'isTheme':'noTheme']">微信</text>
 					</view>
 					<view class="share-btn-item" @click="share('WXSenceTimeline','weixin')">
 						<image src="@/static/images/pengyouquan-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
-						<text class="text">朋友圈</text>
+						<text :class="['text',heiye?'isTheme':'noTheme']">朋友圈</text>
 					</view>
 				</view>
 			</view>
@@ -38,63 +39,72 @@
 					<!-- @click="share('','qq')" -->
 					<view class="share-btn-item"  >
 						<image  src="@/static/images/qq-login.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
-						<text class="text">QQ</text>
+						<text :class="['text',heiye?'isTheme':'noTheme']">QQ</text>
 					</view>
 					<view class="share-btn-item" @click="share('','sinaweibo')">
-						<image src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
-						<text class="text">微博</text>
+						<image v-if="heiye==false" src="@/static/images/weibo-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<image v-else src="@/static/images/wb-icon1.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
+						<text :class="['text',heiye?'isTheme':'noTheme']">微博</text>
 					</view>
 				</view>
 				
 				<view :style="{width:myWidth-190+'px'}" style="flex-direction: row;justify-content: space-between;margin-top: 18rpx;position: absolute;">
 					<view class="share-btn-item">
 						<image src="@/static/images/wx-icon.png" style="width: 80rpx;height: 80rpx;" mode="widthFix" />
-						<text class="text">微信</text>
+						<text :class="['text',heiye?'isTheme':'noTheme']">微信</text>
 					</view>
 				
 					<view class="share-btn-item" >
 						<image src="@/static/images/pengyouquan-share.png" style="width: 80rpx;height: 80rpx;" mode="widthFix"/>
-						<text class="text">朋友圈</text>
+						<text :class="['text',heiye?'isTheme':'noTheme']">朋友圈</text>
 					</view>
 				</view>
 				
 				<view class="share3" style="position: absolute;margin-top: -90rpx">
 					<view class="share-btn-item" >
 						<image src="@/static/images/fzlj-share.png" style="width: 80rpx;height: 80rpx;margin-top: 30rpx;"mode="widthFix" />
-						<text class="text"  >复制链接</text>
+						<text :class="['text',heiye?'isTheme':'noTheme']"  >复制链接</text>
 					</view>
 				</view>
 			</view>
 			
 
     	</view>
-		<view :style="{backgroundColor:heiye?'#ffffff':'#ffffff'}"  class="box" ref="pirotate">
+		<view :style="{backgroundColor:heiye?'#090909':'#ffffff'}"  class="box" ref="pirotate">
 			<view class="box-item" :style="{width:myWidth+'px'}">
 				<view class="box-item1" @click="bind1" ref="share1"  :style="{marginBottom:type?'80rpx':''}">
-					<view class="" class="shareImage">
-					<image src="@/static/images/fx-share.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
+					<view :style="{backgroundColor:heiye?'#1c1c1c':'#F6F6F6'}" class="shareImage">
+					<image v-if="heiye==false" src="@/static/images/fx-share.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
+					<image v-else src="@/static/images/fx-share1.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
 					</view>
-					<text class="text">分享</text>
+					<!-- <image src="@/static/images/fx-share.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
+					</view> -->
+					<text  :class="['text',heiye?'isTheme':'noTheme']">分享</text>
 				</view>
 				
 				<view  v-if="type==0" :style="{width:myWidth-100+'px'}" style="flex-direction: row;align-items: center;justify-content: space-between;margin-top: -70rpx;">
 					<view class="box-item1" @click="bind2" ref="sc1">
-						<view class="shareImage">
+						<view v-if="heiye==false" :style="{backgroundColor:heiye?'#1c1c1c':'#F6F6F6'}" class="shareImage">
 						<image src="@/static/images/sc1-share.png" mode="widthFix"   style="width: 60rpx;height: 60rpx" v-if="is_collect==1"></image>
 						<image src="@/static/images/sc-share.png" mode="widthFix"   style="width: 60rpx;height: 60rpx" v-else></image>
 						</view>
-						<text class="text" v-if="is_collect==1">已收藏</text>
-						<text class="text" v-else>收藏</text>
+						<view v-else :style="{backgroundColor:heiye?'#1c1c1c':'#F6F6F6'}" class="shareImage">
+						<image src="@/static/images/sc1-share.png" mode="widthFix"   style="width: 60rpx;height: 60rpx" v-if="is_collect==1"></image>
+						<image src="@/static/images/sc-share1.png" mode="widthFix"   style="width: 60rpx;height: 60rpx" v-else></image>
+						</view>
+						<text  :class="['text',heiye?'isTheme':'noTheme']" v-if="is_collect==1">已收藏</text>
+						<text  :class="['text',heiye?'isTheme':'noTheme']" v-else>收藏</text>
 					</view>
 					<view class="box-item1" ref="fk1" @click="bind3">
-						<view  class="shareImage">
-						<image src="@/static/images/fk-share.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
+						<view :style="{backgroundColor:heiye?'#1c1c1c':'#F6F6F6'}" class="shareImage">
+						<image v-if="heiye==false" src="@/static/images/fk-share.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
+						<image v-else src="@/static/images/fk-share1.png" mode="widthFix"  style="width: 60rpx;height: 60rpx"></image>
 						</view>
-						<text class="text" >反馈</text>
+						<text  :class="['text',heiye?'isTheme':'noTheme']" >反馈</text>
 					</view>
 				</view>
 			
-				<view class="close" @click="close" style="margin-top: -40rpx;">
+				<view :style="{backgroundColor:heiye?'#1c1c1c':'#F2F2F2'}" class="close" @click="close" style="margin-top: -40rpx;">
 					<image src="@/static/images/comment-close.png" mode="widthFix" style="width: 40rpx;height: 40rpx;"></image>
 				</view>
 			</view>
@@ -332,7 +342,7 @@
 		align-items: center;
 	}
 	.close {
-		background-color: #F2F2F2;
+		
 		width: 80rpx;
 		height: 80rpx;
 		border-radius: 80rpx;
@@ -342,7 +352,7 @@
 	}
 	.text {
 		font-size: 24rpx;
-		color: #1c1c1c;
+		
 		font-weight: 700;
 		lines: 1;
 		margin-top: 6rpx;
@@ -373,7 +383,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		background-color: #F6F6F6;
+		
 		border-radius: 100rpx;
 	}
 </style>

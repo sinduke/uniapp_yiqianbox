@@ -1,8 +1,8 @@
 <!-- 游戏资讯详情 -->
 <template>
 	<view :class="['container',heiye?'bg':'wg']">
-		<myNavbar v-if="heiye==false" :type="1" @click="popClick"  title='资讯详情' :lines='false' right :radius='false'  src='../../../../../static/images/my/1.png'></myNavbar>
-		<myNavbar v-else :type="1" @click="popClick"  title='资讯详情' :lines='false' right :radius='false'  src='../../../../../static/images/my/2.png'></myNavbar>
+		<myNavbar :type1='0' v-if="heiye==false" :type="1" @click="popClick"  title='资讯详情' :lines='false' right :radius='false'  src='../../../../../static/images/my/1.png'></myNavbar>
+		<myNavbar  v-else :type="1" @click="popClick"  title='资讯详情' :lines='false' right :radius='false'  src='../../../../../static/images/my/2.png'></myNavbar>
 		<!-- 内容部分 -->
 		<view style="margin-top: 190rpx;" class="box" v-if="detailList">
 			<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #ECECEC'}" class="box_head" @click="handleRouterdetail(detailList.game_id)">

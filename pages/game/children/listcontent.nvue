@@ -6,18 +6,18 @@
 				<cell>
 					<view class="is_h5">
 						<text v-if="heiye==false" class="h5text" :class="{text1:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
-						<text v-else class="h5text1" :class="{text1:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
+						<text v-if="heiye" class="h5text1" :class="{text6:active==index}" v-for="(item,index) in is_h5List"	@click="handleisH5(index,item.type,item.name)" :key='index'>{{item.name}}</text>
 					</view>
 					<view class="tags">
 						<text :class="['titles',heiye?'isTheme':'noTheme']" >游戏福利</text>
 						<view style="flex-direction: row;flex-wrap: wrap;">
 							<text class="h5text" v-if="heiye==false" v-for="(item,index) in tagsList" @click="handeltags(item.id,item.name)" :class="{text1:active1==item.id}">{{item.name}}</text>
-							<text class="h5text1" v-else v-for="(item,index) in tagsList" @click="handeltags(item.id,item.name)" :class="{text1:active1==item.id}">{{item.name}}</text>
+							<text class="h5text1" v-if="heiye" v-for="(item,index) in tagsList" @click="handeltags(item.id,item.name)" :class="{text6:active1==item.id}">{{item.name}}</text>
 						</view>
 					</view>
 					<view class="cates" v-if="gameSelete">
 						<text :class="['titles',heiye?'isTheme':'noTheme']" >游戏类型</text>
-						<view style="flex-direction: row;" class="catesList">
+						<view v-if="heiye==false" style="flex-direction: row;" class="catesList">
 							<view v-for="(item,index) in pageList" @click="handelCates(item.id,item.name)"
 								class="catesitem" :class="{catesitem1:active2==item.id}">
 								<image :src="'../../../static/images/game/'+(active2==item.id?'black':'grey')+'/'+ item.id+'.png'" style="width: 32rpx;height: 32rpx;margin:0 24rpx;" mode="widthFix"></image>
@@ -26,12 +26,21 @@
 									v-if="active2==item.id" class="active2"></image>
 							</view>
 						</view>
+						<view v-if="heiye" style="flex-direction: row;" class="catesList">
+							<view v-for="(item,index) in pageList" @click="handelCates(item.id,item.name)"
+								class="catesitem3" :class="{catesitem4:active2==item.id}">
+								<image :src="'../../../static/images/game/'+(active2==item.id?'black1':'grey')+'/'+ item.id+'.png'" style="width: 32rpx;height: 32rpx;margin:0 24rpx;" mode="widthFix"></image>
+								<text class="text4" :class="{text100:active2==item.id}">{{item.name}}</text>
+								<image src="@/static/images/game/active2.png" mode="widthFix"
+									v-if="active2==item.id" class="active2"></image>
+							</view>
+						</view>
 					</view>
 				</cell>
-			</list>
-				<view class="button" v-if="buttonShow" :style="{width:$store.state.myWidth-55+'px',marginLeft:'20rpx'}">
-					<text class="buttonText" @click="handleReset">重 置</text>
-					<text class="buttonText1" @click="handelSubmit">确 定</text>
+			</list> 
+				<view :class="['but_but',heiye?'hei1':'bai1']" class="button" v-if="buttonShow" :style="{width:$store.state.myWidth-55+'px',marginLeft:'20rpx'}">
+					<text :class="['buttonText',heiye?'noActive':'baicolor']"  @click="handleReset">重 置</text>
+					<text :class="['buttonText1',heiye?'heibut':'bai']" @click="handelSubmit">确 定</text>
 			</view>
 		</popdown>
 	</view>
@@ -242,6 +251,11 @@
 		flex: 1;
 		justify-content: space-between;
 	}
+	.text {
+		font-size: 30rpx;
+		font-weight: 300;
+		color: #666;
+	}
 
 	.h5text {
 		font-size: 30rpx;
@@ -273,17 +287,47 @@
 		background-color: #fff;
 		color: #FF5927;
 	}
+	.text6 {
+		border: 1px solid #FF5927;
+		background-color: #090909;
+		color: #FF5927;
+	}
 
 	.text2 {
 		color: #1C1C1C;
 		font-weight: 600;
 	}
-
+	
+	.text4 {
+		font-size: 30rpx;
+		font-weight: 300;
+		color: #666;
+	}
+	.text100 {
+		color: #C1C1C1;
+		font-size: 30rpx;
+		font-weight: 600;
+	}
 	.catesitem1 {
 		border: 1rpx solid #FF5927 !important;
 		background-color: #fff !important;
 	}
-
+	.catesitem4 {
+		border: 1rpx solid #FF5927 !important;
+		background-color: #090909 !important;
+	}
+	.catesitem3 {
+		flex-direction: row;
+		align-items: center;
+		background-color: #1C1C1C;
+		border: 1px solid #1C1C1C;
+		border-radius: 40rpx;
+		padding: 20rpx 0;
+		margin: 0 24rpx 32rpx 0;
+		width: 200rpx;
+	
+		position: relative;
+	}
 	.catesitem {
 		flex-direction: row;
 		align-items: center;
@@ -313,13 +357,13 @@
 		margin-bottom: 20rpx;
 		border-radius: 46rpx;
 		padding: 20rpx 0;
-		background-color: #EFEFEF;
+		
 		/* overflow:hidden */
 		
 	}
 
 	.buttonText {
-		color: #666;
+		
 		padding: 18rpx 112rpx;
 		border-radius: 46rpx;
 		font-size: 36rpx;
@@ -331,7 +375,7 @@
 		font-weight: 700;
 		color: #FF5927;
 		padding: 18rpx 140rpx 18rpx 112rpx;
-		background-color: #FFFFFF;
+		
 		border: 1px solid #FF5927;
 		border-bottom-right-radius: 46rpx;
 		border-top-right-radius: 46rpx;

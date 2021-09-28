@@ -1,6 +1,6 @@
 <template>
 	<view class="nvue-popup" :style="{width:$store.state.myWidth+'px',height: $store.state.myHeight+'rpx'}">
-		<view class="popup" ref='popup' :style="{width:$store.state.myWidth+'px'}">
+		<view class="popup" ref='popup' :style="{width:$store.state.myWidth+'px',background:heiye?'#090909':'#FFFFFF'}">
               <slot></slot>
 		</view>
 
@@ -23,6 +23,11 @@
 			ntime:{
 				type:Number,
 				default:200
+			}
+		},
+		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
 			}
 		},
 		methods: {
@@ -70,6 +75,7 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.nvue-popup {
 		background: rgba(0, 0, 0, .4);
 		flex-direction: column-reverse;
@@ -78,7 +84,7 @@
 	}
 
 	.popup {
-		background-color: #FFFFFF;
+		
 		height: 10rpx;
 		padding: 20rpx 40rpx 0 40rpx;
 		border-top-left-radius: 20rpx;

@@ -15,11 +15,11 @@
 						<textarea style="height: 200rpx;font-size: 30rpx;" :style="{width:myWidth/1.2+'px'}" v-model="form.description" maxlength="210" placeholder="可描述角色等级，装备，属性等，10-199字，完善描述可以快速有效的促成交易哦！" placeholder-style="color:#e1e1e1"></textarea>
 					</group>
 					<group type='slot' :borderTop='false' :right="false">
-						<text class="title">售价</text>
+						<text :class="['title',heiye?'isTheme':'noTheme']" >售价</text>
 					    <input type="number" class="inputs" v-model="form.price" placeholder="请填写价格最低6元" maxlength="20" style="width: 260rpx;" placeholder-style="color:#e1e1e1"/>
 					</group>
 					<view>
-						<text class="yxjt" >游戏截图</text>
+						<text :class="['yxjt',heiye?'isTheme':'noTheme']"  >游戏截图</text>
 							<view class="upload" :style="{width:myWidth-32+'px'}">
 								<upLoadImage :max_number='3'  @upLoadSuccess='upLoadSuccess' :clearImageList="clearImageList"></upLoadImage>
 							</view>

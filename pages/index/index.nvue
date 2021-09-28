@@ -146,7 +146,12 @@
 				uni.setNavigationBarColor({
 					frontColor: '#ffffff',
 					backgroundColor: '#090909',
-				})	
+				})
+				uni.setTabBarStyle({
+				 
+				  backgroundColor: '#090909',
+				  borderStyle: 'black'
+				})
 			}
 			uni.$once('close', data => {
 					if (data) {

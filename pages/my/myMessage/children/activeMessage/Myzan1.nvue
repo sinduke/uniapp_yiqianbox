@@ -32,7 +32,7 @@
 				</cell>
 			</list>
 			<nloading :style="{width:myWidth-32+'px'}" v-else :isNoData="isNoData"></nloading>
-			<view class="bottom" :style="{width:myWidth-32+'px'}" v-if="isActive" >
+			<view class="bottom" :style="{width:myWidth-32+'px',background:heiye?'#090909':'#fff'}" v-if="isActive" >
 				<view class="bot_box" @click="handleNotall"  v-if="selectAll">
 					<image class="le_box1"  src="@/static/images/view/down_acitve.png" ></image>
 					<text class="bottom_text">全不选</text>	
@@ -269,7 +269,7 @@
 		padding: 20rpx 0rpx;
 		flex-direction: row;
 		justify-content: space-between;
-		background: #fff;
+		
 	}
 	.bottom_text{
 		color: #666666;

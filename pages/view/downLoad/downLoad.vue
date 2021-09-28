@@ -1,16 +1,22 @@
 <template>
-	<view class="downLoad">
+	<view :style="{height:myHeight-statusBarHeight-20+'rpx',background:heiye?'#090909':''}" class="downLoad" >
 		<view style="margin-top: 80rpx; " title="" :border-bottom='false' >
 			<view>
 				<view class="title">
 					<view class="slot-wrap" style="align-items: center;display: flex;flex-wrap: row;" @click="goback">
-						<image  ref='handleBack' style="margin-right: 50rpx;width: 35rpx;height: 35rpx;" src="@/static/images/left.png" ></image>
-						<text class="customer" style="font-size: 32rpx;font-weight: 400;margin-left: -20rpx;">下载管理</text>
+						<image v-if="heiye==false"  ref='handleBack' style="margin-right: 50rpx;width: 35rpx;height: 35rpx;" src="@/static/images/left.png" ></image>
+						<image v-else  ref='handleBack' style="margin-right: 50rpx;width: 35rpx;height: 35rpx;" src="@/static/images/leftB.png" ></image>
+						<text :class="['customer',heiye?'isTheme':'noTheme']" style="font-size: 32rpx;font-weight: 400;margin-left: -20rpx;">下载管理</text>
 					</view>
 					<view class="slot-right">
-						<view class="radius">
+						<view class="radius" v-if="heiye==false">
 							<image @click="isActive=false"  style="font-weight: 400;font-size: 32rpx;width: 40rpx;height: 40rpx;" v-if="isActive" src="@/static/images/my/xxxx.png" mode=""></image>
 							<image  @click="handleDelete"  style="font-weight: 400;font-size: 32rpx;width: 40rpx;height: 40rpx;" v-else src="@/static/images/my/rwzx-xgnc.png" mode=""></image>
+							
+						</view>
+						<view :style="{backgroundColor:heiye?'#1c1c1c':''}" class="radius" v-if="heiye">
+							<image @click="isActive=false"  style="font-weight: 400;font-size: 32rpx;width: 40rpx;height: 40rpx;" v-if="isActive" src="@/static/images/my/xxxx1.png" mode=""></image>
+							<image  @click="handleDelete"  style="font-weight: 400;font-size: 32rpx;width: 40rpx;height: 40rpx;" v-else src="@/static/images/my/32.png" mode=""></image>
 							
 						</view>
 					</view>
@@ -28,9 +34,9 @@
 					<image  @click="toDetail(item)" @longpress='longpress(index)' :src="item.icon" mode="widthFix" :style="{height:isActive?'140rpx':'167rpx',width:isActive         ?'140rpx':'167rpx'}" style="margin-right: 12rpx;margin-bottom: 20rpx;"></image>
 				</view>
 				
-				<view class="gameRight" >
+				<view class="gameRight" :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #EFEFEF'}">
 					<view class="gameDetail" @longpress='longpress(index)'>
-						<text class="gamename"  @click="toDetail(item)">{{item.gamename}}</text>
+						<text :class="['gamename',heiye?'isTheme':'noTheme']"  @click="toDetail(item)">{{item.gamename}}</text>
 						<view class="" style="margin-bottom: 16rpx;">
 							<text class="text" v-for="(v,i) in item.type" :key="i" v-if="i<3">{{v}}</text>
 							<!-- <text class="text">|</text> -->
@@ -48,7 +54,7 @@
 			</view>
 
 		</view>
-		<view class="bottom" v-if="isActive">
+		<view :style="{background:heiye?'#090909':'#fff;'}" class="bottom" v-if="isActive">
 			<view class="Botradius" style="display: flex;align-items: center;">
 				<image v-if="selectAll" src="@/static/images/view/down_acitve.png" mode="widthFix"	style="width: 40rpx;height: 40rpx;margin-right: 16rpx;"></image>
 				<view v-else @click="handleAll"
@@ -79,7 +85,42 @@
 				selectAll: false,
 			}
 		},
+		// onShow(){
+		// 	if(this.heiye){
+		// 		uni.setNavigationBarColor({
+		// 		    frontColor: '#ffffff',
+		// 		    backgroundColor: '#ff0000',
+		// 		    animation: {
+		// 		        duration: 400,
+		// 		        timingFunc: 'easeIn'
+		// 		    }
+		// 		})
+		// 	}
+		// },
+		onReady() {
+			// console.log(666)
+			// if(this.heiye){
+			// 	uni.setNavigationBarColor({
+			// 	    frontColor: '#ffffff',
+				    
+			// 	    animation: {
+			// 	        duration: 1000,
+			// 	        timingFunc: 'easeIn'
+			// 	    }
+			// 	})
+			// }
+		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
+			myHeight(){
+				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
+			}, 
+			
+			statusBarHeight(){
+				return uni.getSystemInfoSync().statusBarHeight* (750 / uni.getSystemInfoSync().windowWidth)
+			},
 			myDownList() {
 				return uni.getStorageSync('downList')
 			}
@@ -252,8 +293,9 @@
 </script>
 
 <style lang="scss" scoped>
+	@import '@/common/css/nvue-black.css';
 	.downLoad {
-
+		
 		.u-navbar {
 			box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.16);
 
@@ -266,7 +308,7 @@
 		}
 
 		.customer {
-			color: $xw-black-dark;
+			
 		}
 
 		.radius {
@@ -290,7 +332,6 @@
 			.gameRight {
 				@include flex;
 				justify-content: space-between;
-				@include border_box;
 				padding-bottom: 40rpx;
 
 				.buttons {
@@ -310,7 +351,7 @@
 
 
 				.gamename {
-					color: $xw-black-dark;
+					
 					font-size: $xw-h3-font;
 					font-weight: 700;
 					margin-bottom: 8rpx;
@@ -342,7 +383,7 @@
 			width: 100%;
 			@include padding;
 			@include flex;
-			background-color: #fff;
+			
 
 			.button {
 				@include button(32rpx, 12rpx, 100rpx);

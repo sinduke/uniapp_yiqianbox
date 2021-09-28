@@ -63,7 +63,7 @@
 				<view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" >
 					
 				<view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}"  class="cards" ref="box1">
-					<view class="box1" style="background-color: #090909;" >
+					<view class="box1" :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}"  >
 												<!-- 优惠券 -->
 						<view :style="{backgroundColor:heiye?'#1c1c1c':'#F4F4F4'}"  class="youhuiquan" v-if="pageData.coupons.count" @click="toYouHui(pageData.game_id)">
 					    	<image src="@/static/images/view/rateQuan.png" style="width: 48rpx;height: 30rpx;" mode="widthFix"   ></image>
@@ -111,7 +111,7 @@
 							<text class="down_text" v-else>{{status}}</text>
 							<text class="down_text" v-if="status=='下 载'">{{pageData.size}}</text>
 				     	</view>
-						<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
+						<text :style="{background:heiye?'#090909':'#fff'}" class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
 					<!-- <downLoadButton ref="downLoad"  v-if="item" :borders='false'   @getData='myGetData' :item='item' :sort='0' :getData='getDatas'></downLoadButton>	 -->
 				</view>
 				
@@ -122,7 +122,7 @@
 					   <text class="down_text"  v-if="pageData.game_task_content" >试玩</text>
 					    <text class="down_text" v-else>开玩</text>
 				 </view>
-					<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
+					<text :style="{background:heiye?'#090909':'#fff'}" class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
 		    	</view>
 	        <!-- IOS -->
 	         <view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" class="cards" ref="down" v-else @click="handleIOSDown">
@@ -134,13 +134,13 @@
 							<text class="down_text"  v-else >{{'安 装'}}</text>
 							<!--     -->
 					 	</view>
-					<text class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
+					<text :style="{background:heiye?'#090909':'#fff'}" class="jiangli" v-if="pageData.game_task_content">{{pageData.game_task_content}}</text>
 		    	</view>
 				
                </view>
      					<!-- 收藏 福利 资讯攻略 -->
 						 <view :style="{backgroundColor:heiye?'#090909':'#FFFFFF'}" class="cards" ref="operation">
-						 	<view class="operation" >
+						 	<view :style="{borderBottom:heiye?'':'1px solid #EFEFEF'}" class="operation" >
 						 		<!-- 收藏 -->
 						 		<view class="operation-item" @click="handleOperation(pageData.game_id,pageData.is_collect)">
 						 		<image class="operation-item_image" src="@/static/images/view/ysc.png"  v-if="pageData.is_collect==1" mode="widthFix"></image>
@@ -166,7 +166,7 @@
 				</header>
 				<!--  -->
                    <cell class="slot">
-					   <view :style="{width:myWidth+'px',backgroundColor:'#fff'}" ref="slot">
+					   <view :style="{width:myWidth+'px',backgroundColor:heiye?'#090909':'#fff'}" ref="slot">
 					   </view>
 				   </cell>
 				   
@@ -298,9 +298,9 @@
 							</view>
 						</view>
 						<!-- 子回复 -->
-						<view @click="toDetail(pageData.game_id)" style="background: #F4F4F4;border-radius: 20rpx;padding: 20rpx;margin-bottom: 40rpx;"	v-if='evaluateitem.sub.length'>
+						<view :style="{background:heiye?'#1c1c1c':'#F4F4F4'}" @click="toDetail(pageData.game_id)" style="border-radius: 20rpx;padding: 20rpx;margin-bottom: 40rpx;"	v-if='evaluateitem.sub.length'>
 							<view style="flex-direction: row;margin-bottom: 20rpx;" v-if="index<2" v-for="(item,index) in evaluateitem.sub" :key='index'>
-								<text style="font-size: 24rpx;color: #121212;font-weight: 700;margin-right: 20rpx;">{{item.mem_name}}:</text>
+								<text :style="{color:heiye?'#c1c1c1':'#121212'}" style="font-size: 24rpx;font-weight: 700;margin-right: 20rpx;">{{item.mem_name}}:</text>
 								<text style="font-size: 24rpx;color: #666;">{{item.content}}</text>
 							</view>
 							<text	style="font-size: 24rpx;color: #c1c1c1;" >查看全部{{evaluateitem.sum?evaluateitem.sum:0}}条评论</text>
@@ -803,6 +803,7 @@
 
 			scrollstart(e){
               this.bind()
+			 
 			
 			},
 			scrollend(e){
@@ -1094,7 +1095,6 @@
 	.operation {
 		padding: 0 54rpx;
 		padding-bottom: 40rpx;
-		border-bottom: 1px solid #EFEFEF;
 		flex-direction: row;
 		justify-content: space-between;
 		position: relative;
@@ -1229,7 +1229,7 @@
    }
 	.jiangli {
 		position: absolute;
-		background-color: #fff;
+		
 		top: 0;
 		right: 60rpx;
 		padding: 0 10rpx;

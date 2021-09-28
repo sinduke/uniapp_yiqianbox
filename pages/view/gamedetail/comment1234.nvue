@@ -170,7 +170,7 @@
 								<view class="" style="margin-bottom: 7rpx;flex-direction: row; "
 									v-for="(item,index) in item.sub" :key='index'>
 									<text
-										style="color: #121212;font-weight:600;font-size: 28rpx;line-height:70rpx;margin:0 6rpx 0 17rpx">{{item.mem_name}}：</text><text
+										style="font-weight:600;font-size: 28rpx;line-height:70rpx;margin:0 6rpx 0 17rpx" :style="{color:heiye?'#c1c1c1':'#121212'}">{{item.mem_name}}：</text><text
 										style="color: #666666;font-weight: 400;opacity: 0.6;font-size:28rpx;line-height:70rpx;">{{item.content}}</text>
 								</view>
 							</view>
@@ -201,7 +201,7 @@
 					<view class="itemlist" v-if="evaluate.count == 0" style="align-items: center;margin-top: 140rpx;" :style="{width: myWidth+'px'}">
 						<image src="@/static/images/sf-background.png" mode="widthFix" style="width: 400rpx;height: 400rpx;"></image>
 						<view  style="flex-direction: row;justify-content: center;">
-							<text style="color: #999;font-size: 32rpx;"> 暂无评论，赶紧评论吧！</text>
+							<text :style="{color:heiye?'#c1c1c1':'#999'}" style="font-size: 32rpx;"> 暂无评论，赶紧评论吧！</text>
 						</view>
 					</view>
 				</cell>

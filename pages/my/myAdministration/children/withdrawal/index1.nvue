@@ -1,24 +1,24 @@
 <!-- 账号信息 -->
 <template>
-	<view class="box" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
-		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
-			<text class="input_text">支付方式</text>
+	<view :class="['box',heiye?'bg':'wg']"  :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #3d3d3d':'2rpx solid #ECECEC'}">
+			<text :class="['input_text',heiye?'isTheme':'noTheme']">支付方式</text>
 			<text class="input_style" style="color: #000000;font-size:30rpx ;">{{payWay.payList[form.type]}}</text>
 		</view>
-		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
-			<text class="input_text">户名</text>
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #3d3d3d':'2rpx solid #ECECEC'}">
+			<text :class="['input_text',heiye?'isTheme':'noTheme']">户名</text>
 			<input v-model="form.cardholder" class="input_style" type="text" value="" placeholder="请输入户名"/>
 		</view>
-		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}">
-			<text class="input_text">账号</text>
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #3d3d3d':'2rpx solid #ECECEC'}">
+			<text :class="['input_text',heiye?'isTheme':'noTheme']">账号</text>
 			<input v-model="form.banknum" class="input_style" type="number" value="" placeholder="请输入账号"/>
 		</view>
-		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}" v-if="form.type=='bank'">
-			<text class="input_text">银行名称</text>
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #3d3d3d':'2rpx solid #ECECEC'}" v-if="form.type=='bank'">
+			<text :class="['input_text',heiye?'isTheme':'noTheme']">银行名称</text>
 			<input v-model="form.bankname" class="input_style" type="text" value="" placeholder="请输入银行名称"/>
 		</view>
-		<view class="input_box" :style="{width:$store.state.myWidth-32+'px'}" v-if="form.type=='bank'">
-			<text class="input_text">支行名称</text>
+		<view class="input_box" :style="{width:$store.state.myWidth-32+'px',borderBottom:heiye?'2rpx solid #3d3d3d':'2rpx solid #ECECEC'}" v-if="form.type=='bank'">
+			<text :class="['input_text',heiye?'isTheme':'noTheme']">支行名称</text>
 			<input v-model="form.branchname" class="input_style" type="text" value="" placeholder="请输入支行名称"/>
 		</view>
 		<view class="button" @click="editSettlement">
@@ -55,12 +55,23 @@
 			}
 		},
 		computed:{
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			userInfo(){
 				return globalData.store.state.userInfo
 			},
 			myHeight(){
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		onLoad(data) {
 			this.form.type = data.paytype
@@ -124,20 +135,21 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.box{
-		background-color: #fff;
+		
 		align-items: center;
 	}
 	.input_box{
 		padding:30rpx 0rpx;
-		border-bottom:2rpx solid #ECECEC;
+		
 		justify-content: center;
 		align-items: center;
 		flex-direction: row;
 		justify-content: space-between;
 	}
 	.input_text{
-		color: #000000;
+		
 		font-size:30rpx ;
 		font-weight: 400;
 	}

@@ -1,14 +1,14 @@
 <template>
-	<view class="someNumber">
+	<view :class="['someNumber',heiye?'bg':'wg']"  >
 		<view class="mycards" v-if="pageData">
 			<view class="gamedetail">
 				<image :src="pageData[0].game.new_icon||pageData[0].game.icon" mode="widthFix"
 					style="width: 140rpx;height: 140rpx;margin-right: 32rpx;"></image>
-				<text class="game_name">{{pageData[0].game.name}}</text>
+				<text :class="['game_name',heiye?'isTheme':'noTheme']" >{{pageData[0].game.name}}</text>
 			</view>
 			<view style="flex-direction: row;align-items: center;flex-wrap: wrap;" :style="{width:myWidth+'px'}">
-				<view @click="handleRouter(item.role_name,item.server_name,item.id,item.mg_id)" :style="{width:myWidth/2.3+'px'}" v-for="(item,index) in pageData" :key='index' class="cards">
-					<text class="Rolename">{{item.role_name}}</text>
+				<view @click="handleRouter(item.role_name,item.server_name,item.id,item.mg_id)" :style="{width:myWidth/2.3+'px',backgroundColor:heiye?'#1c1c1c':'#F9F9F9'}" v-for="(item,index) in pageData" :key='index' class="cards">
+					<text :class="['Rolename',heiye?'isTheme':'noTheme']" >{{item.role_name}}</text>
 					<text class="text">实际充值：{{item.money}}.00</text>
 					<text class="text">区服：{{item.server_name}}</text>
 				</view>
@@ -30,6 +30,9 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
@@ -37,6 +40,14 @@
 				return uni.getSystemInfoSync().windowWidth
 			},
 
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			getData(game_id) {
@@ -64,8 +75,9 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.someNumber {
-		background-color: #fff;
+		
 		flex: 1;
 	}
 
@@ -86,12 +98,12 @@
 	.game_name {
 		font-size: 38rpx;
 		font-weight: 700;
-		color: #1c1c1c;
+		
 	}
 
 	.cards {
 		border-radius: 30rpx;
-		background-color: #F9F9F9;
+		
 		padding: 12rpx 24rpx;
 		margin: 24rpx 24rpx 24rpx 0;
 		align-items: flex-start;
@@ -100,7 +112,7 @@
 
 	.Rolename {
 		font-weight: 700;
-		color: #1C1C1C;
+		
 		margin-bottom: 8rpx;
 		font-size: 32rpx;
 	}

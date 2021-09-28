@@ -30,7 +30,13 @@
 						</video>
 					</cover-view>
 						<cover-image class="images" @click='handleRouter(item.game_id)' ref="images" :style="{width:myWidth-34+'px',height:'400rpx'}" :src="item.hot_image" v-if="imgactive!=index"></cover-image>
-						<view v-if="active!=index" class="rates" :style="{top:$store.state.platform=='ios'?'-10rpx':'0',left:$store.state.platform=='ios'?'-8rpx':'-4rpx'}">
+						<view v-if="active!=index&&heiye==false" class="rates" :style="{top:$store.state.platform=='ios'?'-10rpx':'0',left:$store.state.platform=='ios'?'-8rpx':'-4rpx'}">
+							<image class="rateimages" v-if="item.rate<1" mode="widthFix" src="@/static/images/index/index-rate.png"></image>
+							<image class="rateimages" v-else-if="item.has_coupons" mode="widthFix" src="@/static/images/yhq-rate.png"></image>
+							<text v-if="item.rate<1" class="rateText">{{(item.rate*10).toFixed(1)}} 折</text>
+							<text v-else-if="item.has_coupons" class="rateText">优惠券</text>
+						</view>
+						<view v-if="active!=index&&heiye" class="rates" :style="{top:$store.state.platform=='ios'?'-10rpx':'-12rpx',left:$store.state.platform=='ios'?'-8rpx':'-8rpx'}">
 							<image class="rateimages" v-if="item.rate<1" mode="widthFix" src="@/static/images/index/index-rate.png"></image>
 							<image class="rateimages" v-else-if="item.has_coupons" mode="widthFix" src="@/static/images/yhq-rate.png"></image>
 							<text v-if="item.rate<1" class="rateText">{{(item.rate*10).toFixed(1)}} 折</text>

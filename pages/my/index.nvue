@@ -66,7 +66,8 @@
 					<text :class="['h2',heiye?'isTheme':'noTheme']" >我的资产</text>
 					<view class="grid" style="padding-left:60rpx;padding-right: 60rpx;" >
 						<view class="grid-item" @click="handleRouter('/pages/my/FlatGoldCoins/FlatGoldCoins?ptb_cnt='+userInfo.ptb_cnt,1)">
-							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-ptb.png" mode="widthFix" class="images"></image>
+							<image v-if="!Object.keys(userInfo).length&&heiye==false" src="../../static/images/my/wdl-ptb.png" mode="widthFix" class="images"></image>
+							<image v-if="!Object.keys(userInfo).length&&heiye" src="../../static/images/my/wdl-ptb1.png" mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
 							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.ptb_cnt}}</text>
 							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">个</text>
@@ -74,7 +75,8 @@
 							<text :class="['grid-text',heiye?'noActive':'noTheme']">平台币</text>
 						</view>
 						<view class="grid-item" @click="handleRouter('/pages/my/coupons/coupons1',1)">
-							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-yhq.png"	mode="widthFix" class="images"></image>
+							<image v-if="!Object.keys(userInfo).length&&heiye==false" src="../../static/images/my/wdl-yhq.png"	mode="widthFix" class="images"></image>
+							<image v-if="!Object.keys(userInfo).length&&heiye" src="../../static/images/my/wdl-yhq1.png"	mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
 							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.coupon_count}}</text>
 							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">张</text>
@@ -82,7 +84,8 @@
 							<text :class="['grid-text',heiye?'noActive':'noTheme']">优惠券</text>
 						</view>
 						<view class="grid-item" @click="handleRouter('/pages/my/integral/index1',1)">
-							<image v-if="!Object.keys(userInfo).length" src="../../static/images/my/wdl-jf.png"	mode="widthFix" class="images"></image>
+							<image v-if="!Object.keys(userInfo).length&&heiye==false" src="../../static/images/my/wdl-jf.png"	mode="widthFix" class="images"></image>
+							<image v-if="!Object.keys(userInfo).length&&heiye" src="../../static/images/my/wdl-jf1.png"	mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
 							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.my_integral}}</text>
 							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">分</text>
@@ -274,14 +277,13 @@
 			},
 			userInfo(){
 				return this.$store.state.userInfo
-			}
-			
+			}	
 		},
 		methods: {
 			isblack(){
 				this.heiye = !this.heiye
 				uni.setStorageSync('heiye',{type:this.heiye})
-				
+				plus.runtime.restart()
 			},
 			scrollend(e){
 				this.scrollTop = 0

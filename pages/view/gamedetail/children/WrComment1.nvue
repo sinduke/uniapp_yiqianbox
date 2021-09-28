@@ -1,18 +1,18 @@
 <!-- 去写评论 -->
 <template>
-	<view class="container">
+	<view :class="['container',heiye?'bg':'wg']" >
 		<view :style="{width:myWidth+'px'}" style="box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.16);height: 8rpx;"></view>
 		<view class="box">
-			<text class="text1">请评分</text>
+			<text :class="['text1',heiye?'isTheme':'noTheme']" >请评分</text>
 			<uni-rate inactive-icon="star-fill" :count="rate.count" v-model="rate.value"
 				inactive-color="#C1C1C1" active-color="#FF5927" margin="26" min-count="1" size="24"
 				class="rate" style="margin-bottom: 48rpx;"></uni-rate>
-			<view :style="{width:myWidth-32+'px'}" style="height: 2rpx;background-color: #EFEFEF;"></view>
-			<view class="input_box" :style="{width:myWidth-32+'px'}" >
-				<textarea  v-model="rate.comment"  style="height: 300rpx;font-size: 32rpx;" value="" placeholder="写下你的想法..." />
+			<view  :style="{width:myWidth-32+'px',backgroundColor:heiye?'#3d3d3d':'#EFEFEF'}" style="height: 2rpx;"></view>
+			<view class="input_box" :style="{width:myWidth-32+'px',borderBottom:heiye?'2rpx solid #3d3d3d':'2rpx solid #EFEFEF'}" >
+				<textarea :style="{color:heiye?'#c1c1c1':''}" v-model="rate.comment"  style="height: 300rpx;font-size: 32rpx;" value="" placeholder="写下你的想法..." />
 				<view style="flex-direction: row;justify-content: flex-end;">
 					<text style="font-size: 32rpx;font-weight: 400;color: #C1C1C1;">可输入</text>
-					<text style="font-size: 32rpx;font-weight: 400;color: #1C1C1C">{{140-rate.comment.length}}</text>
+					<text :style="{color:heiye?'#FF5927':'#C1C1C1'}" style="font-size: 32rpx;font-weight: 400;">{{140-rate.comment.length}}</text>
 					<text style="font-size: 32rpx;font-weight: 400;color: #C1C1C1;">字</text>
 				</view>
 			</view>
@@ -61,12 +61,23 @@
 			this.commentParams.object_id = option.gameid
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
 			},
 			myHeight() {
 				return uni.getSystemInfoSync().windowHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},	
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
+			}
 		},
 		methods: {
 			// 提交评论
@@ -122,9 +133,10 @@
 </script>
 
 <style scoped>
+	@import '@/common/css/nvue-black.css';
 	.container{
 		flex: 1;
-		background: #fff;
+		
 	}
 	.box{
 		padding: 48rpx 32rpx;
@@ -132,12 +144,12 @@
 	.text1{
 		font-weight: 500;
 		font-size: 36rpx;
-		color: #1C1C1C;
+		
 		margin-bottom:48rpx ;
 	}
 	.input_box{
 		padding: 32rpx 0rpx;
-		border-bottom: 2rpx solid #EFEFEF;;
+		
 	}
 	.but{
 		position: fixed;
