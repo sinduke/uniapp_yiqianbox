@@ -1,4 +1,4 @@
-<!-- 个人中心 -->
+ <!-- 个人中心 -->
 <template>
 	<view :class="['my',heiye?'bg':'bai888']" :style="{width:myWidth+'px'}">
 		<view :style="{height:statusBarHeight+'px',width:myWidth+'px'}"></view>
@@ -70,7 +70,7 @@
 							<image v-if="!Object.keys(userInfo).length&&heiye" src="../../static/images/my/wdl-ptb1.png" mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
 							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.ptb_cnt}}</text>
-							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">个</text>
+							<text v-if="Object.keys(userInfo).length" :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">个</text>
 							</view>
 							<text :class="['grid-text',heiye?'noActive':'noTheme']">平台币</text>
 						</view>
@@ -79,7 +79,7 @@
 							<image v-if="!Object.keys(userInfo).length&&heiye" src="../../static/images/my/wdl-yhq1.png"	mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
 							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.coupon_count}}</text>
-							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">张</text>
+							<text v-if="Object.keys(userInfo).length" :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">张</text>
 							</view>
 							<text :class="['grid-text',heiye?'noActive':'noTheme']">优惠券</text>
 						</view>
@@ -88,7 +88,7 @@
 							<image v-if="!Object.keys(userInfo).length&&heiye" src="../../static/images/my/wdl-jf1.png"	mode="widthFix" class="images"></image>
 							<view style="flex-direction: row;align-items: center;" v-else>
 							<text :class="['myrate',heiye?'isTheme':'noTheme']" >{{userInfo.my_integral}}</text>
-							<text :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">分</text>
+							<text v-if="Object.keys(userInfo).length" :class="['',heiye?'isTheme':'noTheme']" style="font-weight: 300;font-size:22rpx;">分</text>
 							</view>
 							<text :class="['grid-text',heiye?'noActive':'noTheme']">积分</text>
 						</view>

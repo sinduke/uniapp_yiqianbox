@@ -348,7 +348,7 @@
 	import gameporp from '@/components/nvue-propup/nvue-propup.nvue';
 	import serveShow from './children/serveShow.nvue';
 	import iosDownLoad from "./children/iosDownLoad/index.nvue";
-	const BindingX = uni.requireNativePlugin('bindingx');
+	// const BindingX = uni.requireNativePlugin('bindingx');
 	import common from '@/common/js/common.js';
 	import downLoadButton from '@/components/xw-downLoadButton/xw-downLoadButton';
 	const globalData = getApp().globalData

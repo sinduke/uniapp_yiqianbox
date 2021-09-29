@@ -1,6 +1,6 @@
 <template>
-	<view style="flex: 1;">
-		<view :class="['container',heiye?'bg':'wg']":style="{width:$store.state.myWidth+'px'}">
+	<view :style="{background:heiye?'#090909':'#fff'}" style="flex: 1;">
+		<view :class="['container',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
 				<!-- tabs -->
 				<view class="tabslist">

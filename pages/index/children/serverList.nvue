@@ -21,7 +21,7 @@
 						<view class="lins" v-else :style="{backgroundColor:heiye?'':'#fff'}" ></view>
 					</view>
 					<view :style="{width:$store.state.myWidth+'px'}" v-else class="cardLines" @disappear='handleDiss($event,getmonth(myList[0].game_start_time[0]),weekday[new Date(myList[0].game_start_time[0]*1000).getDay()])'>
-						<text class="timers" v-if="getmonth(myList[0].game_start_time[0])!=getmonth(new Date()/1000)">{{myList[0].game_start_time[0] | dateFormat('MM-dd')}} {{weekday[new Date(myList[0].game_start_time[0]*1000).getDay()]}}</text>
+						<text :class="['timers',heiye?'isTheme':'noTheme']" class="timers" v-if="getmonth(myList[0].game_start_time[0])!=getmonth(new Date()/1000)">{{myList[0].game_start_time[0] | dateFormat('MM-dd')}} {{weekday[new Date(myList[0].game_start_time[0]*1000).getDay()]}}</text>
 						<view class="lins" v-if="getmonth(myList[0].game_start_time[0])!=getmonth(new Date()/1000)"></view>
 						<view class="lins" v-else :style="{backgroundColor:heiye?'':'#fff'}"></view>
 					</view>

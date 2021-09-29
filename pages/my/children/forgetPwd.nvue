@@ -1,27 +1,27 @@
 <!-- 忘记密码 -->
 <template>
-	<view class="container">
-		<text class="title" >忘记密码</text>
+	<view :class="['container',heiye?'bg':'wg']" >
+		<text :class="['title',heiye?'isTheme':'noTheme']" >忘记密码</text>
 		<!-- 第一步：验证码 -->
-		<text class="h2">手机号</text>
-		<view class="select flex" >
+		<text :class="['h2',heiye?'isTheme':'noTheme']" >手机号</text>
+		<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="select flex" >
 			<input type="number" class="inputs" v-model="form1['sms-mobile']" placeholder="请输入已绑定的手机号" maxlength="20" :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
 			<image src="@/static/images/close.png" v-if="form2['sms-mobile']" @click="form1['sms-mobile']=''" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 		</view>
-		<text class="h2">验证码</text>
-		<view class="select flex" >
+		<text :class="['h2',heiye?'isTheme':'noTheme']">验证码</text>
+		<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="select flex" >
 			<input type="number" maxlength="6" v-model="form1['sms-code']" class="inputs" placeholder="请输入验证码" :style="{width:myWidth/1.4+'px'}" placeholder-style="color:#e1e1e1"/>
 			<verificationCode @click="getCode" :contentCode='contentCode'></verificationCode>	
 		</view>
-		<text class="h2">新密码</text>
-		<view class="select flex">
+		<text :class="['h2',heiye?'isTheme':'noTheme']">新密码</text>
+		<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="select flex">
 			<input type="text" class="inputs" v-if="is_eye"  v-model="form2.password"  placeholder="请输入新密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
 			<input type="password" class="inputs" v-else  v-model="form2.password" placeholder="请输入新密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
 			<image src="@/static/images/eye_open.png" v-if="is_eye" mode="widthFix" @click="is_eye=false" style="width: 30rpx;height: 30rpx;"></image>
 			<image src="@/static/images/eye_close.png" v-else mode="widthFix" @click="is_eye=true" style="width: 30rpx;height: 30rpx;"></image>
 		</view>
-		<text class="h2">再次确认</text>
-		<view class="select flex">
+		<text :class="['h2',heiye?'isTheme':'noTheme']">再次确认</text>
+		<view :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #efefef'}" class="select flex">
 			<input type="text" class="inputs" v-if="is_eye1" v-model="form2.passwordAgain"  placeholder="请再次输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
 			<input type="password" class="inputs" v-else v-model="form2.passwordAgain" placeholder="请再次输入密码" maxlength="20" @confirm='doLogin' :style="{width:myWidth/1.2+'px'}" placeholder-style="color:#e1e1e1"/>
 			<image src="@/static/images/eye_open.png" v-if="is_eye1" mode="widthFix" @click="is_eye1=false" style="width: 30rpx;height: 30rpx;"></image>
@@ -59,11 +59,22 @@
 			}
 		},
 		computed: {
+			heiye(){
+				return uni.getStorageSync('heiye').type
+			},
 			myHeight() {
 				return uni.getSystemInfoSync().screenHeight * (750 / uni.getSystemInfoSync().windowWidth)
 			},
 			myWidth() {
 				return uni.getSystemInfoSync().windowWidth
+			}
+		},
+		onReady() {
+			if(this.heiye){
+				uni.setNavigationBarColor({
+					frontColor: '#ffffff',
+					backgroundColor: '#090909',
+				})	
 			}
 		},
 		methods: {
@@ -145,7 +156,17 @@
 </script>
 
 <style scoped>
-	@import '@/common/css/nvue-whith.css';
+	@import '@/common/css/nvue-black.css';
+	.h2 {
+		font-size: 36rpx;
+		font-weight: 700;
+		
+	}
+	.text {
+		font-size: 30rpx;
+		font-weight: 300;
+		color: #666;
+	}
 	.flex{
 		flex-direction: row;
 		align-items: center;
@@ -153,20 +174,20 @@
 	.select{
 	    margin-bottom: 48rpx;
 	  	padding-bottom:12rpx;
-		border-bottom:1px solid #efefef;
+		
 	}
 	.inputs{
 		font-size: 28rpx;
 	}
 	.container {
 		flex: 1;
-		background-color: #fff;
+		
 		overflow: hidden;
 		padding: 0 32rpx;
 	}
 	.title{
 		margin: 80rpx 0;
-		color: #1C1C1C;
+		
 		font-weight: 700;
 		font-size:48rpx;
 	}
