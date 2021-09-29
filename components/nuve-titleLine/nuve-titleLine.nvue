@@ -92,7 +92,7 @@
 			getline_Width(index){
 				dom.getComponentRect(this.$refs.tabitem[index], res => {
 					this.linesWidth = res.size.width 
-					 console.log(this.linesWidth,'res.size.width')
+					 // console.log(this.linesWidth,'res.size.width')
 				});
 			},
 			
@@ -118,7 +118,7 @@
 			  dom.scrollToElement(el, { offset});
 			},
 			switchTab(val){
-					console.log(this.widthLine,this.number,this.myWidth,val,'this.widthLine')
+					// console.log(this.widthLine,this.number,this.myWidth,val,'this.widthLine')
 				if(this.number==(this.length-1)&&val>0){	
 				}else if(this.number==0&&val<0){					
 					this.widthLine = 0

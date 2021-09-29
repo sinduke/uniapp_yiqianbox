@@ -191,6 +191,20 @@
                     "pid" : "",
                     "parameters" : {}
                 }
+            },
+            "xw_downmanager" : {
+                "__plugin_info__" : {
+                    "name" : "DownManagerModule",
+                    "description" : "下载管理",
+                    "platforms" : "Android",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
             }
         },
         "nvueLaunchMode" : ""
