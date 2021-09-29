@@ -38,13 +38,31 @@
 			}, 100)
 			//设置初始化
 			this.getSetting()
+			
+			// plus.navigator.setStatusBarStyle('dark');
+			
 		},
-		computed: {
-			heiye(){
-				return uni.getStorageSync('heiye').type
-			},
-		},
+		// computed: {
+		// 	heiye(){
+		// 		return uni.getStorageSync('heiye').type
+		// 	},
+		// },
 		methods: {
+			// 修改原生虚拟按键
+			getNativeBut(type){
+				var Color = plus.android.importClass("android.graphics.Color");
+				plus.android.importClass("android.view.Window");
+				var mainActivity = plus.android.runtimeMainActivity();
+				var window_android = mainActivity.getWindow();
+				if(type){
+					window_android.setNavigationBarColor(Color.argb(255,255,255,255));
+				}else{
+					
+				window_android.setNavigationBarColor(Color.argb(255,0,0,0));
+				}
+			},
+			
+			
 			// 页面初始化
 			dataInit() {
 				this.$api.get("system/appinit").then(res => {
@@ -169,6 +187,12 @@
 					uni.setStorageSync('heiye',{
 						type: false,
 					})
+					this.getNativeBut(1)
+				}else if(heiye.type==false){
+					this.getNativeBut(1)
+					
+				}else{
+					this.getNativeBut(0)
 				}
 				
 				

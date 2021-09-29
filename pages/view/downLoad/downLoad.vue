@@ -107,10 +107,12 @@
 			},300)
 		},
 		onReady() {
-			// if(this.heiye){
-			// 	uni.setNavigationBarColor({
-			// 	    frontColor: '#ffffff',
-				    
+		  if(this.heiye){
+		      uni.setNavigationBarColor({
+				frontColor: '#ffffff',
+				backgroundColor: '#000000',
+		     	})	
+	    	}  
 			// 	    animation: {
 			// 	        duration: 1000,
 			// 	        timingFunc: 'easeIn'

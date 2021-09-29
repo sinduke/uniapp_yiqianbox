@@ -17,9 +17,8 @@
 							<view :style="{borderBottom:heiye?'2rpx solid #3d3d3d':'2rpx solid #f3f3f3'}" class="contentDetail">
 								<view class="detailLeft">
 									<text class="mem_name">{{item.mem_name}}</text>
-									<text :class="['content',heiye?'isTheme':'noTheme']" v-if="/desc/g.test(item.content)"
-										:style="{width:JSON.parse(item.content).desc.length>30?'450rpx':''}">{{JSON.parse(item.content).desc}}</text>
-									<text :class="['content',heiye?'isTheme':'noTheme']" v-else>{{item.content}}</text>
+									<text :class="['content',heiye?'isTheme':'noTheme']" v-if="/desc/g.test(item.content)" :style="{width:JSON.parse(item.content).desc.length>30?'450rpx':''}">{{JSON.parse(item.content).desc}}</text>
+									<text :class="['content',heiye?'isTheme':'noTheme']" :style="{width:item.content.length>30?'450rpx':''}" v-else>{{item.content}}</text>
 									<text class="times">{{item.time_str}}</text>
 								</view>
 								<view class="detailRight"  @click="handleSupport(item, index)" >
@@ -281,9 +280,10 @@
 	}
 
 	.content {
-		
+		lines: 3;
 		font-size: 30rpx;
 		margin: 10rpx 0;
+		text-overflow: ellipsis;
 	}
 
 	.times {

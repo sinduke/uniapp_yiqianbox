@@ -1,8 +1,9 @@
 <template>
-	<view :class="['box',heiye?'bg':'wg']"  :style="{height:myHeight-1+'rpx'}">
-		<view class="lineShowdow"></view>
+	<view :class="['box',heiye?'bg':'wg']"  :style="{height:myHeight+'rpx'}">
+		<myNavbar v-if="heiye==false" title='设置中心' :lines="false" :right='false' ></myNavbar>
+		<myNavbar v-else title='设置中心' :lines="false" :right='false' ></myNavbar>
 		<view class="container" >
-			<view @click='toSet'>
+			<view @click='toSet' style="margin-top: 88rpx;">
 				<gamecell left="通用设置"  type="1"></gamecell>
 			</view>
 			
@@ -10,7 +11,7 @@
 				<gamecell left="清除缓存" :right="fileSizeString"  ></gamecell>
 			</view>
 			<gamecell left="当前版本" :right="version+'.'+sp+'.'+client_id"></gamecell>
-			<gamecell  left="设备码" :right="$store.state.equipmentCode||0" type="1"></gamecell>
+			<gamecell  left="设备码" :right="$store.state.equipmentCode||0"></gamecell>
 			<view  class="button" :style="{width:myWidth+'px'}"  @click="loginOut" v-if="Object.keys($store.state.userInfo).length">
 				<text class="button_text isActive" >退出登录</text>
 			</view>	
@@ -24,6 +25,7 @@
 		$api
 	} from '@/config/api.js';
 	import gamecell from '@/components/nvue-cell/nvue-cell.nvue'
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	import modal from '@/components/nvue-shModal/nvue-shModal.nvue'
 	export default {
 		data() {
@@ -65,7 +67,8 @@
 		},
 		components: {
 			gamecell,
-			modal
+			modal,
+			myNavbar
 		},
 		methods: {
 			remove(){
@@ -175,7 +178,7 @@
 		
 	}
 	.container{
-		
+		padding-top: 88rpx;
 	}
 	.button{
 		flex-direction: row;

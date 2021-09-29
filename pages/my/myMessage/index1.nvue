@@ -1,7 +1,9 @@
 <!-- 消息 -->
 <template>
 	<view :class="['container',heiye?'bg':'wg']" > 
-		<view class="lineShowdow"></view>
+	<myNavbar v-if="heiye==false" title='消息' :lines="false" :right='false' ></myNavbar>
+	<myNavbar v-else title='消息' :lines="false" :right='false' ></myNavbar>
+		<view class="lineShowdow" style="margin-top:168rpx"></view>
 		<view class="box" v-if="pageData">
 			<view class="head" :style="{width:myWidth-32+'px'}" @click="handleRouter('/pages/my/myMessage/children/officialMess/index1')">
 				<image class="left" src="@/static/images/view/gftz.png"  mode="widthFix"></image>
@@ -65,6 +67,7 @@
 	} from '@/config/api.js';
 	import nloading from '@/components/nvue-loading/nvue-loading'
 	import common from "@/common/js/common.js";
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	export default {
 		data() {
 			return {
@@ -82,7 +85,8 @@
 			}
 		},
 		components:{
-			nloading
+			nloading,
+			myNavbar
 		},
 		onReady() {
 			if(this.heiye){

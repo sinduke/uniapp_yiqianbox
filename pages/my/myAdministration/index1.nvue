@@ -1,9 +1,11 @@
 <template>
 	<!-- 账号信息 -->
-	<view :class="['box',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}">
+	<view :class="['box',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}">
+		<myNavbar v-if="heiye==false" title='账号管理' :lines="false" :right='false' ></myNavbar>
+		<myNavbar v-else title='账号管理' :lines="false" :right='false' ></myNavbar>
 		<view class="avatar_box" :style="{width:$store.state.myWidth+'px'}">
 			<view class="avatar" @click="changeAvatar">
-				<image class="avatar":src="userInfo.avatar"  ></image>
+				<image class="avatar":src="userInfo.avatar" ></image>
 			</view>
 			<view class="photo" :style="{left:$store.state.myWidth*0.59+'px',bottom:'58rpx'}">
 				<image class="photo" src="../../../static/images/userp.png" mode="widthFix"></image>
@@ -31,7 +33,7 @@
 				<gamecell left="实名认证" :right="userInfo.is_real_name ?'已认证':'未认证'" :type="1"></gamecell>
 			</view>
 			<view @click="handleRouter('/pages/my/myAdministration/children/withdrawalList/index1')">
-				<gamecell left="提现信息"  :type="1"></gamecell>
+				<gamecell left="账户信息"  :type="1"></gamecell>
 			</view>
 		</view>
 		<shModal title="修改昵称" :textType="false" :isShow="nickName.show" @confirm="confirm" @remove="noModal">
@@ -51,6 +53,7 @@
 	import common from "@/common/js/common.js";
 	import gamecell from '@/components/nvue-cell/nvue-cell.nvue';
 	import shModal from '@/components/nvue-shModal/nvue-shModal.nvue';
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	const globalData = getApp().globalData
 	export default {
 		data() {
@@ -63,7 +66,8 @@
 		},
 		components:{
 			gamecell,
-			shModal
+			shModal,
+			myNavbar
 		},
 		onLoad(){
 			console.log(this.userInfo)
@@ -162,9 +166,10 @@
 <style scoped>
 	@import '@/common/css/nvue-black.css';
 	.box{
-		
+		 flex: 1;
 	}
 	.avatar_box{
+		margin-top: 168rpx;
 		position: relative;
 		flex-direction: row;
 		justify-content: center;

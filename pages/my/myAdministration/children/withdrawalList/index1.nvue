@@ -1,6 +1,8 @@
-<!-- 提现信息 -->
+<!-- 账户信息 -->
 <template>
-	<view :class="['box',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px',height:myHeight-1+'rpx'}" >
+	<view :class="['box',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px',height:myHeight+'rpx'}" >
+		<myNavbar v-if="heiye==false" title='账户信息' :lines="false" :right='false' ></myNavbar>
+		<myNavbar v-else title='账户信息' :lines="false" :right='false' ></myNavbar>
 		<view class="lineShowdow">
 			
 		</view>
@@ -28,6 +30,7 @@
 <script>
 	const globalData = getApp().globalData;
 	import collapse from '@/components/nvue-collapse/nvue-collapse.nvue';
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	export default {
 		data() {
 			return {
@@ -41,7 +44,8 @@
 			
 		},
 		components:{
-			collapse
+			collapse,
+			myNavbar
 		},
 		computed:{
 			heiye(){
@@ -69,7 +73,7 @@
 				})
 			},
 			isActive(isactive){
-				console.log(isactive)
+		
 			}
 		},
 		onShow() {
@@ -81,11 +85,10 @@
 <style scoped>
 	@import '@/common/css/nvue-black.css';
 .box{
-	
+	flex: 1;
 }
 .lineShowdow{
-	height:6rpx ;
-	background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
+	margin-top:168rpx
 }
 .input_box{
 	padding:36rpx 32rpx;

@@ -1,6 +1,9 @@
+<!-- 我的优惠券 -->
 <template>
 	<view :style="{background:heiye?'#090909':'#fff'}" style="flex: 1;">
-		<view :class="['container',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px'}">
+		<myNavbar v-if="heiye==false" title='我的优惠券' :lines="false" :right='false' ></myNavbar>
+		<myNavbar v-else title='我的优惠券' :lines="false" :right='false' ></myNavbar>
+		<view :class="['container',heiye?'bg':'wg']" :style="{width:$store.state.myWidth+'px',marginTop:'168rpx'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
 				<!-- tabs -->
 				<view class="tabslist">
@@ -120,6 +123,7 @@
 		$api
 	} from '@/config/api.js';
 	import common from "@/common/js/common.js";
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	import nloading from '@/components/nvue-loading/nvue-loading'
 	export default {
 		data() {
@@ -160,7 +164,8 @@
 			}
 		},
 		components:{
-			nloading
+			nloading,
+			myNavbar
 		},
 		watch:{
 			active(val){

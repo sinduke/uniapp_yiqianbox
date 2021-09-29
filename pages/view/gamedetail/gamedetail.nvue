@@ -277,9 +277,10 @@
 						<text v-if='evaluateitem.star_cnt>0' style="color: #666;font-size: 20rpx;">游戏时长53分钟</text>
 					</view>
 					<view v-if="evaluateitem.content" style="margin-bottom: 40rpx;position: relative;">
-						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" v-if="!isConent">{{evaluateitem.content.length>42?evaluateitem.content.slice(0,40)+'...':evaluateitem.content}}</text>
-						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" v-else>{{evaluateitem.content}}</text>
-					    <text style="position: absolute;right: 10rpx;font-size: 24rpx;color: #666;top:60rpx" v-if="!isConent&&evaluateitem.content.length>42" @click="isConent = true">查看全文</text>
+						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" :class="[heiye?'isTheme':'noTheme']" v-if="!isConent">{{evaluateitem.content.length>42?evaluateitem.content.slice(0,40)+'...':evaluateitem.content}}</text>
+						<text style="font-size: 28rpx;margin: 20rpx 0 32rpx 0;" :class="[heiye?'isTheme':'noTheme']" v-else>{{evaluateitem.content}}</text>
+						
+					    <text style="position: absolute;right: 10rpx;font-size: 24rpx;color: #666;top:60rpx" :class="[heiye?'isTheme':'noTheme']" v-if="!isConent&&evaluateitem.content.length>42" @click="isConent = true">查看全文</text>
 						<image @click="imageBig(index,evaluateitem.content_img[0])" :src="evaluateitem.content_img[0]" v-if="evaluateitem.content_img.length>0"  style="border-radius: 20rpx;margin-bottom: 20rpx;" :style="{width:myWidth-40+'px'}" mode="aspectFill"></image>
 						<!-- 点赞 评论 -->
 						<view
@@ -348,7 +349,7 @@
 	import gameporp from '@/components/nvue-propup/nvue-propup.nvue';
 	import serveShow from './children/serveShow.nvue';
 	import iosDownLoad from "./children/iosDownLoad/index.nvue";
-	// const BindingX = uni.requireNativePlugin('bindingx');
+	const BindingX = uni.requireNativePlugin('bindingx');
 	import common from '@/common/js/common.js';
 	import downLoadButton from '@/components/xw-downLoadButton/xw-downLoadButton';
 	const globalData = getApp().globalData

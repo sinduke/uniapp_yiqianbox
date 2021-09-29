@@ -1,5 +1,8 @@
+<!-- 积分记录 -->
 <template>
 	<view :class="['container',heiye?'bg':'wg']" style="flex: 1;">
+		<myNavbar v-if="heiye==false" title='积分记录' :lines="false" :right='false' ></myNavbar>
+		<myNavbar v-else title='积分记录' :lines="false" :right='false' ></myNavbar>
 		<view v-if="heiye==false" class="lineShowdow"></view>
 		<view  :style="{width:$store.state.myWidth+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
@@ -57,6 +60,7 @@
 	import {
 		$api
 	} from '@/config/api.js';
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
 	import common from "@/common/js/common.js";
 	import nloading from '@/components/nvue-loading/nvue-loading'
 	
@@ -85,7 +89,8 @@
 			}
 		},
 		components:{
-			nloading
+			nloading,
+			myNavbar
 		},
 		watch:{
 			active(val){

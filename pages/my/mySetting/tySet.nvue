@@ -1,10 +1,10 @@
+<!-- 通用设置 -->
 <template>
-	<view :class="['box',heiye?'bg':'wg']"  :style="{height:myHeight-1+'rpx'}">
-		<view class="lineShowdow">
-			
-		</view>
+	<view :class="['box',heiye?'bg':'wg']"  :style="{height:myHeight+'rpx'}">
+		<myNavbar v-if="heiye==false" title='通用设置' :lines="false" :right='false' ></myNavbar>
+		<myNavbar v-else title='通用设置' :lines="false" :right='false' ></myNavbar>
 		<!-- <gamecell left="开启消息通知"  type="2" :borderBottom="false" :checked=""></gamecell> -->
-		<view class="">
+		<view class="" style="margin-top:168rpx">
 			<gamecell left="仅使用WiFi下载"  type="2" :borderBottom="false" :checked="isWifiDown" @change="change1"></gamecell>
 		</view>
 		<gamecell left="WIFI下自动播放视频"  type="2" :borderBottom="false" :checked="isWifi" @change="change2"></gamecell>
@@ -15,6 +15,7 @@
 
 <script>
 	import gamecell from '@/components/nvue-cell/nvue-cell.nvue'
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar';
 	export default {
 		data() {
 			return {
@@ -42,7 +43,8 @@
 			}
 		},
 		components:{
-			gamecell
+			gamecell,
+			myNavbar
 		},
 		methods: {
 			change1(msg){

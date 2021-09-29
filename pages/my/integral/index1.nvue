@@ -2,7 +2,7 @@
 	<view :class="['FlatGoldCoins',heiye?'bg':'wg']" >
 	   <myNavbar v-if="heiye==false" title='我的积分' right radius router='/pages/my/integral/integral1' src='../../../static/images/my_details.png'></myNavbar>
 		<myNavbar :lines="false" v-else title='我的积分' right radius router='/pages/my/integral/integral1' src='../../../static/images/my_details1.png'></myNavbar>
-		<view class="box" :style="{width:myWidth+'px'}">
+		<view class="box" :style="{width:myWidth+'px',marginTop:'168rpx'}">
 			<view class="head"></view>
 			<view class="bottom" >
 				<text style="color: #666666; font-size: 28rpx;margin-bottom: 24rpx;text-align: center;">积分余额</text>

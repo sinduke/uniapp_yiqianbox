@@ -342,16 +342,12 @@
 		{
 			"path": "pages/my/myMessage/index1",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "消息"
-					}
+					"bounce": "none"
 				}
 			}
 		},
@@ -423,18 +419,12 @@
 		{
 			"path": "pages/my/myAdministration/index1",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "账号管理",
-						"titleAlign": "left",
-						"fontWeight": "bold"
-
-					}
+					"bounce": "none"
 				}
 			}
 
@@ -569,16 +559,12 @@
 		{
 			"path": "pages/my/myAdministration/children/withdrawal/index1",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "账号信息",
-						"titleAlign": "left"
-					}
+					"bounce": "none"
 				}
 			}
 
@@ -587,16 +573,12 @@
 		{
 			"path": "pages/my/myAdministration/children/withdrawalList/index1",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleText": "提现信息",
-						"titleAlign": "left"
-					}
+					"bounce": "none"
 				}
 			}
 
@@ -732,17 +714,12 @@
 		{
 			"path": "pages/my/coupons/coupons1",
 			"style": {
-
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "我的优惠券"
-					}
+					"bounce": "none"
 				}
 			}
 		}
@@ -781,16 +758,12 @@
 		{
 			"path": "pages/my/integral/integral1",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "积分记录"
-					}
+					"bounce": "none"
 				}
 			}
 
@@ -859,16 +832,12 @@
 		{
 			"path": "pages/my/children/demoGame/index1",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "试玩游戏"
-					}
+					"bounce": "none"
 				}
 			}
 
@@ -1045,16 +1014,12 @@
 		{
 			"path": "pages/my/comprehensive/gameConsulting/gameConsulting1",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "游戏资讯"
-					}
+					"bounce": "none"
 				}
 			}
 		},
@@ -1159,32 +1124,24 @@
 		{
 			"path": "pages/my/mySetting/Setting",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "设置中心"
-					}
+					"bounce": "none"
 				}
 			}
 
 		}, {
 			"path": "pages/my/mySetting/tySet",
 			"style": {
+				// 取消默认的原生导航栏
+				"navigationStyle": "custom",
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none", //关闭窗口回弹效果
-					"titleNView": {
-						"backgroundColor": "#fff",
-						"titleColor": "#1C1C1C",
-						"titleAlign": "left",
-						"titleText": "通用设置"
-					}
+					"bounce": "none"
 				}
 			}
 

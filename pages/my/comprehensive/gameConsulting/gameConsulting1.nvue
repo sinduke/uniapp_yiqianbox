@@ -1,6 +1,9 @@
+<!-- 游戏资讯 -->
 <template>
 	<view  style="flex: 1;">
-		<view :class="['container',heiye?'bg':'wg']":style="{width:$store.state.myWidth+'px'}">
+		<myNavbar v-if="heiye==false" title='游戏资讯' :lines="false" :right='false' ></myNavbar>
+		<myNavbar v-else title='游戏资讯' :lines="false" :right='false' ></myNavbar>
+		<view :class="['container',heiye?'bg':'wg']":style="{width:$store.state.myWidth+'px',marginTop:'148rpx'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
 				<!-- tabs -->
 				<view class="tabslist">
@@ -128,6 +131,7 @@
 		$api
 	} from '@/config/api.js';
 	import common from "@/common/js/common.js";
+	import myNavbar from '@/components/nvue-navbar/nvue-navbar'
 	import nloading from '@/components/nvue-loading/nvue-loading'
 	export default {
 		data() {
@@ -168,7 +172,8 @@
 			}
 		},
 		components:{
-			nloading
+			nloading,
+			myNavbar
 		},
 		watch:{
 			active(val){
