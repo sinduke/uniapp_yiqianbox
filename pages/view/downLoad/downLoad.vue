@@ -101,10 +101,10 @@
 			
 		},
 		onLoad() {
-			this.init()
-			setTimeout(()=>{
-				this.getload()
-			},300)
+			// this.init()
+			// setTimeout(()=>{
+			// 	this.getload()
+			// },300)
 		},
 		onReady() {
 		  if(this.heiye){

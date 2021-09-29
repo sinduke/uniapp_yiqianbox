@@ -34,10 +34,10 @@
 						<image class="box_left" mode="widthFix" :src="item.icon"  @click="handleRouter(item)"></image>
 						<view style="margin-top: 0rpx;" class="box_right" :style="{width:$store.state.myWidth-128+'px'}">
 							<view class="right_1" :style="{width:($store.state.myWidth-128)*0.75+'px'}" @click="handleRouter(item)">
-								<text class="text1">{{item.name}}</text>
-								<text class="text2">当前对应区服：{{item.server_name}}</text>
+								<text class="text1" :class="['text1',heiye?'isTheme':'noTheme']" >{{item.name}}</text>
+								<text class="text2" :class="['text2',heiye?'noActive':'baicolor']">当前对应区服：{{item.server_name}}</text>
 								<view style="flex-direction: row;">
-									<text class="text4">当前返利状态：</text>
+									<text class="text4" :class="['text4',heiye?'noActive':'baicolor']" >当前返利状态：</text>
 									<text class="text3" :style="{color:item.is_rebate==1?'#FC6170':item.is_rebate==2?'#2BC8F9':'#000'}">{{item.is_rebate==1?'可申请返利':item.is_rebate==2?'已申请返利':item.is_rebate==3?'不可申请返利':'返利已发放'}}</text>
 								</view>
 							</view>
