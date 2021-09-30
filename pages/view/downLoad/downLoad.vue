@@ -69,8 +69,6 @@
 </template>
 
 <script>
-	const DownManagerModule = uni.requireNativePlugin("DownManagerModule");
-	const globalEvent = weex.requireModule('globalEvent');
 	export default {
 		data() {
 			return {
@@ -83,28 +81,6 @@
 				isNumber: 0,
 				selectAll: false,
 			}
-		},
-		onShow(){
-			// if(this.heiye){
-			// 	uni.setNavigationBarColor({
-			// 	    frontColor: '#ffffff',
-			// 	    backgroundColor: '#ff0000',
-			// 	    animation: {
-			// 	        duration: 400,
-			// 	        timingFunc: 'easeIn'
-			// 	    }
-			// 	})
-			// }
-
-			// console.log(a,'DownManagerModule.initDownload()')
-			
-			
-		},
-		onLoad() {
-			// this.init()
-			// setTimeout(()=>{
-			// 	this.getload()
-			// },300)
 		},
 		onReady() {
 		  if(this.heiye){
@@ -135,45 +111,7 @@
 				return uni.getStorageSync('downList')
 			}
 		},
-		methods: {
-			//初始化
-			  init(){
-				  DownManagerModule.initDownload()
-				  console.log(DownManagerModule,'DownManagerModule')
-				  DownManagerModule.addDownloadCallback((e)=>{
-					  console.log(e,'eeeeeeeeeeeeeeeeeeee')
-				  })
-				  
-			  },
-			  getload(){
-				  let data = {
-				   gameid:8854,
-				  downicon:'https://static.sy12306.com/upload/admin_games/8854/icon/95dbe866ea4f3935d08b2d4fa6714a4b.png',
-				  downurl:'https://down.sy12306.com/sdkgame/land_8716/2723/land_8716_4231.apk'}
-				  console.log(data,'downloadDatadownloadDatadownloadData')
-				  
-		         DownManagerModule.downloadData(data,res=>{
-					 console.log(res,'downloadDatadownloadDatadownloadData')
-				 })
-			    let add = DownManagerModule.allDownloadsByStatus({downstatus:0},res=>{
-					let data = res.data
-					plus.runtime.openFile({pname:'/storage/emulated/0/Android/data/com.g3021491574.zscxw/cache/xwboxdownload/xand_8729_4231.apk'}, err => {uni.showToast({ title:'打开失败',icon:'none'})} );
-					console.log(data,'sssssssssssss')
-	                setTimeout(()=>{
-						console.log(111111111111111111)
-						
-					},2000)
-				})
-				
-				globalEvent.addEventListener('onDownloadChangCallback',(res)=>{
-					console.log(res,'addEventListeneraddEventListeneraddEventListener')
-				
-				})
-				
-		
-			
-			  },
-			
+		methods: {			
 			goback(){
 				uni.navigateBack({
 					delta:1
