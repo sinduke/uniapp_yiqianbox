@@ -107,11 +107,7 @@
 				return uni.getStorageSync('downList')
 			}
 		},
-<<<<<<< HEAD
-		methods: {	
-=======
 		methods: {			
->>>>>>> 6992f3999e79f7e65709707a3b606ee7e057d9bb
 			goback(){
 				uni.navigateBack({
 					delta:1
