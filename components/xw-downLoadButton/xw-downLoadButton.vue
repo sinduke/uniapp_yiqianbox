@@ -22,7 +22,7 @@
 		data(){
 			return{
 				downtype:0,
-				isTrue: false,
+				isTrue: true,
 				progress:0,   
 			}
 		},
@@ -149,7 +149,6 @@
 			},
 			//监听
 	         addEventList(item){
-				 console.log(666,this.isTrue)
 				item.addEventListener("statechanged", (res, status)=>{
 				     this.item.myloading =  (res.downloadedSize / 1024 / 1024) .toFixed(2)+ 'MB'
 					 this.item.myTotalData = (res.totalSize / 1024 / 1024).toFixed(2) +'MB'
@@ -217,10 +216,9 @@
 			if(!this.checkApp()&&this.downtype!=4){
 				if(this.downTasksItem){
 					this.addEventList(this.downTasksItem)
-					// this.isTrue=true
-					this.item.status?this.isTrue=true:this.isTrue=false
+
+					this.item.status?this.isTrue = true : this.isTrue = false
 				}else{
-						
 					this.createDownload()
 				}
 				

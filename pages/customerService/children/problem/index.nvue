@@ -6,7 +6,7 @@
 		<view class="myshadowLine" />
 
 		<view class="body" :style="{height:myHeight-keyHeight-250+'rpx'}">
-			<list :style="{height:myHeight-keyHeight-250+'rpx'}" :scroll-top="scrollTop" class="list">
+			<list :style="{height:myHeight-keyHeight-250+'rpx'}" :scroll-top="platform=='android'?scrollTop:20" class="list">
 				<cell style="height: 32rpx;"></cell>
 					<!-- 客服回复 -->
 					<cell class="kfItem">
@@ -224,6 +224,9 @@
 			},
 			serviceList() {
 				return globalData.store.state.serviceList
+			},
+			platform(){
+				uni.getSystemInfoSync().platform
 			}
 
 		},

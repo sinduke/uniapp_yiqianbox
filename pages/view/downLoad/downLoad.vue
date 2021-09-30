@@ -1,6 +1,6 @@
 <template>
-	<view :style="{height:myHeight-statusBarHeight-20+'rpx',background:heiye?'#090909':''}" class="downLoad" >
-		<view style="margin-top: 80rpx; " title="" :border-bottom='false' >
+	<view :style="{flex:1,background:heiye?'#090909':''}" class="downLoad">
+		<view  style="padding-top: 88rpx;" :border-bottom='false'  :style="{flex:1,background:heiye?'#090909':''}">
 			<view>
 				<view class="title">
 					<view class="slot-wrap" style="align-items: center;display: flex;flex-wrap: row;" @click="goback">
@@ -23,7 +23,8 @@
 			</view>
 		</view>
 		
-		<view class="Body">
+		<view class="Body" :style="{height:myHeight-164+'rpx',background:heiye?'#090909':''}" >
+		<scroll-view :style="{height:myHeight-164+'rpx',background:heiye?'#090909':''}" scroll-y>
 			<view class="cards" v-for="(item,index) in pageList" :key='item.game_id'>
 				<view class="" v-if="isActive" style="margin-right: 12rpx;width: 40rpx;height: 40rpx;"	@click="handleDel(index)">
 					<view v-if="!item.noActive" style="width: 40rpx;height: 40rpx;border-radius: 40rpx;border: 1px solid #EFEFEF;"></view>
@@ -31,8 +32,7 @@
 				</view>
 				<view class="">
 					<image  @click="toDetail(item)" @longpress='longpress(index)' :src="item.icon" mode="widthFix" :style="{height:isActive?'140rpx':'167rpx',width:isActive         ?'140rpx':'167rpx'}" style="margin-right: 12rpx;margin-bottom: 20rpx;"></image>
-				</view>
-				
+				</view>		
 				<view class="gameRight" :style="{borderBottom:heiye?'1px solid #3d3d3d':'1px solid #EFEFEF'}">
 					<view class="gameDetail" @longpress='longpress(index)'>
 						<text :class="['gamename',heiye?'isTheme':'noTheme']"  @click="toDetail(item)">{{item.gamename}}</text>
@@ -49,6 +49,8 @@
 				</view>
 
 			</view>
+	
+		</scroll-view>
 
 		</view>
 		<view :style="{background:heiye?'#090909':'#fff;'}" class="bottom" v-if="isActive">
@@ -113,12 +115,6 @@
 				backgroundColor: '#000000',
 		     	})	
 	    	}  
-			// 	    animation: {
-			// 	        duration: 1000,
-			// 	        timingFunc: 'easeIn'
-			// 	    }
-			// 	})
-			// }
 		},
 		computed: {
 			heiye(){
@@ -135,45 +131,7 @@
 				return uni.getStorageSync('downList')
 			}
 		},
-		methods: {
-			//初始化
-			  init(){
-				  DownManagerModule.initDownload()
-				  console.log(DownManagerModule,'DownManagerModule')
-				  DownManagerModule.addDownloadCallback((e)=>{
-					  console.log(e,'eeeeeeeeeeeeeeeeeeee')
-				  })
-				  
-			  },
-			  getload(){
-				  let data = {
-				   gameid:8854,
-				  downicon:'https://static.sy12306.com/upload/admin_games/8854/icon/95dbe866ea4f3935d08b2d4fa6714a4b.png',
-				  downurl:'https://down.sy12306.com/sdkgame/land_8716/2723/land_8716_4231.apk'}
-				  console.log(data,'downloadDatadownloadDatadownloadData')
-				  
-		         DownManagerModule.downloadData(data,res=>{
-					 console.log(res,'downloadDatadownloadDatadownloadData')
-				 })
-			    let add = DownManagerModule.allDownloadsByStatus({downstatus:0},res=>{
-					let data = res.data
-					plus.runtime.openFile({pname:'/storage/emulated/0/Android/data/com.g3021491574.zscxw/cache/xwboxdownload/xand_8729_4231.apk'}, err => {uni.showToast({ title:'打开失败',icon:'none'})} );
-					console.log(data,'sssssssssssss')
-	                setTimeout(()=>{
-						console.log(111111111111111111)
-						
-					},2000)
-				})
-				
-				globalEvent.addEventListener('onDownloadChangCallback',(res)=>{
-					console.log(res,'addEventListeneraddEventListeneraddEventListener')
-				
-				})
-				
-		
-			
-			  },
-			
+		methods: {	
 			goback(){
 				uni.navigateBack({
 					delta:1
@@ -358,7 +316,6 @@
 
 		.Body {
 			@include padding;
-
 		}
 
 		.cards {

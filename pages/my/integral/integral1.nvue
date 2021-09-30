@@ -3,7 +3,7 @@
 	<view :class="['container',heiye?'bg':'wg']" style="flex: 1;">
 		<myNavbar v-if="heiye==false" title='积分记录' :lines="false" :right='false' ></myNavbar>
 		<myNavbar v-else title='积分记录' :lines="false" :right='false' ></myNavbar>
-		<view v-if="heiye==false" class="lineShowdow"></view>
+		<view style="margin-top: 148rpx" class="lineShowdow"></view>
 		<view  :style="{width:$store.state.myWidth+'px'}">
 			<view class="box" :style="{width:$store.state.myWidth+'px'}">
 				<!-- tabs -->
@@ -234,10 +234,6 @@
 	}
 	.box{
 		padding:0rpx 32rpx ;
-	}
-	.lineShowdow{
-		height:6rpx ;
-		background-image: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(160, 160, 160, 0.1));
 	}
 	.tabslist{
 		margin-top:60rpx ;

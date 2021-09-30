@@ -1,5 +1,6 @@
+<!-- 全民推广 -->
 <template>
-	<view class="share" >
+	<view class="share" style="background-color: #090909;">
 		
 		<myNavbar v-if="heiye==false" title='全民推广' right radius router='/pages/my/children/withdrawalRecord/index' src='../../../../static/images/my_details.png'></myNavbar>
 		<myNavbar :lines="false" v-else title='全民推广' right radius router='/pages/my/children/withdrawalRecord/index' src='../../../../static/images/my_details1.png'></myNavbar>

@@ -278,7 +278,7 @@
 						data: {
 							client_id: that.$store.state.client_id,
 							// client_id: 4231,
-							// ver: '2.0.1',
+							// ver: '2.3.0',
 							ver: plus.runtime.version + "." + that.$store.state.sp, // 每次要热更是，最后一位要加一
 							format: "json",
 							app_id: that.$store.state.app_id,

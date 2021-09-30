@@ -10,7 +10,7 @@
 				<image src="@/static/images/search-gren.png" mode="widthFix" style="width: 30rpx;height: 30rpx;"></image>
 				<input class="input" v-model="formData.game_name" type="text"  placeholder='去找你的想要的游戏'
 					placeholder-style='font-size:16px;color:#c1c1c1'  @input='search'
-					:style="{width:myWidth/1.4+'px'}"></input>
+					:style="{width:myWidth/1.4+'px',color:heiye?'#fff':'#1c1c1c' }"></input>
 			</view>
 			<list @loadmore='loadmore' loadmoreoffset='10' class="list" :style="{width:$store.state.myWidth+'px',height:myHeight-278+'rpx'}" v-if="list.length>0">
 				<cell :style="{width:$store.state.myWidth+'px'}" v-for="(item,index) in list" v-if="item.is_recycle!=1" :key='index'>

@@ -431,7 +431,6 @@
 		},
 		onHide(){
 			if(this.pageData.mp4_url){
-				
 			uni.createVideoContext("video").pause();
 			}
 			
@@ -467,10 +466,15 @@
 				'src': "url('file:/" + fontSrc + "')"
 			})
 		},
+		mounted() {
+			setTimeout(()=>{
+				
+			this.bind()
+			},300)
+		},
 		methods: {
 			/* 下载 */
-			myGetData(list){
-				
+			myGetData(list){	
 				this.pageList = list[0]
 				this.$store.commit('setDownTasksList', list[1])
 				
@@ -718,9 +722,6 @@
 			},
 			//andriod 下载 
 			getDownLoad(){
-
-
-				
 				//将数据存入数组
 					let arrList = uni.getStorageSync('downList')||[]
 					let downList = this.$store.state.downTasksList
@@ -803,9 +804,7 @@
 			},
 
 			scrollstart(e){
-              this.bind()
-			 
-			
+             
 			},
 			scrollend(e){
 			},

@@ -920,8 +920,8 @@
 				}
 			}
 		}
-		/* 下载 */
-		, {
+		// 下载
+		,{
 			"path": "pages/view/downLoad/downLoad",
 			"style": {
 				// 取消默认的原生导航栏
@@ -929,24 +929,13 @@
 				"app-plus": {
 					"background": "#666",
 					"animationAlphaBGColor": "#666",
-					"bounce": "none"
+					"bounce": "none" //关闭窗口回弹效果
+		
 				}
 			}
-		},
-		// // 下载nvue
-		// {
-		//     "path" : "pages/view/downLoad/downLoad1",
-		//     "style": {
-		//     	// 取消默认的原生导航栏
-		//     	"navigationStyle": "custom",
-		//     	"app-plus": {
-		//     		"bounce": "none"
-		//     	}
-		//     }
-
-		// },
+		}
 		// 注册
-		{
+		,{
 			"path": "pages/view/register/index",
 			"style": {
 				"app-plus": {

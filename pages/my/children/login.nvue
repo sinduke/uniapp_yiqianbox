@@ -221,7 +221,6 @@
 				uni.navigateBack()
 			},
 
-
 			//第三方登录
 			dsfLogin(type) {
 				if (this.isTrue) {
@@ -298,8 +297,7 @@
 						uni.setStorageSync('mem-openid', oauth.openid)
 						this.$store.commit("setLoginInfo", res.data.data)
 						uni.setStorageSync('mem-username', res.data.data.username)
-						uni.setStorageSync('mem-oauth_type', oauth.name == 'qq' ? 2 : oauth.name == 'weixin' ? 1 :
-							3)
+						uni.setStorageSync('mem-oauth_type', oauth.name == 'qq' ? 2 : oauth.name == 'weixin' ? 1 :3)
 
 						uni.showToast({
 							title: '登录成功',
@@ -324,12 +322,16 @@
 				uni.login({
 					provider: 'univerify',
 					univerifyStyle: { // 自定义登录框样式
+					    "backgroundColor":this.heiye?'#090909':"#ffffff", 
 						"fullScreen": "true", // 是否全屏显示，默认值： "false"
 						"authButton": {
 							"normalColor": '#ff5927',
 							"textColor": "#ffffff",
 							// "border":'#e4e4e4'
 						},
+						 "phoneNum": {  
+						        "color": this.heiye?'#ffffff':"#1c1c1c"// 手机号文字颜色 默认值：#202020  
+						 }, 
 						    "privacyTerms": {  
 						        "defaultCheckBoxState":true, // 条款勾选框初始状态 默认值： true
 						        "uncheckedImage":"", // 可选 条款勾选框未选中状态图片（仅支持本地图片 建议尺寸 24x24px）(3.2.0+ 版本支持)   

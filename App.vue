@@ -50,6 +50,9 @@
 		methods: {
 			// 修改原生虚拟按键
 			getNativeBut(type){
+				if(uni.getSystemInfoSync().platform!=='android'){
+					return
+				}
 				var Color = plus.android.importClass("android.graphics.Color");
 				plus.android.importClass("android.view.Window");
 				var mainActivity = plus.android.runtimeMainActivity();
@@ -150,7 +153,6 @@
 				let isWifiDown = uni.getStorageSync('isWifiDown')
 				let isinstallGame = uni.getStorageSync('isinstallGame')
 				let isClearPackage = uni.getStorageSync('isClearPackage')
-				
 				
 				if (!isMessage) {
 					uni.setStorageSync('isMessage', {
