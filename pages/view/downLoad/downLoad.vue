@@ -71,8 +71,6 @@
 </template>
 
 <script>
-	const DownManagerModule = uni.requireNativePlugin("DownManagerModule");
-	const globalEvent = weex.requireModule('globalEvent');
 	export default {
 		data() {
 			return {
@@ -85,28 +83,6 @@
 				isNumber: 0,
 				selectAll: false,
 			}
-		},
-		onShow(){
-			// if(this.heiye){
-			// 	uni.setNavigationBarColor({
-			// 	    frontColor: '#ffffff',
-			// 	    backgroundColor: '#ff0000',
-			// 	    animation: {
-			// 	        duration: 400,
-			// 	        timingFunc: 'easeIn'
-			// 	    }
-			// 	})
-			// }
-
-			// console.log(a,'DownManagerModule.initDownload()')
-			
-			
-		},
-		onLoad() {
-			// this.init()
-			// setTimeout(()=>{
-			// 	this.getload()
-			// },300)
 		},
 		onReady() {
 		  if(this.heiye){
@@ -131,7 +107,11 @@
 				return uni.getStorageSync('downList')
 			}
 		},
+<<<<<<< HEAD
 		methods: {	
+=======
+		methods: {			
+>>>>>>> 6992f3999e79f7e65709707a3b606ee7e057d9bb
 			goback(){
 				uni.navigateBack({
 					delta:1
