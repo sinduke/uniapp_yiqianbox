@@ -2,8 +2,8 @@
     "name" : "闲玩精英版",
     "appid" : "__UNI__94481FE",
     "description" : "",
-    "versionName" : "2.3.2",
-    "versionCode" : 20302,
+    "versionName" : "2.3.3",
+    "versionCode" : 20303,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -182,20 +182,6 @@
                 "__plugin_info__" : {
                     "name" : "Android 高斯模糊View",
                     "description" : "提供Android 高斯模糊View",
-                    "platforms" : "Android",
-                    "url" : "",
-                    "android_package_name" : "",
-                    "ios_bundle_id" : "",
-                    "isCloud" : false,
-                    "bought" : -1,
-                    "pid" : "",
-                    "parameters" : {}
-                }
-            },
-            "xw_downmanager" : {
-                "__plugin_info__" : {
-                    "name" : "DownManagerModule",
-                    "description" : "下载管理",
                     "platforms" : "Android",
                     "url" : "",
                     "android_package_name" : "",
